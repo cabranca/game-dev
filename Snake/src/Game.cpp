@@ -1,5 +1,4 @@
 #include <Game.h>
-#include <cstdint>
 
 using namespace snake;
 
