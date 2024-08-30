@@ -2,6 +2,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <ResourceManager.h>
+#include <Game.h>
 
 using namespace cabrankengine;
 
@@ -9,6 +10,8 @@ void key_callback(GLFWwindow*, int key, int scancode, int action, int mode);
 
 const uint16_t SCREEN_WIDTH = 800;
 const uint16_t SCREEN_HEIGHT = 800;
+
+snake::Game snakeGame(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 int main() {
     
@@ -38,6 +41,8 @@ int main() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    snakeGame.init();
+
     float deltaTime = 0.0f;
     float lastFrame = 0.0f;
 
@@ -47,8 +52,11 @@ int main() {
         lastFrame = currentFrame;
         glfwPollEvents();
 
+        snakeGame.update(deltaTime);
+
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+        snakeGame.render();
 
         glfwSwapBuffers(window);
     }
