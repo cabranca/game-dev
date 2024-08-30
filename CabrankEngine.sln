@@ -11,6 +11,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Breakout", "Breakout\Breako
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Snake", "Snake\Snake.vcxproj", "{66EF43B6-16A5-4E93-ADD6-4218EAC21CC2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{55448F6A-4557-4804-A0A4-73A978ABC9D5} = {55448F6A-4557-4804-A0A4-73A978ABC9D5}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
