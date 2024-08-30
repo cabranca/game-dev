@@ -1,5 +1,7 @@
 #include <Ball.h>
 
+using namespace breakout;
+
 Ball::Ball() : GameObject(), c_Radius(0), c_InitialVelocity(), m_Stuck(true), m_Sticky(false), m_PassThrough(false) { }
 
 Ball::Ball(vec2 pos, float radius, vec2 velocity, Texture2D sprite)
