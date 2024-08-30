@@ -5,6 +5,8 @@
 #include <sstream>
 #include <iostream>
 
+using namespace breakout;
+
 Game::Game(unsigned int width, unsigned int height) 
 	: m_Width(width), m_Height(height), m_State(GAME_MENU), m_Keys(), m_KeysProcessed(), m_CurrentLevel(0), m_Lives(3)
 {

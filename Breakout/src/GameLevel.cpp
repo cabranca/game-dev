@@ -1,8 +1,9 @@
 #include <GameLevel.h>
 #include <ResourceManager.h>
-
 #include <fstream>
 #include <sstream>
+
+using namespace breakout;
 
 GameLevel::GameLevel()
 {

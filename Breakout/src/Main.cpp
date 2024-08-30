@@ -1,7 +1,6 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
 #include <Game.h>
 #include <ResourceManager.h>
 
@@ -11,7 +10,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 constexpr unsigned int SCREEN_WIDTH = 800;
 constexpr unsigned int SCREEN_HEIGHT = 600;
 
-Game breakout(SCREEN_WIDTH, SCREEN_HEIGHT);
+breakout::Game breakoutGame(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 int main() {
 
@@ -49,7 +48,7 @@ int main() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Initialize the game
-	breakout.Init();
+	breakoutGame.Init();
 
 	// deltaTime variables
 	float deltaTime = 0.0f;
@@ -64,15 +63,15 @@ int main() {
 		glfwPollEvents();
 
 		// Handle user input
-		breakout.ProcessInput(deltaTime);
+		breakoutGame.ProcessInput(deltaTime);
 
 		// Update game state
-		breakout.Update(deltaTime);
+		breakoutGame.Update(deltaTime);
 
 		// Render
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		breakout.Render();
+		breakoutGame.Render();
 
 		glfwSwapBuffers(window);
 	}
@@ -98,11 +97,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key >= 0 && key < 1024)
 	{
 		if (action == GLFW_PRESS)
-			breakout.SetKey(key, true);
+			breakoutGame.SetKey(key, true);
 		else if (action == GLFW_RELEASE)
 		{
-			breakout.SetKey(key, false);
-			breakout.ReleaseKey(key);
+			breakoutGame.SetKey(key, false);
+			breakoutGame.ReleaseKey(key);
 		}
 	}
 }
