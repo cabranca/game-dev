@@ -20,40 +20,40 @@ void Game::Init()
 	m_SoundEngine = std::unique_ptr<irrklang::ISoundEngine>(irrklang::createIrrKlangDevice());
 	m_SoundEngine->play2D("audio/breakout.mp3", true);
 
-	ResourceManager::LoadShader("shaders/sprite.vs", "shaders/sprite.frag", nullptr, "sprite");
-	ResourceManager::LoadShader("shaders/particle.vs", "shaders/particle.frag", nullptr, "particle");
-	ResourceManager::LoadShader("shaders/post_processing.vs", "shaders/post_processing.frag", nullptr, "postprocessing");
+	ResourceManager::loadShader("shaders/sprite.vs", "shaders/sprite.frag", nullptr, "sprite");
+	ResourceManager::loadShader("shaders/particle.vs", "shaders/particle.frag", nullptr, "particle");
+	ResourceManager::loadShader("shaders/post_processing.vs", "shaders/post_processing.frag", nullptr, "postprocessing");
 
 	
 	// Configure shaders
 	mat4 projection = ortho(0.0f, static_cast<float>(m_Width), static_cast<float>(m_Height), 0.0f, -1.0f, 1.0f);
-	ResourceManager::GetShader("sprite").Use().SetInteger("image", 0);
-	ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
-	ResourceManager::GetShader("particle").Use().SetMatrix4("projection", projection);
+	ResourceManager::getShader("sprite").use().setInteger("image", 0);
+	ResourceManager::getShader("sprite").setMatrix4("projection", projection);
+	ResourceManager::getShader("particle").use().setMatrix4("projection", projection);
 
 	// Load Textures
-	ResourceManager::LoadTexture("textures/background.jpg", false, "background");
-	ResourceManager::LoadTexture("textures/awesomeface.png", true, "face");
-	ResourceManager::LoadTexture("textures/block.png", true, "block");
-	ResourceManager::LoadTexture("textures/block_solid.png", false, "block_solid");
-	ResourceManager::LoadTexture("textures/paddle.png", false, "paddle");
-	ResourceManager::LoadTexture("textures/particle.png", true, "particle");
-	ResourceManager::LoadTexture("textures/powerup_speed.png", true, "powerup_speed");
-	ResourceManager::LoadTexture("textures/powerup_sticky.png", true, "powerup_sticky");
-	ResourceManager::LoadTexture("textures/powerup_increase.png", true, "powerup_increase");
-	ResourceManager::LoadTexture("textures/powerup_confuse.png", true, "powerup_confuse");
-	ResourceManager::LoadTexture("textures/powerup_chaos.png", true, "powerup_chaos");
-	ResourceManager::LoadTexture("textures/powerup_passthrough.png", true, "powerup_passthrough");
+	ResourceManager::loadTexture("textures/background.jpg", false, "background");
+	ResourceManager::loadTexture("textures/awesomeface.png", true, "face");
+	ResourceManager::loadTexture("textures/block.png", true, "block");
+	ResourceManager::loadTexture("textures/block_solid.png", false, "block_solid");
+	ResourceManager::loadTexture("textures/paddle.png", false, "paddle");
+	ResourceManager::loadTexture("textures/particle.png", true, "particle");
+	ResourceManager::loadTexture("textures/powerup_speed.png", true, "powerup_speed");
+	ResourceManager::loadTexture("textures/powerup_sticky.png", true, "powerup_sticky");
+	ResourceManager::loadTexture("textures/powerup_increase.png", true, "powerup_increase");
+	ResourceManager::loadTexture("textures/powerup_confuse.png", true, "powerup_confuse");
+	ResourceManager::loadTexture("textures/powerup_chaos.png", true, "powerup_chaos");
+	ResourceManager::loadTexture("textures/powerup_passthrough.png", true, "powerup_passthrough");
 
 	// Set render-specific controls
-	auto shader = ResourceManager::GetShader("sprite");
+	auto shader = ResourceManager::getShader("sprite");
 	m_Renderer = std::make_unique<SpriteRenderer>(shader);
 
-	auto partShader = ResourceManager::GetShader("particle");
-	auto partTex = ResourceManager::GetTexture("particle");
+	auto partShader = ResourceManager::getShader("particle");
+	auto partTex = ResourceManager::getTexture("particle");
 	m_Particles = std::make_unique<ParticleGenerator>(partShader, partTex, 500);
 
-	auto effectshader = ResourceManager::GetShader("postprocessing");
+	auto effectshader = ResourceManager::getShader("postprocessing");
 	m_Effects = std::make_unique<PostProcessor>(effectshader, m_Width, m_Height);
 
 	// Load levels
@@ -70,17 +70,17 @@ void Game::Init()
 
 	// Create Player
 	auto playerPos = vec2(m_Width / 2.0f - c_PlayerSize.x / 2.0f, m_Height - c_PlayerSize.y);
-	auto playerTex = ResourceManager::GetTexture("paddle");
+	auto playerTex = ResourceManager::getTexture("paddle");
 	m_Player = std::make_unique<Player>(playerPos, c_PlayerSize, playerTex);
 
 	// Create Ball
 	auto ballPos = playerPos + vec2(c_PlayerSize.x / 2.0f - c_BallRadius, -c_BallRadius * 2.0f);
-	auto ballTex = ResourceManager::GetTexture("face");
+	auto ballTex = ResourceManager::getTexture("face");
 	m_Ball = std::make_unique<Ball>(ballPos, c_BallRadius, c_InitialBallVelocity, ballTex);	
 
 	// Create Text Renderer
 	m_TextRenderer = std::make_unique<TextRenderer>(m_Width, m_Height);
-	m_TextRenderer->Load("fonts/ocraext.TTF", 24);
+	m_TextRenderer->load("fonts/ocraext.TTF", 24);
 }
 
 void Game::ProcessInput(float delta)
@@ -90,18 +90,18 @@ void Game::ProcessInput(float delta)
 		
 		if (m_Keys[GLFW_KEY_A] && m_Player->GetPosition().x >= 0.0f) {
 			m_Player->GetPosition().x -= velocity;
-			if (m_Ball->IsStuck())
+			if (m_Ball->isStuck())
 				m_Ball->GetPosition().x -= velocity;
 		}
 			
 		if (m_Keys[GLFW_KEY_D] && m_Player->GetPosition().x <= m_Width - m_Player->GetSize().x) {
 			m_Player->GetPosition().x += velocity;
-			if (m_Ball->IsStuck())
+			if (m_Ball->isStuck())
 				m_Ball->GetPosition().x += velocity;
 		}
 
 		if (m_Keys[GLFW_KEY_SPACE])
-			m_Ball->SetStuck(false);
+			m_Ball->setStuck(false);
 	}
 	if (m_State == GAME_MENU)
 	{
@@ -129,7 +129,7 @@ void Game::ProcessInput(float delta)
 		if (m_Keys[GLFW_KEY_ENTER])
 		{
 			m_KeysProcessed[GLFW_KEY_ENTER] = true;
-			m_Effects->SetChaos(false);
+			m_Effects->setChaos(false);
 			m_State = GAME_MENU;
 		}
 	}
@@ -141,7 +141,7 @@ void Game::Update(float delta)
 	{
 		ResetLevel();
 		ResetPlayer();
-		m_Effects->SetChaos(true);
+		m_Effects->setChaos(true);
 		m_State = GAME_WIN;
 	}
 
@@ -152,7 +152,7 @@ void Game::Update(float delta)
 	DoCollisions();
 
 	// Update particles
-	m_Particles->Update(delta, *m_Ball, 2, vec2(m_Ball->GetRadius() / 2.0f));
+	m_Particles->update(delta, *m_Ball, 2, vec2(m_Ball->getRadius() / 2.0f));
 
 	// update PowerUps
 	UpdatePowerUps(delta);
@@ -162,7 +162,7 @@ void Game::Update(float delta)
 	{
 		m_ShakeTime -= delta;
 		if (m_ShakeTime <= 0.0f)
-			m_Effects->SetShake(false);
+			m_Effects->setShake(false);
 	}
 
 	// check loss condition
@@ -183,18 +183,18 @@ void Game::Render()
 {
 	if (m_State == GAME_WIN)
 	{
-		m_TextRenderer->RenderText(
+		m_TextRenderer->renderText(
 			"You WON!!!", 320.0, m_Height / 2 - 20.0, 1.0, vec3(0.0, 1.0, 0.0)
 		);
-		m_TextRenderer->RenderText(
+		m_TextRenderer->renderText(
 			"Press ENTER to retry or ESC to quit", 130.0, m_Height / 2, 1.0, vec3(1.0, 1.0, 0.0)
 		);
 	}
 	if (m_State == GAME_ACTIVE || m_State == GAME_MENU) {
-		m_Effects->BeginRender();
+		m_Effects->beginRender();
 
-		auto texture = ResourceManager::GetTexture("background");
-		m_Renderer->DrawSprite(texture, vec2(0.0f, 0.0f), vec2(m_Width, m_Height), 0.0f);
+		auto texture = ResourceManager::getTexture("background");
+		m_Renderer->drawSprite(texture, vec2(0.0f, 0.0f), vec2(m_Width, m_Height), 0.0f);
 
 		m_Levels[m_CurrentLevel].Draw(*m_Renderer);
 		m_Player->draw(*m_Renderer);
@@ -202,21 +202,21 @@ void Game::Render()
 		for (auto& powerUp : m_PowerUps)
 			if (!powerUp->IsDestroyed())
 				powerUp->draw(*m_Renderer);
-		m_Particles->Draw();
+		m_Particles->draw();
 		m_Ball->draw(*m_Renderer);
 
-		m_Effects->EndRender();
+		m_Effects->endRender();
 
-		m_Effects->Render(glfwGetTime());
+		m_Effects->render(glfwGetTime());
 
 		std::stringstream ss;
 		ss << m_Lives;
-		m_TextRenderer->RenderText("Lives:" + ss.str(), 5.0f, 5.0f, 1.0f);
+		m_TextRenderer->renderText("Lives:" + ss.str(), 5.0f, 5.0f, 1.0f);
 	}
 	if (m_State == GAME_MENU)
 	{
-		m_TextRenderer->RenderText("Press ENTER to start", 250.0f, m_Height / 2, 1.0f);
-		m_TextRenderer->RenderText("Press W or S to select level", 245.0f, m_Height / 2 + 20.0f, 0.75f);
+		m_TextRenderer->renderText("Press ENTER to start", 250.0f, m_Height / 2, 1.0f);
+		m_TextRenderer->renderText("Press W or S to select level", 245.0f, m_Height / 2 + 20.0f, 0.75f);
 	}
 }
 
@@ -237,13 +237,13 @@ void Game::ResetPlayer()
 {
 	// reset player/ball stats
 	m_Player->reset(vec2(m_Width / 2.0f - c_PlayerSize.x / 2.0f, m_Height - c_PlayerSize.y), c_PlayerSize, vec2());
-	m_Ball->Reset(m_Player->GetPosition() + vec2(c_PlayerSize.x / 2.0f - c_BallRadius, -(c_BallRadius * 2.0f)), m_Ball->GetSize(), c_InitialBallVelocity);
+	m_Ball->reset(m_Player->GetPosition() + vec2(c_PlayerSize.x / 2.0f - c_BallRadius, -(c_BallRadius * 2.0f)), m_Ball->GetSize(), c_InitialBallVelocity);
 
 	// also disable all active powerups
-	m_Effects->SetChaos(false);
-	m_Effects->SetConfuse(false);
-	m_Ball->SetPassThrough(false);
-	m_Ball->SetSticky(false);
+	m_Effects->setChaos(false);
+	m_Effects->setConfuse(false);
+	m_Ball->setPassThrough(false);
+	m_Ball->setSticky(false);
 	m_Player->SetColor(vec3(1.0f));
 	m_Ball->SetColor(vec3(1.0f));
 }
@@ -266,7 +266,7 @@ void Game::UpdatePowerUps(float delta)
 				{
 					if (!IsOtherPowerUpActive(m_PowerUps, "sticky"))
 					{	// only reset if no other PowerUp of type sticky is active
-						m_Ball->SetSticky(false);
+						m_Ball->setSticky(false);
 						m_Player->SetColor(vec3(1.0f));
 					}
 				}
@@ -274,7 +274,7 @@ void Game::UpdatePowerUps(float delta)
 				{
 					if (!IsOtherPowerUpActive(m_PowerUps, "pass-through"))
 					{	// only reset if no other PowerUp of type pass-through is active
-						m_Ball->SetPassThrough(false);
+						m_Ball->setPassThrough(false);
 						m_Ball->SetColor(vec3(1.0f));
 					}
 				}
@@ -282,14 +282,14 @@ void Game::UpdatePowerUps(float delta)
 				{
 					if (!IsOtherPowerUpActive(m_PowerUps, "confuse"))
 					{	// only reset if no other PowerUp of type confuse is active
-						m_Effects->SetConfuse(false);
+						m_Effects->setConfuse(false);
 					}
 				}
 				else if (powerUp->GetType() == "chaos")
 				{
 					if (!IsOtherPowerUpActive(m_PowerUps, "chaos"))
 					{	// only reset if no other PowerUp of type chaos is active
-						m_Effects->SetChaos(false);
+						m_Effects->setChaos(false);
 					}
 				}
 			}
@@ -314,33 +314,33 @@ bool Game::ShouldSpawn(unsigned int chance)
 void Game::SpawnPowerUps(GameObject& block)
 {
 	if (ShouldSpawn(75)) // 1 in 75 chance
-		m_PowerUps.emplace_back(std::make_shared<PowerUp>("speed", vec3(0.5f, 0.5f, 1.0f), 0.0f, block.GetPosition(), ResourceManager::GetTexture("powerup_speed")));
+		m_PowerUps.emplace_back(std::make_shared<PowerUp>("speed", vec3(0.5f, 0.5f, 1.0f), 0.0f, block.GetPosition(), ResourceManager::getTexture("powerup_speed")));
 	if (ShouldSpawn(75))
-		m_PowerUps.emplace_back(std::make_shared<PowerUp>("sticky", vec3(1.0f, 0.5f, 1.0f), 20.0f, block.GetPosition(), ResourceManager::GetTexture("powerup_sticky")));
+		m_PowerUps.emplace_back(std::make_shared<PowerUp>("sticky", vec3(1.0f, 0.5f, 1.0f), 20.0f, block.GetPosition(), ResourceManager::getTexture("powerup_sticky")));
 	if (ShouldSpawn(75))
-		m_PowerUps.emplace_back(std::make_shared<PowerUp>("pass-through", vec3(0.5f, 1.0f, 0.5f), 10.0f, block.GetPosition(), ResourceManager::GetTexture("powerup_passthrough")));
+		m_PowerUps.emplace_back(std::make_shared<PowerUp>("pass-through", vec3(0.5f, 1.0f, 0.5f), 10.0f, block.GetPosition(), ResourceManager::getTexture("powerup_passthrough")));
 	if (ShouldSpawn(75))
-		m_PowerUps.emplace_back(std::make_shared<PowerUp>("pad-size-increase", vec3(1.0f, 0.6f, 0.4), 0.0f, block.GetPosition(), ResourceManager::GetTexture("powerup_increase")));
+		m_PowerUps.emplace_back(std::make_shared<PowerUp>("pad-size-increase", vec3(1.0f, 0.6f, 0.4), 0.0f, block.GetPosition(), ResourceManager::getTexture("powerup_increase")));
 	if (ShouldSpawn(15)) // Negative powerups should spawn more often
-		m_PowerUps.emplace_back(std::make_shared<PowerUp>("confuse", vec3(1.0f, 0.3f, 0.3f), 15.0f, block.GetPosition(), ResourceManager::GetTexture("powerup_confuse")));
+		m_PowerUps.emplace_back(std::make_shared<PowerUp>("confuse", vec3(1.0f, 0.3f, 0.3f), 15.0f, block.GetPosition(), ResourceManager::getTexture("powerup_confuse")));
 	if (ShouldSpawn(15))
-		m_PowerUps.emplace_back(std::make_shared<PowerUp>("chaos", vec3(0.9f, 0.25f, 0.25f), 15.0f, block.GetPosition(), ResourceManager::GetTexture("powerup_chaos")));
+		m_PowerUps.emplace_back(std::make_shared<PowerUp>("chaos", vec3(0.9f, 0.25f, 0.25f), 15.0f, block.GetPosition(), ResourceManager::getTexture("powerup_chaos")));
 }
 
 void Game::ActivatePowerUp(PowerUp& powerUp)
 {
 	if (powerUp.GetType() == "speed")
 	{
-		m_Ball->Accelerate(1.2f);
+		m_Ball->accelerate(1.2f);
 	}
 	else if (powerUp.GetType() == "sticky")
 	{
-		m_Ball->SetSticky(true);
+		m_Ball->setSticky(true);
 		m_Player->SetColor(vec3(1.0f, 0.5f, 1.0f));
 	}
 	else if (powerUp.GetType() == "pass-through")
 	{
-		m_Ball->SetPassThrough(true);
+		m_Ball->setPassThrough(true);
 		m_Ball->SetColor(vec3(1.0f, 0.5f, 0.5f));
 	}
 	else if (powerUp.GetType() == "pad-size-increase")
@@ -349,13 +349,13 @@ void Game::ActivatePowerUp(PowerUp& powerUp)
 	}
 	else if (powerUp.GetType() == "confuse")
 	{
-		if (!m_Effects->IsChaos())
-			m_Effects->SetConfuse(true); // only activate if chaos wasn't already active
+		if (!m_Effects->isChaos())
+			m_Effects->setConfuse(true); // only activate if chaos wasn't already active
 	}
 	else if (powerUp.GetType() == "chaos")
 	{
-		if (!m_Effects->IsConfuse())
-			m_Effects->SetChaos(true);
+		if (!m_Effects->isConfuse())
+			m_Effects->setChaos(true);
 	}
 }
 
@@ -388,26 +388,26 @@ void Game::DoCollisions()
 				else {
 					// If block is solid, enable shake effect
 					m_ShakeTime = 0.05f;
-					m_Effects->SetShake(true);
+					m_Effects->setShake(true);
 					m_SoundEngine->play2D("audio/solid.wav", false);
 				}
 
 				// Collision resolution
 				if (collisionSide == LEFT || collisionSide == RIGHT) {
-					m_Ball->BounceToWall(Axis::H);
+					m_Ball->bounceToWall(Axis::H);
 					
 					// Relocate
-					float penetration = m_Ball->GetRadius() - std::abs(diffVector.x);
+					float penetration = m_Ball->getRadius() - std::abs(diffVector.x);
 					if (collisionSide == LEFT)
 						m_Ball->GetPosition().x += penetration;
 					else
 						m_Ball->GetPosition().x -= penetration;
 				}
 				else {
-					m_Ball->BounceToWall(Axis::V);
+					m_Ball->bounceToWall(Axis::V);
 
 					// Relocate
-					float penetration = m_Ball->GetRadius() - std::abs(diffVector.y);
+					float penetration = m_Ball->getRadius() - std::abs(diffVector.y);
 					if (collisionSide == UP)
 						m_Ball->GetPosition().y -= penetration;
 					else
@@ -438,14 +438,14 @@ void Game::DoCollisions()
 
 	// Check for collisions between ball and player
 	auto [collisionDetected, collisionSide, diffVector] = checkCollision(*m_Ball, *m_Player);
-	if (!m_Ball->IsStuck() && collisionDetected) {
+	if (!m_Ball->isStuck() && collisionDetected) {
 		float centerBoard = m_Player->GetPosition().x + m_Player->GetSize().x / 2.0f;
-		float distance = (m_Ball->GetPosition().x + m_Ball->GetRadius()) - centerBoard;
+		float distance = (m_Ball->GetPosition().x + m_Ball->getRadius()) - centerBoard;
 		float percentage = distance / (m_Player->GetSize().x / 2.0f);
 
-		m_Ball->BounceToPlayer(percentage);
+		m_Ball->bounceToPlayer(percentage);
 		
-		m_Ball->SetStuck(m_Ball->IsSticky());
+		m_Ball->setStuck(m_Ball->isSticky());
 
 		m_SoundEngine->play2D("audio/bleep.wav", false);
 	}
@@ -465,7 +465,7 @@ bool Game::checkCollision(GameObject& one, GameObject& two)
 
 Collision Game::checkCollision(Ball& one, GameObject& two) {
 	// get center point circle first 
-	vec2 center(one.GetPosition() + one.GetRadius());
+	vec2 center(one.GetPosition() + one.getRadius());
 	// calculate AABB info (center, half-extents)
 	vec2 aabb_half_extents(two.GetSize().x / 2.0f, two.GetSize().y / 2.0f);
 	vec2 aabb_center(
@@ -479,7 +479,7 @@ Collision Game::checkCollision(Ball& one, GameObject& two) {
 	vec2 closest = aabb_center + clamped;
 	// retrieve vector between center circle and closest point AABB and check if length <= radius
 	difference = closest - center;
-	if (length(difference) < one.GetRadius())
+	if (length(difference) < one.getRadius())
 		return std::make_tuple(true, vectorDirection(difference), difference);
 	else
 		return std::make_tuple(false, UP, vec2(0.0f, 0.0f));

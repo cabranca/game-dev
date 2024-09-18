@@ -33,7 +33,7 @@ int main() {
 	// Set the window context as current context for the thread
 	glfwMakeContextCurrent(window);
 
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+	if (!gladLoadGLLoader((GLADLoadproc)glfwGetProcAddress)) {
 		std::cout << "Failed to initialize GLAD" << std::endl;
 		return -1;
 	}
@@ -76,8 +76,8 @@ int main() {
 		glfwSwapBuffers(window);
 	}
 
-	// Delete all resources as loaded using the resource manager
-	ResourceManager::Clear();
+	// Delete all resources as Loaded using the resource manager
+	ResourceManager::clear();
 
 	glfwTerminate();
 

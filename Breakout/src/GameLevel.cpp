@@ -63,7 +63,7 @@ void GameLevel::init(std::vector<std::vector<unsigned int>> tileData, unsigned i
 			if (tileData[y][x] == 1) { // solid
 				vec2 pos(unit_width * x, unit_height * y);
 				vec2 size(unit_width, unit_height);
-				GameObject obj(pos, size, ResourceManager::GetTexture("block_solid"), vec3(0.8f, 0.8f, 0.7f));
+				GameObject obj(pos, size, ResourceManager::getTexture("block_solid"), vec3(0.8f, 0.8f, 0.7f));
 				obj.SetSolid();
 				m_Bricks.push_back(obj);
 			}
@@ -81,7 +81,7 @@ void GameLevel::init(std::vector<std::vector<unsigned int>> tileData, unsigned i
 				vec2 pos(unit_width * x, unit_height * y);
 				vec2 size(unit_width, unit_height);
 				this->m_Bricks.push_back(
-					GameObject(pos, size, ResourceManager::GetTexture("block"), color)
+					GameObject(pos, size, ResourceManager::getTexture("block"), color)
 				);
 			}
 		}
