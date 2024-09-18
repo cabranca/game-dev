@@ -11,18 +11,18 @@ namespace breakout {
 		Ball(glm::vec2 pos, float radius, glm::vec2 initialVelocity, Texture2D sprite);
 
 		glm::vec2 Move(float delta, unsigned int window_width);
-		void Reset(glm::vec2 position, glm::vec2 size, glm::vec2 velocity) override;
-		void BounceToWall(Axis direction);
-		void Accelerate(float factor);
-		void BounceToPlayer(float percentage);
+		void reset(glm::vec2 position, glm::vec2 size, glm::vec2 velocity) override;
+		void bounceToWall(Axis direction);
+		void accelerate(float factor);
+		void bounceToPlayer(float percentage);
 
 		// Getters and Setters
-		float GetRadius() const { return c_Radius; }
-		bool IsStuck() const { return m_Stuck; }
-		void SetStuck(bool newValue) { m_Stuck = newValue; }
-		bool IsSticky() const { return m_Sticky; }
-		void SetSticky(bool newValue) { m_Sticky = newValue; }
-		void SetPassThrough(bool newValue) { m_PassThrough = newValue; }
+		float getRadius() const { return c_Radius; }
+		bool isStuck() const { return m_Stuck; }
+		void setStuck(bool newValue) { m_Stuck = newValue; }
+		bool isSticky() const { return m_Sticky; }
+		void setSticky(bool newValue) { m_Sticky = newValue; }
+		void setPassThrough(bool newValue) { m_PassThrough = newValue; }
 
 	private:
 		bool m_Stuck;

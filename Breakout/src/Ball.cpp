@@ -32,7 +32,7 @@ vec2 Ball::Move(float delta, unsigned int window_width)
 	return m_Position;
 }
 
-void Ball::Reset(vec2 position, vec2 size, vec2 velocity)
+void Ball::reset(vec2 position, vec2 size, vec2 velocity)
 {
 	GameObject::reset(position, size, velocity);
 	m_Stuck = true;
@@ -40,7 +40,7 @@ void Ball::Reset(vec2 position, vec2 size, vec2 velocity)
 	m_PassThrough = false;
 }
 
-void Ball::BounceToWall(Axis axis)
+void Ball::bounceToWall(Axis axis)
 {
 	switch (axis) {
 	case H:
@@ -52,12 +52,12 @@ void Ball::BounceToWall(Axis axis)
 	}
 }
 
-void Ball::Accelerate(float factor)
+void Ball::accelerate(float factor)
 {
 	m_Velocity *= factor;
 }
 
-void Ball::BounceToPlayer(float percentage)
+void Ball::bounceToPlayer(float percentage)
 {
 	vec2 oldVelocity = m_Velocity;
 	m_Velocity.x = c_InitialVelocity.x * percentage * c_Strength;
