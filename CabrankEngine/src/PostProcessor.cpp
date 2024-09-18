@@ -19,14 +19,14 @@ PostProcessor::PostProcessor(Shader shader, unsigned int width, unsigned int hei
         std::cout << "ERROR::POSTPROCESSOR: Failed to initialize MSFBO" << std::endl;
     // also initialize the FBO/texture to blit multisampled color-buffer to; used for shader operations (for postprocessing effects)
     glBindFramebuffer(GL_FRAMEBUFFER, m_Fbo);
-    m_Texture.Generate(width, height, NULL);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, *m_Texture.GetId(), 0); // attach texture to framebuffer as its color attachment
+    m_Texture.generate(width, height, NULL);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, *m_Texture.getId(), 0); // attach texture to framebuffer as its color attachment
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         std::cout << "ERROR::POSTPROCESSOR: Failed to initialize FBO" << std::endl;
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     // initialize render data and uniforms
     initRenderData();
-    m_PostProcessingShader.SetInteger("scene", 0, true);
+    m_PostProcessingShader.setInteger("scene", 0, true);
     float offset = 1.0f / 300.0f;
     float offsets[9][2] = {
         { -offset,  offset  },  // top-left
@@ -39,29 +39,29 @@ PostProcessor::PostProcessor(Shader shader, unsigned int width, unsigned int hei
         {  0.0f,   -offset  },  // bottom-center
         {  offset, -offset  }   // bottom-right    
     };
-    glUniform2fv(glGetUniformLocation(m_PostProcessingShader.GetId(), "offsets"), 9, (float*)offsets);
+    glUniform2fv(glGetUniformLocation(m_PostProcessingShader.getId(), "offsets"), 9, (float*)offsets);
     int edge_kernel[9] = {
         -1, -1, -1,
         -1,  8, -1,
         -1, -1, -1
     };
-    glUniform1iv(glGetUniformLocation(m_PostProcessingShader.GetId(), "edge_kernel"), 9, edge_kernel);
+    glUniform1iv(glGetUniformLocation(m_PostProcessingShader.getId(), "edge_kernel"), 9, edge_kernel);
     float blur_kernel[9] = {
         1.0f / 16.0f, 2.0f / 16.0f, 1.0f / 16.0f,
         2.0f / 16.0f, 4.0f / 16.0f, 2.0f / 16.0f,
         1.0f / 16.0f, 2.0f / 16.0f, 1.0f / 16.0f
     };
-    glUniform1fv(glGetUniformLocation(m_PostProcessingShader.GetId(), "blur_kernel"), 9, blur_kernel);
+    glUniform1fv(glGetUniformLocation(m_PostProcessingShader.getId(), "blur_kernel"), 9, blur_kernel);
 }
 
-void PostProcessor::BeginRender()
+void PostProcessor::beginRender()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, m_Msfbo);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void PostProcessor::EndRender()
+void PostProcessor::endRender()
 {
     // now resolve multisampled color-buffer into intermediate FBO to store to texture
     glBindFramebuffer(GL_READ_FRAMEBUFFER, m_Msfbo);
@@ -70,17 +70,17 @@ void PostProcessor::EndRender()
     glBindFramebuffer(GL_FRAMEBUFFER, 0); // binds both READ and WRITE framebuffer to default framebuffer
 }
 
-void PostProcessor::Render(float time)
+void PostProcessor::render(float time)
 {
     // set uniforms/options
-    m_PostProcessingShader.Use();
-    m_PostProcessingShader.SetFloat("time", time);
-    m_PostProcessingShader.SetInteger("confuse", m_Confuse);
-    m_PostProcessingShader.SetInteger("chaos", m_Chaos);
-    m_PostProcessingShader.SetInteger("shake", m_Shake);
+    m_PostProcessingShader.use();
+    m_PostProcessingShader.setFloat("time", time);
+    m_PostProcessingShader.setInteger("confuse", m_Confuse);
+    m_PostProcessingShader.setInteger("chaos", m_Chaos);
+    m_PostProcessingShader.setInteger("shake", m_Shake);
     // render textured quad
     glActiveTexture(GL_TEXTURE0);
-    m_Texture.Bind();
+    m_Texture.bind();
     glBindVertexArray(m_Vao);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindVertexArray(0);

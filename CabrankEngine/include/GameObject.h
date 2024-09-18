@@ -13,9 +13,9 @@ public:
 	GameObject();
 	GameObject(vec2 pos, vec2 size, Texture2D sprite, vec3 color = vec3(1.0f), vec2 velocity = vec2(0.0f, 0.0f));
 
-	virtual void Draw(SpriteRenderer& renderer);
+	virtual void draw(SpriteRenderer& renderer);
 
-	virtual void Reset(vec2 position, vec2 size, vec2 velocity);
+	virtual void reset(vec2 position, vec2 size, vec2 velocity);
 
 	// Getters and Setters
 	vec2& GetPosition() { return m_Position; }

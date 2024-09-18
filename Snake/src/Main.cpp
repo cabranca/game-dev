@@ -1,12 +1,13 @@
 #include <iostream>
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+//#include <glad/glad.h>
+//#include <GLFW/glfw3.h>
 #include <ResourceManager.h>
 #include <Game.h>
+#include <SDL/SDL.h>
 
 using namespace cabrankengine;
 
-void key_callback(GLFWwindow*, int key, int scancode, int action, int mode);
+//void key_callback(GLFWwindow*, int key, int scancode, int action, int mode);
 
 const uint16_t SCREEN_WIDTH = 800;
 const uint16_t SCREEN_HEIGHT = 800;
@@ -15,7 +16,7 @@ snake::Game snakeGame(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 int main() {
     
-    glfwInit();
+   /* glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -62,12 +63,12 @@ int main() {
     }
 
     ResourceManager::Clear();
-    glfwTerminate();
+    glfwTerminate();*/
 
     return 0;
 }
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
+/*void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-}
+}*/

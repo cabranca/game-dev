@@ -37,7 +37,7 @@ void GameLevel::Draw(SpriteRenderer& renderer)
 	// Could be changed to a system where the destroyed tiles are removed from the array
 	for (auto& tile : m_Bricks)
 		if (!tile.IsDestroyed())
-			tile.Draw(renderer);
+			tile.draw(renderer);
 }
 
 bool GameLevel::IsCompleted()

@@ -197,13 +197,13 @@ void Game::Render()
 		m_Renderer->DrawSprite(texture, vec2(0.0f, 0.0f), vec2(m_Width, m_Height), 0.0f);
 
 		m_Levels[m_CurrentLevel].Draw(*m_Renderer);
-		m_Player->Draw(*m_Renderer);
+		m_Player->draw(*m_Renderer);
 		// draw PowerUps
 		for (auto& powerUp : m_PowerUps)
 			if (!powerUp->IsDestroyed())
-				powerUp->Draw(*m_Renderer);
+				powerUp->draw(*m_Renderer);
 		m_Particles->Draw();
-		m_Ball->Draw(*m_Renderer);
+		m_Ball->draw(*m_Renderer);
 
 		m_Effects->EndRender();
 
@@ -236,7 +236,7 @@ void Game::ResetLevel()
 void Game::ResetPlayer()
 {
 	// reset player/ball stats
-	m_Player->Reset(vec2(m_Width / 2.0f - c_PlayerSize.x / 2.0f, m_Height - c_PlayerSize.y), c_PlayerSize, vec2());
+	m_Player->reset(vec2(m_Width / 2.0f - c_PlayerSize.x / 2.0f, m_Height - c_PlayerSize.y), c_PlayerSize, vec2());
 	m_Ball->Reset(m_Player->GetPosition() + vec2(c_PlayerSize.x / 2.0f - c_BallRadius, -(c_BallRadius * 2.0f)), m_Ball->GetSize(), c_InitialBallVelocity);
 
 	// also disable all active powerups
