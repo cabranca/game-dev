@@ -1,7 +1,4 @@
-name: Compile Spark
-
-on:
-  workflow_dispatch:
+name: Compile Engine
 
 jobs:
   windows:
