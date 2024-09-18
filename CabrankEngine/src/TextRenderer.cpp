@@ -22,9 +22,9 @@ using namespace glm;
 TextRenderer::TextRenderer(unsigned int width, unsigned int height)
 {
     // load and configure shader
-    this->m_TextShader = ResourceManager::LoadShader("shaders/text_2d.vs", "shaders/text_2d.frag", nullptr, "text");
-    this->m_TextShader.SetMatrix4("projection", ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f), true);
-    this->m_TextShader.SetInteger("text", 0);
+    this->m_TextShader = ResourceManager::loadShader("shaders/text_2d.vs", "shaders/text_2d.frag", nullptr, "text");
+    this->m_TextShader.setMatrix4("projection", ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f), true);
+    this->m_TextShader.setInteger("text", 0);
     // configure VAO/VBO for texture quads
     glGenVertexArrays(1, &this->m_Vao);
     glGenBuffers(1, &this->m_Vbo);
@@ -37,7 +37,7 @@ TextRenderer::TextRenderer(unsigned int width, unsigned int height)
     glBindVertexArray(0);
 }
 
-void TextRenderer::Load(std::string font, unsigned int fontSize)
+void TextRenderer::load(std::string font, unsigned int fontSize)
 {
     // first clear the previously loaded Characters
     this->m_Characters.clear();
@@ -98,11 +98,11 @@ void TextRenderer::Load(std::string font, unsigned int fontSize)
     FT_Done_FreeType(ft);
 }
 
-void TextRenderer::RenderText(std::string text, float x, float y, float scale, vec3 color)
+void TextRenderer::renderText(std::string text, float x, float y, float scale, vec3 color)
 {
     // activate corresponding render state	
-    this->m_TextShader.Use();
-    this->m_TextShader.SetVector3f("textColor", color);
+    this->m_TextShader.use();
+    this->m_TextShader.setVector3f("textColor", color);
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(this->m_Vao);
 

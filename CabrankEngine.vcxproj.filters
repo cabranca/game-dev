@@ -68,5 +68,8 @@
     <ClInclude Include="CabrankEngine\include\TextRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CabrankEngine\include\GameObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

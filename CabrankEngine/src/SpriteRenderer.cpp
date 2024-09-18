@@ -13,10 +13,10 @@ SpriteRenderer::~SpriteRenderer()
     glDeleteVertexArrays(1, &m_QuadVAO);
 }
 
-void SpriteRenderer::DrawSprite(Texture2D& texture, vec2 position, vec2 size, float rotate, vec3 color)
+void SpriteRenderer::drawSprite(Texture2D& texture, vec2 position, vec2 size, float rotate, vec3 color)
 {
     // Prepare transformations
-    m_Shader.Use();
+    m_Shader.use();
     auto model = mat4(1.0f);
     model = translate(model, vec3(position, 0.0f));
 
@@ -26,11 +26,11 @@ void SpriteRenderer::DrawSprite(Texture2D& texture, vec2 position, vec2 size, fl
 
     model = scale(model, vec3(size, 1.0f));
 
-    m_Shader.SetMatrix4("model", model);
-    m_Shader.SetVector3f("spriteColor", color);
+    m_Shader.setMatrix4("model", model);
+    m_Shader.setVector3f("spriteColor", color);
 
     glActiveTexture(GL_TEXTURE0);
-    texture.Bind();
+    texture.bind();
 
     glBindVertexArray(m_QuadVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);

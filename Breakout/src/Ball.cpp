@@ -34,7 +34,7 @@ vec2 Ball::Move(float delta, unsigned int window_width)
 
 void Ball::Reset(vec2 position, vec2 size, vec2 velocity)
 {
-	GameObject::Reset(position, size, velocity);
+	GameObject::reset(position, size, velocity);
 	m_Stuck = true;
 	m_Sticky = false;
 	m_PassThrough = false;

@@ -18,7 +18,7 @@ Texture2D::Texture2D()
     glGenTextures(1, &this->m_Id);
 }
 
-void Texture2D::Generate(unsigned int width, unsigned int height, unsigned char* data)
+void Texture2D::generate(unsigned int width, unsigned int height, unsigned char* data)
 {
     this->m_Width = width;
     this->m_Height = height;
@@ -34,7 +34,7 @@ void Texture2D::Generate(unsigned int width, unsigned int height, unsigned char*
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Texture2D::Bind() const
+void Texture2D::bind() const
 {
     glBindTexture(GL_TEXTURE_2D, this->m_Id);
 }
