@@ -9,17 +9,17 @@ namespace cabrankengine {
 		PostProcessor(Shader shader, unsigned int width, unsigned int height);
 
 		// Prepares the postprocessor's framebuffer operations before rendering the game
-		void BeginRender();
+		void beginRender();
 		// Should be called after rendering the game, so it stores all the rendered data into a texture object
-		void EndRender();
+		void endRender();
 		// Renders the PostProcessor texture quad (as a screen-encompassing large sprite)
-		void Render(float time);
+		void render(float time);
 
-		bool IsChaos() const { return m_Chaos; }
-		bool IsConfuse() const { return m_Confuse; }
-		void SetConfuse(bool value) { m_Confuse = value; }
-		void SetChaos(bool value) { m_Chaos = value; }
-		void SetShake(bool value) { m_Shake = value; }
+		bool isChaos() const { return m_Chaos; }
+		bool isConfuse() const { return m_Confuse; }
+		void setConfuse(bool value) { m_Confuse = value; }
+		void setChaos(bool value) { m_Chaos = value; }
+		void setShake(bool value) { m_Shake = value; }
 
 	private:
 		unsigned int m_Msfbo, m_Fbo;// MSFBO = Multisampled FBO. FBO is regular, used for blitting MS color-buffer to texture
