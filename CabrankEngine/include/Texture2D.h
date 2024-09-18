@@ -12,19 +12,20 @@
 
 namespace cabrankengine {
     // Texture2D is able to store and configure a texture in OpenGL.
-// It also hosts utility functions for easy management.
+    // It also hosts utility functions for easy management.
     class Texture2D
     {
     public:
         Texture2D();
         // generates texture from image data
-        void Generate(unsigned int width, unsigned int height, unsigned char* data);
+        void generate(unsigned int width, unsigned int height, unsigned char* data);
         // binds the texture as the current active GL_TEXTURE_2D texture object
-        void Bind() const;
+        void bind() const;
 
-        unsigned int* GetId() { return &m_Id; }
-        void SetInternalFormat(unsigned int value) { m_InternalFormat = value; }
-        void SetImageFormat(unsigned int value) { m_ImageFormat = value; }
+        unsigned int* getId() { return &m_Id; }
+        void setInternalFormat(unsigned int value) { m_InternalFormat = value; }
+        void setImageFormat(unsigned int value) { m_ImageFormat = value; }
+    
     private:
         // holds the ID of the texture object, used for all texture operations to reference to this particular texture
         unsigned int m_Id;
