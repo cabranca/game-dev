@@ -1,5 +1,11 @@
 name: Compile Engine
 
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+    
 jobs:
   windows:
     name: run on windows
