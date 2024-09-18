@@ -164,6 +164,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CabrankEngine.cpp" />
     <ClCompile Include="CabrankEngine\src\GameObject.cpp" />
     <ClCompile Include="CabrankEngine\src\ParticleGenerator.cpp" />
     <ClCompile Include="CabrankEngine\src\PostProcessor.cpp" />
@@ -173,8 +174,10 @@
     <ClCompile Include="CabrankEngine\src\std_image.cpp" />
     <ClCompile Include="CabrankEngine\src\TextRenderer.cpp" />
     <ClCompile Include="CabrankEngine\src\Texture2D.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CabrankEngine.h" />
     <ClInclude Include="CabrankEngine\include\GameObject.h" />
     <ClInclude Include="CabrankEngine\include\ParticleGenerator.h" />
     <ClInclude Include="CabrankEngine\include\PostProcessor.h" />
@@ -184,6 +187,7 @@
     <ClInclude Include="CabrankEngine\include\stb_image.h" />
     <ClInclude Include="CabrankEngine\include\TextRenderer.h" />
     <ClInclude Include="CabrankEngine\include\Texture2D.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
