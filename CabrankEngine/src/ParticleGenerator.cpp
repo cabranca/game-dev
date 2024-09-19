@@ -1,4 +1,5 @@
 #include <ParticleGenerator.h>
+#include <GL/glew.h>
 
 using namespace cabrankengine;
 using namespace glm;

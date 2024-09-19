@@ -7,7 +7,7 @@
 ** option) any later version.
 ******************************************************************/
 #include <Shader.h>
-
+#include <GL/glew.h>
 #include <iostream>
 
 using namespace cabrankengine;

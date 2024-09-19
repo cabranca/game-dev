@@ -11,8 +11,6 @@
 #include <map>
 #include <string>
 
-#include <glad/glad.h>
-
 #include <texture2D.h>
 #include <shader.h>
 

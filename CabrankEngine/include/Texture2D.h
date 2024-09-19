@@ -8,7 +8,6 @@
 ******************************************************************/
 #pragma once
 
-#include <glad/glad.h>
 
 namespace cabrankengine {
     // Texture2D is able to store and configure a texture in OpenGL.

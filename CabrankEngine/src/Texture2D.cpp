@@ -7,7 +7,7 @@
 ** option) any later version.
 ******************************************************************/
 #include <iostream>
-
+#include <GL/glew.h>
 #include <Texture2D.h>
 
 using namespace cabrankengine;

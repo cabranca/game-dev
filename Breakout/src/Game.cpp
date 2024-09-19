@@ -1,9 +1,10 @@
 #include <Game.h>
 #include <ResourceManager.h>
-#include <GLFW/glfw3.h>
+#include <GL/glew.h>
 #include <ParticleGenerator.h>
 #include <sstream>
 #include <iostream>
+#include <SDL/SDL_timer.h>
 
 using namespace breakout;
 
@@ -83,57 +84,57 @@ void Game::Init()
 	m_TextRenderer->load("fonts/ocraext.TTF", 24);
 }
 
-void Game::ProcessInput(float delta)
-{
-	if (m_State == GAME_ACTIVE) {
-		float velocity = c_PlayerVelocity * delta;
-		
-		if (m_Keys[GLFW_KEY_A] && m_Player->GetPosition().x >= 0.0f) {
-			m_Player->GetPosition().x -= velocity;
-			if (m_Ball->isStuck())
-				m_Ball->GetPosition().x -= velocity;
-		}
-			
-		if (m_Keys[GLFW_KEY_D] && m_Player->GetPosition().x <= m_Width - m_Player->GetSize().x) {
-			m_Player->GetPosition().x += velocity;
-			if (m_Ball->isStuck())
-				m_Ball->GetPosition().x += velocity;
-		}
-
-		if (m_Keys[GLFW_KEY_SPACE])
-			m_Ball->setStuck(false);
-	}
-	if (m_State == GAME_MENU)
-	{
-		if (m_Keys[GLFW_KEY_ENTER] && !m_KeysProcessed[GLFW_KEY_ENTER])
-		{
-			m_State = GAME_ACTIVE;
-			m_KeysProcessed[GLFW_KEY_ENTER] = true;
-		}
-		if (m_Keys[GLFW_KEY_W] && !m_KeysProcessed[GLFW_KEY_W])
-		{
-			m_CurrentLevel = (m_CurrentLevel + 1) % 4;
-			m_KeysProcessed[GLFW_KEY_W] = true;
-		}
-		if (m_Keys[GLFW_KEY_S] && !m_KeysProcessed[GLFW_KEY_S])
-		{
-			if (m_CurrentLevel > 0)
-				--m_CurrentLevel;
-			else
-				m_CurrentLevel = 3;
-			m_KeysProcessed[GLFW_KEY_S] = true;
-		}
-	}
-	if (m_State == GAME_WIN)
-	{
-		if (m_Keys[GLFW_KEY_ENTER])
-		{
-			m_KeysProcessed[GLFW_KEY_ENTER] = true;
-			m_Effects->setChaos(false);
-			m_State = GAME_MENU;
-		}
-	}
-}
+//void Game::ProcessInput(float delta)
+//{
+//	if (m_State == GAME_ACTIVE) {
+//		float velocity = c_PlayerVelocity * delta;
+//		
+//		if (m_Keys[GLFW_KEY_A] && m_Player->GetPosition().x >= 0.0f) {
+//			m_Player->GetPosition().x -= velocity;
+//			if (m_Ball->isStuck())
+//				m_Ball->GetPosition().x -= velocity;
+//		}
+//			
+//		if (m_Keys[GLFW_KEY_D] && m_Player->GetPosition().x <= m_Width - m_Player->GetSize().x) {
+//			m_Player->GetPosition().x += velocity;
+//			if (m_Ball->isStuck())
+//				m_Ball->GetPosition().x += velocity;
+//		}
+//
+//		if (m_Keys[GLFW_KEY_SPACE])
+//			m_Ball->setStuck(false);
+//	}
+//	if (m_State == GAME_MENU)
+//	{
+//		if (m_Keys[GLFW_KEY_ENTER] && !m_KeysProcessed[GLFW_KEY_ENTER])
+//		{
+//			m_State = GAME_ACTIVE;
+//			m_KeysProcessed[GLFW_KEY_ENTER] = true;
+//		}
+//		if (m_Keys[GLFW_KEY_W] && !m_KeysProcessed[GLFW_KEY_W])
+//		{
+//			m_CurrentLevel = (m_CurrentLevel + 1) % 4;
+//			m_KeysProcessed[GLFW_KEY_W] = true;
+//		}
+//		if (m_Keys[GLFW_KEY_S] && !m_KeysProcessed[GLFW_KEY_S])
+//		{
+//			if (m_CurrentLevel > 0)
+//				--m_CurrentLevel;
+//			else
+//				m_CurrentLevel = 3;
+//			m_KeysProcessed[GLFW_KEY_S] = true;
+//		}
+//	}
+//	if (m_State == GAME_WIN)
+//	{
+//		if (m_Keys[GLFW_KEY_ENTER])
+//		{
+//			m_KeysProcessed[GLFW_KEY_ENTER] = true;
+//			m_Effects->setChaos(false);
+//			m_State = GAME_MENU;
+//		}
+//	}
+//}
 
 void Game::Update(float delta)
 {
@@ -207,7 +208,7 @@ void Game::Render()
 
 		m_Effects->endRender();
 
-		m_Effects->render(glfwGetTime());
+		m_Effects->render(SDL_GetTicks());
 
 		std::stringstream ss;
 		ss << m_Lives;

@@ -1,5 +1,6 @@
 #include <PostProcessor.h>
 #include <iostream>
+#include <GL/glew.h>
 
 using namespace cabrankengine;
 

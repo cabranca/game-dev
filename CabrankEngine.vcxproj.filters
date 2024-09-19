@@ -42,10 +42,10 @@
     <ClCompile Include="CabrankEngine\src\TextRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CabrankEngine.cpp">
+    <ClCompile Include="CabrankEngine\src\CabrankEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Window.cpp">
+    <ClCompile Include="CabrankEngine\src\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -77,10 +77,10 @@
     <ClInclude Include="CabrankEngine\include\GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CabrankEngine.h">
+    <ClInclude Include="CabrankEngine\include\CabrankEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Window.h">
+    <ClInclude Include="CabrankEngine\include\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

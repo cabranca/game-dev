@@ -6,6 +6,6 @@ namespace cabrankengine
 	{
 	public:
 		
-		int init();
+		static int init();
 	};
 }

@@ -7,7 +7,7 @@
 ** option) any later version.
 ******************************************************************/
 #include <iostream>
-
+#include <GL/glew.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <ft2build.h>
 

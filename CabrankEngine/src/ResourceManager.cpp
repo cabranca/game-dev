@@ -11,7 +11,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-
+#include <GL/glew.h>
 #include "stb_image.h"
 
 using namespace cabrankengine;
