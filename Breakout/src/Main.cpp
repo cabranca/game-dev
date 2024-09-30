@@ -23,16 +23,14 @@ int main(int argc, char** argv) {
 
 	// deltaTime variables
 	const float DESIRED_FRAME_TIME = 1.0f / 60.0f;
-	float previousTicks = 0;
-	float frameTime = 0.0;
+	float previousTicks = 0.0f;
+	float frameTime = 0.0f;
 
 	// Window loop
 	while (game.State != breakout::GameState::GAME_QUIT)
 	{
 		// Calculate delta time
-		auto ticks = SDL_GetTicks();
-		auto casted = static_cast<float>(ticks);
-		float newTicks = casted / 1000.0f;
+		float newTicks = static_cast<float>(SDL_GetTicks()) / 1000.0f;
 		frameTime = newTicks - previousTicks;
 		previousTicks = newTicks;
 		
