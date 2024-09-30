@@ -1,17 +1,10 @@
 #include "Window.h"
 #include <iostream>
-#include <GL/glew.h>
+
 
 using namespace cabrankengine;
 
-Window::Window() : m_SDLWindow(nullptr), m_Width(0), m_Height(0) {}
-
-Window::~Window()
-{
-	delete m_SDLWindow;
-}
-
-int cabrankengine::Window::create(std::string name, int width, int height, unsigned int currentFlags)
+int Window::create(std::string name, int width, int height, unsigned int currentFlags)
 {
 	// Check the flags for the window setting
 	Uint32 flags = SDL_WINDOW_OPENGL;
@@ -26,7 +19,7 @@ int cabrankengine::Window::create(std::string name, int width, int height, unsig
 		flags |= SDL_WINDOW_BORDERLESS;
 
 	// Create the actual window
-	m_SDLWindow = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_Width, m_Height, flags);
+	m_SDLWindow = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
 	if (m_SDLWindow == nullptr)
 		std::cout << "SDL Window could not be created!" << std::endl;
 
@@ -45,9 +38,6 @@ int cabrankengine::Window::create(std::string name, int width, int height, unsig
 
 	// Set the background color for the clear call
 	glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
-
-	// Set VSYNC
-	SDL_GL_SetSwapInterval(0);
 
 	// Enable alpha blend
 	glEnable(GL_BLEND);

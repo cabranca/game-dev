@@ -88,7 +88,7 @@ void TextRenderer::load(std::string font, unsigned int fontSize)
             texture,
             ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
             ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-            face->glyph->advance.x
+            static_cast<unsigned int>(face->glyph->advance.x)
         };
         m_Characters.insert(std::pair<char, Character>(c, character));
     }

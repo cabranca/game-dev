@@ -5,12 +5,14 @@
 #include <sstream>
 #include <iostream>
 #include <SDL/SDL_timer.h>
+#include <SDL/SDL_events.h>
 
 using namespace breakout;
 
 Game::Game(unsigned int width, unsigned int height) 
-	: m_Width(width), m_Height(height), m_State(GAME_MENU), m_Keys(), m_KeysProcessed(), m_CurrentLevel(0), m_Lives(3)
+	: m_Width(width), m_Height(height), State(GAME_MENU), m_Keys(), m_KeysProcessed(), m_CurrentLevel(0), m_Lives(3)
 {
+	m_InputManager = std::make_unique<InputManager>();
 }
 
 Game::~Game() {}
@@ -84,66 +86,79 @@ void Game::Init()
 	m_TextRenderer->load("fonts/ocraext.TTF", 24);
 }
 
-//void Game::ProcessInput(float delta)
-//{
-//	if (m_State == GAME_ACTIVE) {
-//		float velocity = c_PlayerVelocity * delta;
-//		
-//		if (m_Keys[GLFW_KEY_A] && m_Player->GetPosition().x >= 0.0f) {
-//			m_Player->GetPosition().x -= velocity;
-//			if (m_Ball->isStuck())
-//				m_Ball->GetPosition().x -= velocity;
-//		}
-//			
-//		if (m_Keys[GLFW_KEY_D] && m_Player->GetPosition().x <= m_Width - m_Player->GetSize().x) {
-//			m_Player->GetPosition().x += velocity;
-//			if (m_Ball->isStuck())
-//				m_Ball->GetPosition().x += velocity;
-//		}
-//
-//		if (m_Keys[GLFW_KEY_SPACE])
-//			m_Ball->setStuck(false);
-//	}
-//	if (m_State == GAME_MENU)
-//	{
-//		if (m_Keys[GLFW_KEY_ENTER] && !m_KeysProcessed[GLFW_KEY_ENTER])
-//		{
-//			m_State = GAME_ACTIVE;
-//			m_KeysProcessed[GLFW_KEY_ENTER] = true;
-//		}
-//		if (m_Keys[GLFW_KEY_W] && !m_KeysProcessed[GLFW_KEY_W])
-//		{
-//			m_CurrentLevel = (m_CurrentLevel + 1) % 4;
-//			m_KeysProcessed[GLFW_KEY_W] = true;
-//		}
-//		if (m_Keys[GLFW_KEY_S] && !m_KeysProcessed[GLFW_KEY_S])
-//		{
-//			if (m_CurrentLevel > 0)
-//				--m_CurrentLevel;
-//			else
-//				m_CurrentLevel = 3;
-//			m_KeysProcessed[GLFW_KEY_S] = true;
-//		}
-//	}
-//	if (m_State == GAME_WIN)
-//	{
-//		if (m_Keys[GLFW_KEY_ENTER])
-//		{
-//			m_KeysProcessed[GLFW_KEY_ENTER] = true;
-//			m_Effects->setChaos(false);
-//			m_State = GAME_MENU;
-//		}
-//	}
-//}
+void Game::ProcessInput(float delta)
+{
+	m_InputManager->update();
+
+	SDL_Event evnt;
+	//Will keep looping until there are no more events to process
+	while (SDL_PollEvent(&evnt))
+	{
+		switch (evnt.type)
+		{
+		case SDL_QUIT:
+			State = GAME_QUIT;
+			break;
+		case SDL_KEYDOWN:
+			m_InputManager->pressKey(evnt.key.keysym.sym);
+			break;
+		case SDL_KEYUP:
+			m_InputManager->releaseKey(evnt.key.keysym.sym);
+			break;
+		}
+	}
+
+	if (State == GAME_ACTIVE) {
+		float velocity = c_PlayerVelocity * delta;
+		
+		if (m_InputManager->isKeyDown(SDLK_a) && m_Player->GetPosition().x >= 0.0f) {
+			m_Player->GetPosition().x -= velocity;
+			if (m_Ball->isStuck())
+				m_Ball->GetPosition().x -= velocity;
+		}
+			
+		if (m_InputManager->isKeyDown(SDLK_d) && m_Player->GetPosition().x <= m_Width - m_Player->GetSize().x) {
+			m_Player->GetPosition().x += velocity;
+			if (m_Ball->isStuck())
+				m_Ball->GetPosition().x += velocity;
+		}
+
+		if (m_InputManager->isKeyDown(SDLK_SPACE))
+			m_Ball->setStuck(false);
+		if (m_InputManager->isKeyJustPressed(SDLK_ESCAPE))
+			State = GAME_QUIT;
+	}
+	if (State == GAME_MENU)
+	{
+		if (m_InputManager->isKeyDown(SDLK_RETURN))
+			State = GAME_ACTIVE;
+		if (m_InputManager->isKeyJustPressed(SDLK_w))
+			m_CurrentLevel = (m_CurrentLevel + 1) % 4;
+		if (m_InputManager->isKeyJustPressed(SDLK_s)) {
+			if (m_CurrentLevel > 0)
+				--m_CurrentLevel;
+			else
+				m_CurrentLevel = 3;
+		}
+	}
+	if (State == GAME_WIN)
+	{
+		if (m_InputManager->isKeyJustPressed(SDLK_RETURN))
+		{
+			m_Effects->setChaos(false);
+			State = GAME_MENU;
+		}
+	}
+}
 
 void Game::Update(float delta)
 {
-	if (m_State == GAME_ACTIVE && m_Levels[m_CurrentLevel].IsCompleted())
+	if (State == GAME_ACTIVE && m_Levels[m_CurrentLevel].IsCompleted())
 	{
 		ResetLevel();
 		ResetPlayer();
 		m_Effects->setChaos(true);
-		m_State = GAME_WIN;
+		State = GAME_WIN;
 	}
 
 	// Update objects
@@ -174,7 +189,7 @@ void Game::Update(float delta)
 		if (m_Lives == 0)
 		{
 			ResetLevel();
-			m_State = GAME_MENU;
+			State = GAME_MENU;
 		}
 		ResetPlayer();
 	}
@@ -182,16 +197,16 @@ void Game::Update(float delta)
 
 void Game::Render()
 {
-	if (m_State == GAME_WIN)
+	if (State == GAME_WIN)
 	{
 		m_TextRenderer->renderText(
-			"You WON!!!", 320.0, m_Height / 2 - 20.0, 1.0, vec3(0.0, 1.0, 0.0)
+			"You WON!!!", 320.0f, static_cast<float>(m_Height / 2) - 20.0f, 1.0f, vec3(0.0f, 1.0f, 0.0f)
 		);
 		m_TextRenderer->renderText(
-			"Press ENTER to retry or ESC to quit", 130.0, m_Height / 2, 1.0, vec3(1.0, 1.0, 0.0)
+			"Press ENTER to retry or ESC to quit", 130.0f, static_cast<float>(m_Height / 2), 1.0f, vec3(1.0f, 1.0f, 0.0f)
 		);
 	}
-	if (m_State == GAME_ACTIVE || m_State == GAME_MENU) {
+	if (State == GAME_ACTIVE || State == GAME_MENU) {
 		m_Effects->beginRender();
 
 		auto texture = ResourceManager::getTexture("background");
@@ -208,16 +223,16 @@ void Game::Render()
 
 		m_Effects->endRender();
 
-		m_Effects->render(SDL_GetTicks());
+		m_Effects->render(static_cast<float>(SDL_GetTicks()) / 1000.0f);
 
 		std::stringstream ss;
 		ss << m_Lives;
 		m_TextRenderer->renderText("Lives:" + ss.str(), 5.0f, 5.0f, 1.0f);
 	}
-	if (m_State == GAME_MENU)
+	if (State == GAME_MENU)
 	{
-		m_TextRenderer->renderText("Press ENTER to start", 250.0f, m_Height / 2, 1.0f);
-		m_TextRenderer->renderText("Press W or S to select level", 245.0f, m_Height / 2 + 20.0f, 0.75f);
+		m_TextRenderer->renderText("Press ENTER to start", 250.0f, static_cast<float>(m_Height / 2), 1.0f);
+		m_TextRenderer->renderText("Press W or S to select level", 245.0f, static_cast<float>(m_Height / 2) + 20.0f, 0.75f);
 	}
 }
 
