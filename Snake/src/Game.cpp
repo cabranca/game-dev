@@ -14,16 +14,16 @@ void Game::run()
 
 	loadShaders();
 	                                                                                                                           
-	ResourceManager::loadTexture("textures/block.png", true, c_SnakeLabel);
+	ResourceManager::loadTexture("textures/awesomeface.png", true, c_SnakeLabel);
 	ResourceManager::loadTexture("textures/background.jpg", false, c_BackgroundLabel);
 	
 	auto shader = ResourceManager::getShader(c_SpriteLabel);
 	m_Renderer = std::make_unique<SpriteRenderer>(shader);
 
 	// Create Player
-	auto snakePos = vec2(c_WindowWidth / 2.0f - c_SnakeSpriteSize.x / 2.0f, c_WindowHeight - c_SnakeSpriteSize.y);
+	auto snakePos = vec2(c_WindowWidth / 2 - c_SnakeSpriteSize.x / 2, c_WindowHeight / 2 - c_SnakeSpriteSize.y / 2);
 	auto snakeTex = ResourceManager::getTexture(c_SnakeLabel);
-	m_Snake = std::make_unique<Snake>(snakePos, c_SnakeSpriteSize, snakeTex, vec3(1.0f, 0.0f, 0.0f));
+	m_Snake = std::make_unique<Snake>(snakePos, c_SnakeSpriteSize, snakeTex, vec3(1.0f, 1.0f, 1.0f));
 
 	// deltaTime variables
 	const float DESIRED_FRAME_TIME = 1.0f / 60.0f;

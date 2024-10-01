@@ -26,9 +26,9 @@ namespace snake {
 		void update(float delta);
 		void render();
 
-		const uint16_t c_WindowWidth = 800;
-		const uint16_t c_WindowHeight = 600;
-		const vec2 c_SnakeSpriteSize = vec2(100.0f, 100.0f);
+		const uint16_t c_WindowWidth = 1280;
+		const uint16_t c_WindowHeight = 720;
+		const vec2 c_SnakeSpriteSize = vec2(40.0f, 40.0f);
 		const std::string c_SpriteLabel = "sprite";
 		const std::string c_SnakeLabel = "snake";
 		const std::string c_BackgroundLabel = "background";
