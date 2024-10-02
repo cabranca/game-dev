@@ -4,6 +4,7 @@
 #include <sstream>
 
 using namespace breakout;
+using namespace glm;
 
 GameLevel::GameLevel()
 {

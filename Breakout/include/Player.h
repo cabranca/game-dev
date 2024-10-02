@@ -6,7 +6,7 @@ namespace breakout {
 	class Player : public GameObject
 	{
 	public:
-		Player(vec2 pos, vec2 size, Texture2D sprite);
+		Player(glm::vec2 pos, glm::vec2 size, Texture2D sprite);
 
 		void Extend(float value) { m_Size.x += value; }
 	};

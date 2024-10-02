@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
 		
 		while (frameTime > 0)
 		{
-			float deltaTime = min(frameTime, 1.0f);
+			float deltaTime = glm::min(frameTime, 1.0f);
 			// Handle user input
 			game.ProcessInput(deltaTime);
 			// Update game state

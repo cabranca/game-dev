@@ -1,6 +1,7 @@
 #include <Ball.h>
 
 using namespace breakout;
+using namespace glm;
 
 Ball::Ball() : GameObject(), c_Radius(0), c_InitialVelocity(), m_Stuck(true), m_Sticky(false), m_PassThrough(false) { }
 

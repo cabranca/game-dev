@@ -8,6 +8,7 @@
 #include <SDL/SDL_events.h>
 
 using namespace breakout;
+using namespace glm;
 
 Game::Game(unsigned int width, unsigned int height) 
 	: m_Width(width), m_Height(height), State(GAME_MENU), m_Keys(), m_KeysProcessed(), m_CurrentLevel(0), m_Lives(3)

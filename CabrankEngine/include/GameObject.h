@@ -4,26 +4,25 @@
 #include <SpriteRenderer.h>
 
 using namespace cabrankengine;
-using namespace glm;
 
 class GameObject
 {
 public:
 	GameObject();
-	GameObject(vec2 pos, vec2 size, Texture2D sprite, vec3 color = vec3(1.0f), vec2 velocity = vec2(0.0f, 0.0f));
+	GameObject(glm::vec2 pos, glm::vec2 size, Texture2D sprite, glm::vec3 color = glm::vec3(1.0f), glm::vec2 velocity = glm::vec2(0.0f, 0.0f));
 
 	virtual void draw(SpriteRenderer& renderer);
 
-	virtual void reset(vec2 position, vec2 size, vec2 velocity);
+	virtual void reset(glm::vec2 position, glm::vec2 size, glm::vec2 velocity);
 
 	// Getters and Setters
-	vec2& GetPosition() { return m_Position; }
+	glm::vec2& GetPosition() { return m_Position; }
 	
-	const vec2& GetSize() const { return m_Size; }
+	const glm::vec2& GetSize() const { return m_Size; }
 	
-	const vec2& GetVelocity() const { return m_Velocity; }
+	const glm::vec2& GetVelocity() const { return m_Velocity; }
 	
-	void SetColor(vec3 newColor) { m_Color = newColor; }
+	void SetColor(glm::vec3 newColor) { m_Color = newColor; }
 	
 	bool IsSolid() const { return m_Solid; }
 	void SetSolid() { m_Solid = true; }
@@ -32,8 +31,8 @@ public:
 	void Destroy() { m_Destroyed = true; }
 
 protected:
-	vec2 m_Position, m_Size, m_Velocity;
-	vec3 m_Color;
+	glm::vec2 m_Position, m_Size, m_Velocity;
+	glm::vec3 m_Color;
 	float m_Rotation;
 	bool m_Solid;
 	bool m_Destroyed;

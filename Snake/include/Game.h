@@ -6,7 +6,6 @@
 #include <Snake.h>
 
 using namespace cabrankengine;
-using namespace glm;
 
 namespace snake {
 	class Game {
@@ -28,7 +27,7 @@ namespace snake {
 
 		const uint16_t c_WindowWidth = 1280;
 		const uint16_t c_WindowHeight = 720;
-		const vec2 c_SnakeSpriteSize = vec2(40.0f, 40.0f);
+		const glm::vec2 c_SnakeSpriteSize = glm::vec2(40.0f, 40.0f);
 		const std::string c_SpriteLabel = "sprite";
 		const std::string c_SnakeLabel = "snake";
 		const std::string c_BackgroundLabel = "background";
