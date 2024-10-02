@@ -176,6 +176,7 @@
     <ClCompile Include="CabrankEngine\src\Texture2D.cpp" />
     <ClCompile Include="CabrankEngine\src\Window.cpp" />
     <ClCompile Include="CabrankEngine\src\InputManager.cpp" />
+    <ClCompile Include="CabrankEngine\src\Entity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CabrankEngine\include\CabrankEngine.h" />
@@ -190,6 +191,7 @@
     <ClInclude Include="CabrankEngine\include\Texture2D.h" />
     <ClInclude Include="CabrankEngine\include\Window.h" />
     <ClInclude Include="CabrankEngine\include\InputManager.h" />
+    <ClInclude Include="CabrankEngine\include\Entity.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
