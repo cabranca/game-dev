@@ -7,6 +7,14 @@ EntityManager::EntityManager()
 
 void EntityManager::update()
 {
+	// Remove dead entities
+	std::erase_if(m_Entities, [](EntPtr ent) { return !ent->isActive(); });
+	for (auto& [tag, entities] : m_TagToEntities)
+	{
+		std::erase_if(entities, [](EntPtr ent) { return !ent->isActive(); });
+	}
+	
+	// Add new entities
 	for (auto& ent : m_EntitiesToAdd)
 	{
 		m_Entities.push_back(ent);
@@ -16,22 +24,17 @@ void EntityManager::update()
 
 EntPtr EntityManager::addEntity(const std::string & tag)
 {
-	auto ent = std::shared_ptr<Entity>(new Entity(m_TotalEntities++, tag));
+	auto ent = EntPtr(new Entity(m_TotalEntities++, tag));
 	m_EntitiesToAdd.push_back(ent);
 	return ent;
 }
 
-std::vector<EntPtr> EntityManager::getEntities() const
+Entities EntityManager::getEntities() const
 {
 	return m_Entities;
 }
 
-std::vector<EntPtr> EntityManager::getEntities(const std::string& tag) const
+Entities EntityManager::getEntities(const std::string& tag) const
 {
 	return m_TagToEntities.at(tag);
-}
-
-void EntityManager::removeDeadEntities(std::vector<EntPtr>& vec)
-{
-
 }
