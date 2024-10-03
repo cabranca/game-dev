@@ -177,6 +177,7 @@
     <ClCompile Include="CabrankEngine\src\Window.cpp" />
     <ClCompile Include="CabrankEngine\src\InputManager.cpp" />
     <ClCompile Include="CabrankEngine\src\Entity.cpp" />
+    <ClCompile Include="CabrankEngine\src\EntityManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CabrankEngine\include\CabrankEngine.h" />
@@ -192,6 +193,8 @@
     <ClInclude Include="CabrankEngine\include\Window.h" />
     <ClInclude Include="CabrankEngine\include\InputManager.h" />
     <ClInclude Include="CabrankEngine\include\Entity.h" />
+    <ClInclude Include="CabrankEngine\include\EntityManager.h" />
+    <ClInclude Include="CabrankEngine\include\Components.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
