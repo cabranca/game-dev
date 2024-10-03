@@ -315,12 +315,7 @@ void Game::UpdatePowerUps(float delta)
 
 	// Remove all PowerUps from vector that are destroyed AND !activated (thus either off the map or finished)
 	// Note we use a lambda expression to remove each PowerUp which is destroyed and not activated
-	std::vector<std::shared_ptr<PowerUp>> powerUpsCpy;
-	for (auto& powerUp : m_PowerUps) {
-		if (!powerUp->IsDestroyed() || powerUp->IsActivated())
-			powerUpsCpy.emplace_back(powerUp);
-	}
-	m_PowerUps = powerUpsCpy;
+	std::erase_if(m_PowerUps, [](std::shared_ptr<PowerUp> powerUp) { return powerUp->IsDestroyed() && !powerUp->IsActivated(); });
 }
 
 bool Game::ShouldSpawn(unsigned int chance)
