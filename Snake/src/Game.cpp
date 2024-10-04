@@ -10,19 +10,7 @@ Game::Game() : m_CurrentState(ACTIVE), m_Window(), m_InputManager(), m_Renderer(
 
 void Game::run()
 {
-	initSystems();
-
-	loadShaders();
-	                                                                                                                           
-	ResourceManager::loadTexture("textures/awesomeface.png", true, c_SnakeLabel);
-	ResourceManager::loadTexture("textures/background.jpg", false, c_BackgroundLabel);
-	
-	auto shader = ResourceManager::getShader(c_SpriteLabel);
-	m_Renderer = SpriteRenderer(shader);
-
-	// Create Player
-	auto snakePos = vec2(c_WindowWidth / 2 - c_SnakeSpriteSize.x / 2, c_WindowHeight / 2 - c_SnakeSpriteSize.y / 2);
-	auto snakeTex = ResourceManager::getTexture(c_SnakeLabel);
+	init();
 
 	// deltaTime variables
 	const float DESIRED_FRAME_TIME = 1.0f / 60.0f;
@@ -50,12 +38,24 @@ void Game::run()
 	}
 }
 
-void Game::initSystems()
+void Game::init()
 {
 	cabrankengine::CabrankEngine::init();
 
 	m_Window.create("Snake", c_WindowWidth, c_WindowHeight, 0);
 	glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
+
+	loadShaders();
+
+	ResourceManager::loadTexture("textures/awesomeface.png", true, c_SnakeLabel);
+	ResourceManager::loadTexture("textures/background.jpg", false, c_BackgroundLabel);
+
+	auto shader = ResourceManager::getShader(c_SpriteLabel);
+	m_Renderer = std::make_unique<SpriteRenderer>(shader);
+
+	// Create Player
+	auto snakePos = vec2(c_WindowWidth / 2 - c_SnakeSpriteSize.x / 2, c_WindowHeight / 2 - c_SnakeSpriteSize.y / 2);
+	auto snakeTex = ResourceManager::getTexture(c_SnakeLabel);
 }
 
 void Game::loadShaders()
@@ -103,7 +103,7 @@ void Game::render()
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	auto texture = ResourceManager::getTexture(c_BackgroundLabel);
-	m_Renderer.drawSprite(texture, vec2(0.0f, 0.0f), vec2(c_WindowWidth, c_WindowHeight), 0.0f);
+	m_Renderer->drawSprite(texture, vec2(0.0f, 0.0f), vec2(c_WindowWidth, c_WindowHeight));
 	
 	m_Window.swapBuffer();
 }

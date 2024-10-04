@@ -20,7 +20,7 @@ namespace snake {
 
 		enum GameState { ACTIVE, QUIT };
 
-		void initSystems();
+		void init();
 		void loadShaders();
 		void processInput();
 		void update(float delta);
@@ -36,7 +36,7 @@ namespace snake {
 		GameState m_CurrentState;
 		Window m_Window;
 		InputManager m_InputManager;
-		SpriteRenderer m_Renderer;
+		std::unique_ptr<SpriteRenderer> m_Renderer; // I still do not get why it only works with a pointer.
 		EntityManager m_EntityManager;
 	};
 }

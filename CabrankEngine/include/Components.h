@@ -20,6 +20,28 @@ namespace cabrankengine
 			: pos(p), velocity(v), angle(a) {}
 	};
 
+	class CBoundingBox : public Component
+	{
+	public:
+		glm::vec2 size;
+		glm::vec2 halfSize;
+
+		CBoundingBox(const glm::vec2& s)
+			: size(s), halfSize(s.x / 2, s.y / 2) {}
+	};
+
+	class CInput : public Component
+	{
+	public:
+		bool up;
+		bool down;
+		bool right;
+		bool left;
+
+		CInput(bool u, bool d, bool r, bool l)
+			: up(u), down(d), right(r), left(l) {}
+	};
+
 	class CScore : public Component
 	{
 	public:
