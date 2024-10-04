@@ -29,7 +29,6 @@ void Game::run()
 		while (frameTime > 0)
 		{
 			float deltaTime = min(frameTime, 1.0f);
-			sUserInput();
 			update(deltaTime);
 
 			frameTime -= deltaTime;
@@ -51,9 +50,9 @@ void Game::init()
 	auto shader = ResourceManager::getShader(c_SpriteLabel);
 	m_Renderer = std::make_unique<SpriteRenderer>(shader);
 
-	// Create Player
-	auto snakePos = vec2(c_WindowWidth / 2 - c_SnakeSpriteSize.x / 2, c_WindowHeight / 2 - c_SnakeSpriteSize.y / 2);
-	auto snakeTex = ResourceManager::getTexture(c_SnakeLabel);
+	// Create the background
+	auto background = m_EntityManager.addEntity(c_BackgroundLabel);
+	background->addComponent<CTexture>(c_BackgroundLabel, vec2(), vec2(c_WindowWidth, c_WindowHeight), vec3(1.0));
 }
 
 void Game::loadShaders()
@@ -71,7 +70,12 @@ void Game::loadTextures()
 }
 
 void Game::update(float delta)
-{}
+{
+	m_EntityManager.update();
+	sUserInput();
+	sCollision();
+	sRender();
+}
 
 void Game::sUserInput()
 {
@@ -110,8 +114,15 @@ void Game::sRender()
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	auto texture = ResourceManager::getTexture(c_BackgroundLabel);
-	m_Renderer->drawSprite(texture, vec2(0.0f, 0.0f), vec2(c_WindowWidth, c_WindowHeight));
+	for (auto& entity : m_EntityManager.getEntities())
+	{
+		if (entity->hasComponent<CTexture>())
+		{
+			auto& cTexture = entity->getComponent<CTexture>();
+			auto texture = ResourceManager::getTexture(cTexture.name);
+			m_Renderer->drawSprite(texture, cTexture.pos, cTexture.size, 0.0f, cTexture.color);
+		}
+	}
 	
 	m_Window.swapBuffer();
 }
