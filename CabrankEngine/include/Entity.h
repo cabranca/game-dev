@@ -35,7 +35,7 @@ namespace cabrankengine
 		bool isActive() const;
 
 		template<typename T>
-		void hasComponent() const
+		bool hasComponent() const
 		{
 			return getComponent<T>.has;
 		}
