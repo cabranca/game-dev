@@ -6,6 +6,7 @@ namespace cabrankengine {
 	class SpriteRenderer
 	{
 	public:
+		SpriteRenderer() = default;
 		SpriteRenderer(Shader& shader);
 		~SpriteRenderer();
 
