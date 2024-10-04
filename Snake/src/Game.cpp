@@ -29,12 +29,12 @@ void Game::run()
 		while (frameTime > 0)
 		{
 			float deltaTime = min(frameTime, 1.0f);
-			processInput();
+			sUserInput();
 			update(deltaTime);
 
 			frameTime -= deltaTime;
 		}
-		render();
+		sRender();
 	}
 }
 
@@ -46,9 +46,7 @@ void Game::init()
 	glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
 
 	loadShaders();
-
-	ResourceManager::loadTexture("textures/awesomeface.png", true, c_SnakeLabel);
-	ResourceManager::loadTexture("textures/background.jpg", false, c_BackgroundLabel);
+	loadTextures();
 
 	auto shader = ResourceManager::getShader(c_SpriteLabel);
 	m_Renderer = std::make_unique<SpriteRenderer>(shader);
@@ -66,7 +64,16 @@ void Game::loadShaders()
 	ResourceManager::getShader(c_SpriteLabel).setMatrix4("projection", projection);
 }
 
-void Game::processInput()
+void Game::loadTextures()
+{
+	ResourceManager::loadTexture("textures/awesomeface.png", true, c_SnakeLabel);
+	ResourceManager::loadTexture("textures/background.jpg", false, c_BackgroundLabel);
+}
+
+void Game::update(float delta)
+{}
+
+void Game::sUserInput()
 {
 	m_InputManager.update();
 
@@ -93,11 +100,12 @@ void Game::processInput()
 		m_CurrentState = QUIT;
 }
 
-void Game::update(float delta)
+void Game::sCollision()
 {
+
 }
 
-void Game::render()
+void Game::sRender()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);

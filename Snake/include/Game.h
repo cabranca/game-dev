@@ -22,9 +22,11 @@ namespace snake {
 
 		void init();
 		void loadShaders();
-		void processInput();
+		void loadTextures();
 		void update(float delta);
-		void render();
+		void sUserInput();
+		void sCollision();
+		void sRender();
 
 		const uint16_t c_WindowWidth = 1280;
 		const uint16_t c_WindowHeight = 720;
