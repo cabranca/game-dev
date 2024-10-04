@@ -7,6 +7,9 @@ namespace cabrankengine
 	// This MUST match all the possible components in Components.h
 	typedef std::tuple<
 		CTransform,
+		CTexture,
+		CBoundingBox,
+		CInput,
 		CScore
 	> ComponentTuple;
 

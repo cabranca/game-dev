@@ -3,7 +3,7 @@
 using namespace cabrankengine;
 
 Entity::Entity(const size_t& id, const std::string& tag) 
-	: m_Id(id), m_Tag(tag), m_Active(true), m_Components(CTransform(glm::vec2(), glm::vec2(), 0), CScore(0)) {}
+	: m_Id(id), m_Tag(tag), m_Active(true), m_Components() {}
 
 void Entity::destroy()
 {
