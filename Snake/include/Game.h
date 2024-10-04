@@ -4,6 +4,7 @@
 #include <InputManager.h>
 #include <SpriteRenderer.h>
 #include <Snake.h>
+#include <EntityManager.h>
 
 using namespace cabrankengine;
 
@@ -33,10 +34,10 @@ namespace snake {
 		const std::string c_BackgroundLabel = "background";
 
 		GameState m_CurrentState;
-		std::unique_ptr<Window> m_Window;
-		std::unique_ptr<InputManager> m_InputManager;
-		std::unique_ptr<SpriteRenderer> m_Renderer;
-		std::unique_ptr<Snake> m_Snake;
+		Window m_Window;
+		InputManager m_InputManager;
+		SpriteRenderer m_Renderer;
+		EntityManager m_EntityManager;
 	};
 }
 

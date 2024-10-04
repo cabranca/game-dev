@@ -6,7 +6,7 @@ using namespace glm;
 using namespace cabrankengine;
 using namespace snake;
 
-Game::Game() : m_CurrentState(ACTIVE), m_Window(std::make_unique<Window>()), m_InputManager(std::make_unique<InputManager>()) {}
+Game::Game() : m_CurrentState(ACTIVE), m_Window(), m_InputManager(), m_Renderer(), m_EntityManager() {}
 
 void Game::run()
 {
@@ -18,12 +18,11 @@ void Game::run()
 	ResourceManager::loadTexture("textures/background.jpg", false, c_BackgroundLabel);
 	
 	auto shader = ResourceManager::getShader(c_SpriteLabel);
-	m_Renderer = std::make_unique<SpriteRenderer>(shader);
+	m_Renderer = SpriteRenderer(shader);
 
 	// Create Player
 	auto snakePos = vec2(c_WindowWidth / 2 - c_SnakeSpriteSize.x / 2, c_WindowHeight / 2 - c_SnakeSpriteSize.y / 2);
 	auto snakeTex = ResourceManager::getTexture(c_SnakeLabel);
-	m_Snake = std::make_unique<Snake>(snakePos, c_SnakeSpriteSize, snakeTex, vec3(1.0f, 1.0f, 1.0f));
 
 	// deltaTime variables
 	const float DESIRED_FRAME_TIME = 1.0f / 60.0f;
@@ -55,7 +54,7 @@ void Game::initSystems()
 {
 	cabrankengine::CabrankEngine::init();
 
-	m_Window->create("Snake", c_WindowWidth, c_WindowHeight, 0);
+	m_Window.create("Snake", c_WindowWidth, c_WindowHeight, 0);
 	glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
 }
 
@@ -69,7 +68,7 @@ void Game::loadShaders()
 
 void Game::processInput()
 {
-	m_InputManager->update();
+	m_InputManager.update();
 
 	SDL_Event ev;
 	while (SDL_PollEvent(&ev))
@@ -80,17 +79,17 @@ void Game::processInput()
 			m_CurrentState = QUIT;
 			break;
 		case SDL_KEYDOWN:
-			m_InputManager->pressKey(ev.key.keysym.sym);
+			m_InputManager.pressKey(ev.key.keysym.sym);
 			break;
 		case SDL_KEYUP:
-			m_InputManager->releaseKey(ev.key.keysym.sym);
+			m_InputManager.releaseKey(ev.key.keysym.sym);
 			break;
 		default:
 			break;
 		}
 	}
 
-	if (m_InputManager->isKeyJustPressed(SDLK_ESCAPE))
+	if (m_InputManager.isKeyJustPressed(SDLK_ESCAPE))
 		m_CurrentState = QUIT;
 }
 
@@ -104,9 +103,7 @@ void Game::render()
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	auto texture = ResourceManager::getTexture(c_BackgroundLabel);
-	m_Renderer->drawSprite(texture, vec2(0.0f, 0.0f), vec2(c_WindowWidth, c_WindowHeight), 0.0f);
-
-	m_Snake->draw(*m_Renderer);
+	m_Renderer.drawSprite(texture, vec2(0.0f, 0.0f), vec2(c_WindowWidth, c_WindowHeight), 0.0f);
 	
-	m_Window->swapBuffer();
+	m_Window.swapBuffer();
 }
