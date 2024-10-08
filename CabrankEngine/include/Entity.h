@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include <Components.h>
+#include <Components.hpp>
 
 namespace cabrankengine
 {

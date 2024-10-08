@@ -57,6 +57,9 @@
     <ClCompile Include="CabrankEngine\src\EntityManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CabrankEngine\src\CollisionSolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CabrankEngine\include\Shader.h">
@@ -101,7 +104,10 @@
     <ClInclude Include="CabrankEngine\include\EntityManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CabrankEngine\include\Components.h">
+    <ClInclude Include="CabrankEngine\include\Components.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CabrankEngine\include\CollisionSolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
