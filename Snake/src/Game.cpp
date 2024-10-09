@@ -18,6 +18,7 @@ void Game::run()
 	const float DESIRED_FRAME_TIME = 1.0f / 60.0f;
 	float previousTicks = 0.0f;
 	float frameTime = 0.0f;
+	float deltaTime = 0.0f;
 
 	
 
@@ -30,7 +31,7 @@ void Game::run()
 
 		while (frameTime > 0)
 		{
-			float deltaTime = min(frameTime, 1.0f);
+			deltaTime = min(frameTime, 1.0f);
 			update(deltaTime);
 
 			frameTime -= deltaTime;
@@ -78,7 +79,6 @@ void Game::update(float delta)
 	sUserInput();
 	sMovement(delta);
 	sCollision();
-	sRender();
 }
 
 void Game::sUserInput()
@@ -109,12 +109,6 @@ void Game::sUserInput()
 
 	for (auto& e : m_EntityManager.getEntities(c_SnakeLabel))
 	{
-		/*
-			This must only set the Input Component.
-			If a direction is set, the other ones are disabled.
-			If a direction is set, the opposite cannot be set next.
-		*/
-
 		auto newInput = CInput();
 		auto& cInput = e->getComponent<CInput>();
 
@@ -181,7 +175,6 @@ void Game::sCollision()
 
 void Game::sRender()
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	for (auto& entity : m_EntityManager.getEntities())
