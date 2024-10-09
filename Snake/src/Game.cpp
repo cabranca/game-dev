@@ -147,7 +147,17 @@ void Game::sMovement(float delta)
 		else if (cInput.down)
 			e->getComponent<CTransform>().velocity = vec2(0.0f, 1.0f);
 
-		e->getComponent<CTransform>().pos += e->getComponent<CTransform>().velocity * c_SnakeSpeed * delta;
+		auto& pos = e->getComponent<CTransform>().pos;
+		pos += e->getComponent<CTransform>().velocity * c_SnakeSpeed * delta;
+
+		if (pos.x > c_WindowWidth)
+			pos.x = 0.0f;
+		else if (pos.x < 0.0f)
+			pos.x = c_WindowWidth;
+		if (pos.y > c_WindowHeight)
+			pos.y = 0.0f;
+		else if (pos.y < 0.0f)
+			pos.y = c_WindowHeight;
 	}
 }
 
@@ -165,7 +175,6 @@ void Game::sCollision()
 					spawnFruit();
 				}
 			}
-				
 		}
 	}
 }
