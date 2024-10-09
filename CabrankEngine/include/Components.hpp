@@ -56,11 +56,9 @@ namespace cabrankengine
 		bool down;
 		bool right;
 		bool left;
+		bool shoot;
 
 		CInput() = default;
-
-		CInput(bool u, bool d, bool r, bool l)
-			: up(u), down(d), right(r), left(l) {}
 	};
 
 	class CScore : public Component
