@@ -20,6 +20,7 @@ void EntityManager::update()
 		m_Entities.push_back(ent);
 		m_TagToEntities[ent->getTag()].push_back(ent); // TODO: check not existing key case.
 	}
+	m_EntitiesToAdd.clear();
 }
 
 EntPtr EntityManager::addEntity(const std::string & tag)
