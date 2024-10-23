@@ -208,7 +208,7 @@ void Game::sRender()
 
 	for (auto& entity : m_EntityManager.getEntities())
 	{
-		if (entity->hasComponent<CTexture>())
+		if (entity->isActive() && entity->hasComponent<CTexture>())
 		{
 			auto& cTexture = entity->getComponent<CTexture>();
 			auto texture = ResourceManager::getTexture(cTexture.name);
@@ -241,16 +241,16 @@ void Game::spawnFruit()
 	// IDEA: random row, random column and check no overlap
 	std::random_device dev;
 	std::mt19937 rng(dev());
-	std::uniform_int_distribution<std::mt19937::result_type> randx(0, c_WindowWidth - c_FruitSpriteSize.x);
-	std::uniform_int_distribution<std::mt19937::result_type> randy(0, c_WindowHeight - c_FruitSpriteSize.y);
+	std::uniform_int_distribution<std::mt19937::result_type> randx(0, 19);
+	std::uniform_int_distribution<std::mt19937::result_type> randy(0, 19);
 
-	auto x = randx(rng);
-	auto y = randy(rng);
+	auto column = randx(rng) * c_FruitSpriteSize.x;
+	auto row = randy(rng) * c_FruitSpriteSize.y;
 
 	auto fruit = m_EntityManager.addEntity(c_FruitLabel);
-	fruit->addComponent<CTransform>(vec2(x, y), vec2(), 0);
+	fruit->addComponent<CTransform>(vec2(row, column), vec2(), 0);
 	fruit->addComponent<CBoundingBox>(c_FruitSpriteSize);
-	fruit->addComponent<CTexture>(c_FruitLabel, vec2(x, y), c_FruitSpriteSize, vec3(1.0f));
+	fruit->addComponent<CTexture>(c_FruitLabel, vec2(row, column), c_FruitSpriteSize, vec3(1.0f));
 }
 
 void Game::increaseTail()
