@@ -3,40 +3,40 @@
 #include <ResourceManager.h>
 #include <CollisionSolver.h>
 #include <random>
+#include <iostream>
 
 using namespace glm;
 using namespace cabrankengine;
 using namespace snake;
 
-Game::Game() : m_CurrentState(ACTIVE), m_Window(), m_InputManager(), m_Renderer(), m_EntityManager() {}
+Game::Game() : m_CurrentState(ACTIVE), m_Window(), m_InputManager(), m_Renderer(), m_EntityManager(), m_LastInput(0) {}
 
 void Game::run()
 {
 	init();
 
 	// deltaTime variables
-	const float DESIRED_FRAME_TIME = 1.0f / 60.0f;
+	const float DESIRED_FRAME_TIME = 1.0f / 4.0f;
 	float previousTicks = 0.0f;
 	float frameTime = 0.0f;
 	float deltaTime = 0.0f;
-
+	float newTicks = 0.0f;
 	
 
 	while (m_CurrentState != QUIT)
 	{
-		// Calculate delta time
-		float newTicks = static_cast<float>(SDL_GetTicks()) / 1000.0f;
+		newTicks = static_cast<float>(SDL_GetTicks()) / 1000.0f;
 		frameTime = newTicks - previousTicks;
-		previousTicks = newTicks;
-
-		while (frameTime > 0)
+		while (frameTime < DESIRED_FRAME_TIME)
 		{
-			deltaTime = min(frameTime, 1.0f);
-			update(deltaTime);
-
-			frameTime -= deltaTime;
+			// Calculate delta time
+			newTicks = static_cast<float>(SDL_GetTicks()) / 1000.0f;
+			frameTime = newTicks - previousTicks;
+			
+			sUserInput();
 		}
-		sRender();
+		previousTicks = newTicks;
+		update();
 	}
 }
 
@@ -73,12 +73,38 @@ void Game::loadTextures()
 	ResourceManager::loadTexture("textures/background.jpg", false, c_BackgroundLabel);
 }
 
-void Game::update(float delta)
+void Game::update()
 {
 	m_EntityManager.update();
-	sUserInput();
-	sMovement(delta);
+
+	auto snake = m_EntityManager.getEntities(c_SnakeLabel);
+
+	for (int i = 0; i < snake.size(); i++)
+	{
+		m_RegisteredInputs[i].push(m_LastInput);
+		auto newInput = CInput();
+		switch (m_RegisteredInputs[i].front())
+		{
+		case SDLK_a:
+			newInput.left = true;
+			break;
+		case SDLK_d:
+			newInput.right = true;
+			break;
+		case SDLK_w:
+			newInput.up = true;
+			break;
+		case SDLK_s:
+			newInput.down = true;
+			break;
+		}
+
+		snake[i]->getComponent<CInput>() = newInput;
+	}
+
+	sMovement();
 	sCollision();
+	sRender();
 }
 
 void Game::sUserInput()
@@ -107,27 +133,19 @@ void Game::sUserInput()
 	if (m_InputManager.isKeyJustPressed(SDLK_ESCAPE))
 		m_CurrentState = QUIT;
 
-	for (auto& e : m_EntityManager.getEntities(c_SnakeLabel))
-	{
-		auto newInput = CInput();
-		auto& cInput = e->getComponent<CInput>();
+	auto& cInput = m_Head->getComponent<CInput>();
 
-		if (!cInput.right && m_InputManager.isKeyJustPressed(SDLK_a))
-			newInput.left = true;
-		else if (!cInput.left && m_InputManager.isKeyJustPressed(SDLK_d))
-			newInput.right = true;
-		else if (!cInput.down && m_InputManager.isKeyJustPressed(SDLK_w))
-			newInput.up = true;
-		else if (!cInput.up && m_InputManager.isKeyJustPressed(SDLK_s))
-			newInput.down = true;
-		else
-			return;
-
-		cInput = newInput;
-	}
+	if (!cInput.right && m_InputManager.isKeyJustPressed(SDLK_a))
+		m_LastInput = SDLK_a;
+	else if (!cInput.left && m_InputManager.isKeyJustPressed(SDLK_d))
+		m_LastInput = SDLK_d;
+	else if (!cInput.down && m_InputManager.isKeyJustPressed(SDLK_w))
+		m_LastInput = SDLK_w;
+	else if (!cInput.up && m_InputManager.isKeyJustPressed(SDLK_s))
+		m_LastInput = SDLK_s;
 }
 
-void Game::sMovement(float delta)
+void Game::sMovement()
 {
 	for (auto& e : m_EntityManager.getEntities(c_SnakeLabel))
 	{
@@ -142,35 +160,46 @@ void Game::sMovement(float delta)
 			e->getComponent<CTransform>().velocity = vec2(0.0f, 1.0f);
 
 		auto& pos = e->getComponent<CTransform>().pos;
-		pos += e->getComponent<CTransform>().velocity * c_SnakeSpeed * delta;
+		pos += e->getComponent<CTransform>().velocity * c_SnakeSpeed;
 
-		if (pos.x > c_WindowWidth)
+		if (pos.x >= c_WindowWidth)
 			pos.x = 0.0f;
 		else if (pos.x < 0.0f)
-			pos.x = c_WindowWidth;
-		if (pos.y > c_WindowHeight)
+			pos.x = c_WindowWidth - c_SnakeSpriteSize.x;
+		if (pos.y >= c_WindowHeight)
 			pos.y = 0.0f;
 		else if (pos.y < 0.0f)
-			pos.y = c_WindowHeight;
+			pos.y = c_WindowHeight - c_SnakeSpriteSize.y;
 	}
 }
 
 void Game::sCollision()
 {
-	for (auto& x : m_EntityManager.getEntities(c_SnakeLabel))
+	for (auto& e : m_EntityManager.getEntities(c_SnakeLabel))
 	{
-		for (auto& y: m_EntityManager.getEntities(c_FruitLabel))
+		if (e->getId() != m_Head->getId() && CollisionSolver::AABBCollision(e, m_Head))
 		{
-			if (x->hasComponent<CTransform>() && x->hasComponent<CBoundingBox>() && y->hasComponent<CTransform>() && y->hasComponent<CBoundingBox>())
-			{
-				if (CollisionSolver::AABBCollision(x, y))
-				{
-					y->destroy();
-					spawnFruit();
-				}
-			}
+			//std::cout << "You Lost!" << std::endl;
 		}
 	}
+
+	int leaveTail = 0;
+
+	for (auto& e : m_EntityManager.getEntities(c_FruitLabel))
+	{
+		if (CollisionSolver::AABBCollision(e, m_Head))
+		{
+			e->destroy();
+			spawnFruit();
+			increaseTail();
+			leaveTail++;
+		}
+	}
+
+	
+
+	for (int i = 0; i < m_RegisteredInputs.size() - leaveTail; i++)
+		m_RegisteredInputs[i].pop();
 }
 
 void Game::sRender()
@@ -202,10 +231,14 @@ void Game::spawnSnake()
 	snake->addComponent<CTransform>(vec2(c_WindowWidth / 2, c_WindowHeight / 2), vec2(), 0);
 	snake->addComponent<CBoundingBox>(c_SnakeSpriteSize);
 	snake->addComponent<CTexture>(c_SnakeLabel, vec2(c_WindowWidth / 2, c_WindowHeight / 2), c_SnakeSpriteSize, vec3(1.0f));
+	m_Head = m_Tail = snake;
+	m_RegisteredInputs.emplace_back();
 }
 
 void Game::spawnFruit()
 {
+	// TODO: prevent spawning in snake position
+	// IDEA: random row, random column and check no overlap
 	std::random_device dev;
 	std::mt19937 rng(dev());
 	std::uniform_int_distribution<std::mt19937::result_type> randx(0, c_WindowWidth - c_FruitSpriteSize.x);
@@ -218,4 +251,17 @@ void Game::spawnFruit()
 	fruit->addComponent<CTransform>(vec2(x, y), vec2(), 0);
 	fruit->addComponent<CBoundingBox>(c_FruitSpriteSize);
 	fruit->addComponent<CTexture>(c_FruitLabel, vec2(x, y), c_FruitSpriteSize, vec3(1.0f));
+}
+
+void Game::increaseTail()
+{
+	auto snake = m_EntityManager.addEntity(c_SnakeLabel);
+	auto newPos = m_Tail->getComponent<CTransform>().pos - m_Tail->getComponent<CTransform>().velocity * c_SnakeSpriteSize.x;
+	snake->addComponent<CTransform>(newPos, vec2(), 0);
+	snake->addComponent<CBoundingBox>(c_SnakeSpriteSize);
+	snake->addComponent<CTexture>(c_SnakeLabel, newPos, c_SnakeSpriteSize, vec3(1.0f));
+
+	m_RegisteredInputs.push_back(m_RegisteredInputs[m_RegisteredInputs.size() - 1]);
+	//m_RegisteredInputs[m_RegisteredInputs.size() - 1].push(m_LastInput);
+	m_Tail = snake;
 }
