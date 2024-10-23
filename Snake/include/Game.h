@@ -19,7 +19,7 @@ namespace snake {
 
 	private:
 
-		enum GameState { ACTIVE, QUIT };
+		enum GameState { ACTIVE, PAUSE, QUIT };
 
 		void init();
 		void loadShaders();

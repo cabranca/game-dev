@@ -25,18 +25,22 @@ void Game::run()
 
 	while (m_CurrentState != QUIT)
 	{
-		newTicks = static_cast<float>(SDL_GetTicks()) / 1000.0f;
-		frameTime = newTicks - previousTicks;
-		while (frameTime < DESIRED_FRAME_TIME)
+		if (m_CurrentState == ACTIVE)
 		{
-			// Calculate delta time
 			newTicks = static_cast<float>(SDL_GetTicks()) / 1000.0f;
 			frameTime = newTicks - previousTicks;
-			
-			sUserInput();
+			while (frameTime < DESIRED_FRAME_TIME)
+			{
+				// Calculate delta time
+				newTicks = static_cast<float>(SDL_GetTicks()) / 1000.0f;
+				frameTime = newTicks - previousTicks;
+
+				sUserInput();
+			}
+			previousTicks = newTicks;
+			update();
 		}
-		previousTicks = newTicks;
-		update();
+		
 	}
 }
 
@@ -179,7 +183,7 @@ void Game::sCollision()
 	{
 		if (e->getId() != m_Head->getId() && CollisionSolver::AABBCollision(e, m_Head))
 		{
-			//std::cout << "You Lost!" << std::endl;
+			m_CurrentState = PAUSE;
 		}
 	}
 
