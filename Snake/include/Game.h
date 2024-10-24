@@ -6,6 +6,7 @@
 #include <Snake.h>
 #include <EntityManager.h>
 #include <queue>
+#include <TextRenderer.h>
 
 using namespace cabrankengine;
 
@@ -19,7 +20,7 @@ namespace snake {
 
 	private:
 
-		enum GameState { ACTIVE, PAUSE, QUIT };
+		enum GameState { ACTIVE, LOST, PAUSE, QUIT };
 
 		void init();
 		void loadShaders();
@@ -34,6 +35,7 @@ namespace snake {
 		void spawnSnake();
 		void spawnFruit();
 		void increaseTail();
+		void reset();
 
 		const int c_WindowWidth = 800;
 		const int c_WindowHeight = 800;
@@ -49,6 +51,7 @@ namespace snake {
 		Window m_Window;
 		InputManager m_InputManager;
 		std::unique_ptr<SpriteRenderer> m_Renderer; // I still do not get why it only works with a pointer.
+		std::unique_ptr<TextRenderer> m_TextRenderer;
 		EntityManager m_EntityManager;
 
 		EntPtr m_Head;

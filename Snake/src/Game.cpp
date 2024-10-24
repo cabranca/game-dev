@@ -9,7 +9,7 @@ using namespace glm;
 using namespace cabrankengine;
 using namespace snake;
 
-Game::Game() : m_CurrentState(ACTIVE), m_Window(), m_InputManager(), m_Renderer(), m_EntityManager(), m_LastInput(0) {}
+Game::Game() : m_CurrentState(ACTIVE), m_Window(), m_InputManager(), m_Renderer(), m_TextRenderer(), m_EntityManager(), m_LastInput(0) {}
 
 void Game::run()
 {
@@ -25,21 +25,17 @@ void Game::run()
 
 	while (m_CurrentState != QUIT)
 	{
-		if (m_CurrentState == ACTIVE)
+		newTicks = static_cast<float>(SDL_GetTicks()) / 1000.0f;
+		frameTime = newTicks - previousTicks;
+		while (frameTime < DESIRED_FRAME_TIME)
 		{
 			newTicks = static_cast<float>(SDL_GetTicks()) / 1000.0f;
 			frameTime = newTicks - previousTicks;
-			while (frameTime < DESIRED_FRAME_TIME)
-			{
-				// Calculate delta time
-				newTicks = static_cast<float>(SDL_GetTicks()) / 1000.0f;
-				frameTime = newTicks - previousTicks;
 
-				sUserInput();
-			}
-			previousTicks = newTicks;
-			update();
+			sUserInput();
 		}
+		previousTicks = newTicks;
+		update();
 		
 	}
 }
@@ -56,6 +52,10 @@ void Game::init()
 
 	auto shader = ResourceManager::getShader(c_SpriteLabel);
 	m_Renderer = std::make_unique<SpriteRenderer>(shader);
+	
+	// Create Text Renderer
+	m_TextRenderer = std::make_unique<TextRenderer>(c_WindowWidth, c_WindowHeight);
+	m_TextRenderer->load("fonts/ocraext.TTF", 24);
 
 	setBackground();
 	spawnSnake();
@@ -79,36 +79,41 @@ void Game::loadTextures()
 
 void Game::update()
 {
-	m_EntityManager.update();
-
-	auto snake = m_EntityManager.getEntities(c_SnakeLabel);
-
-	for (int i = 0; i < snake.size(); i++)
+	if (m_CurrentState == ACTIVE)
 	{
-		m_RegisteredInputs[i].push(m_LastInput);
-		auto newInput = CInput();
-		switch (m_RegisteredInputs[i].front())
+		m_EntityManager.update();
+
+		auto snake = m_EntityManager.getEntities(c_SnakeLabel);
+
+		for (int i = 0; i < snake.size(); i++)
 		{
-		case SDLK_a:
-			newInput.left = true;
-			break;
-		case SDLK_d:
-			newInput.right = true;
-			break;
-		case SDLK_w:
-			newInput.up = true;
-			break;
-		case SDLK_s:
-			newInput.down = true;
-			break;
+			m_RegisteredInputs[i].push(m_LastInput);
+			auto newInput = CInput();
+			switch (m_RegisteredInputs[i].front())
+			{
+			case SDLK_a:
+				newInput.left = true;
+				break;
+			case SDLK_d:
+				newInput.right = true;
+				break;
+			case SDLK_w:
+				newInput.up = true;
+				break;
+			case SDLK_s:
+				newInput.down = true;
+				break;
+			}
+
+			snake[i]->getComponent<CInput>() = newInput;
 		}
 
-		snake[i]->getComponent<CInput>() = newInput;
+		sMovement();
+		sCollision();
 	}
-
-	sMovement();
-	sCollision();
-	sRender();
+	
+	if (m_CurrentState != QUIT)
+		sRender();
 }
 
 void Game::sUserInput()
@@ -136,6 +141,8 @@ void Game::sUserInput()
 
 	if (m_InputManager.isKeyJustPressed(SDLK_ESCAPE))
 		m_CurrentState = QUIT;
+	else if (m_CurrentState == LOST && m_InputManager.isKeyJustPressed(SDLK_SPACE))
+		reset();
 
 	auto& cInput = m_Head->getComponent<CInput>();
 
@@ -183,7 +190,7 @@ void Game::sCollision()
 	{
 		if (e->getId() != m_Head->getId() && CollisionSolver::AABBCollision(e, m_Head))
 		{
-			m_CurrentState = PAUSE;
+			m_CurrentState = LOST;
 		}
 	}
 
@@ -210,15 +217,32 @@ void Game::sRender()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	for (auto& entity : m_EntityManager.getEntities())
+	if (m_CurrentState == ACTIVE)
 	{
-		if (entity->isActive() && entity->hasComponent<CTexture>())
+		for (auto& entity : m_EntityManager.getEntities())
 		{
-			auto& cTexture = entity->getComponent<CTexture>();
-			auto texture = ResourceManager::getTexture(cTexture.name);
-			m_Renderer->drawSprite(texture, entity->getComponent<CTransform>().pos, cTexture.size, 0.0f, cTexture.color);
+			if (entity->isActive() && entity->hasComponent<CTexture>())
+			{
+				auto& cTexture = entity->getComponent<CTexture>();
+				auto texture = ResourceManager::getTexture(cTexture.name);
+				m_Renderer->drawSprite(texture, entity->getComponent<CTransform>().pos, cTexture.size, 0.0f, cTexture.color);
+			}
 		}
 	}
+	else if (m_CurrentState == PAUSE)
+	{
+
+	}
+	else if (m_CurrentState == LOST)
+	{
+		m_TextRenderer->renderText(
+			"You LOST :(", 320.0f, static_cast<float>(c_WindowHeight / 2) - 20.0f, 1.0f, vec3(0.0f, 1.0f, 0.0f)
+		);
+		m_TextRenderer->renderText(
+			"Press ENTER to retry or ESC to quit", 130.0f, static_cast<float>(c_WindowHeight / 2), 1.0f, vec3(1.0f, 1.0f, 0.0f)
+		);
+	}
+	
 	
 	m_Window.swapBuffer();
 }
@@ -268,4 +292,9 @@ void Game::increaseTail()
 	m_RegisteredInputs.push_back(m_RegisteredInputs[m_RegisteredInputs.size() - 1]);
 	//m_RegisteredInputs[m_RegisteredInputs.size() - 1].push(m_LastInput);
 	m_Tail = snake;
+}
+
+void Game::reset()
+{
+	m_CurrentState = ACTIVE;
 }
