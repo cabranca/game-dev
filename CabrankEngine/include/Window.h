@@ -2,6 +2,7 @@
 #include <string>
 #include <SDL/SDL.h>
 #include <GL/glew.h>
+#include <memory>
 
 namespace cabrankengine
 {
@@ -22,7 +23,9 @@ namespace cabrankengine
 		// Swap between buffers (previously set in CabrankEngine.cpp
 		void swapBuffer();
 
+		std::shared_ptr<SDL_Window> getSDLWindow();
+
 	private:
-		SDL_Window* m_SDLWindow;
+		std::shared_ptr<SDL_Window> m_SDLWindow;
 	};
 }
