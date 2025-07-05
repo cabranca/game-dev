@@ -55,47 +55,23 @@ void ResourceManager::clear()
 
 Shader ResourceManager::loadShaderFromFile(const std::string& vShaderFile, const std::string& fShaderFile, const std::string& gShaderFile)
 {
-    // 1. retrieve the vertex/fragment source code from filePath
-    std::string vertexCode;
-    std::string fragmentCode;
-    std::string geometryCode;
-    try
-    {
-        // open files
-        std::ifstream vertexShaderFile(vShaderFile);
-        std::ifstream fragmentShaderFile(fShaderFile);
-        std::stringstream vShaderStream, fShaderStream;
-        // read file's buffer contents into streams
-        vShaderStream << vertexShaderFile.rdbuf();
-        fShaderStream << fragmentShaderFile.rdbuf();
-        // close file handlers
-        vertexShaderFile.close();
-        fragmentShaderFile.close();
-        // convert stream into string
-        vertexCode = vShaderStream.str();
-        fragmentCode = fShaderStream.str();
-        // if geometry shader path is present, also load a geometry shader
-        if (gShaderFile.empty())
-        {
-            std::ifstream geometryShaderFile(gShaderFile);
-            std::stringstream gShaderStream;
-            gShaderStream << geometryShaderFile.rdbuf();
-            geometryShaderFile.close();
-            geometryCode = gShaderStream.str();
-        }
-    }
-    catch (std::exception e)
-    {
-        std::cout << "ERROR::SHADER: Failed to read shader files - " << e.what() << std::endl;
-    }
+    try {
+        std::string vertexCode = ReadFileToString(vShaderFile);
+        std::string fragmentCode = ReadFileToString(fShaderFile);
+        std::string geometryCode;
 
-    const char* vShaderCode = vertexCode.c_str();
-    const char* fShaderCode = fragmentCode.c_str();
-    const char* gShaderCode = geometryCode.c_str();
-    // 2. now create shader object from source code
-    Shader shader;
-    shader.compile(vShaderCode, fShaderCode, gShaderFile.empty() ? nullptr : gShaderCode);
-    return shader;
+        if (!gShaderFile.empty()) {
+            geometryCode = ReadFileToString(gShaderFile);
+        }
+
+        Shader shader;
+        shader.compile(vertexCode.c_str(), fragmentCode.c_str(), geometryCode.empty() ? nullptr : geometryCode.c_str());
+        return shader;
+    }
+    catch (const std::exception& e) {
+        std::cerr << "ERROR::SHADER: Failed to read shader files - " << e.what() << std::endl;
+        return Shader();
+    }
 }
 
 Texture2D ResourceManager::loadTextureFromFile(const char* file, bool alpha)
@@ -115,4 +91,18 @@ Texture2D ResourceManager::loadTextureFromFile(const char* file, bool alpha)
     // and finally free image data
     stbi_image_free(data);
     return texture;
+}
+
+std::string ResourceManager::ReadFileToString(const std::string& path) {
+    std::ifstream file(path, std::ios::in | std::ios::binary);
+    if (!file) {
+        throw std::runtime_error("No se pudo abrir el archivo: " + path);
+    }
+    std::string content;
+    file.seekg(0, std::ios::end);
+    content.resize(file.tellg());
+    file.seekg(0, std::ios::beg);
+    file.read(content.data(), content.size());
+    file.close();
+    return content;
 }

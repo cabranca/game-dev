@@ -45,6 +45,8 @@ namespace cabrankengine {
         static Shader    loadShaderFromFile(const std::string& vShaderFile, const std::string& fShaderFile, const std::string& gShaderFile = nullptr);
         // loads a single texture from file
         static Texture2D loadTextureFromFile(const char* file, bool alpha);
+
+        static std::string ReadFileToString(const std::string& path);
     };
 
 }
