@@ -7,7 +7,6 @@
 #include <queue>
 #include <TextRenderer.h>
 
-using namespace cabrankengine;
 
 namespace snake {
 	class Game {
@@ -47,14 +46,14 @@ namespace snake {
 		const float c_SnakeSpeed = 40.0f;
 
 		GameState m_CurrentState;
-		Window m_Window;
-		InputManager m_InputManager;
-		std::unique_ptr<SpriteRenderer> m_Renderer; // I still do not get why it only works with a pointer.
-		std::unique_ptr<TextRenderer> m_TextRenderer;
-		EntityManager m_EntityManager;
+		cabrankengine::Window m_Window;
+		cabrankengine::InputManager m_InputManager;
+		std::unique_ptr<cabrankengine::SpriteRenderer> m_Renderer; // I still do not get why it only works with a pointer.
+		std::unique_ptr<cabrankengine::TextRenderer> m_TextRenderer;
+		cabrankengine::EntityManager m_EntityManager;
 
-		EntPtr m_Head;
-		EntPtr m_Tail;
+		cabrankengine::EntPtr m_Head;
+		cabrankengine::EntPtr m_Tail;
 		std::vector<std::queue<unsigned int>> m_RegisteredInputs;
 		unsigned int m_LastInput;
 	};

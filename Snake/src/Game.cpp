@@ -1,5 +1,6 @@
 #include <Game.h>
 #include <CabrankEngine.h>
+#include <Window.h>
 #include <ResourceManager.h>
 #include <CollisionSolver.h>
 #include <random>
