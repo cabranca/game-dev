@@ -1,8 +1,16 @@
-#include "Window.h"
+#include <Window.h>
+#include <SDL/SDL.h>
+#include <GL/glew.h>
 #include <iostream>
 
 
 using namespace cabrankengine;
+
+cabrankengine::Window::~Window() {
+	if (m_SDLWindow)
+		SDL_DestroyWindow(m_SDLWindow);
+	m_SDLWindow = nullptr;
+}
 
 int Window::create(std::string name, int width, int height, unsigned int currentFlags)
 {
@@ -19,12 +27,12 @@ int Window::create(std::string name, int width, int height, unsigned int current
 		flags |= SDL_WINDOW_BORDERLESS;
 
 	// Create the actual window
-	m_SDLWindow = std::shared_ptr<SDL_Window>(SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags));
+	m_SDLWindow = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
 	if (m_SDLWindow == nullptr)
 		std::cout << "SDL Window could not be created!" << std::endl;
 
 	// Create the OpenGL context for thw window
-	SDL_GLContext glContext = SDL_GL_CreateContext(m_SDLWindow.get());
+	SDL_GLContext glContext = SDL_GL_CreateContext(m_SDLWindow);
 	if (glContext == nullptr)
 		std::cout << "SDL_GL context could not be created!" << std::endl;
 
@@ -48,10 +56,5 @@ int Window::create(std::string name, int width, int height, unsigned int current
 
 void Window::swapBuffer()
 {
-	SDL_GL_SwapWindow(m_SDLWindow.get());
-}
-
-std::shared_ptr<SDL_Window> Window::getSDLWindow()
-{
-	return m_SDLWindow;
+	SDL_GL_SwapWindow(m_SDLWindow);
 }

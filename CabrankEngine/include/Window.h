@@ -1,8 +1,8 @@
 #pragma once
+
 #include <string>
-#include <SDL/SDL.h>
-#include <GL/glew.h>
-#include <memory>
+
+class SDL_Window;
 
 namespace cabrankengine
 {
@@ -10,22 +10,24 @@ namespace cabrankengine
 
 	/*
 	
-		This class works as a wrapper for the real SDL window class
+		This class works as a wrapper for the real SDL window class.
 
 	*/
 	class Window
 	{
 	public:
+		Window() = default;
+
+		// Destructor that must destroy the SDL Window
+		~Window();
 
 		// Create the window with the given width height and flags
 		int create(std::string name, int width, int height, unsigned int currentFlags);
 
-		// Swap between buffers (previously set in CabrankEngine.cpp
+		// Swap between buffers (previously set in CabrankEngine.cpp)
 		void swapBuffer();
 
-		std::shared_ptr<SDL_Window> getSDLWindow();
-
 	private:
-		std::shared_ptr<SDL_Window> m_SDLWindow;
+		SDL_Window* m_SDLWindow;
 	};
 }

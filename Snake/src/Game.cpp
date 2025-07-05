@@ -1,4 +1,6 @@
 #include <Game.h>
+#include <SDL/SDL.h>
+#include <GL/glew.h>
 #include <CabrankEngine.h>
 #include <Window.h>
 #include <ResourceManager.h>
