@@ -67,7 +67,7 @@ void Game::init()
 
 void Game::loadShaders()
 {
-	ResourceManager::loadShader("shaders/sprite.vs", "shaders/sprite.frag", nullptr, c_SpriteLabel);
+	ResourceManager::loadShader("shaders/sprite.vs", "shaders/sprite.frag", "", c_SpriteLabel);
 	mat4 projection = ortho(0.0f, static_cast<float>(c_WindowWidth), static_cast<float>(c_WindowHeight), 0.0f, -1.0f, 1.0f);
 	ResourceManager::getShader(c_SpriteLabel).use().setInteger("image", 0);
 	ResourceManager::getShader(c_SpriteLabel).setMatrix4("projection", projection);

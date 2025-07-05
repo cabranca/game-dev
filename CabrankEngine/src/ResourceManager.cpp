@@ -21,7 +21,7 @@ std::map<std::string, Texture2D>    ResourceManager::m_Textures;
 std::map<std::string, Shader>       ResourceManager::m_Shaders;
 
 
-Shader ResourceManager::loadShader(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile, const std::string& name)
+Shader ResourceManager::loadShader(const std::string& vShaderFile, const std::string& fShaderFile, const std::string& gShaderFile, const std::string& name)
 {
     m_Shaders[name] = loadShaderFromFile(vShaderFile, fShaderFile, gShaderFile);
     return m_Shaders[name];
@@ -53,7 +53,7 @@ void ResourceManager::clear()
         glDeleteTextures(1, iter.second.getId());
 }
 
-Shader ResourceManager::loadShaderFromFile(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile)
+Shader ResourceManager::loadShaderFromFile(const std::string& vShaderFile, const std::string& fShaderFile, const std::string& gShaderFile)
 {
     // 1. retrieve the vertex/fragment source code from filePath
     std::string vertexCode;
@@ -75,7 +75,7 @@ Shader ResourceManager::loadShaderFromFile(const char* vShaderFile, const char* 
         vertexCode = vShaderStream.str();
         fragmentCode = fShaderStream.str();
         // if geometry shader path is present, also load a geometry shader
-        if (gShaderFile != nullptr)
+        if (gShaderFile.empty())
         {
             std::ifstream geometryShaderFile(gShaderFile);
             std::stringstream gShaderStream;
@@ -94,7 +94,7 @@ Shader ResourceManager::loadShaderFromFile(const char* vShaderFile, const char* 
     const char* gShaderCode = geometryCode.c_str();
     // 2. now create shader object from source code
     Shader shader;
-    shader.compile(vShaderCode, fShaderCode, gShaderFile != nullptr ? gShaderCode : nullptr);
+    shader.compile(vShaderCode, fShaderCode, gShaderFile.empty() ? nullptr : gShaderCode);
     return shader;
 }
 

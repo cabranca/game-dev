@@ -24,9 +24,9 @@ void Game::Init()
 	m_SoundEngine = std::unique_ptr<irrklang::ISoundEngine>(irrklang::createIrrKlangDevice());
 	m_SoundEngine->play2D("audio/breakout.mp3", true);
 
-	ResourceManager::loadShader("shaders/sprite.vs", "shaders/sprite.frag", nullptr, "sprite");
-	ResourceManager::loadShader("shaders/particle.vs", "shaders/particle.frag", nullptr, "particle");
-	ResourceManager::loadShader("shaders/post_processing.vs", "shaders/post_processing.frag", nullptr, "postprocessing");
+	ResourceManager::loadShader("shaders/sprite.vs", "shaders/sprite.frag", "", "sprite");
+	ResourceManager::loadShader("shaders/particle.vs", "shaders/particle.frag", "", "particle");
+	ResourceManager::loadShader("shaders/post_processing.vs", "shaders/post_processing.frag", "", "postprocessing");
 
 	
 	// Configure shaders

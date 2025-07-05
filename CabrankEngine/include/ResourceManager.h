@@ -26,7 +26,7 @@ namespace cabrankengine {
         ResourceManager() = delete;
 
         // loads (and generates) a shader program from file loading vertex, fragment (and geometry) shader's source code. If gShaderFile is not nullptr, it also loads a geometry shader
-        static Shader    loadShader(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile, const std::string& name);
+        static Shader    loadShader(const std::string& vShaderFile, const std::string& fShaderFile, const std::string& gShaderFile, const std::string& name);
         // retrieves a stored sader
         static Shader    getShader(const std::string& name);
         // loads (and generates) a texture from file
@@ -42,7 +42,7 @@ namespace cabrankengine {
         static std::map<std::string, Texture2D> m_Textures;
 
         // loads and generates a shader from file
-        static Shader    loadShaderFromFile(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile = nullptr);
+        static Shader    loadShaderFromFile(const std::string& vShaderFile, const std::string& fShaderFile, const std::string& gShaderFile = nullptr);
         // loads a single texture from file
         static Texture2D loadTextureFromFile(const char* file, bool alpha);
     };

@@ -22,7 +22,7 @@ using namespace glm;
 TextRenderer::TextRenderer(unsigned int width, unsigned int height)
 {
     // load and configure shader
-    this->m_TextShader = ResourceManager::loadShader("shaders/text_2d.vs", "shaders/text_2d.frag", nullptr, "text");
+    this->m_TextShader = ResourceManager::loadShader("shaders/text_2d.vs", "shaders/text_2d.frag", "", "text");
     this->m_TextShader.setMatrix4("projection", ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f), true);
     this->m_TextShader.setInteger("text", 0);
     // configure VAO/VBO for texture quads
