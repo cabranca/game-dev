@@ -1,5 +1,6 @@
 #include <iostream>
 #include <CabrankEngine.h>
+#include <SDL/SDL.h>
 #include <Window.h>
 #include <GL/glew.h>
 #include <Game.h>
