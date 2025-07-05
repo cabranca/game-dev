@@ -1,15 +1,5 @@
-/*******************************************************************
-** This code is part of Breakout.
-**
-** Breakout is free software: you can redistribute it and/or modify
-** it under the terms of the CC BY 4.0 license as published by
-** Creative Commons, either version 4 of the License, or (at your
-** option) any later version.
-******************************************************************/
 #include <ResourceManager.h>
-
 #include <iostream>
-#include <sstream>
 #include <fstream>
 #include <GL/glew.h>
 #include "stb_image.h"
@@ -17,8 +7,8 @@
 using namespace cabrankengine;
 
 // Instantiate static variables
-std::map<std::string, Texture2D>    ResourceManager::m_Textures;
-std::map<std::string, Shader>       ResourceManager::m_Shaders;
+std::unordered_map<std::string, Texture2D> ResourceManager::m_Textures;
+std::unordered_map<std::string, Shader> ResourceManager::m_Shaders;
 
 
 Shader ResourceManager::loadShader(const std::string& vShaderFile, const std::string& fShaderFile, const std::string& gShaderFile, const std::string& name)
