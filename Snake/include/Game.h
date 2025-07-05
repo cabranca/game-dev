@@ -3,7 +3,6 @@
 #include <Window.h>
 #include <InputManager.h>
 #include <SpriteRenderer.h>
-#include <Snake.h>
 #include <EntityManager.h>
 #include <queue>
 #include <TextRenderer.h>
