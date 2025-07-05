@@ -1,4 +1,5 @@
 #include "CabrankEngine.h"
+#include <SDL/SDL.h>
 
 using namespace cabrankengine;
 
