@@ -25,7 +25,7 @@ namespace cabrankengine {
         // sets the current shader as active
         Shader& use();
         // compiles the shader from given source code
-        void    compile(const char* vertexSource, const char* fragmentSource, const char* geometrySource = nullptr); // note: geometry source code is optional 
+        void    compile(std::string_view vertexSource, std::string_view fragmentSource, std::string_view geometrySource = ""); // note: geometry source code is optional 
         // utility functions
         void    setFloat(const char* name, float value, bool useShader = false);
         void    setInteger(const char* name, int value, bool useShader = false);

@@ -65,7 +65,7 @@ Shader ResourceManager::loadShaderFromFile(const std::string& vShaderFile, const
         }
 
         Shader shader;
-        shader.compile(vertexCode.c_str(), fragmentCode.c_str(), geometryCode.empty() ? nullptr : geometryCode.c_str());
+        shader.compile(vertexCode, fragmentCode, geometryCode);
         return shader;
     }
     catch (const std::exception& e) {
