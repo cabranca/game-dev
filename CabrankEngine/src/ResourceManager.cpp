@@ -86,7 +86,7 @@ Texture2D ResourceManager::loadTextureFromFile(const char* file, bool alpha)
 std::string ResourceManager::ReadFileToString(const std::string& path) {
     std::ifstream file(path, std::ios::in | std::ios::binary);
     if (!file) {
-        throw std::runtime_error("No se pudo abrir el archivo: " + path);
+        throw std::runtime_error("Could not open the file: " + path);
     }
     std::string content;
     file.seekg(0, std::ios::end);
