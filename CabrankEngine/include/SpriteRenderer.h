@@ -1,8 +1,9 @@
 #pragma once
 #include <Shader.h>
-#include <Texture2D.h>
 
 namespace cabrankengine {
+	class Texture2D;
+
 	class SpriteRenderer
 	{
 	public:
