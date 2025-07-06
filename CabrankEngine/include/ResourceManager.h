@@ -23,7 +23,7 @@ namespace cabrankengine {
         static Shader getShader(const std::string& name);
         
         // Loads (and generates) a texture from file.
-        static Texture2D loadTexture(const char* file, bool alpha, const std::string& name);
+        static Texture2D loadTexture(const std::string& file, bool alpha, const std::string& name);
         
         // Retrieves a stored texture.
         static Texture2D getTexture(const std::string& name);
@@ -40,7 +40,7 @@ namespace cabrankengine {
         static Shader loadShaderFromFile(const std::string& vShaderFile, const std::string& fShaderFile, const std::string& gShaderFile = nullptr);
         
         // Loads a single texture from file.
-        static Texture2D loadTextureFromFile(const char* file, bool alpha);
+        static Texture2D loadTextureFromFile(const std::string& file, bool alpha);
 
         // Returns a text file content as a string.
         static std::string ReadFileToString(const std::string& path);

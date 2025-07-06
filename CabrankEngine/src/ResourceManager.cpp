@@ -22,7 +22,7 @@ Shader ResourceManager::getShader(const std::string& name)
     return m_Shaders[name];
 }
 
-Texture2D ResourceManager::loadTexture(const char* file, bool alpha, const std::string& name)
+Texture2D ResourceManager::loadTexture(const std::string& file, bool alpha, const std::string& name)
 {
     m_Textures[name] = loadTextureFromFile(file, alpha);
     return m_Textures[name];
@@ -64,7 +64,7 @@ Shader ResourceManager::loadShaderFromFile(const std::string& vShaderFile, const
     }
 }
 
-Texture2D ResourceManager::loadTextureFromFile(const char* file, bool alpha)
+Texture2D ResourceManager::loadTextureFromFile(const std::string& file, bool alpha)
 {
     // create texture object
     Texture2D texture;
@@ -75,7 +75,7 @@ Texture2D ResourceManager::loadTextureFromFile(const char* file, bool alpha)
     }
     // load image
     int width, height, nrChannels;
-    unsigned char* data = stbi_load(file, &width, &height, &nrChannels, 0);
+    unsigned char* data = stbi_load(file.c_str(), &width, &height, &nrChannels, 0);
     // now generate texture
     texture.generate(width, height, data);
     // and finally free image data
