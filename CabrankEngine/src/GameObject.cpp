@@ -1,4 +1,5 @@
 #include <GameObject.h>
+#include <SpriteRenderer.h>
 
 using namespace cabrankengine;
 using namespace glm;
