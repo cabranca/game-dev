@@ -16,31 +16,33 @@ namespace cabrankengine {
     public:
         ResourceManager() = delete;
 
-        // loads (and generates) a shader program from file loading vertex, fragment (and geometry) shader's source code. If gShaderFile is not nullptr, it also loads a geometry shader
+        // Loads (and generates) a shader program from file loading vertex, fragment shader's source code. If gShaderFile is not empty, it also loads a geometry shader.
         static Shader loadShader(const std::string& vShaderFile, const std::string& fShaderFile, const std::string& gShaderFile, const std::string& name);
         
-        // retrieves a stored sader
+        // Retrieves a stored shader.
         static Shader getShader(const std::string& name);
         
-        // loads (and generates) a texture from file
+        // Loads (and generates) a texture from file.
         static Texture2D loadTexture(const char* file, bool alpha, const std::string& name);
         
-        // retrieves a stored texture
+        // Retrieves a stored texture.
         static Texture2D getTexture(const std::string& name);
         
-        // properly de-allocates all loaded resources
+        // Properly de-allocates all loaded resources.
         static void clear();
 
     private:
-        // resource storage
+        // Resource storage.
         static std::unordered_map<std::string, Shader> m_Shaders;
         static std::unordered_map<std::string, Texture2D> m_Textures;
 
-        // loads and generates a shader from file
-        static Shader    loadShaderFromFile(const std::string& vShaderFile, const std::string& fShaderFile, const std::string& gShaderFile = nullptr);
-        // loads a single texture from file
+        // Loads and generates a shader from file.
+        static Shader loadShaderFromFile(const std::string& vShaderFile, const std::string& fShaderFile, const std::string& gShaderFile = nullptr);
+        
+        // Loads a single texture from file.
         static Texture2D loadTextureFromFile(const char* file, bool alpha);
 
+        // Returns a text file content as a string.
         static std::string ReadFileToString(const std::string& path);
     };
 
