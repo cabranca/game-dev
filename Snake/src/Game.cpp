@@ -7,6 +7,7 @@
 #include <CollisionSolver.h>
 #include <random>
 #include <iostream>
+#include <glm/gtc/type_ptr.hpp>
 
 using namespace glm;
 using namespace cabrankengine;

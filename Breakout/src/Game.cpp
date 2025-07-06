@@ -6,6 +6,7 @@
 #include <iostream>
 #include <SDL/SDL_timer.h>
 #include <SDL/SDL_events.h>
+#include <glm/gtc/type_ptr.hpp>
 
 using namespace breakout;
 using namespace glm;

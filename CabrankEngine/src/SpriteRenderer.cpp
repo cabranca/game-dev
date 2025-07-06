@@ -1,5 +1,6 @@
 #include <SpriteRenderer.h>
 #include <GL/glew.h>
+#include <glm/gtc/type_ptr.hpp>
 
 using namespace cabrankengine;
 using namespace glm;
