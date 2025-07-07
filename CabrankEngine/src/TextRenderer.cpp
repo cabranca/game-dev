@@ -90,7 +90,7 @@ void TextRenderer::load(std::string_view font, unsigned int fontSize)
     FT_Done_FreeType(ft);
 }
 
-void TextRenderer::renderText(std::string_view text, float x, float y, float scale, vec3 color) const
+void TextRenderer::renderText(std::string_view text, float x, float y, float scale, vec3 color)
 {
     // activate corresponding render state	
     this->m_TextShader.use();
