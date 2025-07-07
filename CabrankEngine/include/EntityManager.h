@@ -6,7 +6,7 @@
 
 namespace cabrankengine
 {
-	using EntPtr = std::shared_ptr<Entity>;
+	using EntPtr = std::shared_ptr<Entity>; //TODO: check whether this must be a shared_ptr or it can be a const reference (or unique_ptr).
 	using Entities = std::vector<EntPtr>;
 
 	class EntityManager

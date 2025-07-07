@@ -4,7 +4,7 @@
 
 namespace cabrankengine
 {
-	// This MUST match all the possible components in Components.h
+	// This MUST match all the possible components in Components.hpp
 	typedef std::tuple<
 		CTransform,
 		CTexture,
