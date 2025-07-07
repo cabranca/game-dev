@@ -1,24 +1,15 @@
 #pragma once
-/*******************************************************************
-** This code is part of Breakout.
-**
-** Breakout is free software: you can redistribute it and/or modify
-** it under the terms of the CC BY 4.0 license as published by
-** Creative Commons, either version 4 of the License, or (at your
-** option) any later version.
-******************************************************************/
 
-#include <Texture2D.h>
 #include <Shader.h>
-#include <map>
+#include <unordered_map>
 
 namespace cabrankengine {
-    /// Holds all state information relevant to a character as loaded using FreeType
+    /// Holds all state information relevant to a character as loaded using FreeType.
     struct Character {
         unsigned int TextureID; // ID handle of the glyph texture
-        glm::ivec2   Size;      // size of glyph
-        glm::ivec2   Bearing;   // offset from baseline to left/top of glyph
-        unsigned int Advance;   // horizontal offset to advance to next glyph
+        glm::ivec2   Size;      // Size of glyph
+        glm::ivec2   Bearing;   // Offset from baseline to left/top of glyph
+        unsigned int Advance;   // Horizontal offset to advance to next glyph
     };
 
 
@@ -29,18 +20,21 @@ namespace cabrankengine {
     {
     public:
         TextRenderer(unsigned int width, unsigned int height);
-        // pre-compiles a list of characters from the given font
-        void load(std::string font, unsigned int fontSize);
-        // renders a string of text using the precompiled list of characters
-        void renderText(std::string text, float x, float y, float scale, glm::vec3 color = glm::vec3(1.0f));
+
+        // Pre-compiles a list of characters from the given font.
+        void load(std::string_view font, unsigned int fontSize);
+
+        // Renders a string of text using the precompiled list of characters.
+        void renderText(std::string_view text, float x, float y, float scale, glm::vec3 color = glm::vec3(1.0f));
     
     private:
-        // render state
+        // Render state.
         unsigned int m_Vao, m_Vbo;
 
-        // holds a list of pre-compiled Characters
-        std::map<char, Character> m_Characters;
-        // shader used for text rendering
+        // Holds a list of pre-compiled Characters.
+        std::unordered_map<char, Character> m_Characters;
+
+        // Shader used for text rendering.
         Shader m_TextShader;
     };
 }

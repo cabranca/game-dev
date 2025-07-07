@@ -1,11 +1,3 @@
-/*******************************************************************
-** This code is part of Breakout.
-**
-** Breakout is free software: you can redistribute it and/or modify
-** it under the terms of the CC BY 4.0 license as published by
-** Creative Commons, either version 4 of the License, or (at your
-** option) any later version.
-******************************************************************/
 #include <iostream>
 #include <GL/glew.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -37,7 +29,7 @@ TextRenderer::TextRenderer(unsigned int width, unsigned int height)
     glBindVertexArray(0);
 }
 
-void TextRenderer::load(std::string font, unsigned int fontSize)
+void TextRenderer::load(std::string_view font, unsigned int fontSize)
 {
     // first clear the previously loaded Characters
     this->m_Characters.clear();
@@ -47,7 +39,7 @@ void TextRenderer::load(std::string font, unsigned int fontSize)
         std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
     // load font as face
     FT_Face face;
-    if (FT_New_Face(ft, font.c_str(), 0, &face))
+    if (FT_New_Face(ft, font.data(), 0, &face))
         std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
     // set size to load glyphs as
     FT_Set_Pixel_Sizes(face, 0, fontSize);
@@ -98,7 +90,7 @@ void TextRenderer::load(std::string font, unsigned int fontSize)
     FT_Done_FreeType(ft);
 }
 
-void TextRenderer::renderText(std::string text, float x, float y, float scale, vec3 color)
+void TextRenderer::renderText(std::string_view text, float x, float y, float scale, vec3 color) const
 {
     // activate corresponding render state	
     this->m_TextShader.use();
@@ -107,7 +99,7 @@ void TextRenderer::renderText(std::string text, float x, float y, float scale, v
     glBindVertexArray(this->m_Vao);
 
     // iterate through all characters
-    std::string::const_iterator c;
+    std::string_view::const_iterator c;
     for (c = text.begin(); c != text.end(); c++)
     {
         Character ch = m_Characters[*c];
