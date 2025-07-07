@@ -8,6 +8,7 @@
 #include <SDL/SDL_events.h>
 #include <glm/gtc/type_ptr.hpp>
 
+using namespace cabrankengine;
 using namespace breakout;
 using namespace glm;
 

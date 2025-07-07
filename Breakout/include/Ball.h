@@ -1,14 +1,15 @@
 #pragma once
+
 #include <GameObject.h>
 
 namespace breakout {
 	enum Axis { H, V };
 
-	class Ball : public GameObject
+	class Ball : public cabrankengine::GameObject
 	{
 	public:
 		Ball();
-		Ball(glm::vec2 pos, float radius, glm::vec2 initialVelocity, Texture2D sprite);
+		Ball(glm::vec2 pos, float radius, glm::vec2 initialVelocity, cabrankengine::Texture2D sprite);
 
 		glm::vec2 Move(float delta, unsigned int window_width);
 		void reset(glm::vec2 position, glm::vec2 size, glm::vec2 velocity) override;

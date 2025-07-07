@@ -8,13 +8,13 @@ namespace breakout {
 	public:
 		GameLevel();
 		void Load(const char* file, unsigned int levelWidth, unsigned int levelHeight);
-		void Draw(SpriteRenderer& renderer);
+		void Draw(cabrankengine::SpriteRenderer& renderer);
 		bool IsCompleted();
 
-		std::vector<GameObject>& GetBricks() { return m_Bricks; }
+		std::vector<cabrankengine::GameObject>& GetBricks() { return m_Bricks; }
 
 	private:
-		std::vector<GameObject> m_Bricks;
+		std::vector<cabrankengine::GameObject> m_Bricks;
 
 		void init(std::vector<std::vector<unsigned int>> tileData, unsigned int levelWidth, unsigned int levelHeight);
 	};

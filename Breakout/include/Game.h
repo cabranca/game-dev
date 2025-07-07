@@ -56,7 +56,7 @@ namespace breakout {
 		void ResetPlayer();
 
 		// powerups
-		void SpawnPowerUps(GameObject& block);
+		void SpawnPowerUps(cabrankengine::GameObject& block);
 		void UpdatePowerUps(float dt);
 
 		// Getters and Setters
@@ -72,14 +72,14 @@ namespace breakout {
 		unsigned int m_Lives;
 
 		std::unique_ptr<irrklang::ISoundEngine> m_SoundEngine;
-		std::unique_ptr<SpriteRenderer> m_Renderer;
-		std::unique_ptr<TextRenderer> m_TextRenderer;
+		std::unique_ptr<cabrankengine::SpriteRenderer> m_Renderer;
+		std::unique_ptr<cabrankengine::TextRenderer> m_TextRenderer;
 		std::unique_ptr<Player> m_Player;
 		std::unique_ptr<Ball> m_Ball;
-		std::unique_ptr<ParticleGenerator> m_Particles;
+		std::unique_ptr<cabrankengine::ParticleGenerator> m_Particles;
 		std::vector<std::shared_ptr<PowerUp>> m_PowerUps;
-		std::unique_ptr<PostProcessor> m_Effects;
-		std::unique_ptr<InputManager> m_InputManager;
+		std::unique_ptr<cabrankengine::PostProcessor> m_Effects;
+		std::unique_ptr<cabrankengine::InputManager> m_InputManager;
 		float m_ShakeTime = 0.0f;
 
 		const glm::vec2 c_PlayerSize = glm::vec2(100.0f, 20.0f);
@@ -88,9 +88,9 @@ namespace breakout {
 		const float c_BallRadius = 12.5f;
 
 		// AABB - AABB collision
-		static bool checkCollision(GameObject& one, GameObject& two);
+		static bool checkCollision(cabrankengine::GameObject& one, cabrankengine::GameObject& two);
 		// AABB - Circle collision
-		static Collision checkCollision(Ball& one, GameObject& two);
+		static Collision checkCollision(Ball& one, cabrankengine::GameObject& two);
 		static Direction vectorDirection(glm::vec2 target);
 
 		// powerups
