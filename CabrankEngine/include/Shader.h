@@ -37,6 +37,6 @@ namespace cabrankengine {
         unsigned int m_Id;
 
         // Checks if compilation or linking failed and if so, print the error logs.
-        void checkCompileErrors(unsigned int object, std::string type);
+        static void checkCompileErrors(unsigned int object, std::string type);
     };
 }
