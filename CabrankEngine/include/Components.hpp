@@ -10,6 +10,10 @@ namespace cabrankengine
 		bool has = false;
 	};
 
+	class CPlayer : public Component {};
+
+	class CEnemy : public Component {};
+
 	class CTransform : public Component
 	{
 	public:
@@ -59,6 +63,32 @@ namespace cabrankengine
 		bool shoot;
 
 		CInput() : up(false), down(false), right(false), left(false), shoot(false) {}
+	};
+
+	class CLinearMovement : public Component
+	{
+	public:
+		glm::vec2 direction;
+		float speed;
+		CLinearMovement() : direction(0.f, 0.f), speed(0.f) {}
+		CLinearMovement(const glm::vec2& dir, float s) : direction(dir), speed(s) {}
+	};
+
+	class CHealth : public Component
+	{
+	public:
+		int maxHealth;
+		int currentHealth;
+		CHealth() : maxHealth(100), currentHealth(100) {}
+		CHealth(int maxH, int currentH) : maxHealth(maxH), currentHealth(currentH) {}
+	};
+
+	class CDamage : public Component
+	{
+	public:
+		int damageAmount;
+		CDamage() : damageAmount(10) {}
+		CDamage(int dmg) : damageAmount(dmg) {}
 	};
 
 	class CScore : public Component
