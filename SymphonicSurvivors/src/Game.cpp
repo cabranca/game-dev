@@ -57,6 +57,8 @@ void Game::init() {
 	// Create Text Renderer
 	m_TextRenderer = std::make_unique<TextRenderer>(static_cast<unsigned int>(WINDOW_WIDTH), static_cast<unsigned int>(WINDOW_HEIGHT));
 	m_TextRenderer->load("fonts/ocraext.TTF", 24);
+
+	spawnPlayer();
 }
 
 void Game::loadShaders() {
@@ -67,6 +69,7 @@ void Game::loadShaders() {
 }
 
 void Game::loadTextures() {
+	ResourceManager::loadTexture("textures/awesomeface.png", true, PLAYER_LABEL);
 }
 
 void Game::update(float deltaTime) {
@@ -132,6 +135,15 @@ void Game::sRender() {
 	}
 
 	m_Window.swapBuffer();
+}
+
+void ss::Game::spawnPlayer() {
+	const auto& player = m_EntityManager.addEntity(PLAYER_LABEL);
+	player->addComponent<CPlayer>();
+	player->addComponent<CTransform>(vec2(WINDOW_WIDTH / 2.f, WINDOW_HEIGHT / 2.f), vec2(), 0.f);
+	player->addComponent<CBoundingBox>(PLAYER_SPRITE_SIZE);
+	player->addComponent<CTexture>(PLAYER_LABEL, vec2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), PLAYER_SPRITE_SIZE, vec3(1.0f));
+	player->addComponent<CInput>();
 }
 
 

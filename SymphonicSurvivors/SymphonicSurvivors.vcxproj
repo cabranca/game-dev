@@ -80,7 +80,7 @@
     <LibraryPath>$(SolutionDir)\x64\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)\SymphonicSurvivors\include;$(SolutionDir)\CabrankEngine\include;$(SolutionDir)\CabrankEngine\libraries\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)SymphonicSurvivors\include;$(SolutionDir)CabrankEngine\include;$(SolutionDir)CabrankEngine\libraries\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\x64\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
