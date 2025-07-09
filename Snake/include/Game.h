@@ -9,6 +9,17 @@
 
 
 namespace snake {
+
+	constexpr float c_WindowWidth = 800.f;
+	constexpr float c_WindowHeight = 800.f;
+	constexpr glm::vec2 c_SnakeSpriteSize = glm::vec2(40.0f, 40.0f);
+	constexpr glm::vec2 c_FruitSpriteSize = glm::vec2(40.0f, 40.0f);
+	constexpr std::string c_SpriteLabel = "sprite";
+	constexpr std::string c_SnakeLabel = "snake";
+	constexpr std::string c_FruitLabel = "fruit";
+	constexpr std::string c_BackgroundLabel = "background";
+	constexpr float c_SnakeSpeed = 40.0f;
+
 	class Game {
 	public:
 
@@ -34,16 +45,6 @@ namespace snake {
 		void spawnFruit();
 		void increaseTail();
 		void reset();
-
-		const float c_WindowWidth = 800.f;
-		const float c_WindowHeight = 800.f;
-		const glm::vec2 c_SnakeSpriteSize = glm::vec2(40.0f, 40.0f);
-		const glm::vec2 c_FruitSpriteSize = glm::vec2(40.0f, 40.0f);
-		const std::string c_SpriteLabel = "sprite";
-		const std::string c_SnakeLabel = "snake";
-		const std::string c_FruitLabel = "fruit";
-		const std::string c_BackgroundLabel = "background";
-		const float c_SnakeSpeed = 40.0f;
 
 		GameState m_CurrentState;
 		cabrankengine::Window m_Window;
