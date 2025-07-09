@@ -17,7 +17,7 @@ namespace cabrankengine
 		glm::vec2 velocity;
 		float angle;
 
-		CTransform() = default;
+		CTransform() : pos(), velocity(), angle(0.f) {}
 
 		CTransform(const glm::vec2& p, const glm::vec2& v, float a)
 			: pos(p), velocity(v), angle(a) {}
@@ -31,7 +31,7 @@ namespace cabrankengine
 		glm::vec2 size;
 		glm::vec3 color;
 
-		CTexture() = default;
+		CTexture() : name(""), pos(0.f, 0.f), size(1.f, 1.f), color(1.f, 1.f, 1.f) {}
 
 		CTexture(const std::string& n, const glm::vec2& p, const glm::vec2& s, const glm::vec3& c)
 			: name(n), pos(p), size(s), color(c) {}
@@ -43,7 +43,7 @@ namespace cabrankengine
 		glm::vec2 size;
 		glm::vec2 halfSize;
 
-		CBoundingBox() = default;
+		CBoundingBox() : size(1.f, 1.f), halfSize(0.5f, 0.5f) {}
 
 		CBoundingBox(const glm::vec2& s)
 			: size(s), halfSize(s.x / 2, s.y / 2) {}
@@ -58,7 +58,7 @@ namespace cabrankengine
 		bool left;
 		bool shoot;
 
-		CInput() = default;
+		CInput() : up(false), down(false), right(false), left(false), shoot(false) {}
 	};
 
 	class CScore : public Component
@@ -66,7 +66,7 @@ namespace cabrankengine
 	public:
 		int score;
 
-		CScore() = default;
+		CScore() : score(0) {}
 
 		CScore(int s) : score(s) {}
 	};
