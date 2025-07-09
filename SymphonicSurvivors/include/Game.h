@@ -11,8 +11,8 @@
 
 namespace ss
 {
-	constexpr float WINDOW_WIDTH = 1600.f;
-	constexpr float WINDOW_HEIGHT = 900.f;
+	constexpr float WINDOW_WIDTH = 1280.f;
+	constexpr float WINDOW_HEIGHT = 720.f;
 	constexpr glm::vec2 PLAYER_SPRITE_SIZE = glm::vec2(80.0f, 80.0f);
 	constexpr glm::vec2 ENEMY_SPRITE_SIZE = glm::vec2(80.0f, 80.0f);
 	constexpr glm::vec2 BULLET_SPRITE_SIZE = glm::vec2(20.0f, 20.0f);
@@ -38,7 +38,7 @@ namespace ss
 		void init();
 		void loadShaders();
 		void loadTextures();
-		void update();
+		void update(float deltaTime);
 		void sUserInput();
 		void sMovement();
 		void sCollision();
