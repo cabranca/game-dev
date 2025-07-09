@@ -6,7 +6,7 @@
 
 namespace cabrankengine
 {
-	using EntPtr = std::shared_ptr<Entity>; //TODO: check whether this must be a shared_ptr or it can be a const reference (or unique_ptr).
+	using EntPtr = std::shared_ptr<Entity>; // For now the idea is that the entities are shared between m_Entities and m_EntitiesToAdd.
 	using Entities = std::vector<EntPtr>;
 
 	class EntityManager
@@ -21,10 +21,10 @@ namespace cabrankengine
 		EntPtr addEntity(const std::string& tag);
 
 		// Return all entities.
-		Entities getEntities() const;
+		const Entities& getEntities() const;
 
 		// Return all entities with the given tag.
-		Entities getEntities(const std::string& tag) const;
+		const Entities& getEntities(const std::string& tag) const;
 
 	private:
 		Entities m_Entities; // All the current entities.

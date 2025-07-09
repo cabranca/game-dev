@@ -9,7 +9,7 @@ void EntityManager::update()
 {
 	// Remove dead entities
 	std::erase_if(m_Entities, [](EntPtr ent) { return !ent->isActive(); });
-	for (auto& [tag, entities] : m_TagToEntities)
+	for (auto& [_, entities] : m_TagToEntities)
 	{
 		std::erase_if(entities, [](EntPtr ent) { return !ent->isActive(); });
 	}
@@ -30,12 +30,12 @@ EntPtr EntityManager::addEntity(const std::string & tag)
 	return ent;
 }
 
-Entities EntityManager::getEntities() const
+const Entities& EntityManager::getEntities() const
 {
 	return m_Entities;
 }
 
-Entities EntityManager::getEntities(const std::string& tag) const
+const Entities& EntityManager::getEntities(const std::string& tag) const
 {
 	return m_TagToEntities.at(tag);
 }
