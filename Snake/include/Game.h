@@ -35,8 +35,8 @@ namespace snake {
 		void increaseTail();
 		void reset();
 
-		const int c_WindowWidth = 800;
-		const int c_WindowHeight = 800;
+		const float c_WindowWidth = 800.f;
+		const float c_WindowHeight = 800.f;
 		const glm::vec2 c_SnakeSpriteSize = glm::vec2(40.0f, 40.0f);
 		const glm::vec2 c_FruitSpriteSize = glm::vec2(40.0f, 40.0f);
 		const std::string c_SpriteLabel = "sprite";

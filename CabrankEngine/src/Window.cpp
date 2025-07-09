@@ -12,7 +12,7 @@ cabrankengine::Window::~Window() {
 	m_SDLWindow = nullptr;
 }
 
-int Window::create(std::string name, int width, int height, unsigned int currentFlags)
+int Window::create(std::string name, float width, float height, unsigned int currentFlags)
 {
 	// Check the flags for the window setting
 	Uint32 flags = SDL_WINDOW_OPENGL;
@@ -27,7 +27,7 @@ int Window::create(std::string name, int width, int height, unsigned int current
 		flags |= SDL_WINDOW_BORDERLESS;
 
 	// Create the actual window
-	m_SDLWindow = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
+	m_SDLWindow = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, static_cast<int>(width), static_cast<int>(height), flags);
 	if (m_SDLWindow == nullptr)
 		std::cout << "SDL Window could not be created!" << std::endl;
 

@@ -58,7 +58,7 @@ void Game::init()
 	m_Renderer = std::make_unique<SpriteRenderer>(shader);
 	
 	// Create Text Renderer
-	m_TextRenderer = std::make_unique<TextRenderer>(c_WindowWidth, c_WindowHeight);
+	m_TextRenderer = std::make_unique<TextRenderer>(static_cast<unsigned int>(c_WindowWidth), static_cast<unsigned int>(c_WindowHeight));
 	m_TextRenderer->load("fonts/ocraext.TTF", 24);
 
 	setBackground();
@@ -260,7 +260,7 @@ void Game::setBackground()
 void Game::spawnSnake()
 {
 	auto snake = m_EntityManager.addEntity(c_SnakeLabel);
-	snake->addComponent<CTransform>(vec2(c_WindowWidth / 2, c_WindowHeight / 2), vec2(), 0);
+	snake->addComponent<CTransform>(vec2(c_WindowWidth / 2.f, c_WindowHeight / 2.f), vec2(), 0.f);
 	snake->addComponent<CBoundingBox>(c_SnakeSpriteSize);
 	snake->addComponent<CTexture>(c_SnakeLabel, vec2(c_WindowWidth / 2, c_WindowHeight / 2), c_SnakeSpriteSize, vec3(1.0f));
 	m_Head = m_Tail = snake;
@@ -276,11 +276,11 @@ void Game::spawnFruit()
 	std::uniform_int_distribution<std::mt19937::result_type> randx(0, 19);
 	std::uniform_int_distribution<std::mt19937::result_type> randy(0, 19);
 
-	auto column = randx(rng) * c_FruitSpriteSize.x;
-	auto row = randy(rng) * c_FruitSpriteSize.y;
+	float column = randx(rng) * c_FruitSpriteSize.x;
+	float row = randy(rng) * c_FruitSpriteSize.y;
 
 	auto fruit = m_EntityManager.addEntity(c_FruitLabel);
-	fruit->addComponent<CTransform>(vec2(row, column), vec2(), 0);
+	fruit->addComponent<CTransform>(vec2(row, column), vec2(), 0.f);
 	fruit->addComponent<CBoundingBox>(c_FruitSpriteSize);
 	fruit->addComponent<CTexture>(c_FruitLabel, vec2(row, column), c_FruitSpriteSize, vec3(1.0f));
 }
@@ -289,7 +289,7 @@ void Game::increaseTail()
 {
 	auto snake = m_EntityManager.addEntity(c_SnakeLabel);
 	auto newPos = m_Tail->getComponent<CTransform>().pos - m_Tail->getComponent<CTransform>().velocity * c_SnakeSpriteSize.x;
-	snake->addComponent<CTransform>(newPos, vec2(), 0);
+	snake->addComponent<CTransform>(newPos, vec2(), 0.f);
 	snake->addComponent<CBoundingBox>(c_SnakeSpriteSize);
 	snake->addComponent<CTexture>(c_SnakeLabel, newPos, c_SnakeSpriteSize, vec3(1.0f));
 

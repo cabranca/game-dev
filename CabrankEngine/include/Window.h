@@ -22,7 +22,7 @@ namespace cabrankengine
 		~Window();
 
 		// Create the window with the given width height and flags
-		int create(std::string name, int width, int height, unsigned int currentFlags);
+		int create(std::string name, float width, float height, unsigned int currentFlags);
 
 		// Swap between buffers (previously set in CabrankEngine.cpp)
 		void swapBuffer();
