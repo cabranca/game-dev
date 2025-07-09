@@ -13,14 +13,14 @@ namespace ss
 {
 	constexpr float WINDOW_WIDTH = 1280.f;
 	constexpr float WINDOW_HEIGHT = 720.f;
-	constexpr glm::vec2 PLAYER_SPRITE_SIZE = glm::vec2(80.0f, 80.0f);
-	constexpr glm::vec2 ENEMY_SPRITE_SIZE = glm::vec2(80.0f, 80.0f);
-	constexpr glm::vec2 BULLET_SPRITE_SIZE = glm::vec2(20.0f, 20.0f);
-	constexpr std::string SPRITE_LABEL = "sprite";
-	constexpr std::string PLAYER_LABEL = "player";
-	constexpr std::string ENEMY_LABEL = "enemy";
-	constexpr std::string BULLET_LABEL = "bullet";
-	constexpr std::string BACKGROUND_LABEL = "background";
+	constexpr glm::vec2 PLAYER_SPRITE_SIZE = glm::vec2(40.0f, 40.0f);
+	constexpr glm::vec2 ENEMY_SPRITE_SIZE = glm::vec2(40.0f, 40.0f);
+	constexpr glm::vec2 BULLET_SPRITE_SIZE = glm::vec2(10.0f, 10.0f);
+	const std::string SPRITE_LABEL = "sprite";
+	const std::string PLAYER_LABEL = "player";
+	const std::string ENEMY_LABEL = "enemy";
+	const std::string BULLET_LABEL = "bullet";
+	const std::string BACKGROUND_LABEL = "background";
 	constexpr float PLAYER_SPEED = 40.0f;
 	constexpr float ENEMY_SPEED = 30.0f;
 	constexpr float BULLET_SPEED = 60.0f;
@@ -43,6 +43,8 @@ namespace ss
 		void sMovement();
 		void sCollision();
 		void sRender();
+
+		void spawnPlayer();
 
 		GameState m_CurrentState;
 		cabrankengine::Window m_Window;
