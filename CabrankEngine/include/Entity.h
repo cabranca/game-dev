@@ -31,7 +31,7 @@ namespace cabrankengine
 
 		// Getters
 		size_t getId() const;
-		std::string getTag() const;
+		const std::string& getTag() const;
 		bool isActive() const;
 
 		template<typename T>

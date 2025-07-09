@@ -15,7 +15,7 @@ size_t Entity::getId() const
 	return m_Id;
 }
 
-std::string Entity::getTag() const
+const std::string& Entity::getTag() const
 {
 	return m_Tag;
 }
