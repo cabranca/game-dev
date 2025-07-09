@@ -24,6 +24,7 @@
     <ProjectGuid>{9d4b3576-a0d9-4868-b1b8-f7d524b89c4c}</ProjectGuid>
     <RootNamespace>SymphonicSurvivors</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>SymphonicSurvivors</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -79,11 +80,11 @@
     <LibraryPath>$(SolutionDir)\x64\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)\Snake\include;$(SolutionDir)\CabrankEngine\include;$(SolutionDir)\CabrankEngine\libraries\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\SymphonicSurvivors\include;$(SolutionDir)\CabrankEngine\include;$(SolutionDir)\CabrankEngine\libraries\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\x64\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)\Snake\include;$(SolutionDir)\CabrankEngine\include;$(SolutionDir)\CabrankEngine\libraries\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)SymphonicSurvivors\include;$(SolutionDir)CabrankEngine\libraries\include;$(SolutionDir)CabrankEngine\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\x64\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
