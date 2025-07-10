@@ -40,7 +40,7 @@ namespace ss
 		void loadTextures();
 		void update(float deltaTime);
 		void sUserInput();
-		void sMovement();
+		void sMovement(float deltaTime);
 		void sCollision();
 		void sRender();
 
@@ -52,5 +52,7 @@ namespace ss
 		std::unique_ptr<cabrankengine::SpriteRenderer> m_Renderer; // I still do not get why it only works with a pointer.
 		std::unique_ptr<cabrankengine::TextRenderer> m_TextRenderer;
 		cabrankengine::EntityManager m_EntityManager;
+
+		cabrankengine::EntPtr m_Player;
 	};
 }

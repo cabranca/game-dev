@@ -74,7 +74,7 @@ void Game::loadTextures() {
 
 void Game::update(float deltaTime) {
 	m_EntityManager.update();
-	sMovement();
+	sMovement(deltaTime);
 	sCollision();
 }
 
@@ -101,9 +101,45 @@ void Game::sUserInput() {
 
 	if (m_InputManager.isKeyJustPressed(SDLK_ESCAPE))
 		m_CurrentState = QUIT;
+
+	auto input = CInput();
+	if (m_InputManager.isKeyDown(SDLK_a))
+		input.left = true;
+	else if (m_InputManager.isKeyDown(SDLK_d))
+		input.right = true;
+	if (m_InputManager.isKeyDown(SDLK_w))
+		input.up = true;
+	else if (m_InputManager.isKeyDown(SDLK_s))
+		input.down = true;
+	auto& inputComponent = m_Player->getComponent<CInput>();
+	inputComponent = input;
 }
 
-void Game::sMovement() {
+void Game::sMovement(float deltaTime) {
+	// Handle player movement.
+	auto playerDirection = glm::vec2();
+	const auto& input = m_Player->getComponent<CInput>();
+	if (input.up)
+		playerDirection.y = -1;
+	else if (input.down)
+		playerDirection.y = 1;
+	if (input.left)
+		playerDirection.x = -1;
+	else if (input.right)
+		playerDirection.x = 1;
+	glm::normalize(playerDirection);
+
+	auto& transform = m_Player->getComponent<CTransform>();
+	transform.pos += playerDirection * PLAYER_SPEED * deltaTime;
+
+	// Handle bullets and enemies movement.
+	for (auto& entity : m_EntityManager.getEntities()) {
+		if (!entity->hasComponent<CPlayer>() && entity->hasComponent<CLinearMovement>()) {
+			auto& transform = entity->getComponent<CTransform>();
+			const auto& movement = entity->getComponent<CLinearMovement>();
+			transform.pos += movement.direction * movement.speed * deltaTime;
+		}
+	}
 }
 
 void Game::sCollision() {
@@ -144,6 +180,7 @@ void ss::Game::spawnPlayer() {
 	player->addComponent<CBoundingBox>(PLAYER_SPRITE_SIZE);
 	player->addComponent<CTexture>(PLAYER_LABEL, vec2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), PLAYER_SPRITE_SIZE, vec3(1.0f));
 	player->addComponent<CInput>();
+	m_Player = player;
 }
 
 
