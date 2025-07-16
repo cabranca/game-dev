@@ -2,11 +2,12 @@
 
 #include <GameObject.h>
 
-class Player : public GameObject
-{
-public:
-	Player(vec2 pos, vec2 size, Texture2D sprite);
+namespace breakout {
+	class Player : public cabrankengine::GameObject
+	{
+	public:
+		Player(glm::vec2 pos, glm::vec2 size, cabrankengine::Texture2D sprite);
 
-	void Extend(float value) { m_Size.x += value; }
-};
-
+		void Extend(float value) { m_Size.x += value; }
+	};
+}

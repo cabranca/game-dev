@@ -1,108 +1,58 @@
 #include <iostream>
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
+#include <CabrankEngine.h>
+#include <SDL/SDL.h>
+#include <Window.h>
+#include <GL/glew.h>
 #include <Game.h>
-#include <ResourceManager.h>
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
+//void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
 constexpr unsigned int SCREEN_WIDTH = 800;
 constexpr unsigned int SCREEN_HEIGHT = 600;
 
-Game breakout(SCREEN_WIDTH, SCREEN_HEIGHT);
+//breakout::Game breakoutGame(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-int main() {
+int main(int argc, char** argv) {
+	cabrankengine::CabrankEngine::init();
 
-	// Initialize GLFW
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_RESIZABLE, false);
+	cabrankengine::Window window;
+	window.create("Breakout", SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+	glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
 
-	// Create the window object
-	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Breakout", nullptr, nullptr);
-
-	if (window == nullptr) {
-		std::cout << "Failed to create GLFW window" << std::endl;
-		glfwTerminate();
-		return -1;
-	}
-
-	// Set the window context as current context for the thread
-	glfwMakeContextCurrent(window);
-
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-		std::cout << "Failed to initialize GLAD" << std::endl;
-		return -1;
-	}
-
-	// Set callbacks
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-	glfwSetKeyCallback(window, key_callback);
-
-	// Set OpenGL configuration
-	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	// Initialize the game
-	breakout.Init();
+	breakout::Game game(SCREEN_WIDTH, SCREEN_HEIGHT);
+	game.Init();
 
 	// deltaTime variables
-	float deltaTime = 0.0f;
-	float lastFrame = 0.0f;
+	const float DESIRED_FRAME_TIME = 1.0f / 60.0f;
+	float previousTicks = 0.0f;
+	float frameTime = 0.0f;
 
 	// Window loop
-	while (!glfwWindowShouldClose(window)) {
+	while (game.State != breakout::GameState::GAME_QUIT)
+	{
 		// Calculate delta time
-		float currentFrame = static_cast<float>(glfwGetTime());
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
-		glfwPollEvents();
+		float newTicks = static_cast<float>(SDL_GetTicks()) / 1000.0f;
+		frameTime = newTicks - previousTicks;
+		previousTicks = newTicks;
+		
+		while (frameTime > 0)
+		{
+			float deltaTime = glm::min(frameTime, 1.0f);
+			// Handle user input
+			game.ProcessInput(deltaTime);
+			// Update game state
+			game.Update(deltaTime);
 
-		// Handle user input
-		breakout.ProcessInput(deltaTime);
-
-		// Update game state
-		breakout.Update(deltaTime);
+			frameTime -= deltaTime;
+		}
 
 		// Render
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		breakout.Render();
+		game.Render();
 
-		glfwSwapBuffers(window);
+		window.swapBuffer();
 	}
-
-	// Delete all resources as loaded using the resource manager
-	ResourceManager::Clear();
-
-	glfwTerminate();
 
 	return 0;
-}
-
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-	glViewport(0, 0, width, height);
-}
-
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
-	// The escape key closes the app
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
-
-	if (key >= 0 && key < 1024)
-	{
-		if (action == GLFW_PRESS)
-			breakout.SetKey(key, true);
-		else if (action == GLFW_RELEASE)
-		{
-			breakout.SetKey(key, false);
-			breakout.ReleaseKey(key);
-		}
-	}
 }

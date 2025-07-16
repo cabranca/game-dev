@@ -1,5 +1,9 @@
 #include <Ball.h>
 
+using namespace cabrankengine;
+using namespace breakout;
+using namespace glm;
+
 Ball::Ball() : GameObject(), c_Radius(0), c_InitialVelocity(), m_Stuck(true), m_Sticky(false), m_PassThrough(false) { }
 
 Ball::Ball(vec2 pos, float radius, vec2 velocity, Texture2D sprite)
@@ -30,15 +34,15 @@ vec2 Ball::Move(float delta, unsigned int window_width)
 	return m_Position;
 }
 
-void Ball::Reset(vec2 position, vec2 size, vec2 velocity)
+void Ball::reset(vec2 position, vec2 size, vec2 velocity)
 {
-	GameObject::Reset(position, size, velocity);
+	GameObject::reset(position, size, velocity);
 	m_Stuck = true;
 	m_Sticky = false;
 	m_PassThrough = false;
 }
 
-void Ball::BounceToWall(Axis axis)
+void Ball::bounceToWall(Axis axis)
 {
 	switch (axis) {
 	case H:
@@ -50,12 +54,12 @@ void Ball::BounceToWall(Axis axis)
 	}
 }
 
-void Ball::Accelerate(float factor)
+void Ball::accelerate(float factor)
 {
 	m_Velocity *= factor;
 }
 
-void Ball::BounceToPlayer(float percentage)
+void Ball::bounceToPlayer(float percentage)
 {
 	vec2 oldVelocity = m_Velocity;
 	m_Velocity.x = c_InitialVelocity.x * percentage * c_Strength;

@@ -1,4 +1,5 @@
 #include <ParticleGenerator.h>
+#include <GL/glew.h>
 
 using namespace cabrankengine;
 using namespace glm;
@@ -9,7 +10,7 @@ ParticleGenerator::ParticleGenerator(Shader shader, Texture2D texture, unsigned 
 	init();
 }
 
-void ParticleGenerator::Update(float delta, GameObject& object, unsigned int newParticles, vec2 offset)
+void ParticleGenerator::update(float delta, GameObject& object, unsigned int newParticles, vec2 offset)
 {
 	for (unsigned int i = 0; i < newParticles; i++) {
 		int unusedParticle = firstUnusedParticle();
@@ -26,16 +27,16 @@ void ParticleGenerator::Update(float delta, GameObject& object, unsigned int new
 	}
 }
 
-void ParticleGenerator::Draw()
+void ParticleGenerator::draw()
 {
 	// use additive blending to give it a 'glow' effect
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-	m_Shader.Use();
+	m_Shader.use();
 	for (auto& particle : m_Particles) {
 		if (particle.Life > 0.0) {
-			m_Shader.SetVector2f("offset", particle.Position);
-			m_Shader.SetVector4f("color", particle.Color);
-			m_Texture.Bind();
+			m_Shader.setVector2f("offset", particle.Position);
+			m_Shader.setVector4f("color", particle.Color);
+			m_Texture.bind();
 			glBindVertexArray(m_VAO);
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 			glBindVertexArray(0);

@@ -23,9 +23,9 @@ namespace cabrankengine {
 	public:
 		ParticleGenerator(Shader shader, Texture2D texture, unsigned int amount);
 
-		void Update(float delta, GameObject& object, unsigned int newParticles, glm::vec2 offset = glm::vec2(0.0f, 0.0f));
+		void update(float delta, GameObject& object, unsigned int newParticles, glm::vec2 offset = glm::vec2(0.0f, 0.0f));
 
-		void Draw();
+		void draw();
 
 	private:
 		std::vector<Particle> m_Particles;

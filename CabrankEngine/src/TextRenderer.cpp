@@ -1,13 +1,5 @@
-/*******************************************************************
-** This code is part of Breakout.
-**
-** Breakout is free software: you can redistribute it and/or modify
-** it under the terms of the CC BY 4.0 license as published by
-** Creative Commons, either version 4 of the License, or (at your
-** option) any later version.
-******************************************************************/
 #include <iostream>
-
+#include <GL/glew.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <ft2build.h>
 
@@ -22,9 +14,9 @@ using namespace glm;
 TextRenderer::TextRenderer(unsigned int width, unsigned int height)
 {
     // load and configure shader
-    this->m_TextShader = ResourceManager::LoadShader("shaders/text_2d.vs", "shaders/text_2d.frag", nullptr, "text");
-    this->m_TextShader.SetMatrix4("projection", ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f), true);
-    this->m_TextShader.SetInteger("text", 0);
+    this->m_TextShader = ResourceManager::loadShader("shaders/text_2d.vs", "shaders/text_2d.frag", "", "text");
+    this->m_TextShader.setMatrix4("projection", ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f), true);
+    this->m_TextShader.setInteger("text", 0);
     // configure VAO/VBO for texture quads
     glGenVertexArrays(1, &this->m_Vao);
     glGenBuffers(1, &this->m_Vbo);
@@ -37,7 +29,7 @@ TextRenderer::TextRenderer(unsigned int width, unsigned int height)
     glBindVertexArray(0);
 }
 
-void TextRenderer::Load(std::string font, unsigned int fontSize)
+void TextRenderer::load(std::string_view font, unsigned int fontSize)
 {
     // first clear the previously loaded Characters
     this->m_Characters.clear();
@@ -47,7 +39,7 @@ void TextRenderer::Load(std::string font, unsigned int fontSize)
         std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
     // load font as face
     FT_Face face;
-    if (FT_New_Face(ft, font.c_str(), 0, &face))
+    if (FT_New_Face(ft, font.data(), 0, &face))
         std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
     // set size to load glyphs as
     FT_Set_Pixel_Sizes(face, 0, fontSize);
@@ -88,7 +80,7 @@ void TextRenderer::Load(std::string font, unsigned int fontSize)
             texture,
             ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
             ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-            face->glyph->advance.x
+            static_cast<unsigned int>(face->glyph->advance.x)
         };
         m_Characters.insert(std::pair<char, Character>(c, character));
     }
@@ -98,16 +90,16 @@ void TextRenderer::Load(std::string font, unsigned int fontSize)
     FT_Done_FreeType(ft);
 }
 
-void TextRenderer::RenderText(std::string text, float x, float y, float scale, vec3 color)
+void TextRenderer::renderText(std::string_view text, float x, float y, float scale, vec3 color)
 {
     // activate corresponding render state	
-    this->m_TextShader.Use();
-    this->m_TextShader.SetVector3f("textColor", color);
+    this->m_TextShader.use();
+    this->m_TextShader.setVector3f("textColor", color);
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(this->m_Vao);
 
     // iterate through all characters
-    std::string::const_iterator c;
+    std::string_view::const_iterator c;
     for (c = text.begin(); c != text.end(); c++)
     {
         Character ch = m_Characters[*c];
