@@ -10,6 +10,6 @@ public:
 	}
 };
 
-cabrankengine::Application* CreateApplication() {
+cabrankengine::Application* cabrankengine::CreateApplication() {
 	return new Sandbox();
 }

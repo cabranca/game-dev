@@ -10,7 +10,6 @@ namespace cabrankengine {
 		Application();
 		virtual ~Application();
 
-	private:
 		void Run();
 	};
 
