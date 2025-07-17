@@ -1,36 +1,11 @@
-# Prerequisites
-*.d
+# Binaries
+**/bin/
+bin-int/
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-
-# Executables
-*.exe
-*.out
-*.app
-
-# VS files
+# Visual Studio files and folder
 .vs/
 
-# Bins
-x64/
+# Other projects (remove eventually)
+Breakout/
+Snake/
+SymphonicSurvivors/
