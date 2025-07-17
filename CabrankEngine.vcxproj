@@ -20,13 +20,13 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -45,14 +45,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)\CabrankEngine\include;$(SolutionDir)\CabrankEngine\libraries\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\CabrankEngine\libraries\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)\CabrankEngine\include;$(SolutionDir)\CabrankEngine\libraries\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\CabrankEngine\libraries\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
   </PropertyGroup>
@@ -60,14 +56,15 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>CE_PLATFORM_WINDOWS;CE_BUILD_DLL;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CE_PLATFORM_WINDOWS;CE_BUILD_DLL;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;irrKlang.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Link>
     <Lib>
       <AdditionalDependencies>opengl32.lib;irrKlang.lib;freetype.lib;SDL2.lib;SDL2main.lib;SDL2test.lib;glew32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -79,7 +76,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>CE_PLATFORM_WINDOWS;CE_BUILD_DLL;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CE_PLATFORM_WINDOWS;CE_BUILD_DLL;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -88,7 +85,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;irrKlang.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Link>
     <Lib>
       <AdditionalDependencies>opengl32.lib;irrKlang.lib;freetype.lib;SDL2.lib;SDL2main.lib;SDL2test.lib;glew32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -96,57 +94,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CabrankEngine\src\Cabrankengine\Core\Application.cpp" />
-    <ClCompile Include="CabrankEngine\src\CabrankEngine.cpp" />
-    <ClCompile Include="CabrankEngine\src\GameObject.cpp" />
-    <ClCompile Include="CabrankEngine\src\imgui\imgui.cpp" />
-    <ClCompile Include="CabrankEngine\src\imgui\imgui_demo.cpp" />
-    <ClCompile Include="CabrankEngine\src\imgui\imgui_draw.cpp" />
-    <ClCompile Include="CabrankEngine\src\imgui\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="CabrankEngine\src\imgui\imgui_impl_sdl2.cpp" />
-    <ClCompile Include="CabrankEngine\src\imgui\imgui_tables.cpp" />
-    <ClCompile Include="CabrankEngine\src\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="CabrankEngine\src\ParticleGenerator.cpp" />
-    <ClCompile Include="CabrankEngine\src\PostProcessor.cpp" />
-    <ClCompile Include="CabrankEngine\src\ResourceManager.cpp" />
-    <ClCompile Include="CabrankEngine\src\Shader.cpp" />
-    <ClCompile Include="CabrankEngine\src\SpriteRenderer.cpp" />
-    <ClCompile Include="CabrankEngine\src\std_image.cpp" />
-    <ClCompile Include="CabrankEngine\src\TextRenderer.cpp" />
-    <ClCompile Include="CabrankEngine\src\Texture2D.cpp" />
-    <ClCompile Include="CabrankEngine\src\Window.cpp" />
-    <ClCompile Include="CabrankEngine\src\InputManager.cpp" />
-    <ClCompile Include="CabrankEngine\src\Entity.cpp" />
-    <ClCompile Include="CabrankEngine\src\EntityManager.cpp" />
-    <ClCompile Include="CabrankEngine\src\CollisionSolver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CabrankEngine\src\Cabrankengine.h" />
     <ClInclude Include="CabrankEngine\src\Cabrankengine\Core\Application.h" />
-    <ClInclude Include="CabrankEngine\include\CabrankEngine.h" />
-    <ClInclude Include="CabrankEngine\include\GameObject.h" />
-    <ClInclude Include="CabrankEngine\include\imgui\imconfig.h" />
-    <ClInclude Include="CabrankEngine\include\imgui\imgui.h" />
-    <ClInclude Include="CabrankEngine\include\imgui\imgui_impl_opengl3.h" />
-    <ClInclude Include="CabrankEngine\include\imgui\imgui_impl_opengl3_loader.h" />
-    <ClInclude Include="CabrankEngine\include\imgui\imgui_impl_sdl2.h" />
-    <ClInclude Include="CabrankEngine\include\imgui\imgui_internal.h" />
-    <ClInclude Include="CabrankEngine\include\imgui\imstb_rectpack.h" />
-    <ClInclude Include="CabrankEngine\include\imgui\imstb_textedit.h" />
-    <ClInclude Include="CabrankEngine\include\imgui\imstb_truetype.h" />
-    <ClInclude Include="CabrankEngine\include\ParticleGenerator.h" />
-    <ClInclude Include="CabrankEngine\include\PostProcessor.h" />
-    <ClInclude Include="CabrankEngine\include\ResourceManager.h" />
-    <ClInclude Include="CabrankEngine\include\Shader.h" />
-    <ClInclude Include="CabrankEngine\include\SpriteRenderer.h" />
-    <ClInclude Include="CabrankEngine\include\stb_image.h" />
-    <ClInclude Include="CabrankEngine\include\TextRenderer.h" />
-    <ClInclude Include="CabrankEngine\include\Texture2D.h" />
-    <ClInclude Include="CabrankEngine\include\Window.h" />
-    <ClInclude Include="CabrankEngine\include\InputManager.h" />
-    <ClInclude Include="CabrankEngine\include\Entity.h" />
-    <ClInclude Include="CabrankEngine\include\EntityManager.h" />
-    <ClInclude Include="CabrankEngine\include\Components.hpp" />
-    <ClInclude Include="CabrankEngine\include\CollisionSolver.h" />
     <ClInclude Include="CabrankEngine\src\Cabrankengine\Core\Core.h" />
     <ClInclude Include="CabrankEngine\src\Cabrankengine\Core\EntryPoint.h" />
   </ItemGroup>
