@@ -60,7 +60,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CE_PLATFORM_WINDOWS;CE_BUILD_DLL;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -79,7 +79,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CE_PLATFORM_WINDOWS;CE_BUILD_DLL;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -95,7 +95,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="CabrankEngine\src\Core\Application.cpp" />
     <ClCompile Include="CabrankEngine\src\CabrankEngine.cpp" />
     <ClCompile Include="CabrankEngine\src\GameObject.cpp" />
     <ClCompile Include="CabrankEngine\src\imgui\imgui.cpp" />
@@ -120,7 +120,7 @@
     <ClCompile Include="CabrankEngine\src\CollisionSolver.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Application.h" />
+    <ClInclude Include="CabrankEngine\src\Core\Application.h" />
     <ClInclude Include="CabrankEngine\include\CabrankEngine.h" />
     <ClInclude Include="CabrankEngine\include\GameObject.h" />
     <ClInclude Include="CabrankEngine\include\imgui\imconfig.h" />
@@ -146,6 +146,7 @@
     <ClInclude Include="CabrankEngine\include\EntityManager.h" />
     <ClInclude Include="CabrankEngine\include\Components.hpp" />
     <ClInclude Include="CabrankEngine\include\CollisionSolver.h" />
+    <ClInclude Include="CabrankEngine\src\Core\Core.h" />
     <ClInclude Include="CabrankEngine\src\Core\EntryPoint.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
