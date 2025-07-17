@@ -120,6 +120,7 @@
     <ClCompile Include="CabrankEngine\src\CollisionSolver.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CabrankEngine\src\Cabrankengine.h" />
     <ClInclude Include="CabrankEngine\src\Cabrankengine\Core\Application.h" />
     <ClInclude Include="CabrankEngine\include\CabrankEngine.h" />
     <ClInclude Include="CabrankEngine\include\GameObject.h" />

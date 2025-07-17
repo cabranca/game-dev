@@ -176,5 +176,8 @@
     <ClInclude Include="CabrankEngine\src\Cabrankengine\Core\Core.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CabrankEngine\src\Cabrankengine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
