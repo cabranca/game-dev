@@ -47,10 +47,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)\CabrankEngine\include;$(SolutionDir)\CabrankEngine\libraries\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\CabrankEngine\libraries\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)bin-int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir)\CabrankEngine\include;$(SolutionDir)\CabrankEngine\libraries\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\CabrankEngine\libraries\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)bin-int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -91,6 +95,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Application.cpp" />
     <ClCompile Include="CabrankEngine\src\CabrankEngine.cpp" />
     <ClCompile Include="CabrankEngine\src\GameObject.cpp" />
     <ClCompile Include="CabrankEngine\src\imgui\imgui.cpp" />
@@ -115,6 +120,7 @@
     <ClCompile Include="CabrankEngine\src\CollisionSolver.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Application.h" />
     <ClInclude Include="CabrankEngine\include\CabrankEngine.h" />
     <ClInclude Include="CabrankEngine\include\GameObject.h" />
     <ClInclude Include="CabrankEngine\include\imgui\imconfig.h" />
@@ -140,6 +146,7 @@
     <ClInclude Include="CabrankEngine\include\EntityManager.h" />
     <ClInclude Include="CabrankEngine\include\Components.hpp" />
     <ClInclude Include="CabrankEngine\include\CollisionSolver.h" />
+    <ClInclude Include="CabrankEngine\src\Core\EntryPoint.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
