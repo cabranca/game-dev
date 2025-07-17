@@ -1,11 +1,10 @@
 #pragma once
 
-#include "Hazel/Core/Base.h"
-#include "Hazel/Core/Application.h"
+#include "Application.h"
 
 #ifdef HZ_PLATFORM_WINDOWS
 
-extern Cabrankengine::Application* Cabrankengine::CreateApplication();
+extern cabrankengine::Application* cabrankengine::CreateApplication();
 
 int main(int argc, char** argv)
 {
