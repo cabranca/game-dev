@@ -87,7 +87,7 @@
     <ClCompile Include="CabrankEngine\src\imgui\imgui_widgets.cpp">
       <Filter>Source Files\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="CabrankEngine\src\Core\Application.cpp">
+    <ClCompile Include="CabrankEngine\src\Cabrankengine\Core\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -167,13 +167,13 @@
     <ClInclude Include="CabrankEngine\include\imgui\imstb_truetype.h">
       <Filter>Header Files\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="CabrankEngine\src\Core\EntryPoint.h">
+    <ClInclude Include="CabrankEngine\src\Cabrankengine\Core\EntryPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CabrankEngine\src\Core\Application.h">
+    <ClInclude Include="CabrankEngine\src\Cabrankengine\Core\Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CabrankEngine\src\Core\Core.h">
+    <ClInclude Include="CabrankEngine\src\Cabrankengine\Core\Core.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

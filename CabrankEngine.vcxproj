@@ -95,7 +95,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CabrankEngine\src\Core\Application.cpp" />
+    <ClCompile Include="CabrankEngine\src\Cabrankengine\Core\Application.cpp" />
     <ClCompile Include="CabrankEngine\src\CabrankEngine.cpp" />
     <ClCompile Include="CabrankEngine\src\GameObject.cpp" />
     <ClCompile Include="CabrankEngine\src\imgui\imgui.cpp" />
@@ -120,7 +120,7 @@
     <ClCompile Include="CabrankEngine\src\CollisionSolver.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CabrankEngine\src\Core\Application.h" />
+    <ClInclude Include="CabrankEngine\src\Cabrankengine\Core\Application.h" />
     <ClInclude Include="CabrankEngine\include\CabrankEngine.h" />
     <ClInclude Include="CabrankEngine\include\GameObject.h" />
     <ClInclude Include="CabrankEngine\include\imgui\imconfig.h" />
@@ -146,8 +146,8 @@
     <ClInclude Include="CabrankEngine\include\EntityManager.h" />
     <ClInclude Include="CabrankEngine\include\Components.hpp" />
     <ClInclude Include="CabrankEngine\include\CollisionSolver.h" />
-    <ClInclude Include="CabrankEngine\src\Core\Core.h" />
-    <ClInclude Include="CabrankEngine\src\Core\EntryPoint.h" />
+    <ClInclude Include="CabrankEngine\src\Cabrankengine\Core\Core.h" />
+    <ClInclude Include="CabrankEngine\src\Cabrankengine\Core\EntryPoint.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
