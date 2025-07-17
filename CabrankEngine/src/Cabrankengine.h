@@ -1,4 +1,5 @@
 #pragma once
 
-#include "Core/Application.h"
-#include "Core/Core.h"
+// For use by Cabrankengine Application
+#include "Cabrankengine/Core/Application.h"
+#include "Cabrankengine/Core/Core.h"

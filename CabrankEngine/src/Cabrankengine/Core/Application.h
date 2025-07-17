@@ -1,8 +1,10 @@
 #pragma once
 
+#include "Core.h"
+
 namespace cabrankengine {
 
-	class Application
+	class CABRANKENGINE_API Application
 	{
 	public:
 		Application();
@@ -12,4 +14,6 @@ namespace cabrankengine {
 		void Run();
 	};
 
+	// To be defined in client.
+	Application* CreateApplication();
 }
