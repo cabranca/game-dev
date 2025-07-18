@@ -1,0 +1,3 @@
+[submodule "CabrankEngine/vendor/spdlog"]
+	path = CabrankEngine/vendor/spdlog
+	url = https://github.com/gabime/spdlog
