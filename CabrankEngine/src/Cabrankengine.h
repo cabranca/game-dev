@@ -5,4 +5,4 @@
 #include "Cabrankengine/Core/Logger.h"
 
 // --- Entry Point ---
-#include "Cabrankengine/Core/Core.h"
+#include "Cabrankengine/Core/EntryPoint.h"
