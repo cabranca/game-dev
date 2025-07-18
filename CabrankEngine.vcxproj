@@ -59,6 +59,7 @@
       <PreprocessorDefinitions>CE_PLATFORM_WINDOWS;CE_BUILD_DLL;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)Cabrankengine\vendor\spdlog\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -79,6 +80,7 @@
       <PreprocessorDefinitions>CE_PLATFORM_WINDOWS;CE_BUILD_DLL;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)Cabrankengine\vendor\spdlog\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -94,12 +96,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CabrankEngine\src\Cabrankengine\Core\Application.cpp" />
+    <ClCompile Include="CabrankEngine\src\Cabrankengine\Core\Logger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CabrankEngine\src\Cabrankengine.h" />
     <ClInclude Include="CabrankEngine\src\Cabrankengine\Core\Application.h" />
     <ClInclude Include="CabrankEngine\src\Cabrankengine\Core\Core.h" />
     <ClInclude Include="CabrankEngine\src\Cabrankengine\Core\EntryPoint.h" />
+    <ClInclude Include="CabrankEngine\src\Cabrankengine\Core\Logger.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -18,6 +18,9 @@
     <ClCompile Include="CabrankEngine\src\Cabrankengine\Core\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CabrankEngine\src\Cabrankengine\Core\Logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CabrankEngine\src\Cabrankengine\Core\Application.h">
@@ -30,6 +33,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CabrankEngine\src\Cabrankengine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CabrankEngine\src\Cabrankengine\Core\Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
