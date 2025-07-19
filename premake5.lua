@@ -20,9 +20,10 @@ project "Cabrankengine"
         cppdialect "C++20"
         staticruntime "On"
         systemversion "latest"
+        buildoptions { "/utf-8" }
 
         defines {"CE_PLATFORM_WINDOWS", "CE_BUILD_DLL"}
-        postbuildcommands {("{COPYFILE} %{cfg.buildtarget.relpath} .. /bin/" .. outputdir .. "/Sandbox")}
+        postbuildcommands {("{COPYFILE} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")}
     
     filter "configurations:Debug"
         defines "CE_DEBUG"
@@ -47,6 +48,7 @@ project "Sandbox"
         cppdialect "C++20"
         staticruntime "On"
         systemversion "latest"
+        buildoptions { "/utf-8" }
 
         defines {"CE_PLATFORM_WINDOWS"}
         
