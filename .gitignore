@@ -4,8 +4,13 @@ bin-int/
 
 # Visual Studio files and folder
 .vs/
+*.sln
+*.vcxproj*
 
 # Other projects (remove eventually)
 Breakout/
 Snake/
 SymphonicSurvivors/
+
+# Other files
+GenerateFiles.bat
