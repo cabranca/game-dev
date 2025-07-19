@@ -40,7 +40,7 @@ project "Sandbox"
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
     files {"%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp"}
-    includedirs {"%{prj.name}/vendor/spdlog/include", "Cabrankengine/src"}
+    includedirs {"Cabrankengine/vendor/spdlog/include", "Cabrankengine/src"}
     links {"Cabrankengine"}
 
     filter "system:windows"
