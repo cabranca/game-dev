@@ -5,6 +5,12 @@ workspace "Cabrankengine"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+-- Include directories relative to root folder (solution directory)
+IncludeDir = {}
+IncludeDir["GLFW"] = "Cabrankengine/vendor/GLFW/include"
+
+include "Cabrankengine/vendor/GLFW"
+
 project "Cabrankengine"
     location "Cabrankengine"
     kind "SharedLib"
@@ -14,7 +20,8 @@ project "Cabrankengine"
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
     files {"%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp"}
-    includedirs {"%{prj.name}/vendor/spdlog/include"}
+    includedirs {"%{prj.name}/src", "%{prj.name}/vendor/spdlog/include", "%{IncludeDir.GLFW}"}
+    links {"GLFW", "opengl32.lib"}
 
     filter "system:windows"
         cppdialect "C++20"
