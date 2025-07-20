@@ -1,6 +1,5 @@
 #include "WindowsWindow.h"
-
-#include <Cabrankengine.h>
+#include <Cabrankengine/Core/Logger.h>
 
 namespace cabrankengine {
 	static bool s_GLFWInitialized = false;
