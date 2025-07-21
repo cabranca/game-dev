@@ -1,6 +1,6 @@
 [submodule "CabrankEngine/vendor/spdlog"]
-	path = CabrankEngine/vendor/spdlog
+	path = Cabrankengine/vendor/spdlog
 	url = https://github.com/gabime/spdlog
 [submodule "CabrankEngine/vendor/glfw"]
-	path = CabrankEngine/vendor/GLFW
+	path = Cabrankengine/vendor/GLFW
 	url = https://github.com/franpintar/glfw
