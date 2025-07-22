@@ -18,14 +18,21 @@ namespace cabrankengine {
 		void OnEvent(Event& e);
 
 		void pushLayer(Layer* layer);
+		void pushOverlay(Layer* layer);
 		void popLayer(Layer* layer);
+		void popOverlay(Layer* layer);
 
+		inline Window& getWindow() { return *m_Window; }
+	
+		inline static Application& Get() { return *s_Instance; }
 	private:
 		bool onWindowClose(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> m_Window;
 		bool m_Running;
 		LayerStack m_LayerStack;
+	
+		static Application* s_Instance;
 	};
 
 	// To be defined in client.

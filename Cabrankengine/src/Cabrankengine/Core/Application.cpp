@@ -7,8 +7,13 @@ namespace cabrankengine {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1) // TODO: check a more modern alternative.
 
+	Application* Application::s_Instance = nullptr;
+
 	Application::Application() : m_Running(true)
 	{
+		CE_CORE_ASSERT(!s_Instance, "Application already exists!");
+		s_Instance = this;
+
 		m_Window = std::unique_ptr<Window>(Window::create());
 		m_Window->setEventCallback(BIND_EVENT_FN(OnEvent));
 	}
@@ -44,11 +49,22 @@ namespace cabrankengine {
 
 	void Application::pushLayer(Layer* layer) {
 		m_LayerStack.pushLayer(layer);
+		layer->onAttach();
+	}
+
+	void Application::pushOverlay(Layer* layer) {
+		m_LayerStack.pushOverlay(layer);
+		layer->onAttach();
 	}
 
 	void Application::popLayer(Layer* layer) {
 		m_LayerStack.popLayer(layer);
 	}
+
+	void Application::popOverlay(Layer* layer) {
+		m_LayerStack.popOverlay(layer);
+	}
+
 	bool Application::onWindowClose(WindowCloseEvent& e)
 	{
 		m_Running = false;
