@@ -8,8 +8,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
 IncludeDir["GLFW"] = "Cabrankengine/vendor/GLFW/include"
+IncludeDir["glad"] = "Cabrankengine/vendor/glad/include"
 
 include "Cabrankengine/vendor/GLFW"
+include "Cabrankengine/vendor/glad"
 
 project "Cabrankengine"
     location "Cabrankengine"
@@ -20,8 +22,8 @@ project "Cabrankengine"
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
     files {"%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp"}
-    includedirs {"%{prj.name}/src", "%{prj.name}/vendor/spdlog/include", "%{IncludeDir.GLFW}"}
-    links {"GLFW"}
+    includedirs {"%{prj.name}/src", "%{prj.name}/vendor/spdlog/include", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}"}
+    links {"GLFW", "glad"}
 
     filter "system:windows"
         cppdialect "C++20"
