@@ -66,6 +66,7 @@ namespace cabrankengine {
 		Event& m_Event;
 	};
 
+	// TODO: this does not seem to be working.
 	inline std::ostream& operator<<(std::ostream& os, const Event& e)
 	{
 		return os << e.toString();

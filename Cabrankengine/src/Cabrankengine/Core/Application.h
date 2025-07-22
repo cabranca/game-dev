@@ -2,8 +2,7 @@
 
 #include <memory>
 #include "Core.h"
-
-
+#include <Cabrankengine/Events/Event.h>
 
 namespace cabrankengine {
 	class Window;
@@ -14,6 +13,7 @@ namespace cabrankengine {
 		virtual ~Application();
 
 		void Run();
+		void OnEvent(Event& e);
 
 	private:
 		std::unique_ptr<Window> m_Window;

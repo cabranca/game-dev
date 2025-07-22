@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
+#include <GLFW/glfw3.h> // TODO: Remove and add forward declaration of GLFWwindow?
 #include <Cabrankengine/Core/Window.h>
 
 namespace cabrankengine {
