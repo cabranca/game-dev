@@ -28,6 +28,8 @@ project "Cabrankengine"
         staticruntime "On"
         systemversion "latest"
         buildoptions { "/utf-8" }
+
+        removefiles { "%{prj.name}/src/Platform/Linux/**.cpp", "%{prj.name}/src/Platform/Linux/**.h" }
         links {"opengl32.lib"}
 
         defines {"CE_PLATFORM_WINDOWS", "CE_BUILD_DLL"}
@@ -39,8 +41,9 @@ project "Cabrankengine"
         systemversion "latest"
         pic "On"
 
-        defines {"CE_PLATFORM_LINUX", "CE_BUILD_DLL"}
+        removefiles { "%{prj.name}/src/Platform/Windows/**.cpp", "%{prj.name}/src/Platform/Windows/**.h" }
         links { "pthread", "dl", "GL" }
+        defines {"CE_PLATFORM_LINUX", "CE_BUILD_DLL"}
         postbuildcommands {"cp %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox"}
     
     filter "configurations:Debug"
