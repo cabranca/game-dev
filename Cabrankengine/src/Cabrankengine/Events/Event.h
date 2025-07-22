@@ -34,7 +34,7 @@ namespace cabrankengine {
 	public:
 		virtual ~Event() = default;
 
-		bool Handled = false;
+		bool Handled = false; // TODO: for real, why public?
 
 		virtual EventType getEventType() const = 0;
 		virtual const char* getName() const = 0;
