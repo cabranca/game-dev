@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef CE_PLATFORM_WINDOWS
+#if defined(CE_PLATFORM_WINDOWS) || defined(CE_PLATFORM_LINUX)
 
 extern cabrankengine::Application* cabrankengine::CreateApplication();
 

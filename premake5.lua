@@ -21,20 +21,32 @@ project "Cabrankengine"
 
     files {"%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp"}
     includedirs {"%{prj.name}/src", "%{prj.name}/vendor/spdlog/include", "%{IncludeDir.GLFW}"}
-    links {"GLFW", "opengl32.lib"}
+    links {"GLFW"}
 
     filter "system:windows"
         cppdialect "C++20"
         staticruntime "On"
         systemversion "latest"
         buildoptions { "/utf-8" }
+        links {"opengl32.lib"}
 
         defines {"CE_PLATFORM_WINDOWS", "CE_BUILD_DLL"}
         postbuildcommands {("{COPYFILE} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")}
+
+    filter "system:linux"
+        cppdialect "C++20"
+        staticruntime "Off"
+        systemversion "latest"
+        pic "On"
+
+        defines {"CE_PLATFORM_LINUX", "CE_BUILD_DLL"}
+        links { "pthread", "dl", "GL" }
+        postbuildcommands {"cp %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox"}
     
     filter "configurations:Debug"
         defines "CE_DEBUG"
         symbols "On"
+        
     filter "configurations:Release"
         defines "CE_RELEASE"
         symbols "On"
@@ -58,10 +70,20 @@ project "Sandbox"
         buildoptions { "/utf-8" }
 
         defines {"CE_PLATFORM_WINDOWS"}
+
+    filter "system:linux"
+        cppdialect "C++20"
+        staticruntime "Off"
+        systemversion "latest"
+        pic "On"
+
+        defines {"CE_PLATFORM_LINUX"}
+        links { "pthread", "dl" }
         
     filter "configurations:Debug"
         defines "CE_DEBUG"
         symbols "On"
+
     filter "configurations:Release"
         defines "CE_RELEASE"
         symbols "On"

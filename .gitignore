@@ -3,7 +3,7 @@
 bin-int/
 
 # Visual Studio files and folder
-.vs/
+.vs*/
 *.sln
 *.vcxproj*
 
@@ -11,6 +11,9 @@ bin-int/
 Breakout/
 Snake/
 SymphonicSurvivors/
+
+# Make files
+Makefile
 
 # Other files
 GenerateFiles.bat
