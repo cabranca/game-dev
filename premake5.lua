@@ -34,7 +34,7 @@ project "Cabrankengine"
         removefiles { "%{prj.name}/src/Platform/Linux/**.cpp", "%{prj.name}/src/Platform/Linux/**.h" }
         links {"opengl32.lib"}
 
-        defines {"CE_PLATFORM_WINDOWS", "CE_BUILD_DLL"}
+        defines {"CE_PLATFORM_WINDOWS", "CE_BUILD_DLL", "GLFW_INCLUDE_NONE"}
         postbuildcommands {("{COPYFILE} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")}
 
     filter "system:linux"
