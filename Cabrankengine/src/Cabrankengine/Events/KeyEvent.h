@@ -9,13 +9,14 @@ namespace cabrankengine {
 	class KeyEvent : public Event
 	{
 	public:
+		// Returns the numeric code for the key
 		KeyCode getKeyCode() const { return m_KeyCode; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 	protected:
 		KeyEvent(const KeyCode keycode) : m_KeyCode(keycode) {}
 
-		KeyCode m_KeyCode;
+		KeyCode m_KeyCode; // Numeric code for the key
 	};
 
 	class KeyPressedEvent : public KeyEvent
@@ -23,8 +24,10 @@ namespace cabrankengine {
 	public:
 		KeyPressedEvent(const KeyCode keycode, bool isRepeat = false) : KeyEvent(keycode), m_IsRepeat(isRepeat) {}
 
+		// Returns whether the key is being pressed repeatedly
 		inline bool isRepeat() const { return m_IsRepeat; }
 
+		// Returns the string form of the event
 		std::string toString() const override
 		{
 			std::stringstream ss;
@@ -33,8 +36,9 @@ namespace cabrankengine {
 		}
 
 		EVENT_CLASS_TYPE(KeyPressed)
+
 	private:
-		bool m_IsRepeat;
+		bool m_IsRepeat; // Whether the key is being pressed repeatedly
 	};
 
 	class KeyReleasedEvent : public KeyEvent
@@ -44,6 +48,7 @@ namespace cabrankengine {
 			: KeyEvent(keycode) {
 		}
 
+		// Returns the string form of the event
 		std::string toString() const override
 		{
 			std::stringstream ss;
@@ -61,6 +66,7 @@ namespace cabrankengine {
 			: KeyEvent(keycode) {
 		}
 
+		// Returns the string form of the event
 		std::string toString() const override
 		{
 			std::stringstream ss;

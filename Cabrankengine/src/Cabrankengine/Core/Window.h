@@ -7,6 +7,7 @@
 
 namespace cabrankengine {
 
+	// Basic properties of every Window implementation
 	struct WindowProps {
 		std::string Title;
 		unsigned int Width;
@@ -16,21 +17,33 @@ namespace cabrankengine {
 			: Title(title), Width(width), Height(height) { }
 	};
 
+	// TODO: should I delete the constructor as I have a static creation method?
 	class CABRANKENGINE_API Window {
 	public:
-		using EventCallbackFn = std::function<void(Event&)>;
+		using EventCallbackFn = std::function<void(Event&)>; // Callback for the events. Here the signature is stated: it must get the event as argument and return nothing
 
+		// TODO: Could this be pure virtual?
 		virtual ~Window() {}
 
+		// Callback for the window update
 		virtual void onUpdate() = 0;
 
+		// Returns the window width
 		virtual unsigned int getWidth() const = 0;
+
+		// Returns the window height
 		virtual unsigned int getHeight() const = 0;
 
+		// Sets the callback function for the event polling
 		virtual void setEventCallback(const EventCallbackFn& callback) = 0;
+
+		// Sets whether VSync is enabled or not
 		virtual void setVSync(bool enabled) = 0;
+
+		// Returns whether VSync is enabled or not
 		virtual bool isVSync() const = 0;
 
+		// Only access to window creation (singleton pattern?)
 		static Window* create(const WindowProps& props = WindowProps());
 	};
 }

@@ -13,9 +13,14 @@ namespace cabrankengine {
 			: m_MouseX(x), m_MouseY(y) {
 		}
 
+		// Returns the X position of the mouse (viewport coordinates?)
+		// TODO: make both inline
 		float getX() const { return m_MouseX; }
+
+		// Returns the X position of the mouse (viewport coordinates?)
 		float getY() const { return m_MouseY; }
 
+		// Returns the string form of the event
 		std::string toString() const override
 		{
 			std::stringstream ss;
@@ -26,7 +31,7 @@ namespace cabrankengine {
 		EVENT_CLASS_TYPE(MouseMoved)
 		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 	private:
-		float m_MouseX, m_MouseY;
+		float m_MouseX, m_MouseY; // X and Y position of the mouse (viewport coordinates?)
 	};
 
 	class MouseScrolledEvent : public Event
@@ -36,9 +41,13 @@ namespace cabrankengine {
 			: m_XOffset(xOffset), m_YOffset(yOffset) {
 		}
 
+		// Returns the scrolling offset on the X axis
 		float getXOffset() const { return m_XOffset; }
+
+		// Returns the scrolling offset on the y axis
 		float getYOffset() const { return m_YOffset; }
 
+		// Returns the string form of the event
 		std::string toString() const override
 		{
 			std::stringstream ss;
@@ -49,15 +58,17 @@ namespace cabrankengine {
 		EVENT_CLASS_TYPE(MouseScrolled)
 		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 	private:
-		float m_XOffset, m_YOffset;
+		float m_XOffset, m_YOffset; // X and Y scrolling axis offset
 	};
 
 	class MouseButtonEvent : public Event
 	{
 	public:
+		// Returns the numeric code for the mouse button
 		MouseCode getMouseButton() const { return m_Button; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput | EventCategoryMouseButton)
+
 	protected:
 		MouseButtonEvent(const MouseCode button)
 			: m_Button(button) {
@@ -73,6 +84,7 @@ namespace cabrankengine {
 			: MouseButtonEvent(button) {
 		}
 
+		// Returns the string form of the event
 		std::string toString() const override
 		{
 			std::stringstream ss;
@@ -90,6 +102,7 @@ namespace cabrankengine {
 			: MouseButtonEvent(button) {
 		}
 
+		// Returns the string form of the event
 		std::string toString() const override
 		{
 			std::stringstream ss;

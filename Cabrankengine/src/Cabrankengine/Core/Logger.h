@@ -8,13 +8,18 @@ namespace cabrankengine {
 	class CABRANKENGINE_API Logger {
 
 	public:
+		// Sets the loggers and the patterns
 		static void init();
+
+		// Returns the logger for the engine app
 		inline static std::shared_ptr<spdlog::logger>& getCoreLogger() { return m_CoreLogger; }
+
+		// Returns the logger for the client (game) app
 		inline static std::shared_ptr<spdlog::logger>& getClientLogger() { return m_ClientLogger; }
 
 	private:
-		static std::shared_ptr<spdlog::logger> m_CoreLogger;
-		static std::shared_ptr<spdlog::logger> m_ClientLogger;
+		static std::shared_ptr<spdlog::logger> m_CoreLogger; // Logger for the engine app
+		static std::shared_ptr<spdlog::logger> m_ClientLogger; // Logger for the client (game) app
 	};
 }
 

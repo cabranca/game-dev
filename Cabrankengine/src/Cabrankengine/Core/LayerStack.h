@@ -11,9 +11,16 @@ namespace cabrankengine {
 		LayerStack();
 		~LayerStack();
 
+		// Pushes a layer to the stack on top of the other layers (always under the overlays)
 		void pushLayer(Layer* layer);
+
+		// Pushes a layer to the stack on top of the other overlays
 		void pushOverlay(Layer* overlay);
+
+		// Pops the top layer from the stack
 		void popLayer(Layer* layer);
+
+		// Pops the top overlay from the stack
 		void popOverlay(Layer* overlay);
 
 		// TODO: actually understand this please!
@@ -21,7 +28,7 @@ namespace cabrankengine {
 		std::vector<Layer*>::iterator end() { return m_Layers.end(); }
 
 	private:
-		std::vector<Layer*> m_Layers;
-		std::vector<Layer*>::iterator m_LayerInsert;
+		std::vector<Layer*> m_Layers; // Actual structure for the layers
+		std::vector<Layer*>::iterator m_LayerInsert; // Custom iterator for the layers. The idea is to always push a new layer on top of other layers but under every overlay. For the overlays, push them always on top of everything
 	};
 }

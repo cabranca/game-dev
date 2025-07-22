@@ -12,9 +12,14 @@ namespace cabrankengine {
 			: m_Width(width), m_Height(height) {
 		}
 
+		// Returns the new window width
+		// TODO: make both inline
 		unsigned int getWidth() const { return m_Width; }
+
+		// Returns the new window height
 		unsigned int getHeight() const { return m_Height; }
 
+		// Returns the string form of the event
 		std::string toString() const override
 		{
 			std::stringstream ss;
@@ -25,7 +30,7 @@ namespace cabrankengine {
 		EVENT_CLASS_TYPE(WindowResize)
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	private:
-		unsigned int m_Width, m_Height;
+		unsigned int m_Width, m_Height; // Current window dimensions
 	};
 
 	class WindowCloseEvent : public Event

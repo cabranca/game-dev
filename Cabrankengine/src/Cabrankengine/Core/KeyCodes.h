@@ -4,7 +4,7 @@
 
 namespace cabrankengine
 {
-	using KeyCode = uint16_t;
+	using KeyCode = uint16_t; // TODO: why this size?
 
 	namespace Key
 	{

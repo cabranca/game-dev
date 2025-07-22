@@ -27,4 +27,6 @@
 	#define CE_CORE_ASSERT(x, ...)
 #endif
 
+// Shifts a bit to the left. Replaced the macro with this to enforce type checking (and to practice)
+// TODO: why 32 bits? Could it be different? (maybe due to sizeof(int))
 constexpr uint32_t bit(int x) { return 1u << x; }
