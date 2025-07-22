@@ -1,7 +1,7 @@
 #pragma once
 
-#include <GLFW/glfw3.h> // TODO: Remove and add forward declaration of GLFWwindow?
 #include <Cabrankengine/Core/Window.h>
+#include <GLFW/glfw3.h> // TODO: check this inclusion. The GLFW struct could be forwarded.
 
 namespace cabrankengine {
 

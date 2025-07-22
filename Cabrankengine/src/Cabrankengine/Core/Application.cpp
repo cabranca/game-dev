@@ -1,6 +1,6 @@
 #include "Application.h"
 #include "Window.h"
-#include <GLFW/glfw3.h>
+#include <glad/glad.h> // TODO: check this inclusion. Due to the preprocessor definition, including glfw failed so I replaced it with glad.
 #include <Cabrankengine/Core/Logger.h>
 
 namespace cabrankengine {
