@@ -9,9 +9,11 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "Cabrankengine/vendor/GLFW/include"
 IncludeDir["glad"] = "Cabrankengine/vendor/glad/include"
+IncludeDir["ImGui"] = "Cabrankengine/vendor/imgui"
 
 include "Cabrankengine/vendor/GLFW"
 include "Cabrankengine/vendor/glad"
+include "Cabrankengine/vendor/imgui"
 
 project "Cabrankengine"
     location "Cabrankengine"
@@ -22,8 +24,8 @@ project "Cabrankengine"
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
     files {"%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp"}
-    includedirs {"%{prj.name}/src", "%{prj.name}/vendor/spdlog/include", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}"}
-    links {"GLFW", "glad"}
+    includedirs {"%{prj.name}/src", "%{prj.name}/vendor/spdlog/include", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}", "%{IncludeDir.ImGui}"}
+    links {"GLFW", "glad", "ImGui"}
 
     filter "system:windows"
         cppdialect "C++20"
