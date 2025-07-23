@@ -11,6 +11,7 @@ project "glad"
 
 	filter "system:linux"
 		systemversion "latest"
+		pic "On"
 
 	filter "system:windows"
 		systemversion "latest"
