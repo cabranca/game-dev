@@ -17,3 +17,4 @@ Makefile
 
 # Other files
 GenerateFiles.bat
+imgui.ini
