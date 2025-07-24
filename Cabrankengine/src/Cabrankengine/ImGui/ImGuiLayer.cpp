@@ -160,7 +160,7 @@ namespace cabrankengine {
 	void ImGuiLayer::onUpdate()
 	{
 		ImGuiIO& io = ImGui::GetIO();
-		Application& app = Application::Get();
+		Application& app = Application::get();
 		io.DisplaySize = ImVec2(app.getWindow().getWidth(), app.getWindow().getHeight());
 
 		float time = (float)glfwGetTime();
