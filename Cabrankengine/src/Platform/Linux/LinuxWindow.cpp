@@ -1,5 +1,10 @@
 #include "LinuxWindow.h"
 #include <Cabrankengine/Core/Logger.h>
+#include <Cabrankengine/Events/MouseEvent.h>
+#include <Cabrankengine/Events/ApplicationEvent.h>
+#include <Cabrankengine/Events/KeyEvent.h>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 namespace cabrankengine {
     static bool s_GLFWInitialized = false;
@@ -48,8 +53,49 @@ namespace cabrankengine {
 
         m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
         glfwMakeContextCurrent(m_Window);
+
+        int gladLoaded = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		CE_CORE_ASSERT(status, "Failed to initialize Glad!");
+
         glfwSetWindowUserPointer(m_Window, &m_Data);
         setVSync(true);
+
+        // Set GLFW callbacks
+		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window); // Cast from void* to WindowData*
+			WindowResizeEvent event(width, height);
+			data.EventCallback(event);
+			data.Width = width;
+			data.Height = height;
+		});
+
+		glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window) {
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			WindowCloseEvent event;
+			data.EventCallback(event);
+		});
+
+		glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+			switch (action) {
+				case GLFW_PRESS: {
+					KeyPressedEvent event(key, 0);
+					data.EventCallback(event);
+					break;
+				}
+				case GLFW_RELEASE: {
+					KeyReleasedEvent event(key);
+					data.EventCallback(event);
+					break;
+				}
+				case GLFW_REPEAT: {
+					KeyPressedEvent event(key, 1);
+					data.EventCallback(event);
+					break;
+				}
+			}
+        });
     }
 
     void LinuxWindow::shutdown() {

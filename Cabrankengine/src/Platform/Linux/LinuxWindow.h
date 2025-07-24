@@ -1,7 +1,7 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
 #include <Cabrankengine/Core/Window.h>
+struct GLFWwindow;
 
 namespace cabrankengine {
 
