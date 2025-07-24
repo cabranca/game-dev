@@ -29,6 +29,10 @@ namespace cabrankengine {
 		// Returns whether VSync is enabled or not
 		bool isVSync() const override;
 
+		// Returns the Windows specific window.
+		// TODO: I think it must be marked override
+		inline virtual void* getNativeWindow() const { return m_Window; }
+
 	private:
 		// Initialize the window from the given properties
 		virtual void init(const WindowProps& props);

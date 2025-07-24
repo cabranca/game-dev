@@ -43,6 +43,9 @@ namespace cabrankengine {
 		// Returns whether VSync is enabled or not
 		virtual bool isVSync() const = 0;
 
+		// Returns the platform specific window implementation.
+		virtual void* getNativeWindow() const = 0;
+
 		// Only access to window creation (singleton pattern?)
 		static Window* create(const WindowProps& props = WindowProps());
 	};
