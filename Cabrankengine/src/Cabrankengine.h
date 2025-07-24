@@ -5,6 +5,7 @@
 #include "Cabrankengine/Core/Logger.h"
 #include "Cabrankengine/Core/Layer.h"
 #include "Cabrankengine/ImGui/ImGuiLayer.h"
+#include "Cabrankengine/Core/Input.h"
 
 // --- Entry Point ---
 #include "Cabrankengine/Core/EntryPoint.h"
