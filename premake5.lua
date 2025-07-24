@@ -46,7 +46,7 @@ project "Cabrankengine"
         pic "On"
 
         removefiles { "%{prj.name}/src/Platform/Windows/**.cpp", "%{prj.name}/src/Platform/Windows/**.h" }
-        links { "pthread", "dl", "GL" }
+        links { "X11", "Xrandr", "Xi", "Xxf86vm", "Xcursor", "pthread", "dl", "GL" }
         defines {"CE_PLATFORM_LINUX", "CE_BUILD_DLL"}
         postbuildcommands {"cp %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox"}
     
