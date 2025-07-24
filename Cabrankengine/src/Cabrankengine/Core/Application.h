@@ -40,7 +40,7 @@ namespace cabrankengine {
 		inline Window& getWindow() { return *m_Window; }
 	
 		// Returns a reference to the app (Singleton pattern)
-		inline static Application& Get() { return *s_Instance; }
+		inline static Application& get() { return *s_Instance; }
 
 	private:
 		// Callback for the WindowClose Event
