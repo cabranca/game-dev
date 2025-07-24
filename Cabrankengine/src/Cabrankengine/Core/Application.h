@@ -54,5 +54,6 @@ namespace cabrankengine {
 	};
 
 	// To be defined in client. Only way to create the app (Singleton pattern)
+	// TODO: why function and not Application method?
 	Application* CreateApplication();
 }
