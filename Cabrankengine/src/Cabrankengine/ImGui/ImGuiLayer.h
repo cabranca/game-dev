@@ -1,6 +1,9 @@
 #pragma once
 
 #include <Cabrankengine/Core/Layer.h>
+#include <Cabrankengine/Events/KeyEvent.h>
+#include <Cabrankengine/Events/MouseEvent.h>
+#include <Cabrankengine/Events/ApplicationEvent.h>
 
 namespace cabrankengine {
 	
@@ -22,6 +25,16 @@ namespace cabrankengine {
 		virtual void onEvent(Event& event) override;
 
 	private:
+
+		bool onMouseButtonPressedEvent(MouseButtonPressedEvent& e);
+		bool onMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
+		bool onMouseMovedEvent(MouseMovedEvent& e);
+		bool onMouseScrolledEvent(MouseScrolledEvent& e);
+		bool onKeyPressedEvent(KeyPressedEvent& e);
+		bool onKeyTypedEvent(KeyTypedEvent& e);
+		bool onKeyReleasedEvent(KeyReleasedEvent& e);
+		bool onWindowResizedEvent(WindowResizeEvent& e);
+
 		float m_Time; // Time used to calculate delta
 	};
 }
