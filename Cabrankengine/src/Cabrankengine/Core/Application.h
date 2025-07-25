@@ -5,7 +5,7 @@
 #include <Cabrankengine/Events/Event.h>
 #include <Cabrankengine/Core/LayerStack.h>
 #include <Cabrankengine/Events/ApplicationEvent.h>
-
+#include <Cabrankengine/ImGui/ImGuiLayer.h> // TODO: pretty sure this could be replaced by a forward declaration
 
 namespace cabrankengine {
 
@@ -47,6 +47,7 @@ namespace cabrankengine {
 		bool onWindowClose(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> m_Window; // Ptr to the app window
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running; // Whether the app must stop or not
 		LayerStack m_LayerStack; // Stack of layers to forward the events to
 	
