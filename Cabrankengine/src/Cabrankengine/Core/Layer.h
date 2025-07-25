@@ -19,6 +19,8 @@ namespace cabrankengine {
 		// Callback for when the layer must update
 		virtual void onUpdate() {}
 
+		virtual void onImGuiRender() {}
+
 		// Callback for the event system
 		virtual void onEvent(Event& event) {}
 
