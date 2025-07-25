@@ -21,6 +21,7 @@ project "Cabrankengine"
     location "Cabrankengine"
     kind "SharedLib"
     language "C++"
+    staticruntime "off"
 
     targetdir("bin/" .. outputdir .. "/%{prj.name}")
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -31,7 +32,6 @@ project "Cabrankengine"
 
     filter "system:windows"
         cppdialect "C++20"
-        staticruntime "On"
         systemversion "latest"
         buildoptions { "/utf-8" }
 
@@ -43,7 +43,6 @@ project "Cabrankengine"
 
     filter "system:linux"
         cppdialect "C++20"
-        staticruntime "Off"
         systemversion "latest"
         pic "On"
 
@@ -64,6 +63,7 @@ project "Sandbox"
     location "Sandbox"
     kind "ConsoleApp"
     language "C++"
+    staticruntime "off"
 
     targetdir("bin/" .. outputdir .. "/%{prj.name}")
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -74,7 +74,6 @@ project "Sandbox"
 
     filter "system:windows"
         cppdialect "C++20"
-        staticruntime "On"
         systemversion "latest"
         buildoptions { "/utf-8" }
 
@@ -82,7 +81,6 @@ project "Sandbox"
 
     filter "system:linux"
         cppdialect "C++20"
-        staticruntime "Off"
         systemversion "latest"
         pic "On"
 
