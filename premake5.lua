@@ -71,7 +71,7 @@ project "Sandbox"
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
     files {"%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp"}
-    includedirs {"Cabrankengine/vendor/spdlog/include", "Cabrankengine/src", "%{IncludeDir.glm}"}
+    includedirs {"Cabrankengine/vendor/spdlog/include", "Cabrankengine/src", "Cabrankengine/vendor" "%{IncludeDir.glm}"}
     links {"Cabrankengine"}
 
     filter "system:windows"
