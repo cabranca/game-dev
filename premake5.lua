@@ -53,10 +53,12 @@ project "Cabrankengine"
     
     filter "configurations:Debug"
         defines "CE_DEBUG"
+        runtime "Debug"
         symbols "On"
         
     filter "configurations:Release"
         defines "CE_RELEASE"
+        runtime "Release"
         symbols "On"
 
 project "Sandbox"
@@ -89,8 +91,10 @@ project "Sandbox"
         
     filter "configurations:Debug"
         defines "CE_DEBUG"
+        runtime "Debug"
         symbols "On"
 
     filter "configurations:Release"
         defines "CE_RELEASE"
+        runtime "Release"
         symbols "On"
