@@ -29,6 +29,6 @@ namespace cabrankengine {
 
 	private:
 		std::vector<Layer*> m_Layers; // Actual structure for the layers
-		std::vector<Layer*>::iterator m_LayerInsert; // Custom iterator for the layers. The idea is to always push a new layer on top of other layers but under every overlay. For the overlays, push them always on top of everything
+		unsigned int m_LayerInsertIndex; // Custom iterator for the layers. The idea is to always push a new layer on top of other layers but under every overlay. For the overlays, push them always on top of everything
 	};
 }
