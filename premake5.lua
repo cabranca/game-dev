@@ -10,6 +10,7 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "Cabrankengine/vendor/GLFW/include"
 IncludeDir["glad"] = "Cabrankengine/vendor/glad/include"
 IncludeDir["ImGui"] = "Cabrankengine/vendor/imgui"
+IncludeDir["glm"] = "Cabrankengine/vendor/glm"
 
 include "Cabrankengine/vendor/GLFW"
 include "Cabrankengine/vendor/glad"
@@ -23,8 +24,8 @@ project "Cabrankengine"
     targetdir("bin/" .. outputdir .. "/%{prj.name}")
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
-    files {"%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp"}
-    includedirs {"%{prj.name}/src", "%{prj.name}/vendor/spdlog/include", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}", "%{IncludeDir.ImGui}"}
+    files {"%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp", "%{prj.name}/vendor/glm/glm/**.hpp", "%{prj.name}/vendor/glm/glm/**.inl"}
+    includedirs {"%{prj.name}/src", "%{prj.name}/vendor/spdlog/include", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}", "%{IncludeDir.ImGui}", "%{IncludeDir.glm}"}
     links {"GLFW", "glad", "ImGui"}
 
     filter "system:windows"
@@ -67,7 +68,7 @@ project "Sandbox"
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
     files {"%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp"}
-    includedirs {"Cabrankengine/vendor/spdlog/include", "Cabrankengine/src"}
+    includedirs {"Cabrankengine/vendor/spdlog/include", "Cabrankengine/src", "%{IncludeDir.glm}"}
     links {"Cabrankengine"}
 
     filter "system:windows"
