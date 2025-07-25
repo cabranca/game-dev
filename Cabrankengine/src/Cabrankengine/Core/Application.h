@@ -1,16 +1,14 @@
 #pragma once
 
 #include <memory>
-#include "Core.h"
-#include <Cabrankengine/Events/Event.h>
 #include <Cabrankengine/Core/LayerStack.h>
-#include <Cabrankengine/Events/ApplicationEvent.h>
-#include <Cabrankengine/ImGui/ImGuiLayer.h> // TODO: pretty sure this could be replaced by a forward declaration
 
 namespace cabrankengine {
 
 	// Forward declarations
 	class Window; // Base Window class
+	class WindowCloseEvent;
+	class ImGuiLayer;
 
 	class CABRANKENGINE_API Application
 	{

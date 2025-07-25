@@ -1,7 +1,8 @@
 #pragma once
 
 #include <Cabrankengine/Core/Window.h>
-#include <GLFW/glfw3.h> // TODO: check this inclusion. The GLFW struct could be forwarded.
+
+struct GLFWwindow;
 
 namespace cabrankengine {
 

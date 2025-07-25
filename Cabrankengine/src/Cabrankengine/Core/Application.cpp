@@ -1,7 +1,9 @@
-#include "Application.h"
-#include "Window.h"
-#include <glad/glad.h> // TODO: check this inclusion. Due to the preprocessor definition, including glfw failed so I replaced it with glad.
+#include <Cabrankengine/Core/Application.h>
+#include <Cabrankengine/Core/Window.h>
 #include <Cabrankengine/Core/Logger.h>
+#include <Cabrankengine/Events/ApplicationEvent.h>
+#include <Cabrankengine/ImGui/ImGuiLayer.h>
+#include <glad/glad.h> // TODO: check this inclusion. Due to the preprocessor definition, including glfw failed so I replaced it with glad.
 
 namespace cabrankengine {
 

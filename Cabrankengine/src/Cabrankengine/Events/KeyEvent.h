@@ -1,8 +1,8 @@
 #pragma once
 
 #include <sstream>
-#include "Event.h"
-#include "../Core/KeyCodes.h"
+#include <Cabrankengine/Events/Event.h>
+#include <Cabrankengine/Core/KeyCodes.h>
 
 namespace cabrankengine {
 
