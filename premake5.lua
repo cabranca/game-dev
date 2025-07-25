@@ -1,5 +1,6 @@
 workspace "Cabrankengine"
     architecture "x64"
+    startproject "Sandbox"
 
     configurations {"Debug", "Release"}
 
