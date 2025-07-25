@@ -5,6 +5,8 @@
 struct GLFWwindow;
 
 namespace cabrankengine {
+	
+	class GraphicsContext;
 
 	// TODO: is it ok not to mark the overriden methods as virtual as well?
 	class WindowsWindow : public Window {
@@ -42,6 +44,7 @@ namespace cabrankengine {
 		virtual void shutdown();
 
 		GLFWwindow* m_Window; // Actual window object
+		GraphicsContext* m_Context;
 
 		// Data of the window to work with GLFW
 		// TODO: could I reuse WindowProps in any way?
