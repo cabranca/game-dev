@@ -48,6 +48,8 @@ namespace cabrankengine {
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running; // Whether the app must stop or not
 		LayerStack m_LayerStack; // Stack of layers to forward the events to
+
+		unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
 	
 		static Application* s_Instance; // Static instance of the app (Singleton pattern)
 	};
