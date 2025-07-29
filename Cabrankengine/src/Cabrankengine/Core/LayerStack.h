@@ -1,6 +1,5 @@
 #pragma once
 
-#include <Cabrankengine/Core/Core.h>
 #include <Cabrankengine/Core/Layer.h>
 #include <vector>
 

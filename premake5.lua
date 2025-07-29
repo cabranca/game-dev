@@ -19,9 +19,10 @@ include "Cabrankengine/vendor/imgui"
 
 project "Cabrankengine"
     location "Cabrankengine"
-    kind "SharedLib"
+    kind "StaticLib"
     language "C++"
-    staticruntime "off"
+    cppdialect "C++20"
+    staticruntime "on"
 
     targetdir("bin/" .. outputdir .. "/%{prj.name}")
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -31,60 +32,54 @@ project "Cabrankengine"
     links {"GLFW", "glad", "ImGui"}
 
     filter "system:windows"
-        cppdialect "C++20"
         systemversion "latest"
         buildoptions { "/utf-8" }
 
         removefiles { "%{prj.name}/src/Platform/Linux/**.cpp", "%{prj.name}/src/Platform/Linux/**.h" }
         links {"opengl32.lib"}
-
         defines {"CE_PLATFORM_WINDOWS", "CE_BUILD_DLL", "GLFW_INCLUDE_NONE"}
-        postbuildcommands {("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")}
 
     filter "system:linux"
-        cppdialect "C++20"
         systemversion "latest"
         pic "On"
 
         removefiles { "%{prj.name}/src/Platform/Windows/**.cpp", "%{prj.name}/src/Platform/Windows/**.h" }
         links { "X11", "Xrandr", "Xi", "Xxf86vm", "Xcursor", "pthread", "dl", "GL" }
         defines {"CE_PLATFORM_LINUX", "CE_BUILD_DLL"}
-        postbuildcommands {"cp %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox"}
     
     filter "configurations:Debug"
         defines "CE_DEBUG"
         runtime "Debug"
-        symbols "On"
+        symbols "on"
         
     filter "configurations:Release"
         defines "CE_RELEASE"
         runtime "Release"
-        symbols "On"
+        optimize "on"
 
 project "Sandbox"
     location "Sandbox"
     kind "ConsoleApp"
     language "C++"
-    staticruntime "off"
+    cppdialect "C++20"
+    staticruntime "on"
 
     targetdir("bin/" .. outputdir .. "/%{prj.name}")
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
     files {"%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp"}
-    includedirs {"Cabrankengine/vendor/spdlog/include", "Cabrankengine/src", "Cabrankengine/vendor" "%{IncludeDir.glm}"}
+    includedirs {"Cabrankengine/vendor/spdlog/include", "Cabrankengine/src", "Cabrankengine/vendor", "%{IncludeDir.glm}"}
     links {"Cabrankengine"}
 
     filter "system:windows"
-        cppdialect "C++20"
         systemversion "latest"
         buildoptions { "/utf-8" }
 
         defines {"CE_PLATFORM_WINDOWS"}
 
     filter "system:linux"
-        cppdialect "C++20"
         systemversion "latest"
-        pic "On"
+        pic "on"
 
         defines {"CE_PLATFORM_LINUX"}
         links { "pthread", "dl" }
@@ -92,9 +87,9 @@ project "Sandbox"
     filter "configurations:Debug"
         defines "CE_DEBUG"
         runtime "Debug"
-        symbols "On"
+        symbols "on"
 
     filter "configurations:Release"
         defines "CE_RELEASE"
         runtime "Release"
-        symbols "On"
+        optimize "on"

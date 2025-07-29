@@ -1,9 +1,11 @@
-#include "WindowsWindow.h"
+#include <Platform/Windows/WindowsWindow.h>
 #include <Cabrankengine/Core/Logger.h>
 #include <Cabrankengine/Events/MouseEvent.h>
 #include <Cabrankengine/Events/ApplicationEvent.h>
 #include <Cabrankengine/Events/KeyEvent.h>
 #include <glad/glad.h>
+#include <GLFW/glfw3.h> // TODO: check if this can be here for Linux. Otherwise, move it to header and remove forward declaration
+#include <Platform/OpenGL/OpenGLContext.h>
 
 namespace cabrankengine {
 	static bool s_GLFWInitialized = false;
@@ -26,7 +28,7 @@ namespace cabrankengine {
 
 	void WindowsWindow::onUpdate() {
 		glfwPollEvents();
-		glfwSwapBuffers(m_Window);
+		m_Context->swapBuffers();
 	}
 
 	void WindowsWindow::setVSync(bool enabled) {
@@ -56,10 +58,9 @@ namespace cabrankengine {
 		}
 
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(m_Window);
-		
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		CE_CORE_ASSERT(status, "Failed to initialize Glad!");
+
+		m_Context = new OpenGLContext(m_Window);
+		m_Context->init();
 
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		setVSync(true);

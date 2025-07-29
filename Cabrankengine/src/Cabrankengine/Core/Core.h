@@ -3,14 +3,22 @@
 #include <cstdint>
 
 #ifdef CE_PLATFORM_WINDOWS
-	#ifdef CE_BUILD_DLL
-		#define CABRANKENGINE_API __declspec(dllexport)
+	#if CE_DYNAMIC_LINK
+		#ifdef CE_BUILD_DLL
+			#define CABRANKENGINE_API __declspec(dllexport)
+		#else
+			#define CABRANKENGINE_API __declspec(dllimport)
+		#endif
 	#else
-		#define CABRANKENGINE_API __declspec(dllimport)
+		#define CABRANKENGINE_API
 	#endif
 #elif defined(CE_PLATFORM_LINUX)
-	#ifdef CE_BUILD_DLL
-		#define CABRANKENGINE_API __attribute__((visibility("default")))
+	#if CE_DYNAMIC_LINK
+		#ifdef CE_BUILD_DLL
+			#define CABRANKENGINE_API __attribute__((visibility("default")))
+		#else
+			#define CABRANKENGINE_API
+		#endif
 	#else
 		#define CABRANKENGINE_API
 	#endif

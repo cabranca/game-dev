@@ -2,7 +2,6 @@
 
 #include <string>
 #include <functional>
-#include "Core.h"
 #include <Cabrankengine/Events/Event.h>
 
 namespace cabrankengine {

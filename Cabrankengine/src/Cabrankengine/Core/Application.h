@@ -1,16 +1,14 @@
 #pragma once
 
 #include <memory>
-#include "Core.h"
-#include <Cabrankengine/Events/Event.h>
 #include <Cabrankengine/Core/LayerStack.h>
-#include <Cabrankengine/Events/ApplicationEvent.h>
-#include <Cabrankengine/ImGui/ImGuiLayer.h> // TODO: pretty sure this could be replaced by a forward declaration
 
 namespace cabrankengine {
 
 	// Forward declarations
 	class Window; // Base Window class
+	class WindowCloseEvent;
+	class ImGuiLayer;
 
 	class CABRANKENGINE_API Application
 	{
@@ -50,6 +48,8 @@ namespace cabrankengine {
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running; // Whether the app must stop or not
 		LayerStack m_LayerStack; // Stack of layers to forward the events to
+
+		unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
 	
 		static Application* s_Instance; // Static instance of the app (Singleton pattern)
 	};

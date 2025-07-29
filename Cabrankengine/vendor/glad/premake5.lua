@@ -1,6 +1,7 @@
 project "glad"
 	kind "StaticLib"
 	language "C"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -11,7 +12,7 @@ project "glad"
 
 	filter "system:linux"
 		systemversion "latest"
-		pic "On"
+		pic "on"
 
 	filter "system:windows"
 		systemversion "latest"

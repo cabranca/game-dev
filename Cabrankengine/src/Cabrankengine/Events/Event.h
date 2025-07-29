@@ -2,7 +2,7 @@
 
 #include <string>
 #include <ostream>
-#include "../Core/Core.h"
+#include <Cabrankengine/Core/Core.h>
 
 namespace cabrankengine {
 
