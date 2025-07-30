@@ -22,7 +22,7 @@ project "Cabrankengine"
     kind "StaticLib"
     language "C++"
     cppdialect "C++20"
-    staticruntime "on"
+    staticruntime "off"
 
     targetdir("bin/" .. outputdir .. "/%{prj.name}")
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -41,7 +41,7 @@ project "Cabrankengine"
 
     filter "system:linux"
         systemversion "latest"
-        pic "On"
+        pic "on"
 
         removefiles { "%{prj.name}/src/Platform/Windows/**.cpp", "%{prj.name}/src/Platform/Windows/**.h" }
         links { "X11", "Xrandr", "Xi", "Xxf86vm", "Xcursor", "pthread", "dl", "GL" }
@@ -62,14 +62,14 @@ project "Sandbox"
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++20"
-    staticruntime "on"
+    staticruntime "off"
 
     targetdir("bin/" .. outputdir .. "/%{prj.name}")
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
     files {"%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp"}
     includedirs {"Cabrankengine/vendor/spdlog/include", "Cabrankengine/src", "Cabrankengine/vendor", "%{IncludeDir.glm}"}
-    links {"Cabrankengine"}
+    links {"Cabrankengine", "GLFW", "glad", "ImGui"}
 
     filter "system:windows"
         systemversion "latest"
@@ -82,7 +82,7 @@ project "Sandbox"
         pic "on"
 
         defines {"CE_PLATFORM_LINUX"}
-        links { "pthread", "dl" }
+        links { "X11", "Xrandr", "Xi", "Xxf86vm", "Xcursor", "pthread", "dl", "GL" }
         
     filter "configurations:Debug"
         defines "CE_DEBUG"
