@@ -1,0 +1,30 @@
+#include <Cabrankengine/Renderer/Buffer.h>
+
+#include <Cabrankengine/Core/Logger.h>
+#include <Cabrankengine/Renderer/Renderer.h>
+#include <Platform/OpenGL/OpenGLBuffer.h>
+
+namespace cabrankengine {
+
+	// TODO: check for alternatives. It seems odd to me that the base class knows the derived classes.
+
+	VertexBuffer* VertexBuffer::create(float* vertices, uint32_t size) {
+		switch (Renderer::getAPI()) {
+		case RendererAPI::None: 
+			CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); 
+			return nullptr;
+		case RendererAPI::OpenGL: 
+			return new OpenGLVertexBuffer(vertices, size);
+		}
+	}
+
+	IndexBuffer* IndexBuffer::create(uint32_t* indices, uint32_t count) {
+		switch (Renderer::getAPI()) {
+		case RendererAPI::None:
+			CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
+			return nullptr;
+		case RendererAPI::OpenGL:
+			return new OpenGLIndexBuffer(indices, count);
+		}
+	}
+}
