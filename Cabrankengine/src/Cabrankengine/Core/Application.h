@@ -9,6 +9,7 @@ namespace cabrankengine {
 	class Window; // Base Window class
 	class WindowCloseEvent;
 	class ImGuiLayer;
+	class Shader;
 
 	class CABRANKENGINE_API Application
 	{
@@ -50,6 +51,8 @@ namespace cabrankengine {
 		LayerStack m_LayerStack; // Stack of layers to forward the events to
 
 		unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
+
+		std::unique_ptr<Shader> m_Shader;
 	
 		static Application* s_Instance; // Static instance of the app (Singleton pattern)
 	};

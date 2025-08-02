@@ -2,10 +2,11 @@
 
 #include <glad/glad.h>
 #include <vector>
+#include <Cabrankengine/Core/Logger.h>
 
 namespace cabrankengine {
 
-	Shader::Shader(const std::string& vertexSrc, const std::string& fragmentSrc) {
+	Shader::Shader(const std::string& vertexSrc, const std::string& fragmentSrc) : m_RendererId(0) {
 		// Create an empty vertex shader handle
 		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
@@ -31,9 +32,8 @@ namespace cabrankengine {
 			// We don't need the shader anymore.
 			glDeleteShader(vertexShader);
 
-			// Use the infoLog as you see fit.
-
-			// In this simple program, we'll just leave
+			CE_CORE_ERRROR("{0}", infoLog.data());
+			CE_CORE_ASSERT(false, "Vertex shader compilation failure!");
 			return;
 		}
 
@@ -42,7 +42,7 @@ namespace cabrankengine {
 
 		// Send the fragment shader source code to GL
 		// Note that std::string's .c_str is NULL character terminated.
-		source = (const GLchar*)fragmentSrc.c_str();
+		source = fragmentSrc.c_str();
 		glShaderSource(fragmentShader, 1, &source, 0);
 
 		// Compile the fragment shader
@@ -63,16 +63,16 @@ namespace cabrankengine {
 			// Either of them. Don't leak shaders.
 			glDeleteShader(vertexShader);
 
-			// Use the infoLog as you see fit.
-
-			// In this simple program, we'll just leave
+			CE_CORE_ERRROR("{0}", infoLog.data());
+			CE_CORE_ASSERT(false, "Fragment shader compilation failure!");
 			return;
 		}
 
 		// Vertex and fragment shaders are successfully compiled.
 		// Now time to link them together into a program.
 		// Get a program object.
-		GLuint program = glCreateProgram();
+		m_RendererId = glCreateProgram();
+		GLuint program = m_RendererId; // TODO: use the instance variable.
 
 		// Attach our shaders to our program
 		glAttachShader(program, vertexShader);
@@ -99,9 +99,8 @@ namespace cabrankengine {
 			glDeleteShader(vertexShader);
 			glDeleteShader(fragmentShader);
 
-			// Use the infoLog as you see fit.
-
-			// In this simple program, we'll just leave
+			CE_CORE_ERRROR("{0}", infoLog.data());
+			CE_CORE_ASSERT(false, "Shader link failure!");
 			return;
 		}
 
@@ -111,14 +110,14 @@ namespace cabrankengine {
 	}
 
 	Shader::~Shader() {
-
+		glDeleteProgram(m_RendererId);
 	}
 
 	void Shader::bind() const {
-
+		glUseProgram(m_RendererId);
 	}
 
 	void Shader::unbind() const {
-
+		glUseProgram(0);
 	}
 }
