@@ -12,8 +12,12 @@ namespace cabrankengine {
 		virtual void bind() const override;
 		virtual void unbind() const override;
 
+		virtual const BufferLayout& getLayout() const override { return m_Layout; }
+		virtual void setLayout(const BufferLayout& layout) override { m_Layout = layout; }
+
 	private:
 		uint32_t m_RendererId;
+		BufferLayout m_Layout;
 	};
 
 	class OpenGLIndexBuffer : public IndexBuffer {

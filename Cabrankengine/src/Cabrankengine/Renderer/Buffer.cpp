@@ -16,6 +16,8 @@ namespace cabrankengine {
 		case RendererAPI::OpenGL: 
 			return new OpenGLVertexBuffer(vertices, size);
 		}
+
+		return nullptr;
 	}
 
 	IndexBuffer* IndexBuffer::create(uint32_t* indices, uint32_t count) {
@@ -26,5 +28,7 @@ namespace cabrankengine {
 		case RendererAPI::OpenGL:
 			return new OpenGLIndexBuffer(indices, count);
 		}
+
+		return nullptr;
 	}
 }
