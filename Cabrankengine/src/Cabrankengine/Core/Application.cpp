@@ -52,19 +52,19 @@ namespace cabrankengine {
 
 		m_VertexBuffer.reset(VertexBuffer::create(vertices, sizeof(vertices)));
 		
-		//{
+		{
 			BufferLayout layout = {
-				{ ShaderDataType::Float3, "pos" },
-				{ ShaderDataType::Float4, "color" }
+			{ ShaderDataType::Float3, "pos" },
+			{ ShaderDataType::Float4, "color" }
 			};
-	
-			// TODO: this is not working and I do not know why.
-			//m_VertexBuffer->setLayout(layout);
-		//}
 
+			// TODO: this is not working on Linux on Debug and I do not know why.
+			// It seems like there is a memory problem when calling setLayout but I couldn't trace it.
+			m_VertexBuffer->setLayout(layout);
+		}
+
+		const auto& layout = m_VertexBuffer->getLayout();
 		uint32_t index = 0;
-		// TODO: this is not working and I do not know why.
-		//const auto& layout1 = m_VertexBuffer->getLayout();
 		for (const auto& element : layout) {
 			glEnableVertexAttribArray(index);
 			glVertexAttribPointer(index, 
