@@ -10,6 +10,7 @@ namespace cabrankengine {
 	class WindowCloseEvent;
 	class ImGuiLayer;
 	class Shader;
+	class VertexArray;
 	class VertexBuffer;
 	class IndexBuffer;
 
@@ -52,11 +53,11 @@ namespace cabrankengine {
 		bool m_Running; // Whether the app must stop or not
 		LayerStack m_LayerStack; // Stack of layers to forward the events to
 
-		unsigned int m_VertexArray;
+		std::shared_ptr<Shader> m_Shader;
+		std::shared_ptr<VertexArray> m_VertexArray;
 
-		std::unique_ptr<Shader> m_Shader;
-		std::unique_ptr<VertexBuffer> m_VertexBuffer;
-		std::unique_ptr<IndexBuffer> m_IndexBuffer;
+		std::shared_ptr<Shader> m_BlueShader;
+		std::shared_ptr<VertexArray> m_SquareVA;
 	
 		static Application* s_Instance; // Static instance of the app (Singleton pattern)
 	};

@@ -4,31 +4,13 @@
 #include <Cabrankengine/Events/ApplicationEvent.h>
 #include <Cabrankengine/ImGui/ImGuiLayer.h>
 #include <Cabrankengine/Renderer/Shader.h>
+#include <Cabrankengine/Renderer/VertexArray.h>
 #include <Cabrankengine/Renderer/Buffer.h>
 #include <glad/glad.h> // TODO: check this inclusion. Due to the preprocessor definition, including glfw failed so I replaced it with glad.
 
 namespace cabrankengine {
 
 	Application* Application::s_Instance = nullptr;
-
-	static GLenum ShaderDataType2OpenGLBaseType(ShaderDataType type) {
-		switch(type) {
-			case ShaderDataType::Float:   return GL_FLOAT;
-			case ShaderDataType::Float2:  return GL_FLOAT;
-			case ShaderDataType::Float3:  return GL_FLOAT;
-			case ShaderDataType::Float4:  return GL_FLOAT;
-			case ShaderDataType::Mat3:    return GL_FLOAT;
-			case ShaderDataType::Mat4:    return GL_FLOAT;
-			case ShaderDataType::Int:     return GL_INT;
-			case ShaderDataType::Int2:    return GL_INT;
-			case ShaderDataType::Int3:    return GL_INT;
-			case ShaderDataType::Int4:    return GL_INT;
-			case ShaderDataType::Bool:    return GL_BOOL;
-		}
-
-		CE_CORE_ASSERT(false, "Unknown Shader Type!");
-		return 0;
-	}
 
 	Application::Application() : m_Running(true)
 	{
@@ -41,8 +23,7 @@ namespace cabrankengine {
 		m_ImGuiLayer = new ImGuiLayer();
 		pushOverlay(m_ImGuiLayer);
 
-		glGenVertexArrays(1, &m_VertexArray);
-		glBindVertexArray(m_VertexArray);
+		m_VertexArray.reset(VertexArray::create());
 
 		float vertices[3 * 7] = {
 			-0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
@@ -50,35 +31,46 @@ namespace cabrankengine {
 			 0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
 		};
 
-		m_VertexBuffer.reset(VertexBuffer::create(vertices, sizeof(vertices)));
+		std::shared_ptr<VertexBuffer> vertexBuffer;
+		vertexBuffer.reset(VertexBuffer::create(vertices, sizeof(vertices)));
 		
-		{
-			BufferLayout layout = {
+		BufferLayout layout = {
 			{ ShaderDataType::Float3, "pos" },
 			{ ShaderDataType::Float4, "color" }
-			};
+		};
 
-			// TODO: this is not working on Linux on Debug and I do not know why.
-			// It seems like there is a memory problem when calling setLayout but I couldn't trace it.
-			m_VertexBuffer->setLayout(layout);
-		}
+		// TODO: this is not working on Linux on Debug and I do not know why.
+		// It seems like there is a memory problem when calling setLayout but I couldn't trace it.
+		vertexBuffer->setLayout(layout);
 
-		const auto& layout = m_VertexBuffer->getLayout();
-		uint32_t index = 0;
-		for (const auto& element : layout) {
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index, 
-				element.getComponentCount(), 
-				ShaderDataType2OpenGLBaseType(element.Type), 
-				element.Normalized? GL_TRUE : GL_FALSE, 
-				layout.getStride(), 
-				(const void*)element.Offset);
-			index++;
-		}
-
+		m_VertexArray->addVertexBuffer(vertexBuffer);
 		
 		uint32_t indices[3] = { 0, 1, 2 };
-		m_IndexBuffer.reset(IndexBuffer::create(indices, sizeof(indices) / sizeof(uint32_t)));
+		std::shared_ptr<IndexBuffer> indexBuffer;
+		indexBuffer.reset(IndexBuffer::create(indices, sizeof(indices) / sizeof(uint32_t)));
+
+		m_VertexArray->setIndexBuffer(indexBuffer);
+
+		m_SquareVA.reset(VertexArray::create());
+		
+		float squareVertices[3 * 4] = {
+			-0.75f, -0.75f, 0.0f,
+			 0.75f, -0.75f, 0.0f,
+			 0.75f,  0.75f, 0.0f,
+			 -0.75f,  0.75f, 0.0f
+		};
+
+		std::shared_ptr<VertexBuffer> squareVB;
+		squareVB.reset(VertexBuffer::create(squareVertices, sizeof(squareVertices)));
+
+		squareVB->setLayout({{ ShaderDataType::Float3, "pos" }});
+		m_SquareVA->addVertexBuffer(squareVB);
+
+		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
+		std::shared_ptr<IndexBuffer> squareIB;
+		squareIB.reset(IndexBuffer::create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+
+		m_SquareVA->setIndexBuffer(squareIB);
 
 		std::string vertexSrc = R"(
 			#version 330 core
@@ -113,6 +105,34 @@ namespace cabrankengine {
 		)";
 
 		m_Shader.reset(new Shader(vertexSrc, fragmentSrc));
+
+		std::string blueVertexSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) in vec3 pos;
+
+			out vec3 v_pos;
+
+			void main()
+			{
+				v_pos = pos;
+				gl_Position = vec4(pos, 1.0);
+			}
+		)";
+
+		std::string blueFragmentSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) out vec4 color;
+
+			in vec3 v_pos;
+
+			void main()
+			{
+				color = vec4(0.2, 0.3, 0.8, 1.0);
+			}
+		)";
+		m_BlueShader.reset(new Shader(blueVertexSrc, blueFragmentSrc));
 	}
 
 	Application::~Application()
@@ -125,9 +145,14 @@ namespace cabrankengine {
 			 glClearColor(0.1f, 0.1f, 0.1f, 1.f);
 			 glClear(GL_COLOR_BUFFER_BIT);
 
+			 m_BlueShader->bind();
+			 m_SquareVA->bind();
+			 glDrawElements(GL_TRIANGLES, m_SquareVA->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr);
+
+
 			 m_Shader->bind();
-			 glBindVertexArray(m_VertexArray);
-			 glDrawElements(GL_TRIANGLES, m_IndexBuffer->getCount(), GL_UNSIGNED_INT, nullptr);
+			 m_VertexArray->bind();
+			 glDrawElements(GL_TRIANGLES, m_VertexArray->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr);
 
 			 for (Layer* layer : m_LayerStack)
 				 layer->onUpdate();
