@@ -35,7 +35,7 @@ namespace cabrankengine {
 		uint32_t Offset;
 		bool Normalized;
 
-		BufferElement() {} // TODO: initialize.
+		BufferElement() : Name(), Type(ShaderDataType::None), Size(), Offset(), Normalized() {}
 
 		BufferElement(ShaderDataType type, const std::string& name, bool normalized = false) 
 			: Name(name), Type(type), Size(shaderDataTypeSize(type)), Offset(0), Normalized(normalized) { }
@@ -62,7 +62,7 @@ namespace cabrankengine {
 
 	class BufferLayout {
 	public:
-		BufferLayout() {} // TODO: initialize
+		BufferLayout() : m_Stride() {}
 
 		BufferLayout(const std::initializer_list<BufferElement>& elements)
 			: m_Elements(elements), m_Stride(0) {
