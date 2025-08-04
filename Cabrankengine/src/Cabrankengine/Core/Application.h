@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <Cabrankengine/Core/LayerStack.h>
+#include <Cabrankengine/Renderer/OrthographicCamera.h>
 
 namespace cabrankengine {
 
@@ -58,6 +59,8 @@ namespace cabrankengine {
 
 		std::shared_ptr<Shader> m_BlueShader;
 		std::shared_ptr<VertexArray> m_SquareVA;
+
+		OrthographicCamera m_Camera; // Camera for the scene
 	
 		static Application* s_Instance; // Static instance of the app (Singleton pattern)
 	};

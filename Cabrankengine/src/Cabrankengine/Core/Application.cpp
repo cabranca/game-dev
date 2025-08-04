@@ -13,7 +13,7 @@ namespace cabrankengine {
 
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application() : m_Running(true)
+	Application::Application() : m_Running(true), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
 	{
 		CE_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
@@ -79,6 +79,8 @@ namespace cabrankengine {
 			layout(location = 0) in vec3 pos;
 			layout(location = 1) in vec4 color;
 
+			uniform mat4 u_viewProjection;
+
 			out vec3 v_pos;
 			out vec4 v_color;
 
@@ -86,7 +88,7 @@ namespace cabrankengine {
 			{
 				v_pos = pos;
 				v_color = color;
-				gl_Position = vec4(pos, 1.0);
+				gl_Position = u_viewProjection * vec4(pos, 1.0);
 			}
 		)";
 
@@ -112,12 +114,14 @@ namespace cabrankengine {
 			
 			layout(location = 0) in vec3 pos;
 
+			uniform mat4 u_viewProjection;
+
 			out vec3 v_pos;
 
 			void main()
 			{
 				v_pos = pos;
-				gl_Position = vec4(pos, 1.0);
+				gl_Position = u_viewProjection * vec4(pos, 1.0);
 			}
 		)";
 
@@ -146,13 +150,13 @@ namespace cabrankengine {
 			 RenderCommand::setClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
 			 RenderCommand::clear();
 
-			 Renderer::beginScene();
+			 m_Camera.setPosition({ 0.5f, 0.5f, 0.0f });
+			 m_Camera.setRotation(45.0f);
 
-			 m_BlueShader->bind();
-			 Renderer::submit(m_SquareVA);
+			 Renderer::beginScene(m_Camera);
 
-			 m_Shader->bind();
-			 Renderer::submit(m_VertexArray);
+			 Renderer::submit(m_BlueShader, m_SquareVA);
+			 Renderer::submit(m_Shader, m_VertexArray);
 
 			 for (Layer* layer : m_LayerStack)
 				 layer->onUpdate();
