@@ -6,6 +6,7 @@
 #include <Cabrankengine/Renderer/Shader.h>
 #include <Cabrankengine/Renderer/VertexArray.h>
 #include <Cabrankengine/Renderer/Buffer.h>
+#include <Cabrankengine/Renderer/Renderer.h>
 #include <glad/glad.h> // TODO: check this inclusion. Due to the preprocessor definition, including glfw failed so I replaced it with glad.
 
 namespace cabrankengine {
@@ -142,17 +143,16 @@ namespace cabrankengine {
 	void Application::Run()
 	{
 		while (m_Running) {
-			 glClearColor(0.1f, 0.1f, 0.1f, 1.f);
-			 glClear(GL_COLOR_BUFFER_BIT);
+			 RenderCommand::setClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
+			 RenderCommand::clear();
+
+			 Renderer::beginScene();
 
 			 m_BlueShader->bind();
-			 m_SquareVA->bind();
-			 glDrawElements(GL_TRIANGLES, m_SquareVA->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr);
-
+			 Renderer::submit(m_SquareVA);
 
 			 m_Shader->bind();
-			 m_VertexArray->bind();
-			 glDrawElements(GL_TRIANGLES, m_VertexArray->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr);
+			 Renderer::submit(m_VertexArray);
 
 			 for (Layer* layer : m_LayerStack)
 				 layer->onUpdate();
