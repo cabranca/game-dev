@@ -20,7 +20,7 @@ public:
 			{ cabrankengine::ShaderDataType::Float4, "color" }
 		};
 
-		// TODO: this is not working on Linux on Debug and I do not know why.
+		// TODO: this is not working on Linux on Release and I do not know why.
 		// It seems like there is a memory problem when calling setLayout but I couldn't trace it.
 		vertexBuffer->setLayout(layout);
 
