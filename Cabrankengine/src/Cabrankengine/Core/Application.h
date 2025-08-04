@@ -53,14 +53,6 @@ namespace cabrankengine {
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running; // Whether the app must stop or not
 		LayerStack m_LayerStack; // Stack of layers to forward the events to
-
-		std::shared_ptr<Shader> m_Shader;
-		std::shared_ptr<VertexArray> m_VertexArray;
-
-		std::shared_ptr<Shader> m_BlueShader;
-		std::shared_ptr<VertexArray> m_SquareVA;
-
-		OrthographicCamera m_Camera; // Camera for the scene
 	
 		static Application* s_Instance; // Static instance of the app (Singleton pattern)
 	};

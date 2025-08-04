@@ -3,17 +3,12 @@
 #include <Cabrankengine/Core/Logger.h>
 #include <Cabrankengine/Events/ApplicationEvent.h>
 #include <Cabrankengine/ImGui/ImGuiLayer.h>
-#include <Cabrankengine/Renderer/Shader.h>
-#include <Cabrankengine/Renderer/VertexArray.h>
-#include <Cabrankengine/Renderer/Buffer.h>
-#include <Cabrankengine/Renderer/Renderer.h>
-#include <glad/glad.h> // TODO: check this inclusion. Due to the preprocessor definition, including glfw failed so I replaced it with glad.
 
 namespace cabrankengine {
 
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application() : m_Running(true), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
+	Application::Application() : m_Running(true)
 	{
 		CE_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
@@ -23,121 +18,6 @@ namespace cabrankengine {
 
 		m_ImGuiLayer = new ImGuiLayer();
 		pushOverlay(m_ImGuiLayer);
-
-		m_VertexArray.reset(VertexArray::create());
-
-		float vertices[3 * 7] = {
-			-0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
-			 0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
-			 0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
-		};
-
-		std::shared_ptr<VertexBuffer> vertexBuffer;
-		vertexBuffer.reset(VertexBuffer::create(vertices, sizeof(vertices)));
-		
-		BufferLayout layout = {
-			{ ShaderDataType::Float3, "pos" },
-			{ ShaderDataType::Float4, "color" }
-		};
-
-		// TODO: this is not working on Linux on Debug and I do not know why.
-		// It seems like there is a memory problem when calling setLayout but I couldn't trace it.
-		vertexBuffer->setLayout(layout);
-
-		m_VertexArray->addVertexBuffer(vertexBuffer);
-		
-		uint32_t indices[3] = { 0, 1, 2 };
-		std::shared_ptr<IndexBuffer> indexBuffer;
-		indexBuffer.reset(IndexBuffer::create(indices, sizeof(indices) / sizeof(uint32_t)));
-
-		m_VertexArray->setIndexBuffer(indexBuffer);
-
-		m_SquareVA.reset(VertexArray::create());
-		
-		float squareVertices[3 * 4] = {
-			-0.75f, -0.75f, 0.0f,
-			 0.75f, -0.75f, 0.0f,
-			 0.75f,  0.75f, 0.0f,
-			 -0.75f,  0.75f, 0.0f
-		};
-
-		std::shared_ptr<VertexBuffer> squareVB;
-		squareVB.reset(VertexBuffer::create(squareVertices, sizeof(squareVertices)));
-
-		squareVB->setLayout({{ ShaderDataType::Float3, "pos" }});
-		m_SquareVA->addVertexBuffer(squareVB);
-
-		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		std::shared_ptr<IndexBuffer> squareIB;
-		squareIB.reset(IndexBuffer::create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
-
-		m_SquareVA->setIndexBuffer(squareIB);
-
-		std::string vertexSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) in vec3 pos;
-			layout(location = 1) in vec4 color;
-
-			uniform mat4 u_viewProjection;
-
-			out vec3 v_pos;
-			out vec4 v_color;
-
-			void main()
-			{
-				v_pos = pos;
-				v_color = color;
-				gl_Position = u_viewProjection * vec4(pos, 1.0);
-			}
-		)";
-
-		std::string fragmentSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) out vec4 color;
-
-			in vec3 v_pos;
-			in vec4 v_color;
-
-			void main()
-			{
-				color = vec4(v_pos + 0.5, 1.0);
-				color = v_color;
-			}
-		)";
-
-		m_Shader.reset(new Shader(vertexSrc, fragmentSrc));
-
-		std::string blueVertexSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) in vec3 pos;
-
-			uniform mat4 u_viewProjection;
-
-			out vec3 v_pos;
-
-			void main()
-			{
-				v_pos = pos;
-				gl_Position = u_viewProjection * vec4(pos, 1.0);
-			}
-		)";
-
-		std::string blueFragmentSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) out vec4 color;
-
-			in vec3 v_pos;
-
-			void main()
-			{
-				color = vec4(0.2, 0.3, 0.8, 1.0);
-			}
-		)";
-		m_BlueShader.reset(new Shader(blueVertexSrc, blueFragmentSrc));
 	}
 
 	Application::~Application()
@@ -147,17 +27,6 @@ namespace cabrankengine {
 	void Application::Run()
 	{
 		while (m_Running) {
-			 RenderCommand::setClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
-			 RenderCommand::clear();
-
-			 m_Camera.setPosition({ 0.5f, 0.5f, 0.0f });
-			 m_Camera.setRotation(45.0f);
-
-			 Renderer::beginScene(m_Camera);
-
-			 Renderer::submit(m_BlueShader, m_SquareVA);
-			 Renderer::submit(m_Shader, m_VertexArray);
-
 			 for (Layer* layer : m_LayerStack)
 				 layer->onUpdate();
 
