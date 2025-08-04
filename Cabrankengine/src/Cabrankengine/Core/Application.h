@@ -53,6 +53,7 @@ namespace cabrankengine {
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running; // Whether the app must stop or not
 		LayerStack m_LayerStack; // Stack of layers to forward the events to
+		float m_LastFrameTime; // Time of the last frame
 	
 		static Application* s_Instance; // Static instance of the app (Singleton pattern)
 	};

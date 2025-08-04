@@ -2,6 +2,7 @@
 
 #include <Cabrankengine/Core/Core.h>
 #include <Cabrankengine/Events/Event.h>
+#include <Cabrankengine/Core/Timestep.h>
 
 namespace cabrankengine {
 	
@@ -17,7 +18,7 @@ namespace cabrankengine {
 		virtual void onDettach() {}
 
 		// Callback for when the layer must update
-		virtual void onUpdate() {}
+		virtual void onUpdate(Timestep delta) {}
 
 		virtual void onImGuiRender() {}
 

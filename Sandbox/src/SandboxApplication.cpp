@@ -120,18 +120,20 @@ public:
 		m_BlueShader.reset(new cabrankengine::Shader(blueVertexSrc, blueFragmentSrc));
 	}
 	
-	void onUpdate() override {
+	void onUpdate(cabrankengine::Timestep delta) override {
+		CE_TRACE("Delta time: {0}s ({1}ms)", delta.getSeconds(), delta.getMilliseconds());
+
 		if (cabrankengine::Input::isKeyPressed(cabrankengine::Key::Left))
-			m_CameraPosition.x -= m_CameraSpeed;
+			m_CameraPosition.x -= m_CameraSpeed * delta;
 		else if (cabrankengine::Input::isKeyPressed(cabrankengine::Key::Right))
-			m_CameraPosition.x += m_CameraSpeed;
+			m_CameraPosition.x += m_CameraSpeed * delta;
 		if (cabrankengine::Input::isKeyPressed(cabrankengine::Key::Down))
-			m_CameraPosition.y -= m_CameraSpeed;
+			m_CameraPosition.y -= m_CameraSpeed * delta;
 		else if (cabrankengine::Input::isKeyPressed(cabrankengine::Key::Up))
-			m_CameraPosition.y += m_CameraSpeed;
+			m_CameraPosition.y += m_CameraSpeed * delta;
 
 		else if (cabrankengine::Input::isKeyPressed(cabrankengine::Key::R))
-			m_CameraRotation += m_CameraRotationSpeed;
+			m_CameraRotation += m_CameraRotationSpeed * delta;
 
 		cabrankengine::RenderCommand::setClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
 		cabrankengine::RenderCommand::clear();
@@ -169,9 +171,9 @@ private:
 
 	cabrankengine::OrthographicCamera m_Camera; // Camera for the scene
 	glm::vec3 m_CameraPosition;
-	float m_CameraSpeed = 0.1f; // Speed of the camera movement
+	float m_CameraSpeed = 1.f; // Speed of the camera movement
 	float m_CameraRotation = 0.f; // Rotation of the camera
-	float m_CameraRotationSpeed = 0.1f; // Speed of the camera rotation
+	float m_CameraRotationSpeed = 1.f; // Speed of the camera rotation
 };
 
 class Sandbox : public cabrankengine::Application {

@@ -3,12 +3,14 @@
 #include <Cabrankengine/Core/Logger.h>
 #include <Cabrankengine/Events/ApplicationEvent.h>
 #include <Cabrankengine/ImGui/ImGuiLayer.h>
+#include <Cabrankengine/Core/Timestep.h>
+#include <GLFW/glfw3.h>
 
 namespace cabrankengine {
 
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application() : m_Running(true)
+	Application::Application() : m_Running(true), m_LastFrameTime(0.0f)
 	{
 		CE_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
@@ -27,8 +29,12 @@ namespace cabrankengine {
 	void Application::Run()
 	{
 		while (m_Running) {
+			float time = (float)glfwGetTime(); // This should be in Platform::getTime() or similar
+			Timestep timestep = time - m_LastFrameTime; // Calculate the time since the last frame
+			m_LastFrameTime = time;
+
 			 for (Layer* layer : m_LayerStack)
-				 layer->onUpdate();
+				 layer->onUpdate(timestep);
 
 			 m_ImGuiLayer->begin();
 			 for (Layer* layer : m_LayerStack)
