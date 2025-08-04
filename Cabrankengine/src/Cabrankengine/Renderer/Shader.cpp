@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 #include <vector>
 #include <Cabrankengine/Core/Logger.h>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace cabrankengine {
 
@@ -119,5 +120,14 @@ namespace cabrankengine {
 
 	void Shader::unbind() const {
 		glUseProgram(0);
+	}
+
+	void Shader::uploadUniformMat4(const std::string& name, const glm::mat4& matrix) {
+		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
+		if (location == -1) {
+			CE_CORE_ERRROR("Uniform 'u_viewProjection' not found in shader!");
+			return;
+		}
+		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 }

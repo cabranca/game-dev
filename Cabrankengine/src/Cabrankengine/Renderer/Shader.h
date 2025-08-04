@@ -2,6 +2,7 @@
 
 #include <string>
 #include <cstdint>
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace cabrankengine {
 
@@ -12,6 +13,8 @@ namespace cabrankengine {
 
 		void bind() const;
 		void unbind() const;
+
+		void uploadUniformMat4(const std::string& name, const glm::mat4& matrix);
 
 	private:
 		uint32_t m_RendererId;
