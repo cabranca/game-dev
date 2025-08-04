@@ -1,17 +1,16 @@
 #pragma once
 
-namespace cabrankengine {
+#include <Cabrankengine/Renderer/RenderCommand.h>
 
-	enum class RendererAPI {
-		None = 0,
-		OpenGL = 1
-	};
+namespace cabrankengine {
 
 	class Renderer {
 	public:
-		inline static RendererAPI getAPI() { return s_RendererAPI; }
+		static void beginScene();
+		static void endScene();
 
-	private:
-		static RendererAPI s_RendererAPI;
+		static void submit(const std::shared_ptr<VertexArray>& vertexArray);
+
+		inline static RendererAPI::API getAPI() { return RendererAPI::getAPI(); }
 	};
 }
