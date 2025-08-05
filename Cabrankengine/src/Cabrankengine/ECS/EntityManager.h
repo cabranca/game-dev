@@ -15,7 +15,7 @@ namespace cabrankengine
 		EntityManager();
 
 		// Update the entities states.
-		void update();
+		void onUpdate();
 
 		// Create the entity and return it to the caller.
 		EntPtr addEntity();

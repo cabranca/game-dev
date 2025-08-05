@@ -4,7 +4,7 @@ namespace cabrankengine {
 
 	EntityManager::EntityManager() : m_TotalEntities(0) {}
 
-	void EntityManager::update()
+	void EntityManager::onUpdate()
 	{
 		// Remove dead entities
 		std::erase_if(m_Entities, [](EntPtr ent) { return !ent->isActive(); });
