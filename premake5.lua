@@ -28,8 +28,16 @@ project "Cabrankengine"
     targetdir("bin/" .. outputdir .. "/%{prj.name}")
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
-    files {"%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp", "%{prj.name}/vendor/glm/glm/**.hpp", "%{prj.name}/vendor/glm/glm/**.inl", "%{prj.name}/vendor/stb_image/**.cpp", "%{prj.name}/vendor/stb_image/**.cpp"}
-    includedirs {"%{prj.name}/src", "%{prj.name}/vendor/spdlog/include", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}", "%{IncludeDir.ImGui}", "%{IncludeDir.glm}", "%{IncludeDir.stb_image}"}
+    files 
+    {
+        "%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp", "%{prj.name}/src/**.hpp", "%{prj.name}/vendor/glm/glm/**.hpp", "%{prj.name}/vendor/glm/glm/**.inl", 
+        "%{prj.name}/vendor/stb_image/**.cpp", "%{prj.name}/vendor/stb_image/**.cpp"
+    }
+    includedirs 
+    {
+        "%{prj.name}/src", "%{prj.name}/vendor/spdlog/include", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}", "%{IncludeDir.ImGui}", 
+        "%{IncludeDir.glm}", "%{IncludeDir.stb_image}"
+    }
     links {"GLFW", "glad", "ImGui"}
 
     filter "system:windows"
