@@ -26,10 +26,10 @@ namespace cabrankengine {
         virtual void setEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; }
         
         // Sets whether VSync is enabled or not
-        void setVSync(bool enabled) override;
+        virtual void setVSync(bool enabled) override;
         
         // Returns whether VSync is enabled or not
-        bool isVSync() const override;
+        virtual bool isVSync() const override;
 
         // Returns the Windows specific window.
 		// TODO: I think it must be marked override
@@ -37,10 +37,10 @@ namespace cabrankengine {
 
     private:
         // Initialize the window from the given properties
-        virtual void init(const WindowProps& props);
+        void init(const WindowProps& props);
         
         // Shutsdown GLFW correctly to destroy the window
-        virtual void shutdown();
+        void shutdown();
 
         GLFWwindow* m_Window; // Actual window object
         GraphicsContext* m_Context;

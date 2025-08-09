@@ -28,7 +28,7 @@ namespace cabrankengine {
 		bool isRepeat() const { return m_IsRepeat; }
 
 		// Returns the string form of the event
-		std::string toString() const override
+		virtual std::string toString() const override
 		{
 			std::stringstream ss;
 			ss << "KeyPressedEvent: " << m_KeyCode << " (repeat = " << m_IsRepeat << ")";
@@ -49,7 +49,7 @@ namespace cabrankengine {
 		}
 
 		// Returns the string form of the event
-		std::string toString() const override
+		virtual std::string toString() const override
 		{
 			std::stringstream ss;
 			ss << "KeyReleasedEvent: " << m_KeyCode;
@@ -67,7 +67,7 @@ namespace cabrankengine {
 		}
 
 		// Returns the string form of the event
-		std::string toString() const override
+		virtual std::string toString() const override
 		{
 			std::stringstream ss;
 			ss << "KeyTypedEvent: " << m_KeyCode;

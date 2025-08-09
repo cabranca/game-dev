@@ -15,33 +15,32 @@ namespace cabrankengine {
 		virtual ~WindowsWindow();
 
 		// Callback for the window update
-		void onUpdate() override;
+		virtual void onUpdate() override;
 
 		// Returns the window width
-		unsigned int getWidth() const override { return m_Data.Width; }
+		virtual unsigned int getWidth() const override { return m_Data.Width; }
 
 		// Returns the window height
-		unsigned int getHeight() const override { return m_Data.Height; }
+		virtual unsigned int getHeight() const override { return m_Data.Height; }
 
 		// Sets the callback function for the event polling
-		void setEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; }
+		virtual void setEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; }
 		
 		// Sets whether VSync is enabled or not
-		void setVSync(bool enabled) override;
+		virtual void setVSync(bool enabled) override;
 		
 		// Returns whether VSync is enabled or not
-		bool isVSync() const override;
+		virtual bool isVSync() const override;
 
 		// Returns the Windows specific window.
-		// TODO: I think it must be marked override
-		virtual void* getNativeWindow() const { return m_Window; }
+		virtual void* getNativeWindow() const override { return m_Window; }
 
 	private:
 		// Initialize the window from the given properties
-		virtual void init(const WindowProps& props);
+		void init(const WindowProps& props);
 
 		// Shutsdown GLFW correctly to destroy the window
-		virtual void shutdown();
+		void shutdown();
 
 		GLFWwindow* m_Window; // Actual window object
 		GraphicsContext* m_Context;

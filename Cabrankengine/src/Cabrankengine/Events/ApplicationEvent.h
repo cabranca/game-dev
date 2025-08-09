@@ -20,7 +20,7 @@ namespace cabrankengine {
 		unsigned int getHeight() const { return m_Height; }
 
 		// Returns the string form of the event
-		std::string toString() const override
+		virtual std::string toString() const override
 		{
 			std::stringstream ss;
 			ss << "WindowResizeEvent: " << m_Width << ", " << m_Height;

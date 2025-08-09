@@ -16,8 +16,8 @@ namespace cabrankengine {
 			OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);
 			virtual ~OpenGLShader();
 
-			void bind() const override;
-			void unbind() const override;
+			virtual void bind() const override;
+			virtual void unbind() const override;
 
 			const std::string& getName() const override { return m_Name; }
 

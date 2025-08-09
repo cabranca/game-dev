@@ -21,7 +21,7 @@ namespace cabrankengine {
 		float getY() const { return m_MouseY; }
 
 		// Returns the string form of the event
-		std::string toString() const override
+		virtual std::string toString() const override
 		{
 			std::stringstream ss;
 			ss << "MouseMovedEvent: " << m_MouseX << ", " << m_MouseY;
@@ -48,7 +48,7 @@ namespace cabrankengine {
 		float getYOffset() const { return m_YOffset; }
 
 		// Returns the string form of the event
-		std::string toString() const override
+		virtual std::string toString() const override
 		{
 			std::stringstream ss;
 			ss << "MouseScrolledEvent: " << getXOffset() << ", " << getYOffset();
@@ -85,7 +85,7 @@ namespace cabrankengine {
 		}
 
 		// Returns the string form of the event
-		std::string toString() const override
+		virtual std::string toString() const override
 		{
 			std::stringstream ss;
 			ss << "MouseButtonPressedEvent: " << m_Button;
@@ -103,7 +103,7 @@ namespace cabrankengine {
 		}
 
 		// Returns the string form of the event
-		std::string toString() const override
+		virtual std::string toString() const override
 		{
 			std::stringstream ss;
 			ss << "MouseButtonReleasedEvent: " << m_Button;
