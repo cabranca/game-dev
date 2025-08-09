@@ -1,8 +1,9 @@
 #pragma once
+
 #include <memory>
 #include <string>
-
 #include <cstdint>
+#include <Cabrankengine/Core/Core.h>
 
 namespace cabrankengine {
 
@@ -44,7 +45,7 @@ namespace cabrankengine {
 
 	class Texture2D : public Texture {
 	public:
-		static Texture2D* create(const TextureSpecification& specification);
-		static Texture2D* create(const std::string& path);
+		static Ref<Texture2D> create(const TextureSpecification& specification);
+		static Ref<Texture2D> create(const std::string& path);
 	};
 }

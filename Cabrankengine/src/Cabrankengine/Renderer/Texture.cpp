@@ -6,24 +6,24 @@
 
 namespace cabrankengine {
 	
-	Texture2D* Texture2D::create(const TextureSpecification& specification)
+	Ref<Texture2D> Texture2D::create(const TextureSpecification& specification)
 	{
 		switch (Renderer::getAPI())
 		{
 		case RendererAPI::API::None:    CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
-		case RendererAPI::API::OpenGL:  return new OpenGLTexture2D(specification);
+		case RendererAPI::API::OpenGL:  return std::make_shared<OpenGLTexture2D>(specification);
 		}
 
 		CE_CORE_ASSERT(false, "Unknown RendererAPI!");
 		return nullptr;
 	}
 
-	Texture2D* Texture2D::create(const std::string& path)
+	Ref<Texture2D> Texture2D::create(const std::string& path)
 	{
 		switch (Renderer::getAPI())
 		{
 		case RendererAPI::API::None:    CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
-		case RendererAPI::API::OpenGL:  return  new OpenGLTexture2D(path);
+		case RendererAPI::API::OpenGL:  return  std::make_shared<OpenGLTexture2D>(path);
 		}
 
 		CE_CORE_ASSERT(false, "Unknown RendererAPI!");

@@ -13,7 +13,7 @@ namespace cabrankengine {
 				case ImageFormat::RGBA8: return GL_RGBA;
 			}
 
-			CE_CORE_ASSERT(false);
+			CE_CORE_ASSERT(false, "Invalid image format!");
 			return 0;
 		}
 
@@ -23,7 +23,7 @@ namespace cabrankengine {
 				case ImageFormat::RGBA8: return GL_RGBA8;
 			}
 
-			CE_CORE_ASSERT(false);
+			CE_CORE_ASSERT(false, "Invalid image format!");
 			return 0;
 		}
 

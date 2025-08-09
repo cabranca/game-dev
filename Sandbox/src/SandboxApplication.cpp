@@ -9,7 +9,7 @@
 class ExampleLayer : public cabrankengine::Layer {
 public:
 	ExampleLayer() : Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.f), m_SquarePosition(0.f) {
-		m_VertexArray.reset(cabrankengine::VertexArray::create());
+		m_VertexArray = cabrankengine::VertexArray::create();
 
 		float vertices[3 * 7] = {
 			-0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
@@ -18,7 +18,7 @@ public:
 		};
 
 		cabrankengine::Ref<cabrankengine::VertexBuffer> vertexBuffer;
-		vertexBuffer.reset(cabrankengine::VertexBuffer::create(vertices, sizeof(vertices)));
+		vertexBuffer = cabrankengine::VertexBuffer::create(vertices, sizeof(vertices));
 
 		cabrankengine::BufferLayout layout = {
 			{ cabrankengine::ShaderDataType::Float3, "pos" },
@@ -33,28 +33,28 @@ public:
 
 		uint32_t indices[3] = { 0, 1, 2 };
 		cabrankengine::Ref<cabrankengine::IndexBuffer> indexBuffer;
-		indexBuffer.reset(cabrankengine::IndexBuffer::create(indices, sizeof(indices) / sizeof(uint32_t)));
+		indexBuffer = cabrankengine::IndexBuffer::create(indices, sizeof(indices) / sizeof(uint32_t));
 
 		m_VertexArray->setIndexBuffer(indexBuffer);
 
-		m_SquareVA.reset(cabrankengine::VertexArray::create());
+		m_SquareVA = cabrankengine::VertexArray::create();
 
-		float squareVertices[3 * 4] = {
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.5f,  0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f
+		float squareVertices[5 * 4] = {
+			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
 		};
 
 		cabrankengine::Ref<cabrankengine::VertexBuffer> squareVB;
-		squareVB.reset(cabrankengine::VertexBuffer::create(squareVertices, sizeof(squareVertices)));
+		squareVB = cabrankengine::VertexBuffer::create(squareVertices, sizeof(squareVertices));
 
-		squareVB->setLayout({ { cabrankengine::ShaderDataType::Float3, "pos" } });
+		squareVB->setLayout({ { cabrankengine::ShaderDataType::Float3, "pos" }, {cabrankengine::ShaderDataType::Float2, "tex"} });
 		m_SquareVA->addVertexBuffer(squareVB);
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
 		cabrankengine::Ref<cabrankengine::IndexBuffer> squareIB;
-		squareIB.reset(cabrankengine::IndexBuffer::create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+		squareIB = cabrankengine::IndexBuffer::create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 
 		m_SquareVA->setIndexBuffer(squareIB);
 
@@ -93,40 +93,41 @@ public:
 			}
 		)";
 
-		m_Shader.reset(cabrankengine::Shader::create(vertexSrc, fragmentSrc));
+		m_Shader = cabrankengine::Shader::create(vertexSrc, fragmentSrc);
 
-		std::string flatColorShaderVertexSrc = R"(
+		std::string textureShaderVertexSrc = R"(
 			#version 330 core
 			
 			layout(location = 0) in vec3 pos;
+			layout(location = 1) in vec2 tex;
 
 			uniform mat4 u_viewProjection;
 			uniform mat4 u_Transform;
 
-			out vec3 v_pos;
+			out vec2 v_TexCoord;
 
 			void main()
 			{
-				v_pos = pos;
+				v_TexCoord = tex;
 				gl_Position = u_viewProjection * u_Transform * vec4(pos, 1.0);
 			}
 		)";
 
-		std::string flatColorShaderFragmentSrc = R"(
+		std::string textureShaderFragmentSrc = R"(
 			#version 330 core
 			
 			layout(location = 0) out vec4 color;
 
-			in vec3 v_pos;
+			in vec2 v_TexCoord;
 
 			uniform vec3 u_Color;
 
 			void main()
 			{
-				color = vec4(u_Color, 1.0);
+				color = vec4(v_TexCoord, 0.0, 1.0);
 			}
 		)";
-		m_FlatColorShader.reset(cabrankengine::Shader::create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
+		m_TextureShader = cabrankengine::Shader::create(textureShaderVertexSrc, textureShaderFragmentSrc);
 	}
 	
 	void onUpdate(cabrankengine::Timestep delta) override {
@@ -161,17 +162,20 @@ public:
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.f), glm::vec3(0.1f));
 
-		std::dynamic_pointer_cast<cabrankengine::OpenGLShader>(m_FlatColorShader)->bind();
-		std::dynamic_pointer_cast<cabrankengine::OpenGLShader>(m_FlatColorShader)->uploadUniformFloat3("u_Color", m_SquareColor);
+		std::dynamic_pointer_cast<cabrankengine::OpenGLShader>(m_TextureShader)->bind();
+		//std::dynamic_pointer_cast<cabrankengine::OpenGLShader>(m_TextureShader)->uploadUniformFloat3("u_Color", m_SquareColor);
 
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 20; j++) {
 				glm::vec3 pos(i * 0.11f, j * 0.11f, 0.f);
 				glm::mat4 squareTransform = glm::translate(glm::mat4(1.f), pos) * scale;
-				cabrankengine::Renderer::submit(m_FlatColorShader, m_SquareVA, squareTransform);
+				cabrankengine::Renderer::submit(m_TextureShader, m_SquareVA, squareTransform);
 			}
 		}
-		cabrankengine::Renderer::submit(m_Shader, m_VertexArray);
+
+		cabrankengine::Renderer::submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.f), glm::vec3(1.5f)));
+
+		//cabrankengine::Renderer::submit(m_Shader, m_VertexArray);
 		cabrankengine::Renderer::endScene();
 	}
 
@@ -198,7 +202,7 @@ private:
 	cabrankengine::Ref<cabrankengine::Shader> m_Shader;
 	cabrankengine::Ref<cabrankengine::VertexArray> m_VertexArray;
 
-	cabrankengine::Ref<cabrankengine::Shader> m_FlatColorShader;
+	cabrankengine::Ref<cabrankengine::Shader> m_TextureShader;
 	cabrankengine::Ref<cabrankengine::VertexArray> m_SquareVA;
 
 	cabrankengine::OrthographicCamera m_Camera; // Camera for the scene
