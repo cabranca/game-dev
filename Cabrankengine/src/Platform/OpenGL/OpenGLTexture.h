@@ -5,39 +5,48 @@
 
 namespace cabrankengine {
 
-	class OpenGLTexture2D : public Texture2D
-	{
-	public:
-		OpenGLTexture2D(const TextureSpecification& specification);
-		OpenGLTexture2D(const std::string& path);
-		virtual ~OpenGLTexture2D();
+	class OpenGLTexture2D : public Texture2D {
+		public:
+			OpenGLTexture2D(const TextureSpecification& specification);
+			OpenGLTexture2D(const std::string& path);
+			virtual ~OpenGLTexture2D();
 
-		virtual const TextureSpecification& getSpecification() const override { return m_Specification; }
+			// Returns the specification of the texture, which includes its width, height, format, and mip generation status.
+			virtual const TextureSpecification& getSpecification() const override { return m_Specification; }
 
-		virtual uint32_t getWidth() const override { return m_Width; }
-		virtual uint32_t getHeight() const override { return m_Height; }
-		virtual uint32_t getRendererID() const override { return m_RendererID; }
+			// Returns the texture width
+			virtual uint32_t getWidth() const override { return m_Width; }
+		
+			// Returns the texture height
+			virtual uint32_t getHeight() const override { return m_Height; }
+		
+			// Returns the texture's renderer ID, which is used by the graphics API to identify the texture.
+			virtual uint32_t getRendererID() const override { return m_RendererID; }
 
-		virtual const std::string& getPath() const override { return m_Path; }
+			// Returns the path to the texture file.
+			virtual const std::string& getPath() const override { return m_Path; }
 
-		virtual void setData(void* data, uint32_t size) override;
+			// Sets the texture data from a raw data pointer and size.
+			virtual void setData(void* data, uint32_t size) override;
 
-		virtual void bind(uint32_t slot = 0) const override;
+			// Binds the texture to a specific slot in the graphics API, allowing it to be used in rendering.
+			virtual void bind(uint32_t slot = 0) const override;
 
-		virtual bool isLoaded() const override { return m_IsLoaded; }
+			// Returns whether the texture is loaded successfully.
+			virtual bool isLoaded() const override { return m_IsLoaded; }
 
-		virtual bool operator==(const Texture& other) const override
-		{
-			return m_RendererID == other.getRendererID();
-		}
-	private:
-		TextureSpecification m_Specification;
+			// Returns whether both textures are equal based on their specifications and renderer IDs.
+			virtual bool operator==(const Texture& other) const override {
+				return m_RendererID == other.getRendererID();
+			}
+		private:
+			TextureSpecification m_Specification; // Specification of the texture, including width, height, format, and mip generation status
 
-		std::string m_Path;
-		bool m_IsLoaded = false;
-		uint32_t m_Width, m_Height;
-		uint32_t m_RendererID;
-		GLenum m_InternalFormat, m_DataFormat;
+			std::string m_Path; // Path to the texture file, used for loading the texture from disk
+			bool m_IsLoaded = false; // Flag indicating whether the texture has been loaded successfully
+			uint32_t m_Width, m_Height; // Width and height of the texture, used for rendering and mip generation
+			uint32_t m_RendererID; // Renderer ID of the texture, used by the graphics API to identify the texture
+			GLenum m_InternalFormat, m_DataFormat; // Internal format and data format of the texture, used by the graphics API for texture creation and binding
 	};
 
 }
