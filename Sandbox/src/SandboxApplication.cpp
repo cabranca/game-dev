@@ -10,34 +10,6 @@
 class ExampleLayer : public cabrankengine::Layer {
 public:
 	ExampleLayer() : Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.f), m_SquarePosition(0.f) {
-		m_VertexArray = cabrankengine::VertexArray::create();
-
-		float vertices[3 * 7] = {
-			-0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
-			 0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
-			 0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
-		};
-
-		cabrankengine::Ref<cabrankengine::VertexBuffer> vertexBuffer;
-		vertexBuffer = cabrankengine::VertexBuffer::create(vertices, sizeof(vertices));
-
-		cabrankengine::BufferLayout layout = {
-			{ cabrankengine::ShaderDataType::Float3, "pos" },
-			{ cabrankengine::ShaderDataType::Float4, "color" }
-		};
-
-		// TODO: this is not working on Linux on Release and I do not know why.
-		// It seems like there is a memory problem when calling setLayout but I couldn't trace it.
-		vertexBuffer->setLayout(layout);
-
-		m_VertexArray->addVertexBuffer(vertexBuffer);
-
-		uint32_t indices[3] = { 0, 1, 2 };
-		cabrankengine::Ref<cabrankengine::IndexBuffer> indexBuffer;
-		indexBuffer = cabrankengine::IndexBuffer::create(indices, sizeof(indices) / sizeof(uint32_t));
-
-		m_VertexArray->setIndexBuffer(indexBuffer);
-
 		m_SquareVA = cabrankengine::VertexArray::create();
 
 		float squareVertices[5 * 4] = {
@@ -59,76 +31,7 @@ public:
 
 		m_SquareVA->setIndexBuffer(squareIB);
 
-		std::string vertexSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) in vec3 pos;
-			layout(location = 1) in vec4 color;
-
-			uniform mat4 u_viewProjection;
-			uniform mat4 u_Transform;
-
-			out vec3 v_pos;
-			out vec4 v_color;
-
-			void main()
-			{
-				v_pos = pos;
-				v_color = color;
-				gl_Position = u_viewProjection * u_Transform * vec4(pos, 1.0);
-			}
-		)";
-
-		std::string fragmentSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) out vec4 color;
-
-			in vec3 v_pos;
-			in vec4 v_color;
-
-			void main()
-			{
-				color = vec4(v_pos + 0.5, 1.0);
-				color = v_color;
-			}
-		)";
-
-		m_Shader = cabrankengine::Shader::create(vertexSrc, fragmentSrc);
-
-		std::string textureShaderVertexSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) in vec3 pos;
-			layout(location = 1) in vec2 tex;
-
-			uniform mat4 u_viewProjection;
-			uniform mat4 u_Transform;
-
-			out vec2 v_TexCoord;
-
-			void main()
-			{
-				v_TexCoord = tex;
-				gl_Position = u_viewProjection * u_Transform * vec4(pos, 1.0);
-			}
-		)";
-
-		std::string textureShaderFragmentSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) out vec4 color;
-
-			in vec2 v_TexCoord;
-
-			uniform sampler2D u_Texture;
-
-			void main()
-			{
-				color = texture(u_Texture, v_TexCoord);
-			}
-		)";
-		m_TextureShader = cabrankengine::Shader::create(textureShaderVertexSrc, textureShaderFragmentSrc);
+		m_TextureShader = cabrankengine::Shader::create("assets/shaders/Texture.glsl");
 
 		m_Texture = cabrankengine::Texture2D::create("assets/textures/Checkerboard.png");
 		m_LogoTexture = cabrankengine::Texture2D::create("assets/textures/ChernoLogo.png");
@@ -210,9 +113,6 @@ public:
 	}
 
 private:
-	cabrankengine::Ref<cabrankengine::Shader> m_Shader;
-	cabrankengine::Ref<cabrankengine::VertexArray> m_VertexArray;
-
 	cabrankengine::Ref<cabrankengine::Shader> m_TextureShader;
 	cabrankengine::Ref<cabrankengine::VertexArray> m_SquareVA;
 
