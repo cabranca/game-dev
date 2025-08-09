@@ -9,12 +9,12 @@ namespace cabrankengine {
 
 	class CABRANKENGINE_API Input {
 	public:
-		inline static bool isKeyPressed(KeyCode keyCode) { return s_Instance->isKeyPressedImpl(keyCode); }
+		static bool isKeyPressed(KeyCode keyCode) { return s_Instance->isKeyPressedImpl(keyCode); }
 
-		inline static bool isMouseButtonPressed(MouseCode mouseCode) { return s_Instance->isMouseButtonPressedImpl(mouseCode); }
-		inline static std::pair<float, float> getMousePosition() { return s_Instance->getMousePositionImpl(); }
-		inline static float getMouseX() { return s_Instance->getMouseXImpl(); }
-		inline static float getMouseY() { return s_Instance->getMouseYImpl(); }
+		static bool isMouseButtonPressed(MouseCode mouseCode) { return s_Instance->isMouseButtonPressedImpl(mouseCode); }
+		static std::pair<float, float> getMousePosition() { return s_Instance->getMousePositionImpl(); }
+		static float getMouseX() { return s_Instance->getMouseXImpl(); }
+		static float getMouseY() { return s_Instance->getMouseYImpl(); }
 
 	protected:
 		virtual bool isKeyPressedImpl(KeyCode keyCode) = 0;

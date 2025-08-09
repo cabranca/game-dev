@@ -53,7 +53,7 @@ namespace cabrankengine {
 		virtual std::string toString() const { return getName(); }
 
 		// Returns whether the event category matches by the given category
-		inline bool isInCategory(EventCategory category) const { return getCategoryFlags() & category; }
+		bool isInCategory(EventCategory category) const { return getCategoryFlags() & category; }
 	};
 
 	class EventDispatcher

@@ -26,7 +26,7 @@ namespace cabrankengine {
 		virtual void onEvent(Event& event) {}
 
 		// Returns the layer name (mostly for debug)
-		inline const std::string& getName() const { return m_DebugName; }
+		const std::string& getName() const { return m_DebugName; }
 
 	protected:
 		std::string m_DebugName; // Name of the layer (mostly for debug)

@@ -25,7 +25,7 @@ namespace cabrankengine {
 		KeyPressedEvent(const KeyCode keycode, bool isRepeat = false) : KeyEvent(keycode), m_IsRepeat(isRepeat) {}
 
 		// Returns whether the key is being pressed repeatedly
-		inline bool isRepeat() const { return m_IsRepeat; }
+		bool isRepeat() const { return m_IsRepeat; }
 
 		// Returns the string form of the event
 		std::string toString() const override

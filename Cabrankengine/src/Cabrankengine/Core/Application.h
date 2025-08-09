@@ -40,10 +40,10 @@ namespace cabrankengine {
 		void popOverlay(Layer* layer);
 
 		// Returns a reference to the Window
-		inline Window& getWindow() { return *m_Window; }
+		Window& getWindow() { return *m_Window; }
 	
 		// Returns a reference to the app (Singleton pattern)
-		inline static Application& get() { return *s_Instance; }
+		static Application& get() { return *s_Instance; }
 
 	private:
 		// Callback for the WindowClose Event

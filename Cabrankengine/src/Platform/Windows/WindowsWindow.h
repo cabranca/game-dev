@@ -18,13 +18,13 @@ namespace cabrankengine {
 		void onUpdate() override;
 
 		// Returns the window width
-		inline unsigned int getWidth() const override { return m_Data.Width; }
+		unsigned int getWidth() const override { return m_Data.Width; }
 
 		// Returns the window height
-		inline unsigned int getHeight() const override { return m_Data.Height; }
+		unsigned int getHeight() const override { return m_Data.Height; }
 
 		// Sets the callback function for the event polling
-		inline void setEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; }
+		void setEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; }
 		
 		// Sets whether VSync is enabled or not
 		void setVSync(bool enabled) override;
@@ -34,7 +34,7 @@ namespace cabrankengine {
 
 		// Returns the Windows specific window.
 		// TODO: I think it must be marked override
-		inline virtual void* getNativeWindow() const { return m_Window; }
+		virtual void* getNativeWindow() const { return m_Window; }
 
 	private:
 		// Initialize the window from the given properties

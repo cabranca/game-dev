@@ -18,7 +18,7 @@ namespace cabrankengine {
 
 		virtual void drawIndexed(const Ref<VertexArray>& vertexArray) = 0;
 
-		inline static API getAPI() { return s_API; }
+		static API getAPI() { return s_API; }
 
 	private:
 		static API s_API;
