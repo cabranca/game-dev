@@ -5,7 +5,7 @@
 
 namespace cabrankengine {
 	
-	class CABRANKENGINE_API LayerStack {
+	class LayerStack {
 	public:
 		LayerStack();
 		~LayerStack();

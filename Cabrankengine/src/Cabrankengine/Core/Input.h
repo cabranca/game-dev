@@ -7,7 +7,7 @@
 
 namespace cabrankengine {
 
-	class CABRANKENGINE_API Input {
+	class Input {
 	public:
 		static bool isKeyPressed(KeyCode keyCode) { return s_Instance->isKeyPressedImpl(keyCode); }
 

@@ -16,8 +16,7 @@ namespace cabrankengine {
 			: Title(title), Width(width), Height(height) { }
 	};
 
-	// TODO: should I delete the constructor as I have a static creation method?
-	class CABRANKENGINE_API Window {
+	class Window {
 	public:
 		using EventCallbackFn = std::function<void(Event&)>; // Callback for the events. Here the signature is stated: it must get the event as argument and return nothing
 

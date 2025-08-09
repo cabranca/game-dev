@@ -15,8 +15,7 @@ namespace cabrankengine {
 	class VertexBuffer;
 	class IndexBuffer;
 
-	class CABRANKENGINE_API Application
-	{
+	class Application {
 	public:
 		Application();
 		virtual ~Application();

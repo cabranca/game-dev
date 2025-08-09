@@ -6,7 +6,7 @@
 
 namespace cabrankengine {
 	
-	class CABRANKENGINE_API Layer {
+	class Layer {
 	public:
 		Layer(const std::string& name = "Layer"); // TODO: Make explicit?
 		virtual ~Layer();

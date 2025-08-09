@@ -5,7 +5,7 @@
 
 namespace cabrankengine {
 
-	class CABRANKENGINE_API Logger {
+	class Logger {
 
 	public:
 		// Sets the loggers and the patterns
