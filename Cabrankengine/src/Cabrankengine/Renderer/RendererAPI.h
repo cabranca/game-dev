@@ -1,26 +1,35 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include <Cabrankengine/Renderer/VertexArray.h>
+#include <Cabrankengine/Core/Core.h>
 
 namespace cabrankengine {
 
+	class VertexArray; // Forward declaration of VertexArray class.
+
+	// RendererAPI is an abstract class that defines the interface for the low level rendering operations.
 	class RendererAPI {
-	public:
-		enum class API { None = 0, OpenGL = 1 };
+		public:
+			enum class API { None = 0, OpenGL = 1 }; // Enum representing the different rendering APIs supported.
 
-		virtual ~RendererAPI() {}
+			virtual ~RendererAPI() {}
 
-		virtual void init() = 0;
+			// Initializes the renderer API. This method should be called before any rendering operations.
+			virtual void init() = 0;
 
-		virtual void setClearColor(const glm::vec4& color) = 0;
-		virtual void clear() = 0;
+			// Sets the color used to clear the screen.
+			virtual void setClearColor(const glm::vec4& color) = 0;
 
-		virtual void drawIndexed(const Ref<VertexArray>& vertexArray) = 0;
+			// Clears the screen with the previously set clear color.
+			virtual void clear() = 0;
 
-		static API getAPI() { return s_API; }
+			// Draws the indexed vertices from the vertex array.
+			virtual void drawIndexed(const Ref<VertexArray>& vertexArray) = 0;
 
-	private:
-		static API s_API;
+			// Returns the current rendering API.
+			static API getAPI() { return s_API; }
+
+		private:
+			static API s_API; // Static variable that holds the current rendering API being used.
 	};
 }

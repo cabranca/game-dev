@@ -2,16 +2,13 @@
 
 #include <backends/imgui_impl_opengl3.h>
 #include <backends/imgui_impl_glfw.h>
+#include <GLFW/glfw3.h>
 #include <Cabrankengine/Core/Application.h>
 #include <Cabrankengine/Core/Window.h>
 
-// TEMPORARY
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
 namespace cabrankengine {
 
-	ImGuiLayer::ImGuiLayer() : Layer("ImGuiLayer"), m_Time(0.f) {}
+	ImGuiLayer::ImGuiLayer() : Layer("ImGuiLayer") {}
 
 	ImGuiLayer::~ImGuiLayer() {}
 

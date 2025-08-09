@@ -2,6 +2,7 @@
 
 #include <Cabrankengine/Renderer/OrthographicCamera.h>
 #include <Cabrankengine/Renderer/Shader.h>
+#include <Cabrankengine/Renderer/VertexArray.h>
 #include <Platform/OpenGL/OpenGLShader.h>
 
 namespace cabrankengine {

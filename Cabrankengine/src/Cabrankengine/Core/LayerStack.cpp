@@ -1,5 +1,7 @@
 #include <Cabrankengine/Core/LayerStack.h>
+
 #include <algorithm>
+#include <Cabrankengine/Core/Layer.h>
 
 namespace cabrankengine {
 

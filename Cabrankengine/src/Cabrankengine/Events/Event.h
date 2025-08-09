@@ -2,7 +2,6 @@
 
 #include <string>
 #include <ostream>
-#include <Cabrankengine/Core/Core.h>
 
 namespace cabrankengine {
 
@@ -33,56 +32,52 @@ namespace cabrankengine {
 
 #define EVENT_CLASS_CATEGORY(category) virtual int getCategoryFlags() const override { return category; }
 
-	class Event
-	{
-	public:
-		virtual ~Event() = default;
+	// TODO: could this be a struct instead of a class?
+	class Event {
+		public:
+			virtual ~Event() = default;
 
-		bool Handled = false; // TODO: for real, why public?
+			bool Handled = false; // TODO: for real, why public?
 
-		// Returns the event type
-		virtual EventType getEventType() const = 0;
+			// Returns the event type
+			virtual EventType getEventType() const = 0;
 
-		// Returns the event name for debugging
-		virtual const char* getName() const = 0;
+			// Returns the event name for debugging
+			virtual const char* getName() const = 0;
 
-		// Returns the category bitmask
-		virtual int getCategoryFlags() const = 0;
+			// Returns the category bitmask
+			virtual int getCategoryFlags() const = 0;
 
-		// Returns the string form of the event name
-		virtual std::string toString() const { return getName(); }
+			// Returns the string form of the event name
+			virtual std::string toString() const { return getName(); }
 
-		// Returns whether the event category matches by the given category
-		bool isInCategory(EventCategory category) const { return getCategoryFlags() & category; }
+			// Returns whether the event category matches by the given category
+			bool isInCategory(EventCategory category) const { return getCategoryFlags() & category; }
 	};
 
-	class EventDispatcher
-	{
-	public:
-		EventDispatcher(Event& event)
-			: m_Event(event)
-		{
-		}
-
-		// Checks the event type calls the callback function. It also sets the handled member
-		template<typename T, typename F>
-		bool dispatch(const F& func)
-		{
-			if (m_Event.getEventType() == T::getStaticType())
-			{
-				m_Event.Handled |= func(static_cast<T&>(m_Event));
-				return true;
+	class EventDispatcher {
+		public:
+			EventDispatcher(Event& event)
+				: m_Event(event) {
 			}
-			return false;
-		}
 
-	private:
-		Event& m_Event; // Event to dispatch
+			// Checks the event type calls the callback function. It also sets the handled member
+			template<typename T, typename F>
+			bool dispatch(const F& func) {
+				if (m_Event.getEventType() == T::getStaticType())
+				{
+					m_Event.Handled |= func(static_cast<T&>(m_Event));
+					return true;
+				}
+				return false;
+			}
+
+		private:
+			Event& m_Event; // Event to dispatch
 	};
 
 	// TODO: this does not seem to be working. It is supposed to flow the string to the stream to be logged without a function call in the logger methods
-	inline std::ostream& operator<<(std::ostream& os, const Event& e)
-	{
+	inline std::ostream& operator<<(std::ostream& os, const Event& e) {
 		return os << e.toString();
 	}
 

@@ -1,6 +1,7 @@
 #include <Platform/OpenGL/OpenGLVertexArray.h>
 
 #include <glad/glad.h>
+#include <Cabrankengine/Renderer/Buffer.h>
 
 namespace cabrankengine {
 

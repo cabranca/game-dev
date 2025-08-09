@@ -4,25 +4,35 @@
 
 namespace cabrankengine {
 
-	class OrthographicCamera;
-	class Shader;
+	// Forward declarations
+	class OrthographicCamera; // Represents an orthographic camera used for rendering 2D scenes.
+	class Shader; // Represents a shader program used for rendering.
+	class VertexArray; // Represents a vertex array object that holds vertex data for rendering.
 
+	// This is an abstracted API for rendering graphics in a game engine.
 	class Renderer {
-	public:
-		static void init();
+		public:
+			// Initializes the renderer, setting up necessary resources and state.
+			static void init();
 
-		static void beginScene(OrthographicCamera& camera);
-		static void endScene();
+			// Sets the necessary general data to render a scene, such as the camera, the lighting, etc.
+			static void beginScene(OrthographicCamera& camera);
 
-		static void submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.f));
+			// Ends the current scene, finalizing rendering operations.
+			static void endScene();
 
-		static RendererAPI::API getAPI() { return RendererAPI::getAPI(); }
+			// Submits a draw call to render a shader with a vertex array and an optional transformation matrix.
+			static void submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.f));
 
-	private:
-		struct SceneData {
-			glm::mat4 viewProjectionMatrix;
-		};
+			// Returns the current API being used, allowing access to lower-level rendering functions.
+			static RendererAPI::API getAPI() { return RendererAPI::getAPI(); }
 
-		static SceneData* s_SceneData;
+		private:
+			// This structure holds data that is specific to the current scene being rendered.
+			struct SceneData {
+				glm::mat4 viewProjectionMatrix;
+			};
+
+			static SceneData* s_SceneData; // Current scene data used for rendering.
 	};
 }
