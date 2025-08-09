@@ -33,7 +33,7 @@ namespace cabrankengine {
 			// We don't need the shader anymore.
 			glDeleteShader(vertexShader);
 
-			CE_CORE_ERRROR("{0}", infoLog.data());
+			CE_CORE_ERROR("{0}", infoLog.data());
 			CE_CORE_ASSERT(false, "Vertex shader compilation failure!");
 			return;
 		}
@@ -64,7 +64,7 @@ namespace cabrankengine {
 			// Either of them. Don't leak shaders.
 			glDeleteShader(vertexShader);
 
-			CE_CORE_ERRROR("{0}", infoLog.data());
+			CE_CORE_ERROR("{0}", infoLog.data());
 			CE_CORE_ASSERT(false, "Fragment shader compilation failure!");
 			return;
 		}
@@ -100,7 +100,7 @@ namespace cabrankengine {
 			glDeleteShader(vertexShader);
 			glDeleteShader(fragmentShader);
 
-			CE_CORE_ERRROR("{0}", infoLog.data());
+			CE_CORE_ERROR("{0}", infoLog.data());
 			CE_CORE_ASSERT(false, "Shader link failure!");
 			return;
 		}
@@ -125,7 +125,7 @@ namespace cabrankengine {
 	void OpenGLShader::uploadUniformInt(const std::string& name, int value) {
 		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
 		if (location == -1) {
-			CE_CORE_ERRROR("Uniform '{0}' not found in shader!", name);
+			CE_CORE_ERROR("Uniform '{0}' not found in shader!", name);
 			return;
 		}
 		glUniform1i(location, value);
@@ -134,7 +134,7 @@ namespace cabrankengine {
 	void OpenGLShader::uploadUniformFloat1(const std::string& name, float value) {
 		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
 		if (location == -1) {
-			CE_CORE_ERRROR("Uniform '{0}' not found in shader!", name);
+			CE_CORE_ERROR("Uniform '{0}' not found in shader!", name);
 			return;
 		}
 		glUniform1f(location, value);
@@ -143,7 +143,7 @@ namespace cabrankengine {
 	void OpenGLShader::uploadUniformFloat2(const std::string& name, const glm::vec2& values) {
 		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
 		if (location == -1) {
-			CE_CORE_ERRROR("Uniform '{0}' not found in shader!", name);
+			CE_CORE_ERROR("Uniform '{0}' not found in shader!", name);
 			return;
 		}
 		glUniform2f(location, values.x, values.y);
@@ -152,7 +152,7 @@ namespace cabrankengine {
 	void OpenGLShader::uploadUniformFloat3(const std::string& name, const glm::vec3& values) {
 		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
 		if (location == -1) {
-			CE_CORE_ERRROR("Uniform '{0}' not found in shader!", name);
+			CE_CORE_ERROR("Uniform '{0}' not found in shader!", name);
 			return;
 		}
 		glUniform3f(location, values.x, values.y, values.z);
@@ -161,7 +161,7 @@ namespace cabrankengine {
 	void OpenGLShader::uploadUniformFloat4(const std::string& name, const glm::vec4& values) {
 		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
 		if (location == -1) {
-			CE_CORE_ERRROR("Uniform '{0}' not found in shader!", name);
+			CE_CORE_ERROR("Uniform '{0}' not found in shader!", name);
 			return;
 		}
 		glUniform4f(location, values.x, values.y, values.z, values.w);
@@ -170,7 +170,7 @@ namespace cabrankengine {
 	void OpenGLShader::uploadUniformMat3(const std::string& name, const glm::mat3& matrix) {
 		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
 		if (location == -1) {
-			CE_CORE_ERRROR("Uniform {0} not found in shader!", name);
+			CE_CORE_ERROR("Uniform {0} not found in shader!", name);
 			return;
 		}
 		glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
@@ -179,7 +179,7 @@ namespace cabrankengine {
 	void OpenGLShader::uploadUniformMat4(const std::string& name, const glm::mat4& matrix) {
 		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
 		if (location == -1) {
-			CE_CORE_ERRROR("Uniform {0} not found in shader!", name);
+			CE_CORE_ERROR("Uniform {0} not found in shader!", name);
 			return;
 		}
 		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));

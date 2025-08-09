@@ -27,6 +27,10 @@
 	#error Cabrankengine only supports Windows and Linux!
 #endif
 
+#ifdef CE_DEBUG
+	#define CE_ENABLE_ASSERTS
+#endif
+
 // Will need to update to support Linux since __debugbreak doesn't exist there
 #ifdef CE_ENABLE_ASSERTS
 	#define CE_ASSERT(x, ...) { if(!(x)) { CE_ERROR("Assertion failed: {0}", __VA_ARGS__); __debugbreak(); } }
