@@ -7,7 +7,7 @@ namespace cabrankengine {
 
 	namespace utils {
 
-		static GLenum cabrabnkengineImageFormatToGLDataFormat(ImageFormat format) {
+		static GLenum cabrankengineImageFormatToGLDataFormat(ImageFormat format) {
 			switch (format) {
 				case ImageFormat::RGB8:  return GL_RGB;
 				case ImageFormat::RGBA8: return GL_RGBA;
@@ -32,7 +32,7 @@ namespace cabrankengine {
 	OpenGLTexture2D::OpenGLTexture2D(const TextureSpecification& specification)
 		: m_Specification(specification), m_Width(m_Specification.Width), m_Height(m_Specification.Height) {
 
-		m_InternalFormat = utils::cabrabnkengineImageFormatToGLDataFormat(m_Specification.Format);
+		m_InternalFormat = utils::cabrankengineImageFormatToGLDataFormat(m_Specification.Format);
 		m_DataFormat = utils::cabrankengineImageFormatToGLInternalFormat(m_Specification.Format);
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
@@ -48,8 +48,7 @@ namespace cabrankengine {
 	OpenGLTexture2D::OpenGLTexture2D(const std::string& path) : m_Path(path) {
 		int width, height, channels;
 		stbi_set_flip_vertically_on_load(1);
-		stbi_uc* data = nullptr;
-		data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+		stbi_uc* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 
 		if (data)
 		{
