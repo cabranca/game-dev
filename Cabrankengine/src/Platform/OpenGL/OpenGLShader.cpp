@@ -2,9 +2,10 @@
 
 #include <glad/glad.h>
 #include <array>
-#include <Cabrankengine/Core/Logger.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <fstream>
+#include <filesystem>
+#include <Cabrankengine/Core/Logger.h>
 
 namespace cabrankengine {
 
@@ -18,12 +19,16 @@ namespace cabrankengine {
 	}
 
 	OpenGLShader::OpenGLShader(const std::string& filepath) : m_RendererId(0) {
+		std::filesystem::path path(filepath);
+		m_Name = path.stem().string();
+
 		std::string shaderSource = readFile(filepath);
 		auto shaderSources = preProcess(shaderSource);
 		compile(shaderSources);
 	}
 
-	OpenGLShader::OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc) : m_RendererId(0) {
+	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc) 
+		: m_RendererId(0), m_Name(name) {
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSrc;
 		sources[GL_FRAGMENT_SHADER] = fragmentSrc;

@@ -13,11 +13,13 @@ namespace cabrankengine {
 	class OpenGLShader : public Shader {
 		public:
 			OpenGLShader(const std::string& filepath);
-			OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc);
+			OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);
 			virtual ~OpenGLShader();
 
 			void bind() const override;
 			void unbind() const override;
+
+			const std::string& getName() const override { return m_Name; }
 
 			void uploadUniformInt(const std::string& name, int value);
 
@@ -35,5 +37,6 @@ namespace cabrankengine {
 			void compile(const std::unordered_map<GLenum, std::string>& shaderSources);
 
 			uint32_t m_RendererId;
+			std::string m_Name; // Name of the shader
 	};
 }
