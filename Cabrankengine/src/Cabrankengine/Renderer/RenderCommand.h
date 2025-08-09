@@ -6,6 +6,8 @@ namespace cabrankengine {
 	
 	class RenderCommand {
 	public:
+		static void init() { s_RendererAPI->init(); }
+
 		inline static void setClearColor(const glm::vec4& color) { s_RendererAPI->setClearColor(color); }
 
 		inline static void clear() { s_RendererAPI->clear(); }

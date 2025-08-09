@@ -5,6 +5,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
+#include <Cabrankengine/Renderer/Texture.h>
 
 class ExampleLayer : public cabrankengine::Layer {
 public:
@@ -120,14 +121,20 @@ public:
 
 			in vec2 v_TexCoord;
 
-			uniform vec3 u_Color;
+			uniform sampler2D u_Texture;
 
 			void main()
 			{
-				color = vec4(v_TexCoord, 0.0, 1.0);
+				color = texture(u_Texture, v_TexCoord);
 			}
 		)";
 		m_TextureShader = cabrankengine::Shader::create(textureShaderVertexSrc, textureShaderFragmentSrc);
+
+		m_Texture = cabrankengine::Texture2D::create("assets/textures/Checkerboard.png");
+		m_LogoTexture = cabrankengine::Texture2D::create("assets/textures/ChernoLogo.png");
+
+		std::dynamic_pointer_cast<cabrankengine::OpenGLShader>(m_TextureShader)->bind();
+		std::dynamic_pointer_cast<cabrankengine::OpenGLShader>(m_TextureShader)->uploadUniformInt("u_Texture", 0);
 	}
 	
 	void onUpdate(cabrankengine::Timestep delta) override {
@@ -173,6 +180,10 @@ public:
 			}
 		}
 
+		m_Texture->bind();
+		cabrankengine::Renderer::submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.f), glm::vec3(1.5f)));
+
+		m_LogoTexture->bind();
 		cabrankengine::Renderer::submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.f), glm::vec3(1.5f)));
 
 		//cabrankengine::Renderer::submit(m_Shader, m_VertexArray);
@@ -204,6 +215,8 @@ private:
 
 	cabrankengine::Ref<cabrankengine::Shader> m_TextureShader;
 	cabrankengine::Ref<cabrankengine::VertexArray> m_SquareVA;
+
+	cabrankengine::Ref<cabrankengine::Texture2D> m_Texture, m_LogoTexture;
 
 	cabrankengine::OrthographicCamera m_Camera; // Camera for the scene
 	glm::vec3 m_CameraPosition;

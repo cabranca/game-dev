@@ -5,6 +5,7 @@
 #include <Cabrankengine/ImGui/ImGuiLayer.h>
 #include <Cabrankengine/Core/Timestep.h>
 #include <GLFW/glfw3.h>
+#include <Cabrankengine/Renderer/Renderer.h>
 
 namespace cabrankengine {
 
@@ -17,6 +18,8 @@ namespace cabrankengine {
 
 		m_Window = std::unique_ptr<Window>(Window::create());
 		m_Window->setEventCallback(CE_BIND_EVENT_FN(Application::OnEvent));
+
+		Renderer::init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		pushOverlay(m_ImGuiLayer);
