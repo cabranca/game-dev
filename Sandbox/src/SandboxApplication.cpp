@@ -17,7 +17,7 @@ public:
 			 0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
 		};
 
-		std::shared_ptr<cabrankengine::VertexBuffer> vertexBuffer;
+		cabrankengine::Ref<cabrankengine::VertexBuffer> vertexBuffer;
 		vertexBuffer.reset(cabrankengine::VertexBuffer::create(vertices, sizeof(vertices)));
 
 		cabrankengine::BufferLayout layout = {
@@ -32,7 +32,7 @@ public:
 		m_VertexArray->addVertexBuffer(vertexBuffer);
 
 		uint32_t indices[3] = { 0, 1, 2 };
-		std::shared_ptr<cabrankengine::IndexBuffer> indexBuffer;
+		cabrankengine::Ref<cabrankengine::IndexBuffer> indexBuffer;
 		indexBuffer.reset(cabrankengine::IndexBuffer::create(indices, sizeof(indices) / sizeof(uint32_t)));
 
 		m_VertexArray->setIndexBuffer(indexBuffer);
@@ -46,14 +46,14 @@ public:
 			-0.5f,  0.5f, 0.0f
 		};
 
-		std::shared_ptr<cabrankengine::VertexBuffer> squareVB;
+		cabrankengine::Ref<cabrankengine::VertexBuffer> squareVB;
 		squareVB.reset(cabrankengine::VertexBuffer::create(squareVertices, sizeof(squareVertices)));
 
 		squareVB->setLayout({ { cabrankengine::ShaderDataType::Float3, "pos" } });
 		m_SquareVA->addVertexBuffer(squareVB);
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		std::shared_ptr<cabrankengine::IndexBuffer> squareIB;
+		cabrankengine::Ref<cabrankengine::IndexBuffer> squareIB;
 		squareIB.reset(cabrankengine::IndexBuffer::create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
 
 		m_SquareVA->setIndexBuffer(squareIB);
@@ -195,11 +195,11 @@ public:
 	}
 
 private:
-	std::shared_ptr<cabrankengine::Shader> m_Shader;
-	std::shared_ptr<cabrankengine::VertexArray> m_VertexArray;
+	cabrankengine::Ref<cabrankengine::Shader> m_Shader;
+	cabrankengine::Ref<cabrankengine::VertexArray> m_VertexArray;
 
-	std::shared_ptr<cabrankengine::Shader> m_FlatColorShader;
-	std::shared_ptr<cabrankengine::VertexArray> m_SquareVA;
+	cabrankengine::Ref<cabrankengine::Shader> m_FlatColorShader;
+	cabrankengine::Ref<cabrankengine::VertexArray> m_SquareVA;
 
 	cabrankengine::OrthographicCamera m_Camera; // Camera for the scene
 	glm::vec3 m_CameraPosition;
