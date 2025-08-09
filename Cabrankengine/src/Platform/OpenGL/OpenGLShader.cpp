@@ -1,7 +1,7 @@
 #include <Platform/OpenGL/OpenGLShader.h>
 
 #include <glad/glad.h>
-#include <vector>
+#include <array>
 #include <Cabrankengine/Core/Logger.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <fstream>
@@ -141,7 +141,9 @@ namespace cabrankengine {
 
 	void OpenGLShader::compile(const std::unordered_map<GLenum, std::string>& shaderSources) {
 		GLuint program = glCreateProgram();
-		std::vector<GLenum> shaderIds(shaderSources.size());
+		CE_CORE_ASSERT(shaderSources.size() <= 2, "OpenGL only supports 2 shader types (vertex and fragment) at the moment!");
+		std::array<GLenum, 2> shaderIds;
+		int shaderIndex = 0;
 		for (const auto& [type, source] : shaderSources) {
 			GLenum shaderId = glCreateShader(type);
 			const char* src = source.c_str();
@@ -158,7 +160,7 @@ namespace cabrankengine {
 				CE_CORE_ERROR("Shader compilation error: {0}", infoLog.data());
 				return;
 			}
-			shaderIds.push_back(shaderId);
+			shaderIds[shaderIndex++] = shaderId;
 		}
 
 		for (uint32_t shaderId : shaderIds) {
