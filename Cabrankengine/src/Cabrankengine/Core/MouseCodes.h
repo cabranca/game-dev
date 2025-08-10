@@ -4,7 +4,7 @@
 
 namespace cabrankengine {
 
-	using MouseCode = uint16_t; // TODO: same as KeyCode, why this size?
+	using MouseCode = uint8_t;
 
 	namespace Mouse
 	{
