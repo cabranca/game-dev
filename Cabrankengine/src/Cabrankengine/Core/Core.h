@@ -17,7 +17,7 @@
 #endif
 
 // Shifts a bit to the left. Replaced the macro with this to enforce type checking (and to practice)
-// TODO: why 32 bits? Could it be different? (maybe due to sizeof(int))
+// The return type is uint32_t to ensure it can be used in bitwise operations. It allows 32 disjoint flags.
 constexpr uint32_t bit(int x) { return 1u << x; }
 
 #define CE_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1) // TODO: check a more modern alternative.
