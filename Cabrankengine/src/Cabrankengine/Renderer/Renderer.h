@@ -33,6 +33,6 @@ namespace cabrankengine {
 				glm::mat4 viewProjectionMatrix;
 			};
 
-			static SceneData* s_SceneData; // Current scene data used for rendering.
+			inline static SceneData* s_SceneData = new Renderer::SceneData(); // Current scene data used for rendering.
 	};
 }

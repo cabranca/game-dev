@@ -30,6 +30,6 @@ namespace cabrankengine {
 			static API getAPI() { return s_API; }
 
 		private:
-			static API s_API; // Static variable that holds the current rendering API being used.
+			inline static API s_API = RendererAPI::API::OpenGL; // Static variable that holds the current rendering API being used.
 	};
 }

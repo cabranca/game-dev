@@ -38,7 +38,7 @@ namespace cabrankengine {
 			// Returns a reference to the Window
 			Window& getWindow() { return *m_Window; }
 	
-			// Returns a reference to the app (Singleton pattern)
+			// Returns a reference to the app (Singleton-ish pattern)
 			static Application& get() { return *s_Instance; }
 
 		private:
@@ -51,7 +51,7 @@ namespace cabrankengine {
 			LayerStack m_LayerStack; // Stack of layers to forward the events to
 			float m_LastFrameTime; // Time of the last frame
 	
-			static Application* s_Instance; // Static instance of the app (Singleton pattern)
+			inline static Application* s_Instance = nullptr; // Static instance of the app (Singleton-ish pattern)
 	};
 
 	// To be defined in client. Only way to create the app. It's similar to singleton but it allows more instances.

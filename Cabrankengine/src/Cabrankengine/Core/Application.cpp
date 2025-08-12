@@ -9,8 +9,6 @@
 
 namespace cabrankengine {
 
-	Application* Application::s_Instance = nullptr;
-
 	Application::Application() : m_Running(true), m_LastFrameTime(0.0f)
 	{
 		CE_CORE_ASSERT(!s_Instance, "Application already exists!");
