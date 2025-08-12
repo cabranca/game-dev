@@ -15,7 +15,7 @@ namespace cabrankengine {
 	// TODO: could this be an interface? There's no default implementation of the methods.
 	class Layer {
 		public:
-			Layer(const std::string& name = "Layer"); // TODO: Make explicit?
+			explicit Layer(std::string name = "Layer");
 			virtual ~Layer();
 
 			// Callback for when the layer is pushed to the stack

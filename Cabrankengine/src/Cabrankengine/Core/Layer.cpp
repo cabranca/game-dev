@@ -2,7 +2,7 @@
 
 namespace cabrankengine {
 	
-	Layer::Layer(const std::string& debugName) : m_DebugName(debugName) {} // TODO: is there a copy here?
+	Layer::Layer(std::string debugName) : m_DebugName(std::move(debugName)) {} // TODO: is there a copy here?
 	
 	Layer::~Layer() {}
 }
