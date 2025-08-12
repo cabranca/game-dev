@@ -94,7 +94,7 @@ public:
 	
 	void onEvent(cabrankengine::Event& event) override {
 		cabrankengine::EventDispatcher dispatcher(event);
-		dispatcher.dispatch<cabrankengine::KeyPressedEvent>(CE_BIND_EVENT_FN(ExampleLayer::onKeyPressedEvent));
+		dispatcher.dispatch<cabrankengine::KeyPressedEvent>(bind_event_fn(&ExampleLayer::onKeyPressedEvent, this));
 	}
 
 	bool onKeyPressedEvent(cabrankengine::KeyPressedEvent& event) {
