@@ -13,6 +13,8 @@ namespace cabrankengine {
 	// As we need to access it from anywhere, the methods are static. That's why there is an indirection through a static instance pointer.
 	class Input {
 		public:
+			virtual ~Input() = default;
+
 			// Returns whether a certain key is pressed.
 			static bool isKeyPressed(KeyCode keyCode) { return s_Instance->isKeyPressedImpl(keyCode); }
 

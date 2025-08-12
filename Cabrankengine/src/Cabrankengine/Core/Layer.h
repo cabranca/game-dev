@@ -16,7 +16,7 @@ namespace cabrankengine {
 	class Layer {
 		public:
 			explicit Layer(std::string name = "Layer");
-			virtual ~Layer();
+			virtual ~Layer() = default;
 
 			// Callback for when the layer is pushed to the stack
 			virtual void onAttach() {}

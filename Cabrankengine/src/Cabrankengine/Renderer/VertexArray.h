@@ -13,7 +13,7 @@ namespace cabrankengine {
 	// VertexArray is an interface that represents a collection of vertex buffers and an index buffer.
 	class VertexArray {
 		public:
-			virtual ~VertexArray() {}
+			virtual ~VertexArray() = default;
 
 			// Binds the vertex array for use in rendering.
 			virtual void bind() const = 0;

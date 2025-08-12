@@ -15,7 +15,7 @@ namespace cabrankengine {
 	class Application {
 		public:
 			Application();
-			virtual ~Application();
+			virtual ~Application() = default;
 
 			// Main Application running loop
 			void Run();

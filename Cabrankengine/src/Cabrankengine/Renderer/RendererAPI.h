@@ -12,7 +12,7 @@ namespace cabrankengine {
 		public:
 			enum class API { None = 0, OpenGL = 1 }; // Enum representing the different rendering APIs supported.
 
-			virtual ~RendererAPI() {}
+			virtual ~RendererAPI() = default;
 
 			// Initializes the renderer API. This method should be called before any rendering operations.
 			virtual void init() = 0;

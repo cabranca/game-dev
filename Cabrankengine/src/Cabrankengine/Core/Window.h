@@ -22,8 +22,7 @@ namespace cabrankengine {
 		public:
 			using EventCallbackFn = std::function<void(Event&)>; // Callback for the events. Here the signature is stated: it must get the event as argument and return nothing
 
-			// TODO: Could this be pure virtual?
-			virtual ~Window() {}
+			virtual ~Window() = default;
 
 			// Callback for the window update
 			virtual void onUpdate() = 0;

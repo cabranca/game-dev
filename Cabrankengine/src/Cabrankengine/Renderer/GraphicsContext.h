@@ -5,6 +5,8 @@ namespace cabrankengine {
 	// GraphicsContext is an abstract class that defines the interface for a graphics context.
 	class GraphicsContext {
 		public:
+			virtual ~GraphicsContext() = default;
+
 			// Initializes the graphics context.
 			virtual void init() = 0;
 
