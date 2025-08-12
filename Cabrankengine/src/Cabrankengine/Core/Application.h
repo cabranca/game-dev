@@ -54,7 +54,7 @@ namespace cabrankengine {
 			static Application* s_Instance; // Static instance of the app (Singleton pattern)
 	};
 
-	// To be defined in client. Only way to create the app (Singleton pattern)
-	// TODO: why function and not Application method?
-	Application* CreateApplication();
+	// To be defined in client. Only way to create the app. It's similar to singleton but it allows more instances.
+	// This is a function and not a method because it decouples the EntryPoint from the Application class.
+	Application* createApplication();
 }

@@ -3,15 +3,15 @@
 // Despite being obvious, this is a good practice to be able to give a clear error message if the platform is not supported.
 #if defined(CE_PLATFORM_WINDOWS) || defined(CE_PLATFORM_LINUX)
 
-// TODO: understand the "extern" keyword. I think the idea is to make a "forward declaration" of the function
-extern cabrankengine::Application* cabrankengine::CreateApplication();
+// The "extern" keyword is optional here but it is a good practice to use it to clearly show that the function is defined outside of this file.
+// This expresion is similar to a forward declaration for functions.
+extern cabrankengine::Application* cabrankengine::createApplication();
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
 	cabrankengine::Logger::init();
-	CE_CORE_INFO("Initialized log!");
+	CE_CORE_INFO("Initialized logger!");
 
-	auto app = cabrankengine::CreateApplication();
+	auto app = cabrankengine::createApplication();
 	app->Run();
 	delete app;
 }
