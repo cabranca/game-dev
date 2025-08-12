@@ -10,8 +10,6 @@ namespace cabrankengine {
 
 	ImGuiLayer::ImGuiLayer() : Layer("ImGuiLayer") {}
 
-	ImGuiLayer::~ImGuiLayer() {}
-
 	void ImGuiLayer::onAttach()
 	{
 		IMGUI_CHECKVERSION();

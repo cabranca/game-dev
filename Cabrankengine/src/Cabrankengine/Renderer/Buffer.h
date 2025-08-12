@@ -112,7 +112,7 @@ namespace cabrankengine {
 	// It is used to store the vertex attributes such as position, color, texture coordinates, etc.
 	class VertexBuffer {
 		public:
-			virtual ~VertexBuffer() {}
+			virtual ~VertexBuffer() = default;
 
 			// Binds the vertex buffer so that it can be used in rendering.
 			virtual void bind() const = 0;
@@ -135,7 +135,7 @@ namespace cabrankengine {
 	// It is used to optimize rendering by reusing vertices instead of duplicating them.
 	class IndexBuffer {
 		public:
-			virtual ~IndexBuffer() {}
+			virtual ~IndexBuffer() = default;
 
 			// Binds the index buffer so that it can be used in rendering.
 			virtual void bind() const = 0;

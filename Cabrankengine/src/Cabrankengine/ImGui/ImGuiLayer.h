@@ -9,7 +9,7 @@ namespace cabrankengine {
 	class ImGuiLayer : public Layer {
 		public:
 			ImGuiLayer();
-			~ImGuiLayer();
+			~ImGuiLayer() = default;
 
 			// Callback for when the layer is pushed to the stack
 			virtual void onAttach() override;

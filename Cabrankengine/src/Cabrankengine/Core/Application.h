@@ -15,7 +15,7 @@ namespace cabrankengine {
 	class Application {
 		public:
 			Application();
-			virtual ~Application() = default;
+			virtual ~Application(); // Cannot define the destructor in the header because of the incomplete types (Window)
 
 			// Main Application running loop
 			void Run();
