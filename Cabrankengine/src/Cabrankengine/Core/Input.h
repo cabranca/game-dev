@@ -36,6 +36,8 @@ namespace cabrankengine {
 			virtual float getMouseYImpl() = 0;
 
 		private:
-			inline static Input* s_Instance = nullptr;
+			// This could be initialized inline but it is initialized in the platform specific implementation file.
+			// This is not the approach for the renderer but it could be.
+			static Input* s_Instance;
 	};
 }
