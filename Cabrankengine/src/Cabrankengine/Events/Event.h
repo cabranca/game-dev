@@ -17,11 +17,11 @@ namespace cabrankengine {
 	// Categories to filter events with bitmasks
 	enum EventCategory {
 		None = 0,
-		EventCategoryApplication = bit(0),
-		EventCategoryInput = bit(1),
-		EventCategoryKeyboard = bit(2),
-		EventCategoryMouse = bit(3),
-		EventCategoryMouseButton = bit(4)
+		EventCategoryApplication = BIT(0),
+		EventCategoryInput = BIT(1),
+		EventCategoryKeyboard = BIT(2),
+		EventCategoryMouse = BIT(3),
+		EventCategoryMouseButton = BIT(4)
 	};
 
 // Macros to avoid boilerplate code regarding the event type handling
@@ -45,7 +45,7 @@ namespace cabrankengine {
 			// Returns the event name for debugging
 			virtual const char* getName() const = 0;
 
-			// Returns the category bitmask
+			// Returns the category BITmask
 			virtual int getCategoryFlags() const = 0;
 
 			// Returns the string form of the event name

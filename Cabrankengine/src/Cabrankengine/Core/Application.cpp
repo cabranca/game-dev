@@ -17,7 +17,7 @@ namespace cabrankengine {
 		s_Instance = this;
 
 		m_Window = std::unique_ptr<Window>(Window::create());
-		m_Window->setEventCallback(bind_event_fn(&Application::OnEvent, this));
+		m_Window->setEventCallback(BIND_EVENT_FN(&Application::OnEvent, this));
 
 		Renderer::init();
 
@@ -51,7 +51,7 @@ namespace cabrankengine {
 	void Application::OnEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
-		dispatcher.dispatch<WindowCloseEvent>(bind_event_fn(&Application::onWindowClose, this));
+		dispatcher.dispatch<WindowCloseEvent>(BIND_EVENT_FN(&Application::onWindowClose, this));
 		CE_CORE_TRACE("{0}", e.toString());
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();) {
 			(*--it)->onEvent(e);
