@@ -55,7 +55,7 @@ namespace cabrankengine {
 				ShaderDataType2OpenGLBaseType(element.Type),
 				element.Normalized ? GL_TRUE : GL_FALSE,
 				layout.getStride(),
-				(const void*)element.Offset);
+				reinterpret_cast<const void*>(element.Offset));
 			index++;
 		}
 

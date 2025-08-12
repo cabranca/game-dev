@@ -10,10 +10,10 @@ namespace cabrankengine {
 	// Basic properties of every Window implementation
 	struct WindowProps {
 		std::string Title;
-		unsigned int Width;
-		unsigned int Height;
+		int Width;
+		int Height;
 
-		WindowProps(const std::string& title = "Cabrankengine", unsigned int width = 1600, unsigned int height = 900)
+		WindowProps(const std::string& title = "Cabrankengine", int width = 1600, int height = 900)
 			: Title(title), Width(width), Height(height) { }
 	};
 
@@ -29,10 +29,10 @@ namespace cabrankengine {
 			virtual void onUpdate() = 0;
 
 			// Returns the window width
-			virtual unsigned int getWidth() const = 0;
+			virtual int getWidth() const = 0;
 
 			// Returns the window height
-			virtual unsigned int getHeight() const = 0;
+			virtual int getHeight() const = 0;
 
 			// Sets the callback function for the event polling
 			virtual void setEventCallback(const EventCallbackFn& callback) = 0;

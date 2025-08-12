@@ -23,20 +23,20 @@ namespace cabrankengine {
 		auto window = static_cast<GLFWwindow*>(Application::get().getWindow().getNativeWindow());
 		double xPos, yPos;
 		glfwGetCursorPos(window, &xPos, &yPos);
-		return { (float)xPos, (float)yPos }; //TODO: change every c-style cast to static_cast
+		return { static_cast<float>(xPos), static_cast<float>(yPos) }; //TODO: change every c-style cast to static_cast
 	}
 
 	float WindowsInput::getMouseXImpl() {
 		auto window = static_cast<GLFWwindow*>(Application::get().getWindow().getNativeWindow());
 		double xPos, yPos;
 		glfwGetCursorPos(window, &xPos, &yPos);
-		return (float)xPos;
+		return static_cast<float>(xPos);
 	}
 
 	float WindowsInput::getMouseYImpl() {
 		auto window = static_cast<GLFWwindow*>(Application::get().getWindow().getNativeWindow());
 		double xPos, yPos;
 		glfwGetCursorPos(window, &xPos, &yPos);
-		return (float)yPos;
+		return static_cast<float>(yPos);
 	}
 }

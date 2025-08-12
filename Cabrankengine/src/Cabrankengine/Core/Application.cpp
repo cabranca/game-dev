@@ -32,7 +32,7 @@ namespace cabrankengine {
 	void Application::Run()
 	{
 		while (m_Running) {
-			float time = (float)glfwGetTime(); // This should be in Platform::getTime() or similar
+			float time = static_cast<float>(glfwGetTime()); // This should be in Platform::getTime() or similar
 			Timestep timestep = time - m_LastFrameTime; // Calculate the time since the last frame
 			m_LastFrameTime = time;
 

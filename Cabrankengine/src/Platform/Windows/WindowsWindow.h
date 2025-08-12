@@ -17,10 +17,10 @@ namespace cabrankengine {
 			virtual void onUpdate() override;
 
 			// Returns the window width
-			virtual unsigned int getWidth() const override { return m_Data.Width; }
+			virtual int getWidth() const override { return m_Data.Width; }
 
 			// Returns the window height
-			virtual unsigned int getHeight() const override { return m_Data.Height; }
+			virtual int getHeight() const override { return m_Data.Height; }
 
 			// Sets the callback function for the event polling
 			virtual void setEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; }
@@ -48,7 +48,7 @@ namespace cabrankengine {
 			// TODO: could I reuse WindowProps in any way?
 			struct WindowData {
 				std::string Title;
-				unsigned int Width, Height;
+				int Width, Height;
 				bool VSync;
 
 				EventCallbackFn EventCallback;
