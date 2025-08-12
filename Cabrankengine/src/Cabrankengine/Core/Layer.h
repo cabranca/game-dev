@@ -12,7 +12,7 @@ namespace cabrankengine {
 	// such as rendering, input handling, and game logic.
 	// Layers can be pushed and popped from a stack, allowing for flexible management of application state.
 	// Layers are executed in the order they are pushed onto the stack.
-	// TODO: could this be an interface? There's no default implementation of the methods.
+	// If eventually we think that some methods are mandatory for derived classes, we can make them pure virtual.
 	class Layer {
 		public:
 			explicit Layer(std::string name = "Layer");
@@ -27,6 +27,7 @@ namespace cabrankengine {
 			// Callback for when the layer must update
 			virtual void onUpdate(Timestep delta) {}
 
+			// Callback in case the layer needs to render something using ImGui
 			virtual void onImGuiRender() {}
 
 			// Callback for the event system
