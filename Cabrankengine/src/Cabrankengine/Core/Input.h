@@ -8,8 +8,9 @@
 namespace cabrankengine {
 
 	// This class is used to perform input polling.
-	// This is a mix between an interface and a Pimpl pattern.
-	// TODO: check if this is a good design choice.
+	// On one hand, the class is abstract so it can be implemented for different platforms (e.g., Windows, Linux, etc.) such as the renderer related classes.
+	// On the other hand, it is a singleton so that we can access it from anywhere in the code.
+	// As we need to access it from anywhere, the methods are static. That's why there is an indirection through a static instance pointer.
 	class Input {
 		public:
 			// Returns whether a certain key is pressed.
