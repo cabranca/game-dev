@@ -3,30 +3,6 @@
 #include <cstdint>
 #include <memory>
 
-#ifdef CE_PLATFORM_WINDOWS
-	#if CE_DYNAMIC_LINK
-		#ifdef CE_BUILD_DLL
-			#define CABRANKENGINE_API __declspec(dllexport)
-		#else
-			#define CABRANKENGINE_API __declspec(dllimport)
-		#endif
-	#else
-		#define CABRANKENGINE_API
-	#endif
-#elif defined(CE_PLATFORM_LINUX)
-	#if CE_DYNAMIC_LINK
-		#ifdef CE_BUILD_DLL
-			#define CABRANKENGINE_API __attribute__((visibility("default")))
-		#else
-			#define CABRANKENGINE_API
-		#endif
-	#else
-		#define CABRANKENGINE_API
-	#endif
-#else
-	#error Cabrankengine only supports Windows and Linux!
-#endif
-
 #ifdef CE_DEBUG
 	#define CE_ENABLE_ASSERTS
 #endif
