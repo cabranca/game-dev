@@ -23,6 +23,3 @@
 
 #include <Cabrankengine/Renderer/OrthographicCamera.h>
 #include <Cabrankengine/Renderer/OrthographicCameraController.h>
-
-// --- Entry Point ---
-#include "Cabrankengine/Core/EntryPoint.h"
