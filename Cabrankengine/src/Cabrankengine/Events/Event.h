@@ -2,6 +2,7 @@
 
 #include <string>
 #include <ostream>
+#include <Cabrankengine/Core/Core.h>
 
 namespace cabrankengine {
 
