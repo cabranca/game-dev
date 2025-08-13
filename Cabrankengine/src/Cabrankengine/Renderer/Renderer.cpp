@@ -1,6 +1,7 @@
 #include <Cabrankengine/Renderer/Renderer.h>
 
 #include <Cabrankengine/Renderer/OrthographicCamera.h>
+#include <Cabrankengine/Renderer/Renderer2D.h>
 #include <Cabrankengine/Renderer/Shader.h>
 #include <Cabrankengine/Renderer/VertexArray.h>
 #include <Platform/OpenGL/OpenGLShader.h>
@@ -9,6 +10,7 @@ namespace cabrankengine {
 
 	void Renderer::init() {
 		RenderCommand::init();
+		Renderer2D::init();
 	}
 
 	void Renderer::beginScene(OrthographicCamera& camera) {

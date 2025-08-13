@@ -15,6 +15,7 @@
 
 // --- Renderer ---
 #include <Cabrankengine/Renderer/Renderer.h>
+#include <Cabrankengine/Renderer/Renderer2D.h>
 #include <Cabrankengine/Renderer/RenderCommand.h>
 
 #include <Cabrankengine/Renderer/Buffer.h>

@@ -11,32 +11,11 @@ using namespace cabrankengine;
 Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_CameraController(1280.0f / 720.0f) {}
 
 void Sandbox2D::onAttach() {
-	m_SquareVA = VertexArray::create();
-
-	float squareVertices[5 * 4] = {
-		-0.5f, -0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		 0.5f,  0.5f, 0.0f,
-		-0.5f,  0.5f, 0.0f
-	};
-
-	Ref<VertexBuffer> squareVB;
-	squareVB = VertexBuffer::create(squareVertices, sizeof(squareVertices));
-	squareVB->setLayout({
-		{ ShaderDataType::Float3, "a_Position" }
-		});
-	m_SquareVA->addVertexBuffer(squareVB);
-
-	uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-	Ref<IndexBuffer> squareIB;
-	squareIB = IndexBuffer::create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
-	m_SquareVA->setIndexBuffer(squareIB);
-
-	m_FlatColorShader = Shader::create("assets/shaders/FlatColor.glsl");
+	
 }
 
 void Sandbox2D::onDetach() {
-	// Cleanup code here
+
 }
 
 void Sandbox2D::onUpdate(cabrankengine::Timestep delta) {
@@ -47,14 +26,14 @@ void Sandbox2D::onUpdate(cabrankengine::Timestep delta) {
 	RenderCommand::setClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 	RenderCommand::clear();
 
-	Renderer::beginScene(m_CameraController.getCamera());
+	Renderer2D::beginScene(m_CameraController.getCamera());
 
-	std::dynamic_pointer_cast<OpenGLShader>(m_FlatColorShader)->bind();
-	std::dynamic_pointer_cast<OpenGLShader>(m_FlatColorShader)->uploadUniformFloat4("u_Color", m_SquareColor);
+	Renderer2D::drawQuad({ 0.f, 0.f }, { 1.f, 1.f }, m_SquareColor);
 
-	Renderer::submit(m_FlatColorShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+	/*std::dynamic_pointer_cast<OpenGLShader>(m_FlatColorShader)->bind();
+	std::dynamic_pointer_cast<OpenGLShader>(m_FlatColorShader)->uploadUniformFloat4("u_Color", m_SquareColor);*/
 
-	Renderer::endScene();
+	Renderer2D::endScene();
 }
 
 void Sandbox2D::onImGuiRender() {
