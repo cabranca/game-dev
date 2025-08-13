@@ -4,7 +4,7 @@
 layout(location = 0) in vec3 pos;
 layout(location = 1) in vec2 tex;
 
-uniform mat4 u_viewProjection;
+uniform mat4 u_ViewProjection;
 uniform mat4 u_Transform;
 
 out vec2 v_TexCoord;
@@ -12,7 +12,7 @@ out vec2 v_TexCoord;
 void main()
 {
 	v_TexCoord = tex;
-	gl_Position = u_viewProjection * u_Transform * vec4(pos, 1.0);
+	gl_Position = u_ViewProjection * u_Transform * vec4(pos, 1.0);
 }
 
 #type fragment
@@ -26,5 +26,5 @@ uniform sampler2D u_Texture;
 
 void main()
 {
-	color = texture(u_Texture, v_TexCoord);
+	color = texture(u_Texture, v_TexCoord * 10.0) * vec4(0.5, 1.0, 0.5, 1.0);
 }
