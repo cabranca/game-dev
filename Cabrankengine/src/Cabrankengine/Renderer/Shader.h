@@ -2,6 +2,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <glm/glm.hpp>
 #include <Cabrankengine/Core/Core.h>
 
 namespace cabrankengine {
@@ -16,6 +17,18 @@ namespace cabrankengine {
 
 			// Unbinds the shader program, stopping its use in rendering.
 			virtual void unbind() const = 0;
+
+			// Sets a int value in the shader program.
+			virtual void setInt(const std::string& name, int value) = 0;
+
+			// Sets a 3 float vector in the shader program.
+			virtual void setFloat3(const std::string& name, const glm::vec3& vector) = 0;
+
+			// Sets a 4 float vector in the shader program.
+			virtual void setFloat4(const std::string& name, const glm::vec4& vector) = 0;
+
+			// Sets a 4x4 float matrix in the shader program.
+			virtual void setMat4(const std::string& name, const glm::mat4& value) = 0;
 
 			// Returns the name of the shader program given by the user.
 			virtual const std::string& getName() const = 0;

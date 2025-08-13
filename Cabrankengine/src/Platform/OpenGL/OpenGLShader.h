@@ -22,6 +22,18 @@ namespace cabrankengine {
 			// Unbinds the shader program, stopping its use in rendering.
 			virtual void unbind() const override;
 
+			// Sets an integer value in the shader program.
+			void setInt(const std::string& name, int value) override;
+
+			// Sets a 3 float vector in the shader program.
+			void setFloat3(const std::string& name, const glm::vec3& vector) override;
+
+			// Sets a 4 float vector in the shader program.
+			void setFloat4(const std::string& name, const glm::vec4& vector) override;
+
+			// Sets a 4x4 float matrix in the shader program.
+			void setMat4(const std::string& name, const glm::mat4& value) override;
+
 			// Returns the name of the shader program given by the user.
 			const std::string& getName() const override { return m_Name; }
 

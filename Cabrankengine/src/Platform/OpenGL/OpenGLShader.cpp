@@ -47,6 +47,22 @@ namespace cabrankengine {
 		glUseProgram(0);
 	}
 
+	void OpenGLShader::setInt(const std::string& name, int value) {
+		uploadUniformInt(name, value);
+	}
+
+	void OpenGLShader::setFloat3(const std::string& name, const glm::vec3& vector) {
+		uploadUniformFloat3(name, vector);
+	}
+
+	void OpenGLShader::setFloat4(const std::string& name, const glm::vec4& vector) {
+		uploadUniformFloat4(name, vector);
+	}
+
+	void OpenGLShader::setMat4(const std::string& name, const glm::mat4& value) {
+		uploadUniformMat4(name, value);
+	}
+
 	void OpenGLShader::uploadUniformInt(const std::string& name, int value) {
 		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
 		if (location == -1) {
