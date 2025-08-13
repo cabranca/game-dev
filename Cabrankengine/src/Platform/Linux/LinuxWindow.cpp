@@ -11,7 +11,7 @@ namespace cabrankengine {
     static bool s_GLFWInitialized = false;
 
     static void GLFWErrorCallback(int error, const char* description) {
-		CE_CORE_ERRROR("GLFW Error ({0}): {1}", error, description);
+		CE_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
 	}
 
     Window* Window::create(const WindowProps& props) {
