@@ -1,4 +1,4 @@
-#include <Cabrankengine/Core/OrthographicCameraController.h>
+#include <Cabrankengine/Renderer/OrthographicCameraController.h>
 
 #include <Cabrankengine/Core/Core.h>
 #include <Cabrankengine/Core/Input.h>
@@ -39,10 +39,6 @@ namespace cabrankengine {
 
 	void OrthographicCameraController::setZoomLevel(float level) {
 		m_ZoomLevel = level;
-		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
-		m_Camera.setProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
-
-		m_CameraTranslationSpeed = m_ZoomLevel;
 	}
 
 	float OrthographicCameraController::getZoomLevel() const {
@@ -50,7 +46,9 @@ namespace cabrankengine {
 	}
 
 	bool OrthographicCameraController::onMouseScrolled(MouseScrolledEvent& e) {
-		setZoomLevel(m_ZoomLevel - e.getYOffset() * 0.25f);
+		m_ZoomLevel -= e.getYOffset() * 0.25f;
+		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
+		m_Camera.setProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 		return false;
 	}
 

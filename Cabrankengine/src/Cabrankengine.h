@@ -10,8 +10,6 @@
 #include <Cabrankengine/Core/KeyCodes.h>
 #include <Cabrankengine/Core/MouseCodes.h>
 
-#include <Cabrankengine/Core/OrthographicCameraController.h>
-
 #include <Cabrankengine/ImGui/ImGuiLayer.h>
 
 
@@ -24,6 +22,7 @@
 #include <Cabrankengine/Renderer/VertexArray.h>
 
 #include <Cabrankengine/Renderer/OrthographicCamera.h>
+#include <Cabrankengine/Renderer/OrthographicCameraController.h>
 
 // --- Entry Point ---
 #include "Cabrankengine/Core/EntryPoint.h"
