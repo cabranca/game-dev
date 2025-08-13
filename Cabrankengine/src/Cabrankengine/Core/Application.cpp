@@ -32,15 +32,17 @@ namespace cabrankengine {
 			Timestep timestep = time - m_LastFrameTime; // Calculate the time since the last frame
 			m_LastFrameTime = time;
 
-			 for (Layer* layer : m_LayerStack)
-				 layer->onUpdate(timestep);
+			if (!m_Minimized) {
+				for (Layer* layer : m_LayerStack)
+					layer->onUpdate(timestep);
+			}
+			 
+			m_ImGuiLayer->begin();
+			for (Layer* layer : m_LayerStack)
+				layer->onImGuiRender();
+			m_ImGuiLayer->end();
 
-			 m_ImGuiLayer->begin();
-			 for (Layer* layer : m_LayerStack)
-				 layer->onImGuiRender();
-			 m_ImGuiLayer->end();
-
-			 m_Window->onUpdate();
+			m_Window->onUpdate();
 		}
 	}
 
@@ -48,6 +50,7 @@ namespace cabrankengine {
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.dispatch<WindowCloseEvent>(BIND_EVENT_FN(&Application::onWindowClose, this));
+		dispatcher.dispatch<WindowResizeEvent>(BIND_EVENT_FN(&Application::onWindowResize, this));
 		CE_CORE_TRACE("{0}", e.toString());
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();) {
 			(*--it)->onEvent(e);
@@ -77,6 +80,17 @@ namespace cabrankengine {
 	bool Application::onWindowClose(WindowCloseEvent& e)
 	{
 		m_Running = false;
+		return true;
+	}
+
+	bool Application::onWindowResize(WindowResizeEvent& e)
+	{
+		if (e.getWidth() == 0 || e.getHeight() == 0) {
+			m_Minimized = true;
+			return false;
+		}
+		m_Minimized = false;
+		Renderer::onWindowResize(e.getWidth(), e.getHeight());
 		return true;
 	}
 }

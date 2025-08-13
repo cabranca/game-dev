@@ -24,6 +24,9 @@ namespace cabrankengine {
 			// Submits a draw call to render a shader with a vertex array and an optional transformation matrix.
 			static void submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.f));
 
+			// Sets the viewport dimensions for rendering.
+			static void onWindowResize(uint32_t width, uint32_t height);
+
 			// Returns the current API being used, allowing access to lower-level rendering functions.
 			static RendererAPI::API getAPI() { return RendererAPI::getAPI(); }
 

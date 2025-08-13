@@ -58,7 +58,6 @@ public:
 		m_LogoTexture->bind();
 		cabrankengine::Renderer::submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.f), glm::vec3(1.5f)));
 
-		//cabrankengine::Renderer::submit(m_Shader, m_VertexArray);
 		cabrankengine::Renderer::endScene();
 	}
 
@@ -72,12 +71,6 @@ public:
 	
 	void onEvent(cabrankengine::Event& event) override {
 		m_CameraController.onEvent(event);
-	}
-
-	bool onKeyPressedEvent(cabrankengine::KeyPressedEvent& event) {
-		
-
-		return false;
 	}
 
 private:

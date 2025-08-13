@@ -10,6 +10,7 @@ namespace cabrankengine {
 	class ImGuiLayer; // Overlay for ImGui rendering
 	class Window; // Base Window class
 	class WindowCloseEvent; // Event triggerd when the close window button is pressed.
+	class WindowResizeEvent; // Event triggered when the window is resized
 	
 
 	class Application {
@@ -45,11 +46,15 @@ namespace cabrankengine {
 			// Callback for the WindowClose Event
 			bool onWindowClose(WindowCloseEvent& e);
 
+			// Callback for the WindowResize Event
+			bool onWindowResize(WindowResizeEvent& e);
+
 			std::unique_ptr<Window> m_Window; // Ptr to the app window
 			ImGuiLayer* m_ImGuiLayer; // ImGui layer for rendering the UI
 			bool m_Running; // Whether the app must stop or not
 			LayerStack m_LayerStack; // Stack of layers to forward the events to
 			float m_LastFrameTime; // Time of the last frame
+			bool m_Minimized = false; // Whether the window is minimized or not
 	
 			inline static Application* s_Instance = nullptr; // Static instance of the app (Singleton-ish pattern)
 	};

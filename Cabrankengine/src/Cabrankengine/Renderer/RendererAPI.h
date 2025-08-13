@@ -26,6 +26,9 @@ namespace cabrankengine {
 			// Draws the indexed vertices from the vertex array.
 			virtual void drawIndexed(const Ref<VertexArray>& vertexArray) = 0;
 
+			// Sets the viewport dimensions for rendering.
+			virtual void setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
+
 			// Returns the current rendering API.
 			static API getAPI() { return s_API; }
 
