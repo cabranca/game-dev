@@ -37,8 +37,6 @@ namespace cabrankengine {
 		public:
 			virtual ~Event() = default;
 
-			bool Handled = false; // TODO: for real, why public?
-
 			// Returns the event type
 			virtual EventType getEventType() const = 0;
 
@@ -53,6 +51,15 @@ namespace cabrankengine {
 
 			// Returns whether the event category matches by the given category
 			bool isInCategory(EventCategory category) const { return getCategoryFlags() & category; }
+
+			// Returns whether the event was handled
+			bool handled() const { return m_Handled; }
+
+			// Sets the handled member to true
+			void setHandled() { m_Handled = true; }
+
+	private:
+		bool m_Handled = false; // This is a private member to avoid direct manipulation, use the public Handled member instead
 	};
 
 	class EventDispatcher {
@@ -66,7 +73,8 @@ namespace cabrankengine {
 			bool dispatch(const F& func) {
 				if (m_Event.getEventType() == T::getStaticType())
 				{
-					m_Event.Handled |= func(static_cast<T&>(m_Event));
+					if (func(static_cast<T&>(m_Event)))
+						m_Event.setHandled();
 					return true;
 				}
 				return false;

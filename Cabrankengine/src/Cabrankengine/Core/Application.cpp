@@ -51,7 +51,7 @@ namespace cabrankengine {
 		CE_CORE_TRACE("{0}", e.toString());
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();) {
 			(*--it)->onEvent(e);
-			if (e.Handled)
+			if (e.handled())
 				break;
 		}
 	}
