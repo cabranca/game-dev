@@ -15,7 +15,7 @@ namespace cabrankengine {
 			virtual void onAttach() override;
 
 			// Callback for when the layer is popped from the stack
-			virtual void onDettach() override;
+			virtual void onDetach() override;
 
 			// Callback for when it's time to render the ImGui layer
 			virtual void onImGuiRender() override;

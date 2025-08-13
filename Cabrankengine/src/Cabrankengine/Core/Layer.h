@@ -22,7 +22,7 @@ namespace cabrankengine {
 			virtual void onAttach() {}
 
 			// Callback for when the layer is popped from the stack
-			virtual void onDettach() {}
+			virtual void onDetach() {}
 
 			// Callback for when the layer must update
 			virtual void onUpdate(Timestep delta) {}

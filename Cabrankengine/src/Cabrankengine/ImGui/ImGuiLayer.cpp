@@ -35,7 +35,7 @@ namespace cabrankengine {
 		ImGui_ImplOpenGL3_Init("#version 410");
 	}
 
-	void ImGuiLayer::onDettach()
+	void ImGuiLayer::onDetach()
 	{
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
