@@ -12,6 +12,8 @@ namespace cabrankengine {
 			// Constructor that initializes the orthographic camera with the specified left, right, bottom, and top clipping planes.
 			OrthographicCamera(float left, float right, float bottom, float top);
 
+			void setProjection(float left, float right, float bottom, float top);
+
 			// Getters and setters for the camera's position and rotation.
 			const glm::vec3& getPosition() const { return m_Position; }
 			void setPosition(const glm::vec3& position) { m_Position = position; recalculateViewMatrix(); }
