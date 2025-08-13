@@ -65,7 +65,7 @@ namespace cabrankengine {
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		setVSync(true);
 
-		// Set GLFW callbacks
+		// Set GLFW callbacks: https://www.glfw.org/docs/3.3/input_guide.html
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 			WindowResizeEvent event(width, height);
