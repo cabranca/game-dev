@@ -9,7 +9,7 @@
 
 class ExampleLayer : public cabrankengine::Layer {
 public:
-	ExampleLayer() : Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.f), m_SquarePosition(0.f) {
+	ExampleLayer() : Layer("Example"), m_CameraController(1600.f / 900.f, true) {
 		m_SquareVA = cabrankengine::VertexArray::create();
 
 		float squareVertices[5 * 4] = {
@@ -41,34 +41,12 @@ public:
 	}
 	
 	void onUpdate(cabrankengine::Timestep delta) override {
-		if (cabrankengine::Input::isKeyPressed(cabrankengine::Key::Left))
-			m_CameraPosition.x -= m_CameraSpeed * delta;
-		else if (cabrankengine::Input::isKeyPressed(cabrankengine::Key::Right))
-			m_CameraPosition.x += m_CameraSpeed * delta;
-		if (cabrankengine::Input::isKeyPressed(cabrankengine::Key::Down))
-			m_CameraPosition.y -= m_CameraSpeed * delta;
-		else if (cabrankengine::Input::isKeyPressed(cabrankengine::Key::Up))
-			m_CameraPosition.y += m_CameraSpeed * delta;
-
-		if (cabrankengine::Input::isKeyPressed(cabrankengine::Key::J))
-			m_SquarePosition.x -= m_SquareSpeed * delta;
-		else if (cabrankengine::Input::isKeyPressed(cabrankengine::Key::L))
-			m_SquarePosition.x += m_SquareSpeed * delta;
-		if (cabrankengine::Input::isKeyPressed(cabrankengine::Key::K))
-			m_SquarePosition.y -= m_SquareSpeed * delta;
-		else if (cabrankengine::Input::isKeyPressed(cabrankengine::Key::I))
-			m_SquarePosition.y += m_SquareSpeed * delta;
-
-		else if (cabrankengine::Input::isKeyPressed(cabrankengine::Key::R))
-			m_CameraRotation += m_CameraRotationSpeed * delta;
+		m_CameraController.onUpdate(delta);
 
 		cabrankengine::RenderCommand::setClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
 		cabrankengine::RenderCommand::clear();
 
-		m_Camera.setPosition(m_CameraPosition);
-		m_Camera.setRotation(m_CameraRotation);
-
-		cabrankengine::Renderer::beginScene(m_Camera);
+		cabrankengine::Renderer::beginScene(m_CameraController.getCamera());
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.f), glm::vec3(0.1f));
 
@@ -93,8 +71,7 @@ public:
 	}
 	
 	void onEvent(cabrankengine::Event& event) override {
-		cabrankengine::EventDispatcher dispatcher(event);
-		dispatcher.dispatch<cabrankengine::KeyPressedEvent>(BIND_EVENT_FN(&ExampleLayer::onKeyPressedEvent, this));
+		m_CameraController.onEvent(event);
 	}
 
 	bool onKeyPressedEvent(cabrankengine::KeyPressedEvent& event) {
@@ -109,15 +86,7 @@ private:
 
 	cabrankengine::Ref<cabrankengine::Texture2D> m_Texture, m_LogoTexture;
 
-	cabrankengine::OrthographicCamera m_Camera; // Camera for the scene
-	glm::vec3 m_CameraPosition;
-	float m_CameraSpeed = 1.f; // Speed of the camera movement
-	float m_CameraRotation = 0.f; // Rotation of the camera
-	float m_CameraRotationSpeed = 1.f; // Speed of the camera rotation
-
-	glm::vec3 m_SquarePosition;
-	float m_SquareSpeed = 1.f; // Speed of the square
-
+	cabrankengine::OrthographicCameraController m_CameraController; // Camera controller for the scene
 	glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f }; // Color of the square
 };
 

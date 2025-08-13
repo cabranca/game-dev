@@ -10,6 +10,8 @@
 #include <Cabrankengine/Core/KeyCodes.h>
 #include <Cabrankengine/Core/MouseCodes.h>
 
+#include <Cabrankengine/Core/OrthographicCameraController.h>
+
 #include <Cabrankengine/ImGui/ImGuiLayer.h>
 
 
