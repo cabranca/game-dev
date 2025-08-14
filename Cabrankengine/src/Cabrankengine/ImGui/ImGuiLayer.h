@@ -17,9 +17,6 @@ namespace cabrankengine {
 			// Callback for when the layer is popped from the stack
 			virtual void onDetach() override;
 
-			// Callback for when it's time to render the ImGui layer
-			virtual void onImGuiRender() override;
-
 			// Initialize backends for ImGui rendering
 			void begin();
 

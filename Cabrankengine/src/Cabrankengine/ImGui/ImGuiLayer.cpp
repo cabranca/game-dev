@@ -42,11 +42,6 @@ namespace cabrankengine {
 		ImGui::DestroyContext();
 	}
 
-	void ImGuiLayer::onImGuiRender() {
-		static bool show = true;
-		ImGui::ShowDemoWindow(&show);
-	}
-
 	void ImGuiLayer::begin() {
 		ImGui_ImplGlfw_NewFrame();
 		ImGui_ImplOpenGL3_NewFrame();
