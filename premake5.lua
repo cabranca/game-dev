@@ -75,13 +75,10 @@ project "Sandbox"
         systemversion "latest"
         buildoptions { "/utf-8" }
 
-        defines {"CE_PLATFORM_WINDOWS"}
-
     filter "system:linux"
         systemversion "latest"
         pic "on"
-
-        defines {"CE_PLATFORM_LINUX"}
+        
         links { "X11", "Xrandr", "Xi", "Xxf86vm", "Xcursor", "pthread", "dl", "GL" }
         
     filter "configurations:Debug"
