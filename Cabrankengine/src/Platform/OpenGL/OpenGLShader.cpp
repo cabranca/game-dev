@@ -6,6 +6,7 @@
 #include <fstream>
 #include <filesystem>
 #include <Cabrankengine/Core/Logger.h>
+#include <Cabrankengine/Debug/Instrumentator.h>
 
 namespace cabrankengine {
 
@@ -19,6 +20,8 @@ namespace cabrankengine {
 	}
 
 	OpenGLShader::OpenGLShader(const std::string& filepath) : m_RendererId(0) {
+		CE_PROFILE_FUNCTION();
+
 		std::filesystem::path path(filepath);
 		m_Name = path.stem().string();
 
@@ -29,6 +32,8 @@ namespace cabrankengine {
 
 	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc) 
 		: m_RendererId(0), m_Name(name) {
+		CE_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSrc;
 		sources[GL_FRAGMENT_SHADER] = fragmentSrc;
@@ -36,34 +41,50 @@ namespace cabrankengine {
 	}
 
 	OpenGLShader::~OpenGLShader() {
+		CE_PROFILE_FUNCTION();
+
 		glDeleteProgram(m_RendererId);
 	}
 
 	void OpenGLShader::bind() const {
+		CE_PROFILE_FUNCTION();
+
 		glUseProgram(m_RendererId);
 	}
 
 	void OpenGLShader::unbind() const {
+		CE_PROFILE_FUNCTION();
+
 		glUseProgram(0);
 	}
 
 	void OpenGLShader::setInt(const std::string& name, int value) {
+		CE_PROFILE_FUNCTION();
+
 		uploadUniformInt(name, value);
 	}
 
 	void OpenGLShader::setFloat3(const std::string& name, const glm::vec3& vector) {
+		CE_PROFILE_FUNCTION();
+
 		uploadUniformFloat3(name, vector);
 	}
 
 	void OpenGLShader::setFloat4(const std::string& name, const glm::vec4& vector) {
+		CE_PROFILE_FUNCTION();
+
 		uploadUniformFloat4(name, vector);
 	}
 
 	void OpenGLShader::setMat4(const std::string& name, const glm::mat4& value) {
+		CE_PROFILE_FUNCTION();
+
 		uploadUniformMat4(name, value);
 	}
 
 	void OpenGLShader::uploadUniformInt(const std::string& name, int value) {
+		CE_PROFILE_FUNCTION();
+
 		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
 		if (location == -1) {
 			CE_CORE_ERROR("Uniform '{0}' not found in shader!", name);
@@ -73,6 +94,8 @@ namespace cabrankengine {
 	}
 
 	void OpenGLShader::uploadUniformFloat1(const std::string& name, float value) {
+		CE_PROFILE_FUNCTION();
+
 		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
 		if (location == -1) {
 			CE_CORE_ERROR("Uniform '{0}' not found in shader!", name);
@@ -82,6 +105,8 @@ namespace cabrankengine {
 	}
 
 	void OpenGLShader::uploadUniformFloat2(const std::string& name, const glm::vec2& values) {
+		CE_PROFILE_FUNCTION();
+
 		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
 		if (location == -1) {
 			CE_CORE_ERROR("Uniform '{0}' not found in shader!", name);
@@ -91,6 +116,8 @@ namespace cabrankengine {
 	}
 
 	void OpenGLShader::uploadUniformFloat3(const std::string& name, const glm::vec3& values) {
+		CE_PROFILE_FUNCTION();
+
 		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
 		if (location == -1) {
 			CE_CORE_ERROR("Uniform '{0}' not found in shader!", name);
@@ -100,6 +127,8 @@ namespace cabrankengine {
 	}
 
 	void OpenGLShader::uploadUniformFloat4(const std::string& name, const glm::vec4& values) {
+		CE_PROFILE_FUNCTION();
+
 		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
 		if (location == -1) {
 			CE_CORE_ERROR("Uniform '{0}' not found in shader!", name);
@@ -109,6 +138,8 @@ namespace cabrankengine {
 	}
 
 	void OpenGLShader::uploadUniformMat3(const std::string& name, const glm::mat3& matrix) {
+		CE_PROFILE_FUNCTION();
+
 		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
 		if (location == -1) {
 			CE_CORE_ERROR("Uniform {0} not found in shader!", name);
@@ -118,6 +149,8 @@ namespace cabrankengine {
 	}
 
 	void OpenGLShader::uploadUniformMat4(const std::string& name, const glm::mat4& matrix) {
+		CE_PROFILE_FUNCTION();
+
 		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
 		if (location == -1) {
 			CE_CORE_ERROR("Uniform {0} not found in shader!", name);
@@ -127,6 +160,8 @@ namespace cabrankengine {
 	}
 
 	std::string OpenGLShader::readFile(const std::string& filepath) {
+		CE_PROFILE_FUNCTION();
+
 		std::string result;
 		std::ifstream in(filepath, std::ios::in | std::ios::binary);
 		if (in) {
@@ -143,6 +178,8 @@ namespace cabrankengine {
 	}
 
 	std::unordered_map<GLenum, std::string> OpenGLShader::preProcess(const std::string& source) {
+		CE_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> shaderSources;
 		const char* typeToken = "#type";
 		size_t typeTokenLength = strlen(typeToken);
@@ -161,6 +198,8 @@ namespace cabrankengine {
 	}
 
 	void OpenGLShader::compile(const std::unordered_map<GLenum, std::string>& shaderSources) {
+		CE_PROFILE_FUNCTION();
+
 		GLuint program = glCreateProgram();
 		CE_CORE_ASSERT(shaderSources.size() <= 2, "OpenGL only supports 2 shader types (vertex and fragment) at the moment!");
 		std::array<GLenum, 2> shaderIds;

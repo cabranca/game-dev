@@ -2,6 +2,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <Cabrankengine/Core/Core.h>
+#include <Cabrankengine/Debug/Instrumentator.h>
 #include <Cabrankengine/Renderer/Buffer.h>
 #include <Cabrankengine/Renderer/RenderCommand.h>
 #include <Cabrankengine/Renderer/Shader.h>
@@ -20,6 +21,8 @@ namespace cabrankengine {
 	static Renderer2DStorage* s_Data;
 
 	void Renderer2D::init() {
+		CE_PROFILE_FUNCTION();
+
 		s_Data = new Renderer2DStorage();
 
 		s_Data->QuadVertexArray = VertexArray::create();
@@ -50,16 +53,20 @@ namespace cabrankengine {
 	}
 
 	void Renderer2D::shutdown() {
+		CE_PROFILE_FUNCTION();
+
 		delete s_Data;
 	}
 
 	void Renderer2D::beginScene(const OrthographicCamera& camera) {
+		CE_PROFILE_FUNCTION();
+
 		s_Data->TextureShader->bind();
 		s_Data->TextureShader->setMat4("u_ViewProjection", camera.getViewProjectionMatrix());
 	}
 
 	void Renderer2D::endScene() {
-		
+		CE_PROFILE_FUNCTION();
 	}
 
 	void Renderer2D::drawQuad(const vec2& position, const vec2& size, const vec4& color) {
@@ -67,6 +74,8 @@ namespace cabrankengine {
 	}
 
 	void Renderer2D::drawQuad(const vec3& position, const vec2& size, const vec4& color) {
+		CE_PROFILE_FUNCTION();
+
 		s_Data->TextureShader->setFloat4("u_Color", color);
 		s_Data->WhiteTexture->bind();
 
@@ -82,6 +91,8 @@ namespace cabrankengine {
 	}
 
 	void Renderer2D::drawQuad(const vec3& position, const vec2& size, const Ref<Texture2D>& texture) {
+		CE_PROFILE_FUNCTION();
+
 		mat4 transform = translate(mat4(1.f), position) * scale(mat4(1.f), vec3(size, 1.0f));
 		s_Data->TextureShader->setMat4("u_Transform", transform);
 		s_Data->TextureShader->setFloat4("u_Color", vec4(1.f));

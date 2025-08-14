@@ -1,5 +1,6 @@
 #include <Platform/Windows/WindowsWindow.h>
 #include <Cabrankengine/Core/Logger.h>
+#include <Cabrankengine/Debug/Instrumentator.h>
 #include <Cabrankengine/Events/MouseEvent.h>
 #include <Cabrankengine/Events/ApplicationEvent.h>
 #include <Cabrankengine/Events/KeyEvent.h>
@@ -19,10 +20,14 @@ namespace cabrankengine {
 	}
 	
 	WindowsWindow::WindowsWindow(const WindowProps& props) {
+		CE_PROFILE_FUNCTION();
+
 		init(props);
 	}
 
 	WindowsWindow::~WindowsWindow() {
+		CE_PROFILE_FUNCTION();
+
 		shutdown();
 	}
 
@@ -32,6 +37,8 @@ namespace cabrankengine {
 	}
 
 	void WindowsWindow::setVSync(bool enabled) {
+		CE_PROFILE_FUNCTION();
+
 		if (enabled)
 			glfwSwapInterval(1);
 		else
@@ -44,6 +51,8 @@ namespace cabrankengine {
 	}
 
 	void WindowsWindow::init(const WindowProps& props) {
+		CE_PROFILE_FUNCTION();
+
 		m_Data.Title = props.Title;
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
@@ -51,13 +60,19 @@ namespace cabrankengine {
 		CE_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
 		if (!s_GLFWInitialized) {
+			CE_PROFILE_FUNCTION();
+
 			int success = glfwInit();
 			CE_CORE_ASSERT(success, "Could not initialize GLFW!");
 			glfwSetErrorCallback(GLFWErrorCallback);
 			s_GLFWInitialized = true;
 		}
 
-		m_Window = glfwCreateWindow(props.Width, props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+		{
+			CE_PROFILE_FUNCTION();
+
+			m_Window = glfwCreateWindow(props.Width, props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+		}
 
 		m_Context = new OpenGLContext(m_Window);
 		m_Context->init();
@@ -139,6 +154,8 @@ namespace cabrankengine {
 	}
 
 	void WindowsWindow::shutdown() {
+		CE_PROFILE_FUNCTION();
+
 		glfwDestroyWindow(m_Window);
 	}
 }

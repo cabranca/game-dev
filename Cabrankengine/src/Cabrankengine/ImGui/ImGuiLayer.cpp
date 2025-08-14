@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 #include <Cabrankengine/Core/Application.h>
 #include <Cabrankengine/Core/Window.h>
+#include <Cabrankengine/Debug/Instrumentator.h>
 
 namespace cabrankengine {
 
@@ -12,6 +13,8 @@ namespace cabrankengine {
 
 	void ImGuiLayer::onAttach()
 	{
+		CE_PROFILE_FUNCTION();
+
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		
@@ -37,18 +40,24 @@ namespace cabrankengine {
 
 	void ImGuiLayer::onDetach()
 	{
+		CE_PROFILE_FUNCTION();
+
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
 	}
 
 	void ImGuiLayer::begin() {
+		CE_PROFILE_FUNCTION();
+
 		ImGui_ImplGlfw_NewFrame();
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui::NewFrame();
 	}
 
 	void ImGuiLayer::end() {
+		CE_PROFILE_FUNCTION();
+
 		ImGuiIO& io = ImGui::GetIO();
 		Application& app = Application::get();
 		io.DisplaySize = ImVec2(static_cast<float>(app.getWindow().getWidth()), static_cast<float>(app.getWindow().getHeight()));

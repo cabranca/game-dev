@@ -6,11 +6,13 @@
 #include <Cabrankengine/Core/Timestep.h>
 #include <GLFW/glfw3.h>
 #include <Cabrankengine/Renderer/Renderer.h>
+#include <Cabrankengine/Debug/Instrumentator.h>
 
 namespace cabrankengine {
 
 	Application::Application() : m_Running(true), m_LastFrameTime(0.0f)
 	{
+		CE_PROFILE_FUNCTION();
 		CE_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
@@ -23,23 +25,35 @@ namespace cabrankengine {
 		pushOverlay(m_ImGuiLayer);
 	}
 
-	Application::~Application() {}
+	Application::~Application() {
+		CE_PROFILE_FUNCTION();
+		Renderer::shutdown();
+	}
 
 	void Application::Run()
 	{
+		CE_PROFILE_FUNCTION();
+
 		while (m_Running) {
+			CE_PROFILE_SCOPE("RunLoop");
+
 			float time = static_cast<float>(glfwGetTime()); // This should be in Platform::getTime() or similar
 			Timestep timestep = time - m_LastFrameTime; // Calculate the time since the last frame
 			m_LastFrameTime = time;
 
 			if (!m_Minimized) {
+				CE_PROFILE_SCOPE("LayerStack OnUpdate");
+
 				for (Layer* layer : m_LayerStack)
 					layer->onUpdate(timestep);
 			}
 			 
 			m_ImGuiLayer->begin();
-			for (Layer* layer : m_LayerStack)
-				layer->onImGuiRender();
+			{
+				CE_PROFILE_SCOPE("LayerStack OnImGuiRender");
+				for (Layer* layer : m_LayerStack)
+					layer->onImGuiRender();
+			}
 			m_ImGuiLayer->end();
 
 			m_Window->onUpdate();
@@ -60,11 +74,13 @@ namespace cabrankengine {
 	}
 
 	void Application::pushLayer(Layer* layer) {
+		CE_PROFILE_FUNCTION();
 		m_LayerStack.pushLayer(layer);
 		layer->onAttach();
 	}
 
 	void Application::pushOverlay(Layer* layer) {
+		CE_PROFILE_FUNCTION();
 		m_LayerStack.pushOverlay(layer);
 		layer->onAttach();
 	}
@@ -85,6 +101,7 @@ namespace cabrankengine {
 
 	bool Application::onWindowResize(WindowResizeEvent& e)
 	{
+		CE_PROFILE_FUNCTION();
 		if (e.getWidth() == 0 || e.getHeight() == 0) {
 			m_Minimized = true;
 			return false;

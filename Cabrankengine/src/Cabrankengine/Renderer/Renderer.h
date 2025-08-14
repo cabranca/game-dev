@@ -15,6 +15,9 @@ namespace cabrankengine {
 			// Initializes the renderer, setting up necessary resources and state.
 			static void init();
 
+			// Shuts down the renderer, releasing all resources and cleaning up state.
+			static void shutdown();
+
 			// Sets the necessary general data to render a scene, such as the camera, the lighting, etc.
 			static void beginScene(OrthographicCamera& camera);
 

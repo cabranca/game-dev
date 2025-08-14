@@ -1,6 +1,7 @@
 #include <Platform/OpenGL/OpenGLVertexArray.h>
 
 #include <glad/glad.h>
+#include <Cabrankengine/Debug/Instrumentator.h>
 #include <Cabrankengine/Renderer/Buffer.h>
 
 namespace cabrankengine {
@@ -25,22 +26,32 @@ namespace cabrankengine {
 	}
 
 	OpenGLVertexArray::OpenGLVertexArray() : m_RendererId() {
+		CE_PROFILE_FUNCTION();
+
 		glCreateVertexArrays(1, &m_RendererId);
 	}
 
 	OpenGLVertexArray::~OpenGLVertexArray() {
+		CE_PROFILE_FUNCTION();
+
 		glDeleteVertexArrays(1, &m_RendererId);
 	}
 
 	void OpenGLVertexArray::bind() const {
+		CE_PROFILE_FUNCTION();
+
 		glBindVertexArray(m_RendererId);
 	}
 
 	void OpenGLVertexArray::unbind() const {
+		CE_PROFILE_FUNCTION();
+
 		glBindVertexArray(0);
 	}
 
 	void OpenGLVertexArray::addVertexBuffer(const Ref<VertexBuffer>& vertexBuffer) {
+		CE_PROFILE_FUNCTION();
+
 		CE_CORE_ASSERT(vertexBuffer->getLayout().getElements().size(), "Vertex Buffer has no layout!");
 
 		glBindVertexArray(m_RendererId);
@@ -63,6 +74,8 @@ namespace cabrankengine {
 	}
 
 	void OpenGLVertexArray::setIndexBuffer(const Ref<IndexBuffer>& indexBuffer) {
+		CE_PROFILE_FUNCTION();
+
 		glBindVertexArray(m_RendererId);
 		indexBuffer->bind();
 

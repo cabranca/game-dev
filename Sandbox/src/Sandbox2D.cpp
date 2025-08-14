@@ -13,21 +13,20 @@ using namespace cabrankengine;
 Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_CameraController(1280.0f / 720.0f, true) {}
 
 void Sandbox2D::onAttach() {
+	CE_PROFILE_FUNCTION();
+
 	m_CheckerboardTexture = Texture2D::create("assets/textures/Checkerboard.png");
 }
 
 void Sandbox2D::onDetach() {
-
+	CE_PROFILE_FUNCTION();
 }
 
 void Sandbox2D::onUpdate(cabrankengine::Timestep delta) {
 	CE_PROFILE_FUNCTION();
 
 	// Update
-	{
-		CE_PROFILE_SCOPE("CameraController::onUpdate");
-		m_CameraController.onUpdate(delta);
-	}
+	m_CameraController.onUpdate(delta);
 
 	// Render
 	{

@@ -1,12 +1,15 @@
 #include <Platform/OpenGL/OpenGLRendererAPI.h>
 
 #include <glad/glad.h>
+#include <Cabrankengine/Debug/Instrumentator.h>
 #include <Cabrankengine/Renderer/VertexArray.h>
 #include <Cabrankengine/Renderer/Buffer.h>
 
 namespace cabrankengine {
 
 	void OpenGLRendererAPI::init() {
+		CE_PROFILE_FUNCTION();
+
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

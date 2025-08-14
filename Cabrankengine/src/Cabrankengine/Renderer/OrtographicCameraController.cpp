@@ -2,6 +2,7 @@
 
 #include <Cabrankengine/Core/Core.h>
 #include <Cabrankengine/Core/Input.h>
+#include <Cabrankengine/Debug/Instrumentator.h>
 
 namespace cabrankengine {
 
@@ -10,6 +11,8 @@ namespace cabrankengine {
 	}
 
 	void OrthographicCameraController::onUpdate(Timestep delta) {
+		CE_PROFILE_FUNCTION();
+
 		if (Input::isKeyPressed(Key::A))
 			m_CameraPosition.x -= m_CameraTranslationSpeed * delta;
 		else if (Input::isKeyPressed(Key::D))
@@ -32,6 +35,8 @@ namespace cabrankengine {
 	}
 
 	void OrthographicCameraController::onEvent(Event& e) {
+		CE_PROFILE_FUNCTION();
+
 		EventDispatcher dispatcher(e);
 		dispatcher.dispatch<MouseScrolledEvent>(BIND_EVENT_FN(&OrthographicCameraController::onMouseScrolled, this));
 		dispatcher.dispatch<WindowResizeEvent>(BIND_EVENT_FN(&OrthographicCameraController::onWindowResized, this));
@@ -46,6 +51,8 @@ namespace cabrankengine {
 	}
 
 	bool OrthographicCameraController::onMouseScrolled(MouseScrolledEvent& e) {
+		CE_PROFILE_FUNCTION();
+
 		m_ZoomLevel -= e.getYOffset() * 0.25f;
 		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
 		m_Camera.setProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
@@ -53,6 +60,8 @@ namespace cabrankengine {
 	}
 
 	bool OrthographicCameraController::onWindowResized(WindowResizeEvent& e) {
+		CE_PROFILE_FUNCTION();
+
 		m_AspectRatio = static_cast<float>(e.getWidth()) / static_cast<float>(e.getHeight());
 		m_Camera.setProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 		return false;

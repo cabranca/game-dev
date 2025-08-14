@@ -4,13 +4,20 @@
 #include <Cabrankengine/Renderer/Renderer2D.h>
 #include <Cabrankengine/Renderer/Shader.h>
 #include <Cabrankengine/Renderer/VertexArray.h>
+#include <Cabrankengine/Debug/Instrumentator.h>
 #include <Platform/OpenGL/OpenGLShader.h>
 
 namespace cabrankengine {
 
 	void Renderer::init() {
+		CE_PROFILE_FUNCTION();
+
 		RenderCommand::init();
 		Renderer2D::init();
+	}
+
+	void Renderer::shutdown() {
+		Renderer2D::shutdown();
 	}
 
 	void Renderer::beginScene(OrthographicCamera& camera) {

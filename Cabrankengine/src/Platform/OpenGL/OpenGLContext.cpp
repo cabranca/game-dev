@@ -2,6 +2,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <Cabrankengine/Core/Logger.h>
+#include <Cabrankengine/Debug/Instrumentator.h>
 
 namespace cabrankengine {
 
@@ -10,6 +11,8 @@ namespace cabrankengine {
 	}
 
 	void OpenGLContext::init() {
+		CE_PROFILE_FUNCTION();
+
 		glfwMakeContextCurrent(m_WindowHandle);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		CE_CORE_ASSERT(status, "Failed to initialize Glad!");
@@ -22,6 +25,8 @@ namespace cabrankengine {
 	}
 
 	void OpenGLContext::swapBuffers() {
+		CE_PROFILE_FUNCTION();
+
 		glfwSwapBuffers(m_WindowHandle);
 	}
 }
