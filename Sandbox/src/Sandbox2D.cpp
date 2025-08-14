@@ -43,7 +43,7 @@ template<typename Fn>
 
 #define PROFILE_SCOPE(name) Timer timer##__LINE__(name, [&](ProfileResult profileResult) { m_ProfileResults.push_back(profileResult); })
 
-Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_CameraController(1280.0f / 720.0f) {}
+Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_CameraController(1280.0f / 720.0f, true) {}
 
 void Sandbox2D::onAttach() {
 	m_CheckerboardTexture = Texture2D::create("assets/textures/Checkerboard.png");

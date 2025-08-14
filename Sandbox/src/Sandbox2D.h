@@ -18,7 +18,6 @@ class Sandbox2D : public cabrankengine::Layer {
 
 		// Temp
 		cabrankengine::Ref<cabrankengine::VertexArray> m_SquareVA;
-		cabrankengine::Ref<cabrankengine::Shader> m_FlatColorShader;
 
 		cabrankengine::Ref<cabrankengine::Texture2D> m_CheckerboardTexture;
 
