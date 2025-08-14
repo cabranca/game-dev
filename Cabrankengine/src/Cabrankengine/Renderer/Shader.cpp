@@ -12,7 +12,7 @@ namespace cabrankengine {
 				CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
 				return nullptr;
 			case RendererAPI::API::OpenGL:
-				return std::make_shared<OpenGLShader>(filepath);
+				return createRef<OpenGLShader>(filepath);
 		}
 		CE_CORE_ASSERT(false, "Unknown RendererAPI!");
 		return nullptr;
@@ -24,7 +24,7 @@ namespace cabrankengine {
 				CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
 				return nullptr;
 			case RendererAPI::API::OpenGL:
-				return std::make_shared<OpenGLShader>(name, vertexSrc, fragmentSrc);
+				return createRef<OpenGLShader>(name, vertexSrc, fragmentSrc);
 		}
 
 		CE_CORE_ASSERT(false, "Unknown RendererAPI!");
