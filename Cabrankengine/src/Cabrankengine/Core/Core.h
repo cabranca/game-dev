@@ -3,6 +3,22 @@
 #include <cstdint>
 #include <memory>
 
+#ifdef _WIN32
+	#ifdef _WIN64
+		#define CE_PLATFORM_WINDOWS
+	#else
+		#error "Cabrankengine only supports 64-bit Windows!"
+	#endif
+#endif
+
+#ifdef __linux__
+	#ifdef __x86_64__
+		#define CE_PLATFORM_LINUX
+	#else
+		#error "Cabrankengine only supports 64-bit Linux!"
+	#endif
+#endif
+
 #ifdef CE_DEBUG
 	#define CE_ENABLE_ASSERTS
 #endif

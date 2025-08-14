@@ -38,7 +38,7 @@ project "Cabrankengine"
 
         removefiles { "%{prj.name}/src/Platform/Linux/**.cpp", "%{prj.name}/src/Platform/Linux/**.h" }
         links {"opengl32.lib"}
-        defines {"CE_PLATFORM_WINDOWS", "CE_BUILD_DLL", "GLFW_INCLUDE_NONE"}
+        defines {"GLFW_INCLUDE_NONE"}
 
     filter "system:linux"
         systemversion "latest"
@@ -46,7 +46,6 @@ project "Cabrankengine"
 
         removefiles { "%{prj.name}/src/Platform/Windows/**.cpp", "%{prj.name}/src/Platform/Windows/**.h" }
         links { "X11", "Xrandr", "Xi", "Xxf86vm", "Xcursor", "pthread", "dl", "GL" }
-        defines {"CE_PLATFORM_LINUX", "CE_BUILD_DLL"}
     
     filter "configurations:Debug"
         defines "CE_DEBUG"
