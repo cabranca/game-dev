@@ -9,6 +9,7 @@
 #include <Platform/OpenGL/OpenGLShader.h>
 
 using namespace cabrankengine;
+using namespace glm;
 
 Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_CameraController(1280.0f / 720.0f, true) {}
 
@@ -41,7 +42,7 @@ void Sandbox2D::onUpdate(cabrankengine::Timestep delta) {
 
 		Renderer2D::drawQuad({ -1.f, 0.f }, { 0.8f, 0.8f }, m_SquareColor);
 		Renderer2D::drawQuad({ 0.5f, 0.5f }, { 0.5f, 0.75f }, m_SquareColorVariant);
-		Renderer2D::drawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture);
+		Renderer2D::drawRotatedQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, 45.0f, m_CheckerboardTexture, 10.0f, vec4(1.0, 0.9f, 0.9f, 1.0f));
 
 		Renderer2D::endScene();
 	}

@@ -64,6 +64,12 @@ namespace cabrankengine {
 		uploadUniformInt(name, value);
 	}
 
+	void OpenGLShader::setFloat(const std::string& name, float value) {
+		CE_PROFILE_FUNCTION();
+
+		uploadUniformFloat1(name, value);
+	}
+
 	void OpenGLShader::setFloat3(const std::string& name, const glm::vec3& vector) {
 		CE_PROFILE_FUNCTION();
 

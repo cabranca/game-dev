@@ -25,6 +25,9 @@ namespace cabrankengine {
 			// Sets an integer value in the shader program.
 			void setInt(const std::string& name, int value) override;
 
+			// Sets a float value in the shader program.
+			void setFloat(const std::string& name, float value) override;
+
 			// Sets a 3 float vector in the shader program.
 			void setFloat3(const std::string& name, const glm::vec3& vector) override;
 
