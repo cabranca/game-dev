@@ -32,8 +32,8 @@ namespace cabrankengine {
 	OpenGLTexture2D::OpenGLTexture2D(const TextureSpecification& specification)
 		: m_Specification(specification), m_Width(m_Specification.Width), m_Height(m_Specification.Height) {
 
-		m_InternalFormat = utils::cabrankengineImageFormatToGLDataFormat(m_Specification.Format);
-		m_DataFormat = utils::cabrankengineImageFormatToGLInternalFormat(m_Specification.Format);
+		m_DataFormat = utils::cabrankengineImageFormatToGLDataFormat(m_Specification.Format);
+		m_InternalFormat = utils::cabrankengineImageFormatToGLInternalFormat(m_Specification.Format);
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
 		glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height);

@@ -13,8 +13,8 @@ namespace cabrankengine {
 
 	struct Renderer2DStorage {
 		Ref<VertexArray> QuadVertexArray;
-		Ref<Shader> FlatColorShader;
 		Ref<Shader> TextureShader;
+		Ref<Texture2D> WhiteTexture;
 	};
 
 	static Renderer2DStorage* s_Data;
@@ -40,7 +40,10 @@ namespace cabrankengine {
 		squareIB = IndexBuffer::create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 		s_Data->QuadVertexArray->setIndexBuffer(squareIB);
 
-		s_Data->FlatColorShader = Shader::create("assets/shaders/FlatColor.glsl");
+		s_Data->WhiteTexture = Texture2D::create(TextureSpecification());
+		uint32_t whiteTextureData = 0xffffffff;
+		s_Data->WhiteTexture->setData(&whiteTextureData, sizeof(uint32_t));
+
 		s_Data->TextureShader = Shader::create("assets/shaders/Texture.glsl");
 		s_Data->TextureShader->bind();
 		s_Data->TextureShader->setInt("u_Texture", 0);
@@ -51,9 +54,6 @@ namespace cabrankengine {
 	}
 
 	void Renderer2D::beginScene(const OrthographicCamera& camera) {
-		s_Data->FlatColorShader->bind();
-		s_Data->FlatColorShader->setMat4("u_ViewProjection", camera.getViewProjectionMatrix());
-
 		s_Data->TextureShader->bind();
 		s_Data->TextureShader->setMat4("u_ViewProjection", camera.getViewProjectionMatrix());
 	}
@@ -67,11 +67,11 @@ namespace cabrankengine {
 	}
 
 	void Renderer2D::drawQuad(const vec3& position, const vec2& size, const vec4& color) {
-		s_Data->FlatColorShader->bind();
-		s_Data->FlatColorShader->setFloat4("u_Color", color);
+		s_Data->TextureShader->setFloat4("u_Color", color);
+		s_Data->WhiteTexture->bind();
 
 		mat4 transform = translate(mat4(1.f), position) * scale(mat4(1.f), vec3(size, 1.0f));
-		s_Data->FlatColorShader->setMat4("u_Transform", transform);
+		s_Data->TextureShader->setMat4("u_Transform", transform);
 		
 		s_Data->QuadVertexArray->bind();
 		RenderCommand::drawIndexed(s_Data->QuadVertexArray);
@@ -82,11 +82,10 @@ namespace cabrankengine {
 	}
 
 	void Renderer2D::drawQuad(const vec3& position, const vec2& size, const Ref<Texture2D>& texture) {
-		s_Data->TextureShader->bind();
-
 		mat4 transform = translate(mat4(1.f), position) * scale(mat4(1.f), vec3(size, 1.0f));
 		s_Data->TextureShader->setMat4("u_Transform", transform);
-
+		s_Data->TextureShader->setFloat4("u_Color", vec4(1.f));
+		
 		texture->bind();
 		s_Data->QuadVertexArray->bind();
 		RenderCommand::drawIndexed(s_Data->QuadVertexArray);
