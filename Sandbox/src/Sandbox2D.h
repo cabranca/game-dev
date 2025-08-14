@@ -23,11 +23,4 @@ class Sandbox2D : public cabrankengine::Layer {
 
 		glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
 		glm::vec4 m_SquareColorVariant = { 0.8f, 0.3f, 0.2f, 1.0f };
-
-		struct ProfileResult {
-			const char* Name;
-			float Time;
-		};
-
-		std::vector<ProfileResult> m_ProfileResults;
 };

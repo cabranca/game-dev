@@ -10,10 +10,18 @@ extern cabrankengine::Application* cabrankengine::createApplication();
 int main(int argc, char** argv) {
 	cabrankengine::Logger::init();
 	CE_CORE_INFO("Initialized logger!");
+	CE_PROFILE_BEGIN_SESSION("Startup", "CabrankengineProfile-Startup.json");
 
 	auto app = cabrankengine::createApplication();
+	CE_PROFILE_END_SESSION();
+
+	CE_PROFILE_BEGIN_SESSION("Runtime", "CabrankengineProfile-Runtime.json");
 	app->Run();
+	CE_PROFILE_END_SESSION();
+
+	CE_PROFILE_BEGIN_SESSION("Shutdown", "CabrankengineProfile-Shutdown.json");
 	delete app;
+	CE_PROFILE_END_SESSION();
 }
 
 #else
