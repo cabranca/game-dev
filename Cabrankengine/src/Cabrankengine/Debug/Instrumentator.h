@@ -128,7 +128,11 @@ namespace cabrankengine {
 	#define CE_PROFILE_BEGIN_SESSION(name, filepath) ::cabrankengine::Instrumentor::Get().BeginSession(name, filepath)
 	#define CE_PROFILE_END_SESSION() ::cabrankengine::Instrumentor::Get().EndSession()
 	#define CE_PROFILE_SCOPE(name) ::cabrankengine::InstrumentationTimer timer##__LINE__(name);
-	#define CE_PROFILE_FUNCTION() CE_PROFILE_SCOPE(__FUNCSIG__)
+	#if defined(__GNUC__)
+		#define CE_PROFILE_FUNCTION() CE_PROFILE_SCOPE(__PRETTY_FUNCTION__)
+	#elif (defined(__FUNCSIG__) || (_MSC_VER))
+		#define CE_PROFILE_FUNCTION() CE_PROFILE_SCOPE(__FUNCSIG__)
+	#endif
 #else
 	#define CE_PROFILE_BEGIN_SESSION(name, filepath)
 	#define CE_PROFILE_END_SESSION()
