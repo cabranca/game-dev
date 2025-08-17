@@ -64,6 +64,12 @@ namespace cabrankengine {
 		uploadUniformInt(name, value);
 	}
 
+	void OpenGLShader::setIntArray(const std::string& name, uint32_t count, int* values) {
+		CE_PROFILE_FUNCTION();
+
+		uploadUniformIntArray(name, values, count);
+	}
+
 	void OpenGLShader::setFloat(const std::string& name, float value) {
 		CE_PROFILE_FUNCTION();
 
@@ -97,6 +103,17 @@ namespace cabrankengine {
 			return;
 		}
 		glUniform1i(location, value);
+	}
+
+	void OpenGLShader::uploadUniformIntArray(const std::string& name, int* values, uint32_t count) {
+		CE_PROFILE_FUNCTION();
+
+		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
+		if (location == -1) {
+			CE_CORE_ERROR("Uniform '{0}' not found in shader!", name);
+			return;
+		}
+		glUniform1iv(location, count, values);
 	}
 
 	void OpenGLShader::uploadUniformFloat1(const std::string& name, float value) {

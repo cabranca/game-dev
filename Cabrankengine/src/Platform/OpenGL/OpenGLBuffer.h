@@ -6,6 +6,7 @@ namespace cabrankengine {
 
 	class OpenGLVertexBuffer : public VertexBuffer {
 		public:
+			OpenGLVertexBuffer(uint32_t size);
 			OpenGLVertexBuffer(float* vertices, uint32_t size);
 			~OpenGLVertexBuffer();
 
@@ -20,6 +21,8 @@ namespace cabrankengine {
 		
 			// Sets the layout of the vertex buffer, which defines how the vertex attributes are organized.
 			virtual void setLayout(const BufferLayout& layout) override { m_Layout = layout; }
+
+			virtual void setData(const void* data, uint32_t size) override;
 
 		private:
 			uint32_t m_RendererId; // OpenGL renderer ID for the vertex buffer

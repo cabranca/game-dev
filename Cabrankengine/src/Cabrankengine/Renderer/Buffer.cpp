@@ -8,6 +8,17 @@ namespace cabrankengine {
 
 	// TODO: check for alternatives. It seems odd to me that the base class knows the derived classes.
 
+	Ref<VertexBuffer> VertexBuffer::create(uint32_t size) {
+		switch (Renderer::getAPI()) {
+			case RendererAPI::API::None: 
+				CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); 
+				return nullptr;
+			case RendererAPI::API::OpenGL:
+				return createRef<OpenGLVertexBuffer>(size);
+			}
+		return nullptr;
+	}
+
 	Ref<VertexBuffer> VertexBuffer::create(float* vertices, uint32_t size) {
 		switch (Renderer::getAPI()) {
 		case RendererAPI::API::None: 

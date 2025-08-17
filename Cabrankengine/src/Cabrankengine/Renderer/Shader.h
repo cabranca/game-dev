@@ -21,6 +21,9 @@ namespace cabrankengine {
 			// Sets a int value in the shader program.
 			virtual void setInt(const std::string& name, int value) = 0;
 
+			// Sets a int array in the shader program.
+			virtual void setIntArray(const std::string& name, uint32_t count, int* values) = 0;
+
 			// Sets a float value in the shader program.
 			virtual void setFloat(const std::string& name, float value) = 0;
 

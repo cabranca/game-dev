@@ -126,6 +126,11 @@ namespace cabrankengine {
 			// Sets the layout of the vertex buffer, which defines how the vertex attributes are organized.
 			virtual void setLayout(const BufferLayout& layout) = 0;
 
+			virtual void setData(const void* data, uint32_t size) = 0;
+
+			// Returns a pointer to a vertex buffer with a specified size.
+			static Ref<VertexBuffer> create(uint32_t size);
+
 			// Returns a pointer to the raw vertex data.
 			static Ref<VertexBuffer> create(float* vertices, uint32_t size);
 	};

@@ -16,7 +16,7 @@ namespace cabrankengine {
 			virtual void clear() override;
 
 			// Draws the indexed vertices from the vertex array.
-			virtual void drawIndexed(const Ref<VertexArray>& vertexArray) override;
+			virtual void drawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0) override;
 
 			// Sets the viewport dimensions for rendering.
 			virtual void setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) override;

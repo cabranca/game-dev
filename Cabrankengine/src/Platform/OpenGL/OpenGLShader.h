@@ -25,6 +25,9 @@ namespace cabrankengine {
 			// Sets an integer value in the shader program.
 			void setInt(const std::string& name, int value) override;
 
+			// Sets a int array in the shader program.
+			void setIntArray(const std::string& name, uint32_t count, int* values);
+
 			// Sets a float value in the shader program.
 			void setFloat(const std::string& name, float value) override;
 
@@ -42,6 +45,7 @@ namespace cabrankengine {
 
 			// Uploads a uniform value to the shader program.
 			void uploadUniformInt(const std::string& name, int value);
+			void uploadUniformIntArray(const std::string& name, int* values, uint32_t count);
 			void uploadUniformFloat1(const std::string& name, float value);
 			void uploadUniformFloat2(const std::string& name, const glm::vec2& values);
 			void uploadUniformFloat3(const std::string& name, const glm::vec3& values);

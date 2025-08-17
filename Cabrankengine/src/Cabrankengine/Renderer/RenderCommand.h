@@ -19,7 +19,7 @@ namespace cabrankengine {
 			static void clear() { s_RendererAPI->clear(); }
 
 			// Draws the indexed vertices from the vertex array.
-			static void drawIndexed(const Ref<VertexArray>& vertexArray) { s_RendererAPI->drawIndexed(vertexArray); }
+			static void drawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0) { s_RendererAPI->drawIndexed(vertexArray, indexCount); }
 
 			static void setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) { s_RendererAPI->setViewport(x, y, width, height); }
 
