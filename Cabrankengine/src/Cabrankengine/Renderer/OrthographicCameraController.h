@@ -15,8 +15,6 @@ namespace cabrankengine {
 
 			void onEvent(Event& e);
 
-			void setZoomLevel(float level);
-
 			float getZoomLevel() const;
 
 			const OrthographicCamera& getCamera() const { return m_Camera; }
@@ -31,8 +29,8 @@ namespace cabrankengine {
 			bool m_Rotation; // ROLL
 			OrthographicCamera m_Camera;
 			glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
-			float m_CameraTranslationSpeed = 1.0f; // Speed of the camera movement
+			float m_CameraTranslationSpeed = 5.0f; // Speed of the camera movement
 			float m_CameraRotation = 0.0f; // Rotation of the camera
-			float m_CameraRotationSpeed = 90.0f; // Speed of the camera rotation in degrees per second
+			float m_CameraRotationSpeed = 180.0f; // Speed of the camera rotation in degrees per second
 	};
 }

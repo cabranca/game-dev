@@ -39,7 +39,7 @@ void Sandbox2D::onUpdate(cabrankengine::Timestep delta) {
 
 	{
 		static float rotation = 0.f;
-		rotation += delta * 50.f;
+		rotation += delta * 180.f;
 
 		CE_PROFILE_SCOPE("Renderer Draw");
 		Renderer2D::beginScene(m_CameraController.getCamera());

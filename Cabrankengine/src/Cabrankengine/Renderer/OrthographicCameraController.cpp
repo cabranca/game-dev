@@ -13,14 +13,22 @@ namespace cabrankengine {
 	void OrthographicCameraController::onUpdate(Timestep delta) {
 		CE_PROFILE_FUNCTION();
 
-		if (Input::isKeyPressed(Key::A))
-			m_CameraPosition.x -= m_CameraTranslationSpeed * delta;
-		else if (Input::isKeyPressed(Key::D))
-			m_CameraPosition.x += m_CameraTranslationSpeed * delta;
-		if (Input::isKeyPressed(Key::S))
-			m_CameraPosition.y -= m_CameraTranslationSpeed * delta;
-		else if (Input::isKeyPressed(Key::W))
-			m_CameraPosition.y += m_CameraTranslationSpeed * delta;
+		if (Input::isKeyPressed(Key::A)) {
+			m_CameraPosition.x -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * delta;
+			m_CameraPosition.y -= sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * delta;
+		}
+		else if (Input::isKeyPressed(Key::D)) {
+			m_CameraPosition.x += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * delta;
+			m_CameraPosition.y += sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * delta;
+		}
+		if (Input::isKeyPressed(Key::S)) {
+			m_CameraPosition.x -= -sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * delta;
+			m_CameraPosition.y -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * delta;
+		}
+		else if (Input::isKeyPressed(Key::W)) {
+			m_CameraPosition.x += -sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * delta;
+			m_CameraPosition.y += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * delta;
+		}
 
 		if (m_Rotation) {
 			if (Input::isKeyPressed(Key::E))
@@ -28,10 +36,17 @@ namespace cabrankengine {
 			else if (Input::isKeyPressed(Key::Q))
 				m_CameraRotation -= m_CameraRotationSpeed * delta;
 
+			if (m_CameraRotation > 180.0f)
+				m_CameraRotation -= 360.0f;
+			else if (m_CameraRotation <= -180.0f)
+				m_CameraRotation += 360.0f;
+
 			m_Camera.setRotation(m_CameraRotation);
 		}
 
 		m_Camera.setPosition(m_CameraPosition);
+
+		m_CameraTranslationSpeed = m_ZoomLevel;
 	}
 
 	void OrthographicCameraController::onEvent(Event& e) {
@@ -40,10 +55,6 @@ namespace cabrankengine {
 		EventDispatcher dispatcher(e);
 		dispatcher.dispatch<MouseScrolledEvent>(BIND_EVENT_FN(&OrthographicCameraController::onMouseScrolled, this));
 		dispatcher.dispatch<WindowResizeEvent>(BIND_EVENT_FN(&OrthographicCameraController::onWindowResized, this));
-	}
-
-	void OrthographicCameraController::setZoomLevel(float level) {
-		m_ZoomLevel = level;
 	}
 
 	float OrthographicCameraController::getZoomLevel() const {
