@@ -44,10 +44,11 @@ void Sandbox2D::onUpdate(cabrankengine::Timestep delta) {
 		CE_PROFILE_SCOPE("Renderer Draw");
 		Renderer2D::beginScene(m_CameraController.getCamera());
 
-		Renderer2D::drawRotatedQuad({ -1.f, 0.f }, { 0.8f, 0.8f }, rotation, m_SquareColor);
-		Renderer2D::drawQuad({ 0.5f, 0.5f }, { 0.5f, 0.75f }, m_SquareColorVariant);
-		Renderer2D::drawQuad({ -5.f, -5.f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture, 10.0f);
-		Renderer2D::drawRotatedQuad({ -5.f, -5.f, -0.1f }, { 1.0f, 1.0f }, 45.0f, m_CheckerboardTexture, 20.0f);
+		Renderer2D::drawRotatedQuad({ 1.0f, 0.0f }, { 0.8f, 0.8f }, -45.0f, { 0.8f, 0.2f, 0.3f, 1.0f });
+		Renderer2D::drawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
+		Renderer2D::drawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });
+		Renderer2D::drawQuad({ 0.0f, 0.0f, -0.1f }, { 20.0f, 20.0f }, m_CheckerboardTexture, 10.0f);
+		Renderer2D::drawRotatedQuad({ -2.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, rotation, m_CheckerboardTexture, 20.0f);
 
 		Renderer2D::endScene();
 
