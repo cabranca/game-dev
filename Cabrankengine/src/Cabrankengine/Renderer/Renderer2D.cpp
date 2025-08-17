@@ -120,7 +120,7 @@ namespace cabrankengine {
 		CE_PROFILE_FUNCTION();
 
 		uint32_t dataSize = (uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase;
-		s_Data.QuadVertexBuffer->setData(s_Data.QuadVertexBufferBase, (uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase);
+		s_Data.QuadVertexBuffer->setData(s_Data.QuadVertexBufferBase, dataSize);
 
 		flush();
 	}
@@ -129,7 +129,7 @@ namespace cabrankengine {
 		CE_PROFILE_FUNCTION();
 
 		for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++) {
-			s_Data.TextureSlots[i]->bind();
+			s_Data.TextureSlots[i]->bind(i);
 		}
 
 		RenderCommand::drawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
