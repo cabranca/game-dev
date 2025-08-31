@@ -1,10 +1,10 @@
 #pragma once
 
-#include <string>
-#include <chrono>
 #include <algorithm>
+#include <chrono>
+#include <filesystem>
 #include <fstream>
-
+#include <string>
 #include <thread>
 
 namespace cabrankengine {
@@ -35,7 +35,17 @@ namespace cabrankengine {
 
 		void BeginSession(const std::string& name, const std::string& filepath = "results.json")
 		{
-			m_OutputStream.open(filepath);
+			std::string profilingDirString = "profiling";
+			// Extrae la carpeta del filepath
+			std::filesystem::path profilingDir(profilingDirString);
+
+			// Crea la carpeta si no existe
+			if (!profilingDir.empty() && !std::filesystem::exists(profilingDir))
+			{
+				std::filesystem::create_directories(profilingDir);
+			}
+
+			m_OutputStream.open(profilingDirString + "/" + filepath);
 			WriteHeader();
 			m_CurrentSession = new InstrumentationSession{ name };
 		}
@@ -111,7 +121,7 @@ namespace cabrankengine {
 			long long start = std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTimepoint).time_since_epoch().count();
 			long long end = std::chrono::time_point_cast<std::chrono::microseconds>(endTimepoint).time_since_epoch().count();
 
-			uint32_t threadID = std::hash<std::thread::id>{}(std::this_thread::get_id());
+			uint32_t threadID = static_cast<uint32_t>(std::hash<std::thread::id>{}(std::this_thread::get_id()) & 0xFFFFFFFF);
 			Instrumentor::Get().WriteProfile({ m_Name, start, end, threadID });
 
 			m_Stopped = true;

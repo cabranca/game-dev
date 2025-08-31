@@ -119,7 +119,7 @@ namespace cabrankengine {
 	void Renderer2D::endScene() {
 		CE_PROFILE_FUNCTION();
 
-		uint32_t dataSize = (uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase;
+		uint32_t dataSize = static_cast<uint32_t>(reinterpret_cast<uint8_t*>(s_Data.QuadVertexBufferPtr) - reinterpret_cast<uint8_t*>(s_Data.QuadVertexBufferBase));
 		s_Data.QuadVertexBuffer->setData(s_Data.QuadVertexBufferBase, dataSize);
 
 		flush();
