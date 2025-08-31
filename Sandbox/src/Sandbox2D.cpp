@@ -19,7 +19,7 @@ void Sandbox2D::onAttach() {
 
 	m_CheckerboardTexture = Texture2D::create("assets/textures/Checkerboard.png");
 
-	AudioEngine::playAudio("assets/sound/Breakout.mp3", true);
+	AudioEngine::playAudio("assets/sound/breakout.mp3", true);
 }
 
 void Sandbox2D::onDetach() {
