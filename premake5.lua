@@ -39,14 +39,14 @@ project "Cabrankengine"
         "%{prj.name}/src", "%{prj.name}/vendor/spdlog/include", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}", "%{IncludeDir.ImGui}", 
         "%{IncludeDir.glm}", "%{IncludeDir.stb_image}", "%{IncludeDir.irrKlang}"
     }
-    libdirs { "%{prj.name}/vendor/irrKlang/lib" }
-    links {"GLFW", "glad", "ImGui", "irrKlang"}
+    links {"GLFW", "glad", "ImGui", "IrrKlang"}
 
     filter "system:windows"
         systemversion "latest"
         buildoptions { "/utf-8" }
 
         removefiles { "%{prj.name}/src/Platform/Linux/**.cpp", "%{prj.name}/src/Platform/Linux/**.h" }
+        libdirs { "%{prj.name}/vendor/irrKlang/lib" }
         links {"opengl32.lib"}
         defines {"GLFW_INCLUDE_NONE"}
 
@@ -55,6 +55,8 @@ project "Cabrankengine"
         pic "on"
 
         removefiles { "%{prj.name}/src/Platform/Windows/**.cpp", "%{prj.name}/src/Platform/Windows/**.h" }
+        
+        libdirs {  "%{wks.location}/Cabrankengine/vendor/irrKlang/so" }
         links { "X11", "Xrandr", "Xi", "Xxf86vm", "Xcursor", "pthread", "dl", "GL" }
     
     filter "configurations:Debug"
@@ -94,7 +96,9 @@ project "Sandbox"
     filter "system:linux"
         systemversion "latest"
         pic "on"
-        
+
+        libdirs { "%{wks.location}/Cabrankengine/vendor/irrKlang/so" }
+        links { "IrrKlang" }
         links { "X11", "Xrandr", "Xi", "Xxf86vm", "Xcursor", "pthread", "dl", "GL" }
         linkoptions { "-Wl,-rpath,'$$ORIGIN'" }
         postbuildcommands 
