@@ -13,6 +13,7 @@ IncludeDir["glad"] = "Cabrankengine/vendor/glad/include"
 IncludeDir["ImGui"] = "Cabrankengine/vendor/imgui"
 IncludeDir["glm"] = "Cabrankengine/vendor/glm"
 IncludeDir["stb_image"] = "Cabrankengine/vendor/stb_image"
+IncludeDir["irrKlang"] = "Cabrankengine/vendor/irrKlang"
 
 include "Cabrankengine/vendor/GLFW"
 include "Cabrankengine/vendor/glad"
@@ -36,9 +37,10 @@ project "Cabrankengine"
     includedirs 
     {
         "%{prj.name}/src", "%{prj.name}/vendor/spdlog/include", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}", "%{IncludeDir.ImGui}", 
-        "%{IncludeDir.glm}", "%{IncludeDir.stb_image}"
+        "%{IncludeDir.glm}", "%{IncludeDir.stb_image}", "%{IncludeDir.irrKlang}"
     }
-    links {"GLFW", "glad", "ImGui"}
+    libdirs { "%{prj.name}/vendor/irrKlang/lib" }
+    links {"GLFW", "glad", "ImGui", "irrKlang"}
 
     filter "system:windows"
         systemversion "latest"
@@ -88,6 +90,7 @@ project "Sandbox"
         pic "on"
         
         links { "X11", "Xrandr", "Xi", "Xxf86vm", "Xcursor", "pthread", "dl", "GL" }
+        linkoptions { "-Wl,-rpath,'$$ORIGIN'" }
         
     filter "configurations:Debug"
         defines "CE_DEBUG"
