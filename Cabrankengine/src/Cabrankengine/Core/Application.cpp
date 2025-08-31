@@ -1,12 +1,16 @@
 #include <Cabrankengine/Core/Application.h>
-#include <Cabrankengine/Core/Window.h>
+
+#include <GLFW/glfw3.h>
+
+#include <Cabrankengine/Core/AudioEngine.h>
 #include <Cabrankengine/Core/Logger.h>
+#include <Cabrankengine/Core/Timestep.h>
+#include <Cabrankengine/Core/Window.h>
+#include <Cabrankengine/Debug/Instrumentator.h>
 #include <Cabrankengine/Events/ApplicationEvent.h>
 #include <Cabrankengine/ImGui/ImGuiLayer.h>
-#include <Cabrankengine/Core/Timestep.h>
-#include <GLFW/glfw3.h>
 #include <Cabrankengine/Renderer/Renderer.h>
-#include <Cabrankengine/Debug/Instrumentator.h>
+
 
 namespace cabrankengine {
 
@@ -18,6 +22,8 @@ namespace cabrankengine {
 
 		m_Window = std::unique_ptr<Window>(Window::create());
 		m_Window->setEventCallback(BIND_EVENT_FN(&Application::OnEvent, this));
+
+		AudioEngine::init();
 
 		Renderer::init();
 
