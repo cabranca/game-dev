@@ -85,12 +85,15 @@ project "Sandbox"
         systemversion "latest"
         buildoptions { "/utf-8" }
 
+        postbuildcommands {'xcopy /Y /Q /E /I "$(SolutionDir)Cabrankengine\\vendor\\irrKlang\\dll\\*" "$(TargetDir)"'}
+
     filter "system:linux"
         systemversion "latest"
         pic "on"
         
         links { "X11", "Xrandr", "Xi", "Xxf86vm", "Xcursor", "pthread", "dl", "GL" }
         linkoptions { "-Wl,-rpath,'$$ORIGIN'" }
+        postbuildcommands {'cp -u Cabrankengine/vendor/irrKlang/so/* %{cfg.targetdir}'}
         
     filter "configurations:Debug"
         defines "CE_DEBUG"
