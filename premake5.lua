@@ -85,7 +85,11 @@ project "Sandbox"
         systemversion "latest"
         buildoptions { "/utf-8" }
 
-        postbuildcommands {'xcopy /Y /Q /E /I "$(SolutionDir)Cabrankengine\\vendor\\irrKlang\\dll\\*" "$(TargetDir)"'}
+        postbuildcommands 
+        {
+            'xcopy /Y /Q /E /I "%{wks.location}\\Cabrankengine\\vendor\\irrKlang\\dll\\*" "%{cfg.targetdir}"',
+            'xcopy /Y /Q /E /I "%{prj.location}\\assets" "%{cfg.targetdir}\\assets"'
+        }
 
     filter "system:linux"
         systemversion "latest"
@@ -93,7 +97,11 @@ project "Sandbox"
         
         links { "X11", "Xrandr", "Xi", "Xxf86vm", "Xcursor", "pthread", "dl", "GL" }
         linkoptions { "-Wl,-rpath,'$$ORIGIN'" }
-        postbuildcommands {'cp -u Cabrankengine/vendor/irrKlang/so/* %{cfg.targetdir}'}
+        postbuildcommands 
+        {
+            'cp -ru %{wks.location}/Cabrankengine/vendor/irrKlang/so/* %{cfg.targetdir}/',
+            'cp -ru %{prj.location}/assets/ %{cfg.targetdir}/assets/'
+        }
         
     filter "configurations:Debug"
         defines "CE_DEBUG"
