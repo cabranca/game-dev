@@ -13,7 +13,7 @@ IncludeDir["glad"] = "Cabrankengine/vendor/glad/include"
 IncludeDir["ImGui"] = "Cabrankengine/vendor/imgui"
 IncludeDir["glm"] = "Cabrankengine/vendor/glm"
 IncludeDir["stb_image"] = "Cabrankengine/vendor/stb_image"
-IncludeDir["irrKlang"] = "Cabrankengine/vendor/irrKlang"
+IncludeDir["irrKlang"] = "Cabrankengine/vendor/irrKlang/include"
 
 include "Cabrankengine/vendor/GLFW"
 include "Cabrankengine/vendor/glad"
