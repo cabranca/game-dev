@@ -59,8 +59,8 @@ auto BIND_EVENT_FN(T&& func, U* instance) {
 // we can just change them here and they will be used everywhere.
 namespace cabrankengine {
 
-	template<typename T>
-	using Scope = std::unique_ptr<T>;
+	template<typename T, typename Deleter = std::default_delete<T>>
+	using Scope = std::unique_ptr<T, Deleter>;
 	template<typename T, typename... Args>
 	Scope<T> createScope(Args&&... args) {
 		return std::make_unique<T>(std::forward<Args>(args)...);
