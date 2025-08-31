@@ -15,6 +15,9 @@ SymphonicSurvivors/
 # Make files
 Makefile
 
+# Profiling files
+profiling/
+
 # Other files
 GenerateFiles.bat
 imgui.ini
