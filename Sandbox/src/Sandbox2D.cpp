@@ -5,6 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
 
+#include <Cabrankengine/Core/AudioEngine.h>
 #include <Cabrankengine/Debug/Instrumentator.h>
 #include <Platform/OpenGL/OpenGLShader.h>
 
@@ -17,6 +18,8 @@ void Sandbox2D::onAttach() {
 	CE_PROFILE_FUNCTION();
 
 	m_CheckerboardTexture = Texture2D::create("assets/textures/Checkerboard.png");
+
+	AudioEngine::playAudio("assets/sound/Breakout.mp3", true);
 }
 
 void Sandbox2D::onDetach() {
