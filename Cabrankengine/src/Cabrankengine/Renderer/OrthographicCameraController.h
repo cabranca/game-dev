@@ -9,7 +9,7 @@ namespace cabrankengine {
 
 	class OrthographicCameraController {
 		public:
-			OrthographicCameraController(float aspectRatio, bool rotation = false);
+			OrthographicCameraController(float width, float height, bool rotation = false);
 
 			void onUpdate(Timestep delta);
 
@@ -28,9 +28,11 @@ namespace cabrankengine {
 			float m_ZoomLevel;
 			bool m_Rotation; // ROLL
 			OrthographicCamera m_Camera;
-			glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
-			float m_CameraTranslationSpeed = 5.0f; // Speed of the camera movement
+			glm::vec3 m_CameraPosition;
+			float m_CameraTranslationSpeed = 100.0f; // Speed of the camera movement
 			float m_CameraRotation = 0.0f; // Rotation of the camera
 			float m_CameraRotationSpeed = 180.0f; // Speed of the camera rotation in degrees per second
+			float m_Width;
+			float m_Height;
 	};
 }
