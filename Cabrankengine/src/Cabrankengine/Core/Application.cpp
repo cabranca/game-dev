@@ -2,6 +2,7 @@
 
 #include <GLFW/glfw3.h>
 
+#include <Cabrankengine/Config/Config.h>
 #include <Cabrankengine/Core/AudioEngine.h>
 #include <Cabrankengine/Core/Logger.h>
 #include <Cabrankengine/Core/Timestep.h>
@@ -20,7 +21,11 @@ namespace cabrankengine {
 		CE_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
-		m_Window = std::unique_ptr<Window>(Window::create());
+		nlohmann::json configJson = Config::load("config.json");
+
+		WindowProps props(configJson.at("window").at("title"), configJson.at("window").at("width"), configJson.at("window").at("height"));
+
+		m_Window = std::unique_ptr<Window>(Window::create(props));
 		m_Window->setEventCallback(BIND_EVENT_FN(&Application::OnEvent, this));
 
 		AudioEngine::init();

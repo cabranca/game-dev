@@ -91,7 +91,8 @@ project "Sandbox"
         postbuildcommands 
         {
             'xcopy /Y /Q /E /I "%{wks.location}\\Cabrankengine\\vendor\\irrKlang\\dll\\*" "%{cfg.targetdir}"',
-            'xcopy /Y /Q /E /I "%{prj.location}\\assets" "%{cfg.targetdir}\\assets"'
+            'xcopy /Y /Q /E /I "%{prj.location}\\assets" "%{cfg.targetdir}\\assets"',
+            'if exist "%{prj.location}\\config.json" copy /Y "%{prj.location}\\config.json" "%{cfg.targetdir}\\config.json"'
         }
 
     filter "system:linux"
@@ -105,7 +106,8 @@ project "Sandbox"
         postbuildcommands 
         {
             'cp -ru %{wks.location}/Cabrankengine/vendor/irrKlang/so/* %{cfg.targetdir}/',
-            'cp -ru %{prj.location}/assets/ %{cfg.targetdir}/assets/'
+            'cp -ru %{prj.location}/assets/ %{cfg.targetdir}/assets/',
+            'cp -u %{prj.location}/config.json %{cfg.targetdir}/config.json 2>/dev/null || true'
         }
         
     filter "configurations:Debug"
