@@ -7,11 +7,6 @@ bin-int/
 *.sln
 *.vcxproj*
 
-# Other projects (remove eventually)
-Breakout/
-Snake/
-SymphonicSurvivors/
-
 # Make files
 Makefile
 
