@@ -25,16 +25,21 @@ namespace cabrankengine
 			: position(p), rotation(r), scale(s) {}
 	};
 
-	class CBoundingBox : public Component
+
+	template<typename VecType>
+	class CBoundingBox
 	{
 	public:
-		glm::vec3 size;
-		glm::vec3 halfSize;
+		VecType size;
+		VecType halfSize;
 
-		CBoundingBox() : size(1.f, 1.f, 1.f), halfSize(0.5f, 0.5f, 0.5f) {}
+		CBoundingBox()
+			: size(1.0f), halfSize(0.5f) {
+		}
 
-		CBoundingBox(const glm::vec3& s)
-			: size(s), halfSize(s.x / 2, s.y / 2, s.z / 2) {}
+		CBoundingBox(const VecType& s)
+			: size(s), halfSize(s * 0.5f) {
+		}
 	};
 
 	class CLinearMovement : public Component
