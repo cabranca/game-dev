@@ -13,6 +13,9 @@ Makefile
 # Profiling files
 profiling/
 
+# Configuration files
+config.json
+
 # Other files
 GenerateFiles.bat
 imgui.ini
