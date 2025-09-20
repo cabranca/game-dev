@@ -14,6 +14,7 @@ IncludeDir["ImGui"] = "Cabrankengine/vendor/imgui"
 IncludeDir["glm"] = "Cabrankengine/vendor/glm"
 IncludeDir["stb_image"] = "Cabrankengine/vendor/stb_image"
 IncludeDir["irrKlang"] = "Cabrankengine/vendor/irrKlang/include"
+IncludeDir["json"] = "Cabrankengine/vendor/json/include"
 
 include "Cabrankengine/vendor/GLFW"
 include "Cabrankengine/vendor/glad"
@@ -37,7 +38,7 @@ project "Cabrankengine"
     includedirs 
     {
         "%{prj.name}/src", "%{prj.name}/vendor/spdlog/include", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}", "%{IncludeDir.ImGui}", 
-        "%{IncludeDir.glm}", "%{IncludeDir.stb_image}", "%{IncludeDir.irrKlang}"
+        "%{IncludeDir.glm}", "%{IncludeDir.stb_image}", "%{IncludeDir.irrKlang}", "%{IncludeDir.json}"
     }
     links {"GLFW", "glad", "ImGui", "IrrKlang"}
 
