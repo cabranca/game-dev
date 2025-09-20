@@ -60,6 +60,14 @@ project "Cabrankengine"
         libdirs {  "%{wks.location}/Cabrankengine/vendor/irrKlang/so" }
         links { "X11", "Xrandr", "Xi", "Xxf86vm", "Xcursor", "pthread", "dl", "GL" }
     
+    filter "system:macosx"
+        systemversion "12.0"
+        pic "on"
+
+        removefiles { "%{prj.name}/src/Platform/Windows/**.cpp", "%{prj.name}/src/Platform/Windows/**.h" }
+
+        links { "Cocoa.framework", "IOKit.framework", "CoreFoundation.framework", "OpenGL.framework" }
+
     filter "configurations:Debug"
         defines "CE_DEBUG"
         runtime "Debug"
@@ -109,6 +117,19 @@ project "Sandbox"
             'cp -ru %{prj.location}/assets/ %{cfg.targetdir}/assets/',
             'cp -u %{prj.location}/config.json %{cfg.targetdir}/config.json 2>/dev/null || true'
         }
+
+    filter "system:macosx"
+        systemversion "12.0"
+        pic "on"
+
+        links { "Cocoa.framework", "IOKit.framework", "CoreFoundation.framework", "OpenGL.framework" }
+
+        postbuildcommands 
+        {
+            'cp -R %{prj.location}/assets %{cfg.targetdir}/assets',
+            'cp -f %{prj.location}/config.json %{cfg.targetdir}/config.json || true'
+        }
+
         
     filter "configurations:Debug"
         defines "CE_DEBUG"
