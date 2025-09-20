@@ -28,13 +28,13 @@ namespace cabrankengine
 	class CBoundingBox : public Component
 	{
 	public:
-		glm::vec2 size;
-		glm::vec2 halfSize;
+		glm::vec3 size;
+		glm::vec3 halfSize;
 
-		CBoundingBox() : size(1.f, 1.f), halfSize(0.5f, 0.5f) {}
+		CBoundingBox() : size(1.f, 1.f, 1.f), halfSize(0.5f, 0.5f, 0.5f) {}
 
-		CBoundingBox(const glm::vec2& s)
-			: size(s), halfSize(s.x / 2, s.y / 2) {}
+		CBoundingBox(const glm::vec3& s)
+			: size(s), halfSize(s.x / 2, s.y / 2, s.z / 2) {}
 	};
 
 	class CLinearMovement : public Component
