@@ -8,7 +8,7 @@ namespace cabrankengine {
 
 	OrthographicCameraController::OrthographicCameraController(float width, float height, bool rotation)
 		: m_AspectRatio(width / height), m_ZoomLevel(1.0f), m_Rotation(rotation), m_Camera(-width / 2.f, width / 2.f, -height / 2.f, height / 2.f), 
-		m_CameraPosition(glm::vec3(1280.f, 720.f, 0.f)), m_Width(width), m_Height(height) {
+		m_CameraPosition(glm::vec3(0.f)), m_Width(width), m_Height(height) {
 	}
 
 	void OrthographicCameraController::onUpdate(Timestep delta) {
