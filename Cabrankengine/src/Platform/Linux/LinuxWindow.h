@@ -17,7 +17,7 @@ namespace cabrankengine {
             virtual void onUpdate() override;
 
             // Returns the window width
-            virtual  int getWidth() const override { return m_Data.Width; }
+            virtual int getWidth() const override { return m_Data.Width; }
         
             // Returns the window height
             virtual int getHeight() const override { return m_Data.Height; }
