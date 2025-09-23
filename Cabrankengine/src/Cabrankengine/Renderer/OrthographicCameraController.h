@@ -30,6 +30,7 @@ namespace cabrankengine {
 			OrthographicCamera m_Camera;
 			glm::vec3 m_CameraPosition;
 			float m_CameraTranslationSpeed = 100.0f; // Speed of the camera movement
+			float m_CurrentCameraTranslationSpeed = m_CameraTranslationSpeed;
 			float m_CameraRotation = 0.0f; // Rotation of the camera
 			float m_CameraRotationSpeed = 180.0f; // Speed of the camera rotation in degrees per second
 			float m_Width;

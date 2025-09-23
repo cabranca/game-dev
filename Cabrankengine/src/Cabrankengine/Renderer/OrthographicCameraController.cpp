@@ -15,20 +15,20 @@ namespace cabrankengine {
 		CE_PROFILE_FUNCTION();
 
 		if (Input::isKeyPressed(Key::A)) {
-			m_CameraPosition.x -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * delta;
-			m_CameraPosition.y -= sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * delta;
+			m_CameraPosition.x -= cos(glm::radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
+			m_CameraPosition.y -= sin(glm::radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
 		}
 		else if (Input::isKeyPressed(Key::D)) {
-			m_CameraPosition.x += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * delta;
-			m_CameraPosition.y += sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * delta;
+			m_CameraPosition.x += cos(glm::radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
+			m_CameraPosition.y += sin(glm::radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
 		}
 		if (Input::isKeyPressed(Key::S)) {
-			m_CameraPosition.x -= -sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * delta;
-			m_CameraPosition.y -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * delta;
+			m_CameraPosition.x -= -sin(glm::radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
+			m_CameraPosition.y -= cos(glm::radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
 		}
 		else if (Input::isKeyPressed(Key::W)) {
-			m_CameraPosition.x += -sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * delta;
-			m_CameraPosition.y += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * delta;
+			m_CameraPosition.x += -sin(glm::radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
+			m_CameraPosition.y += cos(glm::radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
 		}
 
 		if (m_Rotation) {
@@ -47,7 +47,7 @@ namespace cabrankengine {
 
 		m_Camera.setPosition(m_CameraPosition);
 
-		//m_CameraTranslationSpeed = m_ZoomLevel;
+		m_CurrentCameraTranslationSpeed = m_CameraTranslationSpeed / m_ZoomLevel;
 	}
 
 	void OrthographicCameraController::onEvent(Event& e) {
@@ -66,7 +66,7 @@ namespace cabrankengine {
 		CE_PROFILE_FUNCTION();
 
 		m_ZoomLevel += e.getYOffset() * 0.25;
-		m_ZoomLevel = std::min(m_ZoomLevel, 8.f);
+		m_ZoomLevel = std::clamp(m_ZoomLevel, 0.125f, 8.f);
 		m_Camera.setProjection((-m_Width / 2) / m_ZoomLevel, (m_Width / 2) / m_ZoomLevel, (-m_Height / 2) / m_ZoomLevel, (m_Height / 2) / m_ZoomLevel);
 		return false;
 	}
