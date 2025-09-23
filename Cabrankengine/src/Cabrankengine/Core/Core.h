@@ -19,11 +19,24 @@
 	#endif
 #endif
 
+#ifdef __APPLE__
+    #include <TargetConditionals.h>
+    #if TARGET_OS_MAC
+        #if defined(__x86_64__) || defined(__arm64__)
+            #define CE_PLATFORM_MACOS
+        #else
+            #error "Cabrankengine only supports 64-bit macOS!"
+        #endif
+    #else
+        #error "Cabrankengine only supports macOS"
+    #endif
+#endif
+
 #ifdef CE_DEBUG
 	#define CE_ENABLE_ASSERTS
 	#if defined(CE_PLATFORM_WINDOWS)
 		#define CE_DEBUG_BREAK __debugbreak()
-	#elif defined(CE_PLATFORM_LINUX)
+	#elif defined(CE_PLATFORM_LINUX) || defined(CE_PLATFORM_MACOS)
 		#include <signal.h>
 		#define CE_DEBUG_BREAK raise(SIGTRAP)
 	#endif

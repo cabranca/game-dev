@@ -7,7 +7,7 @@ namespace cabrankengine
 	typedef std::tuple<
 		CPlayer,
 		CTransform,
-		CBoundingBox,
+		CBoundingBox<glm::vec3>,
 		CLinearMovement
 	> ComponentTuple;
 

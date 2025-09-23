@@ -28,7 +28,7 @@ namespace cabrankengine {
 		m_Window = std::unique_ptr<Window>(Window::create(props));
 		m_Window->setEventCallback(BIND_EVENT_FN(&Application::OnEvent, this));
 
-		AudioEngine::init();
+		//AudioEngine::init();
 
 		Renderer::init();
 
