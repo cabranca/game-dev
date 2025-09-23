@@ -47,11 +47,20 @@ void Sandbox2D::onUpdate(cabrankengine::Timestep delta) {
 		CE_PROFILE_SCOPE("Renderer Draw");
 		Renderer2D::beginScene(m_CameraController.getCamera());
 
-		Renderer2D::drawRotatedQuad({ 1.0f, 0.0f }, { 0.8f, 0.8f }, -45.0f, { 0.8f, 0.2f, 0.3f, 1.0f });
-		Renderer2D::drawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
-		Renderer2D::drawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });
-		Renderer2D::drawQuad({ 0.0f, 0.0f, -0.1f }, { 20.0f, 20.0f }, m_CheckerboardTexture, 10.0f);
-		Renderer2D::drawRotatedQuad({ -2.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, rotation, m_CheckerboardTexture, 20.0f);
+		//Rotated red square
+		Renderer2D::drawRotatedQuad({ 640.f, 0.0f }, { 288.f, 288.f }, -45.0f, { 0.8f, 0.2f, 0.3f, 1.0f });
+		
+		//Red square
+		Renderer2D::drawQuad({ -640.f, 0.0f }, { 288.f, 288.f }, { 0.8f, 0.2f, 0.3f, 1.0f });
+		
+		//Blue square
+		Renderer2D::drawQuad({ 320.f, -360.f }, { 180.f, 270.f }, { 0.2f, 0.3f, 0.8f, 1.0f });
+		
+		//Checkerboard
+		Renderer2D::drawQuad({ 0.0f, 0.0f, -0.1f }, { 7200.0f, 7200.0f }, m_CheckerboardTexture, 10.0f);
+		
+		//Rotated checkerboard
+		Renderer2D::drawRotatedQuad({ -1280.0f, 0.0f, 0.0f }, { 360.f, 360.f }, rotation, m_CheckerboardTexture, 20.0f);
 
 		Renderer2D::endScene();
 
