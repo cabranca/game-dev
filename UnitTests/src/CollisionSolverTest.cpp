@@ -19,12 +19,25 @@ CBoundingBox<VecType> MakeBox(const VecType& halfSize) {
 // ====================================================
 // AABB vs AABB
 // ====================================================
-TEST_CASE("AABB vs AABB - 2D Overlap") {
+TEST_CASE("AABB vs AABB - 2D Contact (no overlapping)") {
     glm::vec2 pos1(0, 0);
     auto b1 = MakeBox(glm::vec2(1, 1));
 
     glm::vec2 pos2(1, 0);
     auto b2 = MakeBox(glm::vec2(1, 1));
+
+    auto result = AABB(pos1, b1, pos2, b2);
+
+    REQUIRE(result.collided);
+    REQUIRE(result.penetration == 0.0f);
+}
+
+TEST_CASE("AABB vs AABB - 2D Overlap") {
+    glm::vec2 pos1(0, 0);
+    auto b1 = MakeBox(glm::vec2(1, 1));
+
+    glm::vec2 pos2(1, 0);
+    auto b2 = MakeBox(glm::vec2(2, 2));
 
     auto result = AABB(pos1, b1, pos2, b2);
 
