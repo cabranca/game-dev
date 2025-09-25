@@ -15,6 +15,7 @@ IncludeDir["glm"] = "Cabrankengine/vendor/glm"
 IncludeDir["stb_image"] = "Cabrankengine/vendor/stb_image"
 IncludeDir["irrKlang"] = "Cabrankengine/vendor/irrKlang/include"
 IncludeDir["json"] = "Cabrankengine/vendor/json/include"
+IncludeDir["Catch2"] = "Cabrankengine/vendor/Catch2"
 
 include "Cabrankengine/vendor/GLFW"
 include "Cabrankengine/vendor/glad"
@@ -119,3 +120,44 @@ project "Sandbox"
         defines "CE_RELEASE"
         runtime "Release"
         optimize "on"
+
+project "UnitTests"
+    location "UnitTests"
+    kind "ConsoleApp"
+    language "C++"
+    cppdialect "C++20"
+    staticruntime "on"
+
+    targetdir("bin/" .. outputdir .. "/%{prj.name}")
+    objdir("bin-int/" .. outputdir .. "/%{prj.name}")
+
+    files { "UnitTests/src/**.cpp", "UnitTests/src/**.h" }
+
+    includedirs {
+        "Cabrankengine/src",
+        "%{IncludeDir.glm}",
+        "Cabrankengine/vendor/spdlog/include",
+        "%{IncludeDir.Catch2}"
+    }
+
+    links { "Cabrankengine" }
+
+    filter "system:windows"
+        systemversion "latest"
+        buildoptions { "/utf-8" }
+
+    filter "system:linux"
+        systemversion "latest"
+        pic "on"
+        links { "pthread" } -- Catch2 a veces lo usa en Linux
+
+    filter "configurations:Debug"
+        defines "CE_DEBUG"
+        runtime "Debug"
+        symbols "on"
+
+    filter "configurations:Release"
+        defines "CE_RELEASE"
+        runtime "Release"
+        optimize "on"
+
