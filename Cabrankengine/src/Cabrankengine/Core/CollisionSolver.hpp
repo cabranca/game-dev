@@ -46,7 +46,7 @@ namespace cabrankengine {
         template<typename VecType>
         Collision<VecType> Sphere(const VecType& pos1, float radius1, const VecType& pos2, float radius2) {
             VecType delta = pos2 - pos1;
-            float dist2 = glm::dot(delta, delta);  // distancia al cuadrado
+            float dist2 = glm::dot(delta, delta);
             float radiusSum = radius1 + radius2;
 
             if (dist2 >= radiusSum * radiusSum) {
@@ -55,8 +55,8 @@ namespace cabrankengine {
 
             float dist = glm::sqrt(dist2);
 
-            // Evitar división por cero si ambos centros coinciden
-            VecType normal = (dist > 0.0001f) ? (delta / dist) : VecType(1.0f, 0.0f, 0.0f);
+            // Avoid dividing by zero if the centers match
+            VecType normal = (dist > 0.0001f) ? (delta / dist) : VecType(0.0f);
 
             float penetration = radiusSum - dist;
 
@@ -65,7 +65,7 @@ namespace cabrankengine {
 
         template<typename VecType>
         Collision<VecType> SphereAABB(const VecType& spherePos, float radius, const VecType& boxPos, const CBoundingBox<VecType>& box) {
-            // Calcular el punto más cercano del AABB al centro de la esfera
+            // Calculate the closest point from the AABB to the sphere center
             VecType closestPoint;
             for (int i = 0; i < int(VecType().length()); ++i) {
                 float min = boxPos[i] - box.halfSize[i];
@@ -73,7 +73,6 @@ namespace cabrankengine {
                 closestPoint[i] = glm::clamp(spherePos[i], min, max);
             }
 
-            // Vector entre el centro de la esfera y el punto más cercano
             VecType delta = spherePos - closestPoint;
             float dist2 = glm::dot(delta, delta);
 
@@ -83,14 +82,14 @@ namespace cabrankengine {
 
             float dist = glm::sqrt(dist2);
 
-            // Normal de la colisión (desde el AABB hacia la esfera)
+            // Collision Normal from AABB to Sphere
             VecType normal;
             if (dist > 0.0001f) {
                 normal = delta / dist;
             }
             else {
-                // Caso raro: centro de la esfera dentro del AABB
-                // Tomamos la dirección de penetración mínima, igual que en AABB–AABB
+                // Border case: sphere center inside AABB
+                // We take the direction of minimum penetration, as in AABB-AABB
                 VecType overlap = box.halfSize - glm::abs(spherePos - boxPos);
                 int minAxis = 0;
                 float minOverlap = overlap[0];
@@ -102,7 +101,7 @@ namespace cabrankengine {
                 }
                 normal = VecType(0.0f);
                 normal[minAxis] = (spherePos[minAxis] > boxPos[minAxis]) ? 1.0f : -1.0f;
-                dist = 0.0f; // está adentro, no hay distancia
+                dist = 0.0f; // Already inside, no distance
             }
 
             float penetration = radius - dist;
