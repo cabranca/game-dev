@@ -24,7 +24,7 @@ namespace cabrankengine {
             VecType overlap = b1.halfSize + b2.halfSize - delta;
 
             for (int i = 0; i < int(VecType().length()); ++i) {
-                if (overlap[i] <= 0.0f)
+                if (overlap[i] < 0.0f)
                     return { VecType(0.0f), 0.0f, false };
             }
 
@@ -49,7 +49,7 @@ namespace cabrankengine {
             float dist2 = glm::dot(delta, delta);
             float radiusSum = radius1 + radius2;
 
-            if (dist2 >= radiusSum * radiusSum) {
+            if (dist2 > radiusSum * radiusSum) {
                 return { VecType(0.0f), 0.0f, false };
             }
 
