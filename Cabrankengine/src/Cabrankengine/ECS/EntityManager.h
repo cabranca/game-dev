@@ -1,32 +1,33 @@
 #pragma once
 
-#include <memory>
-#include <vector>
-#include <Cabrankengine/ECS/Entity.h>
+#include <array>
+#include <bitset>
+#include <queue>
 
-namespace cabrankengine
-{
-	using EntPtr = std::shared_ptr<Entity>; // For now the idea is that the entities are shared between m_Entities and m_EntitiesToAdd.
-	using Entities = std::vector<EntPtr>;
+namespace cabrankengine {
 
-	class EntityManager
-	{
-	public:
-		EntityManager();
+	using Entity = uint32_t;
+	constexpr Entity MAX_ENTITIES = 5000;
+	const size_t MAX_COMPONENTS = 32;
 
-		// Update the entities states.
-		void onUpdate();
+	using Signature = std::bitset<MAX_COMPONENTS>;
 
-		// Create the entity and return it to the caller.
-		EntPtr addEntity();
+	class EntityManager {
+		public:
+			EntityManager();
 
-		// Return all entities.
-		const Entities& getEntities() const;
+			Entity createEntity();
 
-	private:
-		Entities m_Entities; // All the current entities.
-		Entities m_EntitiesToAdd; // Entities to be added in the next Entity Manager Update.
-		size_t m_TotalEntities; // Total amount of entities since the game started.
+			void destroyEntity(Entity e);
+
+			void setSignature(Entity e, Signature signature);
+
+			Signature getSignature(Entity e);
+
+		private:
+			std::queue<Entity> m_AvailableEntities{};
+			std::array<Signature, MAX_ENTITIES> m_Signatures{};
+			uint32_t m_LivingEntityCount = 0;
 	};
 }
 

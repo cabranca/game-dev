@@ -1,31 +1,35 @@
 #include <Cabrankengine/ECS/EntityManager.h>
 
+#include <Cabrankengine/Core/Logger.h>
+
 namespace cabrankengine {
-
-	EntityManager::EntityManager() : m_TotalEntities(0) {}
-
-	void EntityManager::onUpdate()
-	{
-		// Remove dead entities
-		std::erase_if(m_Entities, [](EntPtr ent) { return !ent->isActive(); });
-
-		// Add new entities
-		for (auto& ent : m_EntitiesToAdd)
-		{
-			m_Entities.push_back(ent);
-		}
-		m_EntitiesToAdd.clear();
+	EntityManager::EntityManager() {
+		for (Entity e = 0; e < MAX_ENTITIES; e++)
+			m_AvailableEntities.push(e);
 	}
 
-	EntPtr EntityManager::addEntity()
-	{
-		EntPtr ent = EntPtr(new Entity(m_TotalEntities++));
-		m_EntitiesToAdd.push_back(ent);
-		return ent;
+	Entity EntityManager::createEntity() {
+		CE_CORE_ASSERT(m_LivingEntityCount < MAX_ENTITIES, "Maximum amount of entities reached!");
+		Entity id = m_AvailableEntities.front();
+		m_AvailableEntities.pop();
+		m_LivingEntityCount++;
+		return id;
 	}
 
-	const Entities& EntityManager::getEntities() const
-	{
-		return m_Entities;
+	void EntityManager::destroyEntity(Entity e) {
+		CE_CORE_ASSERT(e < MAX_ENTITIES, "Entity out of bound Identifiers!");
+		m_Signatures[e].reset();
+		m_AvailableEntities.push(e);
+		m_LivingEntityCount--;
+	}
+
+	void EntityManager::setSignature(Entity e, Signature signature) {
+		CE_CORE_ASSERT(e < MAX_ENTITIES, "Entity out of bound Identifiers!");
+		m_Signatures[e] = signature;
+	}
+
+	Signature EntityManager::getSignature(Entity e) {
+		CE_CORE_ASSERT(e < MAX_ENTITIES, "Entity out of bound Identifiers!");
+		return m_Signatures[e];
 	}
 }
