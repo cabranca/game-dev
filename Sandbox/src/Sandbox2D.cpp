@@ -12,7 +12,7 @@
 using namespace cabrankengine;
 using namespace glm;
 
-Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_CameraController(1280.0f, 720.0f) {}
+Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_CameraController(2560.0f, 1440.0f) {}
 
 void Sandbox2D::onAttach() {
 	CE_PROFILE_FUNCTION();
@@ -42,36 +42,36 @@ void Sandbox2D::onUpdate(cabrankengine::Timestep delta) {
 
 	{
 		static float rotation = 0.f;
-		rotation += delta * 180.f;
+		rotation += delta * 90.f;
 
 		CE_PROFILE_SCOPE("Renderer Draw");
+		//Renderer2D::beginScene(m_CameraController.getCamera());
+
+		////Rotated red square
+		//Renderer2D::drawRotatedQuad({ 640.f, 0.0f }, { 288.f, 288.f }, -45.0f, { 0.8f, 0.2f, 0.3f, 1.0f });
+		//
+		////Red square
+		//Renderer2D::drawQuad({ -640.f, 0.0f }, { 288.f, 288.f }, { 0.8f, 0.2f, 0.3f, 1.0f });
+		//
+		////Blue square
+		//Renderer2D::drawQuad({ 320.f, -360.f }, { 180.f, 270.f }, { 0.2f, 0.3f, 0.8f, 1.0f });
+		//
+		////Checkerboard
+		//Renderer2D::drawQuad({ 0.0f, 0.0f, -0.1f }, { 7200.0f, 7200.0f }, m_CheckerboardTexture, 10.0f);
+		//
+		////Rotated checkerboard
+		//Renderer2D::drawRotatedQuad({ -1280.0f, 0.0f, 0.0f }, { 360.f, 360.f }, rotation, m_CheckerboardTexture, 20.0f);
+
+		//Renderer2D::endScene();
+
 		Renderer2D::beginScene(m_CameraController.getCamera());
-
-		//Rotated red square
-		Renderer2D::drawRotatedQuad({ 640.f, 0.0f }, { 288.f, 288.f }, -45.0f, { 0.8f, 0.2f, 0.3f, 1.0f });
-		
-		//Red square
-		Renderer2D::drawQuad({ -640.f, 0.0f }, { 288.f, 288.f }, { 0.8f, 0.2f, 0.3f, 1.0f });
-		
-		//Blue square
-		Renderer2D::drawQuad({ 320.f, -360.f }, { 180.f, 270.f }, { 0.2f, 0.3f, 0.8f, 1.0f });
-		
-		//Checkerboard
-		Renderer2D::drawQuad({ 0.0f, 0.0f, -0.1f }, { 7200.0f, 7200.0f }, m_CheckerboardTexture, 10.0f);
-		
-		//Rotated checkerboard
-		Renderer2D::drawRotatedQuad({ -1280.0f, 0.0f, 0.0f }, { 360.f, 360.f }, rotation, m_CheckerboardTexture, 20.0f);
-
-		Renderer2D::endScene();
-
-		/*Renderer2D::beginScene(m_CameraController.getCamera());
-		for (float y = -5.f; y < 5.f; y += 0.5f) {
-			for (float x = -5.f; x < 5.f; x += 0.5f) {
-				glm::vec4 color = { (x + 5.f) / 10.f, 0.4f, (y + 5.f) / 10.f, 1.0f };
-				Renderer2D::drawQuad({ x, y }, { 0.45f, 0.45f }, color);
+		for (float y = -360.f; y < 360.f; y += 36.f) {
+			for (float x = -360.f; x < 360.f; x += 36.f) {
+				glm::vec4 color = { m_SquareColor };
+				Renderer2D::drawQuad({ x, y }, { 30.f, 30.f }, color);
 			}
 		}
-		Renderer2D::endScene();*/
+		Renderer2D::endScene();
 	}
 }
 
@@ -86,7 +86,7 @@ void Sandbox2D::onImGuiRender() {
 	ImGui::Text("Vertices: %d", stats.getTotalVertexCount());
 	ImGui::Text("Indices %d:", stats.getTotalIndexCount());
 
-	ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+	ImGui::ColorEdit4("Squares Color", glm::value_ptr(m_SquareColor));
 
 	ImGui::End();
 }
