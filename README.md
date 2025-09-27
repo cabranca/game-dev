@@ -11,14 +11,13 @@ Here are some examples of prototypes and experiments made with Cabrankengine:
 
 ### Vampire Survivors style prototype
 
-### 2D Batch Rendering
-![2D Rendering Example]()
+![](docs/media/Survivors-like.gif)
 
-### 3D Rendering with camera controller
-![2D Rendering Example]()
+### 2D Batch Rendering
+![2D Rendering Example](docs/media/2DBatchRender.gif)
 
 ### Debug with ImGui
-![2D Rendering Example]()
+![2D Rendering Example](docs/media/DebugImGui.gif)
 
 ---
 
