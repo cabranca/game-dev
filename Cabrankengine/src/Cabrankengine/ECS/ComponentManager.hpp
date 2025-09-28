@@ -53,4 +53,54 @@ namespace cabrankengine {
 			std::unordered_map<size_t, Entity> m_IndexToEntity{};
 			size_t m_Size = 0;
 	};
+
+	class ComponentManager {
+	public:
+		template<typename T>
+		void registerComponent() {
+			const char* typeName = typeid(T).name();
+			CE_CORE_ASSERT(!m_ComponentTypes.contains(typeName), "Component added twice!");
+			m_ComponentTypes[typeName] = m_NextComponentType++;
+			m_ComponentArrays[typeName] = std::make_shared<ComponentArray<T>>();
+		}
+
+		template<typename T>
+		uint8_t getComponentType() {
+			const char* typeName = typeid(T).name();
+			CE_CORE_ASSERT(m_ComponentTypes.contains(typeName), "Component not registered!");
+			return m_ComponentTypes[typeName];
+		}
+
+		template<typename T>
+		void addComponent(Entity e, T component) {
+			getComponentArray<T>()->insert(e, component);
+		}
+
+		template<typename T>
+		void removeComponent(Entity e) {
+			getComponentArray<T>()->remove(e);
+		}
+
+		template<typename T>
+		T& getComponent(Entity e) {
+			return getComponentArray<T>()->get(e);
+		}
+
+		void entityDestroyed(Entity e) {
+			for (auto const& pair : m_ComponentArrays)
+				pair.second->entityDestroyed(e);
+		}
+
+	private:
+		std::unordered_map<const char*, uint8_t> m_ComponentTypes{};
+		std::unordered_map<const char*, std::shared_ptr<IComponentArray>> m_ComponentArrays{};
+		uint8_t m_NextComponentType = 0;
+
+		template<typename T>
+		std::shared_ptr<ComponentArray<T>> getComponentArray() {
+			const char* typeName = typeid(T).name();
+			CE_CORE_ASSERT(m_ComponentTypes.contains(typeName), "Component not registered!");
+			return std::static_pointer_cast<ComponentArray<T>>(m_ComponentArrays[typeName]);
+		}
+	};
 }

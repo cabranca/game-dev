@@ -3,6 +3,7 @@
 #include <Cabrankengine/Core/Logger.h>
 
 namespace cabrankengine {
+
 	EntityManager::EntityManager() {
 		for (Entity e = 0; e < MAX_ENTITIES; e++)
 			m_AvailableEntities.push(e);
