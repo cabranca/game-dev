@@ -30,6 +30,7 @@ namespace cabrankengine {
             void addComponent(Entity e, T component) {
                 componentManager->addComponent<T>(e, component);
 
+                // Instead of setting the bit in the signature, copies, sets and copies again
                 auto signature = entityManager->getSignature(e);
                 signature.set(componentManager->getComponentType<T>(), true);
                 entityManager->setSignature(e, signature);

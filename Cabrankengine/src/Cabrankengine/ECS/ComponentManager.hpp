@@ -7,6 +7,7 @@
 
 namespace cabrankengine {
 
+	// I do not see why there is an interface for an only child
 	class IComponentArray {
 		public:
 			virtual ~IComponentArray() = default;
@@ -18,9 +19,10 @@ namespace cabrankengine {
 		public:
 			void insert(Entity e, T component) {
 				CE_CORE_ASSERT(!m_EntityToIndex.contains(e), "The component has already been added!");
-				m_EntityToIndex[e] = m_Size;
-				m_IndexToEntity[m_Size] = e;
-				m_Components[m_Size] = component;
+				size_t index = m_Size
+				m_EntityToIndex[e] = index;
+				m_IndexToEntity[index] = e;
+				m_Components[index] = component;
 				m_Size++;
 			}
 
@@ -96,6 +98,7 @@ namespace cabrankengine {
 			std::unordered_map<const char*, std::shared_ptr<IComponentArray>> m_ComponentArrays{};
 			uint8_t m_NextComponentType = 0;
 
+			// Learn more about static_pointer_cast
 			template<typename T>
 			std::shared_ptr<ComponentArray<T>> getComponentArray() {
 				const char* typeName = typeid(T).name();
