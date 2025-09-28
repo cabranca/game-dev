@@ -3,9 +3,13 @@
 #include <bitset>
 #include <cstdint>
 
-using Entity = uint32_t;
+namespace {
 
-constexpr Entity MAX_ENTITIES = 5000;
-constexpr size_t MAX_COMPONENTS = 32;
+	using Entity = uint32_t;
 
-using Signature = std::bitset<MAX_COMPONENTS>;
+	constexpr Entity MAX_ENTITIES = 5000;
+	constexpr size_t MAX_COMPONENTS = 32;
+
+	using Signature = std::bitset<MAX_COMPONENTS>;
+}
+
