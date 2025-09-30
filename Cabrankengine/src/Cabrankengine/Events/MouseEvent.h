@@ -1,8 +1,10 @@
 #pragma once
 
 #include <sstream>
+
 #include <Cabrankengine/Core/MouseCodes.h>
-#include <Cabrankengine/Events/Event.h>
+
+#include "Event.h"
 
 namespace cabrankengine {
 

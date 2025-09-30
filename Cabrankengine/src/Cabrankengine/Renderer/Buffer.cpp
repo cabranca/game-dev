@@ -1,8 +1,10 @@
-#include <Cabrankengine/Renderer/Buffer.h>
+#include "Buffer.h"
 
 #include <Cabrankengine/Core/Logger.h>
-#include <Cabrankengine/Renderer/Renderer.h>
 #include <Platform/OpenGL/OpenGLBuffer.h>
+
+#include "Renderer.h"
+
 
 namespace cabrankengine {
 

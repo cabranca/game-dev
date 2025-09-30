@@ -1,7 +1,8 @@
 #pragma once
 
 #include <spdlog/spdlog.h>
-#include <Cabrankengine/Core/Core.h>
+
+#include "Core.h"
 
 namespace cabrankengine {
 

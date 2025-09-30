@@ -1,7 +1,8 @@
 #pragma once
 
 #include <sstream>
-#include <Cabrankengine/Events/Event.h>
+
+#include "Event.h"
 
 namespace cabrankengine {
 

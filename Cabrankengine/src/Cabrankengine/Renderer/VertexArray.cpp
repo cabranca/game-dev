@@ -1,8 +1,10 @@
-#include <Cabrankengine/Renderer/VertexArray.h>
+#include "VertexArray.h"
 
 #include <Cabrankengine/Core/Logger.h>
-#include <Cabrankengine/Renderer/Renderer.h>
 #include <Platform/OpenGL/OpenGLVertexArray.h>
+
+#include "Renderer.h"
+
 
 namespace cabrankengine {
 

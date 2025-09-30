@@ -1,11 +1,13 @@
-#include <Cabrankengine/Renderer/Renderer.h>
+#include "Renderer.h"
 
-#include <Cabrankengine/Renderer/OrthographicCamera.h>
-#include <Cabrankengine/Renderer/Renderer2D.h>
-#include <Cabrankengine/Renderer/Shader.h>
-#include <Cabrankengine/Renderer/VertexArray.h>
 #include <Cabrankengine/Debug/Instrumentator.h>
 #include <Platform/OpenGL/OpenGLShader.h>
+
+#include "OrthographicCamera.h"
+#include "Renderer2D.h"
+#include "Shader.h"
+#include "VertexArray.h"
+
 
 namespace cabrankengine {
 

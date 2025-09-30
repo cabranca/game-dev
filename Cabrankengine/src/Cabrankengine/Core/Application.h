@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include <Cabrankengine/Core/LayerStack.h>
+#include "LayerStack.h"
 
 namespace cabrankengine {
 
@@ -9,7 +9,7 @@ namespace cabrankengine {
 	class Event; // Base class for all events
 	class ImGuiLayer; // Overlay for ImGui rendering
 	class Window; // Base Window class
-	class WindowCloseEvent; // Event triggerd when the close window button is pressed.
+	class WindowCloseEvent; // Event triggered when the close window button is pressed.
 	class WindowResizeEvent; // Event triggered when the window is resized
 	
 

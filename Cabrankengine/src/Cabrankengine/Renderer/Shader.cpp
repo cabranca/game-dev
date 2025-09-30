@@ -1,8 +1,10 @@
-#include <Cabrankengine/Renderer/Shader.h>
+#include "Shader.h"
 
 #include <Cabrankengine/Core/Logger.h>
-#include <Cabrankengine/Renderer/Renderer.h>
 #include <Platform/OpenGL/OpenGLShader.h>
+
+#include "Renderer.h"
+
 
 namespace cabrankengine {
 

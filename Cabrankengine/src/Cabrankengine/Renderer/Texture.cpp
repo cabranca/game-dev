@@ -1,8 +1,10 @@
-#include <Cabrankengine/Renderer/Texture.h>
+#include "Texture.h"
 
-#include <Cabrankengine/Renderer/Renderer.h>
 #include <Cabrankengine/Core/Logger.h>	
 #include <Platform/OpenGL/OpenGLTexture.h>
+
+#include "Renderer.h"
+
 
 namespace cabrankengine {
 	

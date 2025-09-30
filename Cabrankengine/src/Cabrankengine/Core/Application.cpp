@@ -1,17 +1,17 @@
-#include <Cabrankengine/Core/Application.h>
+#include "Application.h"
 
 #include <GLFW/glfw3.h>
 
 #include <Cabrankengine/Config/Config.h>
-#include <Cabrankengine/Core/AudioEngine.h>
-#include <Cabrankengine/Core/Logger.h>
-#include <Cabrankengine/Core/Timestep.h>
-#include <Cabrankengine/Core/Window.h>
 #include <Cabrankengine/Debug/Instrumentator.h>
 #include <Cabrankengine/Events/ApplicationEvent.h>
 #include <Cabrankengine/ImGui/ImGuiLayer.h>
 #include <Cabrankengine/Renderer/Renderer.h>
 
+#include "AudioEngine.h"
+#include "Logger.h"
+#include "Timestep.h"
+#include "Window.h"
 
 namespace cabrankengine {
 

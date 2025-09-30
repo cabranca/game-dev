@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Cabrankengine/Renderer/RenderCommand.h>
+#include "RenderCommand.h"
 
 namespace cabrankengine {
 

@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+
 #include <Cabrankengine/Core/Logger.h>
 
 namespace cabrankengine {

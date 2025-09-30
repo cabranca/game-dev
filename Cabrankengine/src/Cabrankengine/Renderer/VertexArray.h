@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <vector>
+
 #include <Cabrankengine/Core/Core.h>
 
 namespace cabrankengine {

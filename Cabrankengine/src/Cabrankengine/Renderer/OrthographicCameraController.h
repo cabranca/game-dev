@@ -3,7 +3,8 @@
 #include <Cabrankengine/Core/Timestep.h>
 #include <Cabrankengine/Events/ApplicationEvent.h>
 #include <Cabrankengine/Events/MouseEvent.h>
-#include <Cabrankengine/Renderer/OrthographicCamera.h>
+
+#include "OrthographicCamera.h"
 
 namespace cabrankengine {
 

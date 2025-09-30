@@ -1,9 +1,10 @@
 #pragma once
 
 #include <utility>
-#include <Cabrankengine/Core/Core.h>
-#include <Cabrankengine/Core/KeyCodes.h>
-#include <Cabrankengine/Core/MouseCodes.h>
+
+#include "Core.h"
+#include "KeyCodes.h"
+#include "MouseCodes.h"
 
 namespace cabrankengine {
 

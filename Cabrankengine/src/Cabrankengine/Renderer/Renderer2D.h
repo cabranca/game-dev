@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Cabrankengine/Renderer/OrthographicCamera.h>
-#include <Cabrankengine/Renderer/Texture.h>
+#include "OrthographicCamera.h"
+#include "Texture.h"
 
 namespace cabrankengine {
 

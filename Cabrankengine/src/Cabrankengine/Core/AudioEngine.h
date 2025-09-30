@@ -1,8 +1,10 @@
 #pragma once
 
 #include <string>
+
 #include <irrKlang.h>
-#include <Cabrankengine/Core/Core.h>
+
+#include "Core.h"
 
 namespace cabrankengine {
 

@@ -1,12 +1,14 @@
-#include <Cabrankengine/Renderer/Renderer2D.h>
+#include "Renderer2D.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+
 #include <Cabrankengine/Core/Core.h>
 #include <Cabrankengine/Debug/Instrumentator.h>
-#include <Cabrankengine/Renderer/Buffer.h>
-#include <Cabrankengine/Renderer/RenderCommand.h>
-#include <Cabrankengine/Renderer/Shader.h>
-#include <Cabrankengine/Renderer/VertexArray.h>
+
+#include "Buffer.h"
+#include "RenderCommand.h"
+#include "Shader.h"
+#include "VertexArray.h"
 
 using namespace glm;
 

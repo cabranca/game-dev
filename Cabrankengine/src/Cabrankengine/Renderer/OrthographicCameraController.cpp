@@ -1,4 +1,4 @@
-#include <Cabrankengine/Renderer/OrthographicCameraController.h>
+#include "OrthographicCameraController.h"
 
 #include <Cabrankengine/Core/Core.h>
 #include <Cabrankengine/Core/Input.h>

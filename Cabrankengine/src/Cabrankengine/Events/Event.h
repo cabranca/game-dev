@@ -1,7 +1,8 @@
 #pragma once
 
-#include <string>
 #include <ostream>
+#include <string>
+
 #include <Cabrankengine/Core/Core.h>
 
 namespace cabrankengine {
@@ -15,7 +16,7 @@ namespace cabrankengine {
 		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
 	};
 
-	// Categories to filter events with bitmasks
+	// Categories to filter events with bit masks
 	enum EventCategory {
 		None = 0,
 		EventCategoryApplication = BIT(0),
