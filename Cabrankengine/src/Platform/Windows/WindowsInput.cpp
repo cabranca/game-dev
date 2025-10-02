@@ -1,7 +1,10 @@
-#include <Platform/Windows/WindowsInput.h>
+#include "WindowsInput.h"
+
+#include <GLFW/glfw3.h>
+
 #include <Cabrankengine/Core/Application.h>
 #include <Cabrankengine/Core/Window.h>
-#include <GLFW/glfw3.h>
+
 
 namespace cabrankengine {
 

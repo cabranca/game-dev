@@ -1,11 +1,14 @@
-#include <Platform/Windows/WindowsWindow.h>
+#include "WindowsWindow.h"
+
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #include <Cabrankengine/Core/Logger.h>
 #include <Cabrankengine/Debug/Instrumentator.h>
-#include <Cabrankengine/Events/MouseEvent.h>
 #include <Cabrankengine/Events/ApplicationEvent.h>
 #include <Cabrankengine/Events/KeyEvent.h>
-#include <glad/glad.h>
-#include <GLFW/glfw3.h> // TODO: check if this can be here for Linux. Otherwise, move it to header and remove forward declaration
+#include <Cabrankengine/Events/MouseEvent.h>
+
 #include <Platform/OpenGL/OpenGLContext.h>
 
 namespace cabrankengine {

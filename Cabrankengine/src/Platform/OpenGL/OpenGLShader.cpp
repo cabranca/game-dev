@@ -1,10 +1,11 @@
-#include <Platform/OpenGL/OpenGLShader.h>
+#include "OpenGLShader.h"
 
-#include <glad/glad.h>
 #include <array>
-#include <glm/gtc/type_ptr.hpp>
-#include <fstream>
 #include <filesystem>
+#include <fstream>
+#include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
+
 #include <Cabrankengine/Core/Logger.h>
 #include <Cabrankengine/Debug/Instrumentator.h>
 

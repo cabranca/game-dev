@@ -1,6 +1,8 @@
-#include <Platform/OpenGL/OpenGLContext.h>
+#include "OpenGLContext.h"
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
 #include <Cabrankengine/Core/Logger.h>
 #include <Cabrankengine/Debug/Instrumentator.h>
 

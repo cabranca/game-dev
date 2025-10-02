@@ -1,6 +1,7 @@
-#include <Platform/OpenGL/OpenGLBuffer.h>
+#include "OpenGLBuffer.h"
 
 #include <glad/glad.h>
+
 #include <Cabrankengine/Debug/Instrumentator.h>
 
 namespace cabrankengine {

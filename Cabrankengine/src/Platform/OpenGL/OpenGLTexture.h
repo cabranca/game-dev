@@ -1,7 +1,8 @@
 #pragma once
 
-#include <Cabrankengine/Renderer/Texture.h>
 #include <glad/glad.h>
+
+#include <Cabrankengine/Renderer/Texture.h>
 
 namespace cabrankengine {
 

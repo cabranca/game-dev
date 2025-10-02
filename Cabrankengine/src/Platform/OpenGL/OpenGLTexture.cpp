@@ -1,8 +1,10 @@
-#include <Platform/OpenGL/OpenGLTexture.h>
+#include "OpenGLTexture.h"
+
+#include <stb_image.h>
 
 #include <Cabrankengine/Core/Logger.h>
 #include <Cabrankengine/Debug/Instrumentator.h>
-#include <stb_image.h>
+
 
 namespace cabrankengine {
 
