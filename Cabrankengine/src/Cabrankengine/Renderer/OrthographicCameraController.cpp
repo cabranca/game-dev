@@ -65,7 +65,7 @@ namespace cabrankengine {
 	bool OrthographicCameraController::onMouseScrolled(MouseScrolledEvent& e) {
 		CE_PROFILE_FUNCTION();
 
-		m_ZoomLevel += e.getYOffset() * 0.25;
+		m_ZoomLevel += e.getYOffset() * 0.25f;
 		m_ZoomLevel = std::clamp(m_ZoomLevel, 0.125f, 8.f);
 		m_Camera.setProjection((-m_Width / 2) / m_ZoomLevel, (m_Width / 2) / m_ZoomLevel, (-m_Height / 2) / m_ZoomLevel, (m_Height / 2) / m_ZoomLevel);
 		return false;
