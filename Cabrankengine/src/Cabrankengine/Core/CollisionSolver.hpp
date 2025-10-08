@@ -4,7 +4,7 @@
 
 #include <glm/glm.hpp>
 
-#include <Cabrankengine/ECS/Components.hpp>
+#include <Cabrankengine/ECS/Components.h>
 
 namespace cabrankengine {
 
@@ -17,12 +17,11 @@ namespace cabrankengine {
             bool collided;      // True if there is collision
         };
 
-
         template<typename VecType>
-        Collision<VecType> AABB(const VecType& pos1, const CBoundingBox<VecType>& b1,
-            const VecType& pos2, const CBoundingBox<VecType>& b2) {
+        Collision<VecType> AABB(const VecType& pos1, const components::CCollisionBox<VecType>& b1,
+            const VecType& pos2, const components::CCollisionBox<VecType>& b2) {
             VecType delta = glm::abs(pos1 - pos2);
-            VecType overlap = b1.halfSize + b2.halfSize - delta;
+            VecType overlap = b1.HalfExtents + b2.HalfExtents - delta;
 
             for (int i = 0; i < int(VecType().length()); ++i) {
                 if (overlap[i] < 0.0f)
@@ -65,12 +64,12 @@ namespace cabrankengine {
         }
 
         template<typename VecType>
-        Collision<VecType> SphereAABB(const VecType& spherePos, float radius, const VecType& boxPos, const CBoundingBox<VecType>& box) {
+        Collision<VecType> SphereAABB(const VecType& spherePos, float radius, const VecType& boxPos, const components::CCollisionBox<VecType>& box) {
             // Calculate the closest point from the AABB to the sphere center
             VecType closestPoint;
             for (int i = 0; i < int(VecType().length()); ++i) {
-                float min = boxPos[i] - box.halfSize[i];
-                float max = boxPos[i] + box.halfSize[i];
+                float min = boxPos[i] - box.HalfExtents[i];
+                float max = boxPos[i] + box.HalfExtents[i];
                 closestPoint[i] = glm::clamp(spherePos[i], min, max);
             }
 
@@ -91,7 +90,7 @@ namespace cabrankengine {
             else {
                 // Border case: sphere center inside AABB
                 // We take the direction of minimum penetration, as in AABB-AABB
-                VecType overlap = box.halfSize - glm::abs(spherePos - boxPos);
+                VecType overlap = box.HalfExtents - glm::abs(spherePos - boxPos);
                 int minAxis = 0;
                 float minOverlap = overlap[0];
                 for (int i = 1; i < int(VecType().length()); ++i) {
