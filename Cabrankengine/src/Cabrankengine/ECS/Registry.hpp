@@ -17,6 +17,8 @@ namespace cabrankengine {
                 m_SystemManager = std::make_unique<SystemManager>();
             }
 
+            //////////ENTITY//////////
+
 			// Creates a new entity and returns its ID
             Entity createEntity() {
                 return m_EntityManager->createEntity();
@@ -26,13 +28,23 @@ namespace cabrankengine {
             void destroyEntity(Entity e) {
                 m_EntityManager->destroyEntity(e);
                 m_ComponentManager->entityDestroyed(e);
+                m_SystemManager->EntityDestroyed(e);
             }
 
+			// Returns the components signature for the given entity
+			Signature getSignature(Entity e) {
+				return m_EntityManager->getSignature(e);
+			}
+
+            /////////////////////////////
+
+            //////////COMPONENT//////////
+
 			// Registers a new component type T
-            template<typename T>
-            void registerComponent() {
-                m_ComponentManager->registerComponent<T>();
-            }
+			template<typename T>
+			void registerComponent() {
+				m_ComponentManager->registerComponent<T>();
+			}
 
 			// Adds a component of type T to the given entity
             template<typename T>
@@ -55,6 +67,8 @@ namespace cabrankengine {
                 auto signature = m_EntityManager->getSignature(e);
                 signature.set(m_ComponentManager->getComponentType<T>(), false);
                 m_EntityManager->setSignature(e, signature);
+
+                m_SystemManager->EntitySignatureChanged(e, signature);
             }
 
 			// Returns a reference to the component of type T associated with the given entity
@@ -69,10 +83,9 @@ namespace cabrankengine {
 				return m_ComponentManager->getComponentType<T>();
 			}
 
-			// Returns the components signature for the given entity
-            Signature getSignature(Entity e) {
-                return m_EntityManager->getSignature(e);
-            }
+            ///////////////////////////
+
+            //////////SYSTEM//////////
 
 			// Registers a new system of type T
 			template<typename T>
@@ -89,6 +102,6 @@ namespace cabrankengine {
         private:
 			std::unique_ptr<ComponentManager> m_ComponentManager; // Manages component storage and access
 			std::unique_ptr<EntityManager> m_EntityManager; // Manages entity creation and destruction
-            std::unique_ptr<SystemManager> m_SystemManager;
+            std::unique_ptr<SystemManager> m_SystemManager; // Manages systems creation and destruction
     };
 }
