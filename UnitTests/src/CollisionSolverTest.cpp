@@ -4,14 +4,15 @@
 #include <Cabrankengine/Core/CollisionSolver.hpp>
 
 using namespace cabrankengine;
+using namespace::components;
 using namespace cabrankengine::collision_solver;
 
 // ----------------------------------------------------
 // Helpers
 // ----------------------------------------------------
 template<typename VecType>
-CBoundingBox<VecType> MakeBox(const VecType& halfSize) {
-    return CBoundingBox<VecType>(halfSize);
+CCollisionBox<VecType> MakeBox(const VecType& size) {
+    return CCollisionBox<VecType>(size);
 }
 
 // ====================================================
