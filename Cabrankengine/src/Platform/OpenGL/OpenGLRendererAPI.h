@@ -15,6 +15,9 @@ namespace cabrankengine {
 			// Clears the screen with the previously set clear color.
 			virtual void clear() override;
 
+			// Draws the vertex array vertices in order
+			virtual void draw(const Ref<VertexArray>& vertexArray) override;
+
 			// Draws the indexed vertices from the vertex array.
 			virtual void drawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0) override;
 

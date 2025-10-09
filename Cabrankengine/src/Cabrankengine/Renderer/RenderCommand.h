@@ -18,6 +18,9 @@ namespace cabrankengine {
 			// Clears the screen with the previously set clear color.
 			static void clear() { s_RendererAPI->clear(); }
 
+			// Draws the vertex array vertices in order
+			static void draw(const Ref<VertexArray>& vertexArray) { s_RendererAPI->draw(vertexArray); }
+
 			// Draws the indexed vertices from the vertex array.
 			static void drawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0) { s_RendererAPI->drawIndexed(vertexArray, indexCount); }
 

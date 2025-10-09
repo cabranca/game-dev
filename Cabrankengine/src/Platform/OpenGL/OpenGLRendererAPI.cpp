@@ -25,6 +25,12 @@ namespace cabrankengine {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
+	void OpenGLRendererAPI::draw(const Ref<VertexArray>& vertexArray)
+	{
+		auto a = vertexArray->getVertexBuffers()[0]->getLayout().getElements().size();
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+	}
+
 	void OpenGLRendererAPI::drawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount) {
 		uint32_t count = indexCount ? vertexArray->getIndexBuffer()->getCount() : indexCount;
 		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
