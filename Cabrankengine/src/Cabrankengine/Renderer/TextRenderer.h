@@ -1,13 +1,20 @@
 #pragma once
 
-#include "Cabrankengine/Core/Core.h"
-#include "Cabrankengine/Renderer/Buffer.h"
-#include "Cabrankengine/Renderer/VertexArray.h"
-#include "Shader.h"
-
+#include <string>
 #include <unordered_map>
 
+#include <glm/glm.hpp>
+
+#include "Cabrankengine/Core/Core.h"
+
 namespace cabrankengine {
+
+    // Forward declarations
+    class Shader;
+    class ShaderLibrary;
+    class VertexArray;
+    class VertexBuffer;
+
     /// Holds all state information relevant to a character as loaded using FreeType.
     struct Character {
         unsigned int TextureID; // ID handle of the glyph texture
@@ -39,7 +46,7 @@ namespace cabrankengine {
         // Holds a list of pre-compiled Characters.
         std::unordered_map<char, Character> m_Characters;
 
-        ShaderLibrary m_ShaderLibrary;
+        Scope<ShaderLibrary> m_ShaderLibrary;
         // Shader used for text rendering.
         Ref<Shader> m_TextShader;
     };
