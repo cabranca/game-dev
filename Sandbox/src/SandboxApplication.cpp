@@ -18,7 +18,7 @@ public:
 		
 
 		m_TextRenderer = new cabrankengine::TextRenderer(2560, 1440);
-		m_TextRenderer->load("assets/fonts/ocraext.TTF", 12);
+		m_TextRenderer->load("assets/fonts/ocraext.ttf", 12);
 	}
 	
 	void onUpdate(cabrankengine::Timestep delta) override {
