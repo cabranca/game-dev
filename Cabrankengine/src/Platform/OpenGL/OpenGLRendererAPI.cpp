@@ -15,6 +15,8 @@ namespace cabrankengine {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		glEnable(GL_DEPTH_TEST);
+
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	}
 
 	void OpenGLRendererAPI::setClearColor(const glm::vec4& color) {
