@@ -10,6 +10,7 @@
 #include "Buffer.h"
 #include "RenderCommand.h"
 #include "Shader.h"
+#include "Texture.h"
 #include "VertexArray.h"
 
 #include <iostream>
@@ -33,14 +34,10 @@ namespace cabrankengine {
 
         m_VertexBuffer->setLayout({ { ShaderDataType::Float2, "pos" }, {ShaderDataType::Float2, "tex"} });
 
-        m_VertexArray->bind();
         m_VertexArray->addVertexBuffer(m_VertexBuffer);
 
         m_VertexBuffer->unbind();
         m_VertexArray->unbind();
-
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     void TextRenderer::load(const std::string& font, unsigned int fontSize)
@@ -76,22 +73,11 @@ namespace cabrankengine {
                 continue;
             }
             
-            // generate texture
-            unsigned int textureId;
-			glCreateTextures(GL_TEXTURE_2D, 1, &textureId);
-			glTextureStorage2D(textureId, 1, GL_R8, face->glyph->bitmap.width, face->glyph->bitmap.rows);
-			glTextureSubImage2D(textureId, 0, 0, 0, face->glyph->bitmap.width, face->glyph->bitmap.rows, GL_RED, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
-
-            // set texture options
-			glTextureParameteri(textureId, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-			glTextureParameteri(textureId, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-			glTextureParameteri(textureId, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTextureParameteri(textureId, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTextureParameteriv(textureId, GL_TEXTURE_SWIZZLE_RGBA, swizzleMask);
+            auto charTexture = Texture2D::create(face);
 
             // now store character for later use
             Character character = {
-                textureId,
+                charTexture,
                 ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
                 ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
                 static_cast<unsigned int>(face->glyph->advance.x)
@@ -109,7 +95,6 @@ namespace cabrankengine {
          // activate corresponding render state	
          m_TextShader->bind();
          m_TextShader->setFloat3("textColor", color);
-         glActiveTexture(GL_TEXTURE0);
          m_VertexArray->bind();
 
          // iterate through all characters
@@ -133,12 +118,9 @@ namespace cabrankengine {
                  { xpos + w, ypos + h,   1.0f, 1.0f },
                  { xpos + w, ypos,       1.0f, 0.0f }
              };
-
-			 std::cout << "Drawing '" << c << "' at (" << xpos << ", " << ypos << ") "
-				 << "size(" << w << ", " << h << ")" << std::endl;
             
              // render glyph texture over quad
-             glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+             ch.Texture->bind();
             
              // update content of VBO memory
              m_VertexBuffer->bind();
@@ -152,6 +134,5 @@ namespace cabrankengine {
              x += (ch.Advance >> 6) * scale; // bitshift by 6 to get value in pixels (1/64th times 2^6 = 64)
          }
          m_VertexArray->unbind();
-         glBindTexture(GL_TEXTURE_2D, 0);
     }
 }
