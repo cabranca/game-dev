@@ -16,7 +16,7 @@ IncludeDir["stb_image"] = "Cabrankengine/vendor/stb_image"
 IncludeDir["irrKlang"] = "Cabrankengine/vendor/irrKlang/include"
 IncludeDir["json"] = "Cabrankengine/vendor/json/include"
 IncludeDir["Catch2"] = "Cabrankengine/vendor/Catch2"
-IncludeDir["FreeType"] = "Cabrankengine/vendor/FreeType/include"
+IncludeDir["freetype"] = "Cabrankengine/vendor/freetype/include"
 
 include "Cabrankengine/vendor/GLFW"
 include "Cabrankengine/vendor/glad"
@@ -40,7 +40,7 @@ project "Cabrankengine"
     includedirs 
     {
         "%{prj.name}/src", "%{prj.name}/vendor/spdlog/include", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}", "%{IncludeDir.ImGui}", 
-        "%{IncludeDir.glm}", "%{IncludeDir.stb_image}", "%{IncludeDir.irrKlang}", "%{IncludeDir.json}", "%{IncludeDir.FreeType}"
+        "%{IncludeDir.glm}", "%{IncludeDir.stb_image}", "%{IncludeDir.irrKlang}", "%{IncludeDir.json}", "%{IncludeDir.freetype}"
     }
     links {"GLFW", "glad", "ImGui", "IrrKlang", "freetype"}
 
@@ -83,7 +83,7 @@ project "Sandbox"
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
     files {"%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp"}
-    includedirs {"Cabrankengine/vendor/spdlog/include", "Cabrankengine/src", "%{IncludeDir.glm}", "%{IncludeDir.ImGui}", "%{IncludeDir.irrKlang}", "%{IncludeDir.FreeType}"}
+    includedirs {"Cabrankengine/vendor/spdlog/include", "Cabrankengine/src", "%{IncludeDir.glm}", "%{IncludeDir.ImGui}", "%{IncludeDir.irrKlang}", "%{IncludeDir.freetype}"}
     links {"freetype", "Cabrankengine", "GLFW", "glad", "ImGui"}
     libdirs { "Cabrankengine/vendor/freetype_test" }
 
