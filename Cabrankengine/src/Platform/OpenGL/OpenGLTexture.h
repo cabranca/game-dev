@@ -10,6 +10,7 @@ namespace cabrankengine {
 		public:
 			OpenGLTexture2D(const TextureSpecification& specification);
 			OpenGLTexture2D(const std::string& path);
+			OpenGLTexture2D(const FT_Face& face);
 			virtual ~OpenGLTexture2D();
 
 			// Returns the specification of the texture, which includes its width, height, format, and mip generation status.
