@@ -46,9 +46,80 @@ TEST_CASE("Vector Arithmetic Operations") {
 	}
 }
 
-// ====================================================
-// LENGTH & NORMALIZATION
-// ====================================================
+TEST_CASE("Vector Scalar Multiplication") {
+	Vector v{ 1, -2, 3 };
+
+	SECTION("Binary multiplication scales all components") {
+		auto result = v * 2.f;
+		REQUIRE(result.x == Approx(2.f).margin(EPSILON));
+		REQUIRE(result.y == Approx(-4.f).margin(EPSILON));
+		REQUIRE(result.z == Approx(6.f).margin(EPSILON));
+	}
+
+	SECTION("Unary multiplication assignment updates in place") {
+		v *= 0.5f;
+		REQUIRE(v.x == Approx(0.5f).margin(EPSILON));
+		REQUIRE(v.y == Approx(-1.f).margin(EPSILON));
+		REQUIRE(v.z == Approx(1.5f).margin(EPSILON));
+	}
+
+	SECTION("Multiplying by zero gives zero vector") {
+		auto result = v * 0.f;
+		REQUIRE(result.x == Approx(0.f).margin(EPSILON));
+		REQUIRE(result.y == Approx(0.f).margin(EPSILON));
+		REQUIRE(result.z == Approx(0.f).margin(EPSILON));
+	}
+
+	SECTION("Multiplying by -1 inverts direction") {
+		auto result = v * -1.f;
+		REQUIRE(result.x == Approx(-v.x).margin(EPSILON));
+		REQUIRE(result.y == Approx(-v.y).margin(EPSILON));
+		REQUIRE(result.z == Approx(-v.z).margin(EPSILON));
+	}
+
+	SECTION("Scalar multiplication is distributive") {
+		Vector a{ 1, 2, 3 };
+		Vector b{ 4, 5, 6 };
+		float s = 2.f;
+		auto left = (a + b) * s;
+		auto right = (a * s) + (b * s);
+		REQUIRE(left.x == Approx(right.x).margin(EPSILON));
+		REQUIRE(left.y == Approx(right.y).margin(EPSILON));
+		REQUIRE(left.z == Approx(right.z).margin(EPSILON));
+	}
+}
+
+TEST_CASE("Vector Unary Negation") {
+	Vector v{ 1, -2, 3 };
+
+	SECTION("Negation flips all signs") {
+		auto neg = -v;
+		REQUIRE(neg.x == Approx(-1.f).margin(EPSILON));
+		REQUIRE(neg.y == Approx(2.f).margin(EPSILON));
+		REQUIRE(neg.z == Approx(-3.f).margin(EPSILON));
+	}
+
+	SECTION("Double negation returns original vector") {
+		auto neg = -(-v);
+		REQUIRE(neg.x == Approx(v.x).margin(EPSILON));
+		REQUIRE(neg.y == Approx(v.y).margin(EPSILON));
+		REQUIRE(neg.z == Approx(v.z).margin(EPSILON));
+	}
+
+	SECTION("Negation preserves length") {
+		auto neg = -v;
+		REQUIRE(v.length() == Approx(neg.length()).margin(EPSILON));
+	}
+
+	SECTION("Negating zero vector stays zero") {
+		Vector zero{ 0, 0, 0 };
+		auto neg = -zero;
+		REQUIRE(neg.x == 0.f);
+		REQUIRE(neg.y == 0.f);
+		REQUIRE(neg.z == 0.f);
+	}
+}
+
 TEST_CASE("Vector Length and Normalization") {
 	SECTION("Length of standard axes") {
 		REQUIRE(X_AXIS.length() == Approx(1.f).margin(EPSILON));
@@ -89,9 +160,6 @@ TEST_CASE("Vector Length and Normalization") {
 	}
 }
 
-// ====================================================
-// DOT PRODUCT
-// ====================================================
 TEST_CASE("Vector Dot Product") {
 	SECTION("Orthogonal vectors give 0") {
 		REQUIRE(X_AXIS.dot(Y_AXIS) == Approx(0.f).margin(EPSILON));
@@ -110,9 +178,6 @@ TEST_CASE("Vector Dot Product") {
 	}
 }
 
-// ====================================================
-// CROSS PRODUCT
-// ====================================================
 TEST_CASE("Vector Cross Product") {
 	SECTION("Cross product of orthogonal basis vectors") {
 		auto result = X_AXIS.cross(Y_AXIS);
@@ -140,9 +205,6 @@ TEST_CASE("Vector Cross Product") {
 	}
 }
 
-// ====================================================
-// NORMALIZATION CHECK
-// ====================================================
 TEST_CASE("Vector Normalization Check") {
 	SECTION("Normalized vector reports true") {
 		Vector v{ 1, 0, 0 };

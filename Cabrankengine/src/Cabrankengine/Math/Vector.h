@@ -4,7 +4,7 @@
 
 namespace cabrankengine::math {
 
-    constexpr float EPSILON = 1e-5f;
+	constexpr float EPSILON = 1e-5f;
 
 	struct Vector {
 		float x, y, z;
@@ -20,7 +20,7 @@ namespace cabrankengine::math {
 		}
 
 		void normalize() noexcept {
-			float lengthSquared = x * x + y * y + z * z; 
+			float lengthSquared = x * x + y * y + z * z;
 			if (lengthSquared == 0)
 				return;
 			float length = sqrt(lengthSquared);
@@ -38,10 +38,6 @@ namespace cabrankengine::math {
 			return { x + other.x, y + other.y, z + other.z };
 		}
 
-		constexpr Vector operator-(const Vector& other) const noexcept {
-			return { x - other.x, y - other.y, z - other.z };
-		}
-
 		constexpr Vector& operator+=(const Vector& other) noexcept {
 			x += other.x;
 			y += other.y;
@@ -49,10 +45,29 @@ namespace cabrankengine::math {
 			return *this;
 		}
 
+		constexpr Vector operator-(const Vector& other) const noexcept {
+			return { x - other.x, y - other.y, z - other.z };
+		}
+
 		constexpr Vector& operator-=(const Vector& other) noexcept {
 			x -= other.x;
 			y -= other.y;
 			z -= other.z;
+			return *this;
+		}
+
+		constexpr Vector operator-() {
+			return { -x, -y, -z };
+		}
+
+		constexpr Vector operator*(float scale) const noexcept {
+			return { x * scale, y * scale, z * scale };
+		}
+
+		constexpr Vector& operator*=(float scale) {
+			x *= scale;
+			y *= scale;
+			z *= scale;
 			return *this;
 		}
 
