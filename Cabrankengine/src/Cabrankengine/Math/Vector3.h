@@ -43,6 +43,14 @@ namespace cabrankengine::math {
 			return result < EPSILON;
 		}
 
+        constexpr bool operator==(const Vector3& other) const noexcept {
+			return x == other.x && y == other.y && z == other.z;
+        }
+
+        constexpr bool operator!=(const Vector3& other) const noexcept {
+			return x != other.x || y != other.y || z != other.z;
+		}
+
 		constexpr Vector3 operator+(const Vector3& other) const noexcept {
 			return { x + other.x, y + other.y, z + other.z };
 		}
