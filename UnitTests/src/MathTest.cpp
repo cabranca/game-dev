@@ -1,21 +1,21 @@
 #include <catch.hpp>
-#include <Cabrankengine/Math/Vector.h>
+#include <Cabrankengine/Math/Vector3.h>
 
 using namespace cabrankengine::math;
 
 // ----------------------------------------------------
 // Helpers
 // ----------------------------------------------------
-constexpr Vector X_AXIS{ 1, 0, 0 };
-constexpr Vector Y_AXIS{ 0, 1, 0 };
-constexpr Vector Z_AXIS{ 0, 0, 1 };
-constexpr Vector ZERO{ 0 };
+constexpr Vector3f X_AXIS{ 1, 0, 0 };
+constexpr Vector3f Y_AXIS{ 0, 1, 0 };
+constexpr Vector3f Z_AXIS{ 0, 0, 1 };
+constexpr Vector3f ZERO{ 0 };
 
 // ====================================================
-// VECTORS
+// Vector3fS
 // ====================================================
-TEST_CASE("Vector Arithmetic Operations") {
-	Vector v{ 3, 4, 0 };
+TEST_CASE("Vector3f Arithmetic Operations") {
+	Vector3f v{ 3, 4, 0 };
 
 	SECTION("Binary Addition") {
 		auto result = X_AXIS + Y_AXIS;
@@ -46,8 +46,8 @@ TEST_CASE("Vector Arithmetic Operations") {
 	}
 }
 
-TEST_CASE("Vector Scalar Multiplication") {
-	Vector v{ 1, -2, 3 };
+TEST_CASE("Vector3f Scalar Multiplication") {
+	Vector3f v{ 1, -2, 3 };
 
 	SECTION("Binary multiplication scales all components") {
 		auto result = v * 2.f;
@@ -63,7 +63,7 @@ TEST_CASE("Vector Scalar Multiplication") {
 		REQUIRE(v.z == Approx(1.5f).margin(EPSILON));
 	}
 
-	SECTION("Multiplying by zero gives zero vector") {
+	SECTION("Multiplying by zero gives zero Vector3f") {
 		auto result = v * 0.f;
 		REQUIRE(result.x == Approx(0.f).margin(EPSILON));
 		REQUIRE(result.y == Approx(0.f).margin(EPSILON));
@@ -78,8 +78,8 @@ TEST_CASE("Vector Scalar Multiplication") {
 	}
 
 	SECTION("Scalar multiplication is distributive") {
-		Vector a{ 1, 2, 3 };
-		Vector b{ 4, 5, 6 };
+		Vector3f a{ 1, 2, 3 };
+		Vector3f b{ 4, 5, 6 };
 		float s = 2.f;
 		auto left = (a + b) * s;
 		auto right = (a * s) + (b * s);
@@ -89,8 +89,8 @@ TEST_CASE("Vector Scalar Multiplication") {
 	}
 }
 
-TEST_CASE("Vector Unary Negation") {
-	Vector v{ 1, -2, 3 };
+TEST_CASE("Vector3f Unary Negation") {
+	Vector3f v{ 1, -2, 3 };
 
 	SECTION("Negation flips all signs") {
 		auto neg = -v;
@@ -99,7 +99,7 @@ TEST_CASE("Vector Unary Negation") {
 		REQUIRE(neg.z == Approx(-3.f).margin(EPSILON));
 	}
 
-	SECTION("Double negation returns original vector") {
+	SECTION("Double negation returns original Vector3f") {
 		auto neg = -(-v);
 		REQUIRE(neg.x == Approx(v.x).margin(EPSILON));
 		REQUIRE(neg.y == Approx(v.y).margin(EPSILON));
@@ -111,8 +111,8 @@ TEST_CASE("Vector Unary Negation") {
 		REQUIRE(v.length() == Approx(neg.length()).margin(EPSILON));
 	}
 
-	SECTION("Negating zero vector stays zero") {
-		Vector zero{ 0, 0, 0 };
+	SECTION("Negating zero Vector3f stays zero") {
+		Vector3f zero{ 0, 0, 0 };
 		auto neg = -zero;
 		REQUIRE(neg.x == 0.f);
 		REQUIRE(neg.y == 0.f);
@@ -120,7 +120,7 @@ TEST_CASE("Vector Unary Negation") {
 	}
 }
 
-TEST_CASE("Vector Length and Normalization") {
+TEST_CASE("Vector3f Length and Normalization") {
 	SECTION("Length of standard axes") {
 		REQUIRE(X_AXIS.length() == Approx(1.f).margin(EPSILON));
 		REQUIRE(Y_AXIS.length() == Approx(1.f).margin(EPSILON));
@@ -128,21 +128,21 @@ TEST_CASE("Vector Length and Normalization") {
 		REQUIRE(ZERO.length() == Approx(0.f).margin(EPSILON));
 	}
 
-	SECTION("Length of arbitrary vector") {
-		Vector v{ 3, 4, 0 };
+	SECTION("Length of arbitrary Vector3f") {
+		Vector3f v{ 3, 4, 0 };
 		REQUIRE(v.length() == Approx(5.f).margin(EPSILON));
 	}
 
-	SECTION("Normalize non-zero vector") {
-		Vector v{ 3, 4, 0 };
+	SECTION("Normalize non-zero Vector3f") {
+		Vector3f v{ 3, 4, 0 };
 		v.normalize();
 		REQUIRE(v.length() == Approx(1.f).margin(EPSILON));
 		REQUIRE(v.x == Approx(0.6f).margin(EPSILON));
 		REQUIRE(v.y == Approx(0.8f).margin(EPSILON));
 	}
 
-	SECTION("Normalize zero vector is no-op") {
-		Vector v{ 0, 0, 0 };
+	SECTION("Normalize zero Vector3f is no-op") {
+		Vector3f v{ 0, 0, 0 };
 		v.normalize();
 		REQUIRE(v.x == 0.f);
 		REQUIRE(v.y == 0.f);
@@ -150,9 +150,9 @@ TEST_CASE("Vector Length and Normalization") {
 	}
 
 	SECTION("Double normalization keeps same value") {
-		Vector v{ 1, 2, 3 };
+		Vector3f v{ 1, 2, 3 };
 		v.normalize();
-		Vector before = v;
+		Vector3f before = v;
 		v.normalize();
 		REQUIRE(v.x == Approx(before.x).margin(EPSILON));
 		REQUIRE(v.y == Approx(before.y).margin(EPSILON));
@@ -160,26 +160,26 @@ TEST_CASE("Vector Length and Normalization") {
 	}
 }
 
-TEST_CASE("Vector Dot Product") {
-	SECTION("Orthogonal vectors give 0") {
+TEST_CASE("Vector3f Dot Product") {
+	SECTION("Orthogonal Vector3fs give 0") {
 		REQUIRE(X_AXIS.dot(Y_AXIS) == Approx(0.f).margin(EPSILON));
 	}
 
-	SECTION("Parallel vectors give product of magnitudes") {
-		Vector v1{ 2, 0, 0 };
-		Vector v2{ 3, 0, 0 };
+	SECTION("Parallel Vector3fs give product of magnitudes") {
+		Vector3f v1{ 2, 0, 0 };
+		Vector3f v2{ 3, 0, 0 };
 		REQUIRE(v1.dot(v2) == Approx(6.f).margin(EPSILON));
 	}
 
-	SECTION("Opposite vectors give negative result") {
-		Vector v1{ 1, 0, 0 };
-		Vector v2{ -1, 0, 0 };
+	SECTION("Opposite Vector3fs give negative result") {
+		Vector3f v1{ 1, 0, 0 };
+		Vector3f v2{ -1, 0, 0 };
 		REQUIRE(v1.dot(v2) == Approx(-1.f).margin(EPSILON));
 	}
 }
 
-TEST_CASE("Vector Cross Product") {
-	SECTION("Cross product of orthogonal basis vectors") {
+TEST_CASE("Vector3f Cross Product") {
+	SECTION("Cross product of orthogonal basis Vector3fs") {
 		auto result = X_AXIS.cross(Y_AXIS);
 		REQUIRE(result.x == Approx(0.f).margin(EPSILON));
 		REQUIRE(result.y == Approx(0.f).margin(EPSILON));
@@ -191,33 +191,33 @@ TEST_CASE("Vector Cross Product") {
 		REQUIRE(Y_AXIS.cross(X_AXIS).z == Approx(-1.f).margin(EPSILON));
 	}
 
-	SECTION("Cross product of parallel vectors is zero") {
+	SECTION("Cross product of parallel Vector3fs is zero") {
 		auto result = X_AXIS.cross(X_AXIS);
 		REQUIRE(result.length() == Approx(0.f).margin(EPSILON));
 	}
 
 	SECTION("Result is orthogonal to both operands") {
-		Vector a{ 1, 2, 3 };
-		Vector b{ 4, 5, 6 };
-		Vector c = a.cross(b);
+		Vector3f a{ 1, 2, 3 };
+		Vector3f b{ 4, 5, 6 };
+		Vector3f c = a.cross(b);
 		REQUIRE(c.dot(a) == Approx(0.f).margin(EPSILON));
 		REQUIRE(c.dot(b) == Approx(0.f).margin(EPSILON));
 	}
 }
 
-TEST_CASE("Vector Normalization Check") {
-	SECTION("Normalized vector reports true") {
-		Vector v{ 1, 0, 0 };
+TEST_CASE("Vector3f Normalization Check") {
+	SECTION("Normalized Vector3f reports true") {
+		Vector3f v{ 1, 0, 0 };
 		REQUIRE(v.isNormalized());
 	}
 
-	SECTION("Non-normalized vector reports false") {
-		Vector v{ 2, 0, 0 };
+	SECTION("Non-normalized Vector3f reports false") {
+		Vector3f v{ 2, 0, 0 };
 		REQUIRE_FALSE(v.isNormalized());
 	}
 
 	SECTION("Normalized after normalize()") {
-		Vector v{ 123456, 6547849, 0 };
+		Vector3f v{ 123456, 6547849, 0 };
 		v.normalize();
 		REQUIRE(v.isNormalized());
 	}

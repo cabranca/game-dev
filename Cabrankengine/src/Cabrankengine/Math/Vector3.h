@@ -6,14 +6,15 @@ namespace cabrankengine::math {
 
 	constexpr float EPSILON = 1e-5f;
 
-	struct Vector {
-		float x, y, z;
+    template<typename T>
+	struct Vector3 {
+		T x, y, z;
 
-		constexpr Vector() : x(), y(), z() {}
+		constexpr Vector3() : x(), y(), z() {}
 
-		constexpr Vector(float uniform) : x(uniform), y(uniform), z(uniform) {}
+		constexpr Vector3(T uniform) : x(uniform), y(uniform), z(uniform) {}
 
-		constexpr Vector(float x, float y, float z) : x(x), y(y), z(z) {}
+		constexpr Vector3(T x, T y, T z) : x(x), y(y), z(z) {}
 
 		float length() const noexcept {
 			return sqrt(x * x + y * y + z * z);
@@ -34,54 +35,57 @@ namespace cabrankengine::math {
 			return result < EPSILON;
 		}
 
-		constexpr Vector operator+(const Vector& other) const noexcept {
+		constexpr Vector3 operator+(const Vector3& other) const noexcept {
 			return { x + other.x, y + other.y, z + other.z };
 		}
 
-		constexpr Vector& operator+=(const Vector& other) noexcept {
+		constexpr Vector3& operator+=(const Vector3& other) noexcept {
 			x += other.x;
 			y += other.y;
 			z += other.z;
 			return *this;
 		}
 
-		constexpr Vector operator-(const Vector& other) const noexcept {
+		constexpr Vector3 operator-(const Vector3& other) const noexcept {
 			return { x - other.x, y - other.y, z - other.z };
 		}
 
-		constexpr Vector& operator-=(const Vector& other) noexcept {
+		constexpr Vector3& operator-=(const Vector3& other) noexcept {
 			x -= other.x;
 			y -= other.y;
 			z -= other.z;
 			return *this;
 		}
 
-		constexpr Vector operator-() {
+		constexpr Vector3 operator-() {
 			return { -x, -y, -z };
 		}
 
-		constexpr Vector operator*(float scale) const noexcept {
+		constexpr Vector3 operator*(float scale) const noexcept {
 			return { x * scale, y * scale, z * scale };
 		}
 
-		constexpr Vector& operator*=(float scale) {
+		constexpr Vector3& operator*=(float scale) {
 			x *= scale;
 			y *= scale;
 			z *= scale;
 			return *this;
 		}
 
-		constexpr float dot(const Vector& other) const noexcept {
+		constexpr float dot(const Vector3& other) const noexcept {
 			return x * other.x + y * other.y + z * other.z;
 		}
 
-		constexpr Vector cross(const Vector& other) const noexcept {
-			Vector res{};
+		constexpr Vector3 cross(const Vector3& other) const noexcept {
+			Vector3 res{};
 			res.x = y * other.z - z * other.y;
 			res.y = z * other.x - x * other.z;
 			res.z = x * other.y - y * other.x;
 			return res;
 		}
 	};
+
+    using Vector3f = Vector3<float>;
+    using Vector3i = Vector3<int>;
 
 } // namespace cabrankengine::math
