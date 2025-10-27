@@ -10,13 +10,13 @@ namespace cabrankengine::math {
 	struct Vector3 {
 		T x, y, z;
 
-		constexpr Vector3() : x(), y(), z() {}
+		constexpr Vector3() noexcept : x(), y(), z() {}
 
-		constexpr Vector3(T uniform) : x(uniform), y(uniform), z(uniform) {}
+		explicit constexpr Vector3(T uniform) noexcept : x(uniform), y(uniform), z(uniform) {}
 
-		constexpr Vector3(T x, T y, T z) : x(x), y(y), z(z) {}
+		constexpr Vector3(T x, T y, T z) noexcept : x(x), y(y), z(z) {}
 
-		float length() const noexcept {
+		constexpr float length() const noexcept {
 			return sqrt(x * x + y * y + z * z);
 		}
 
@@ -30,7 +30,7 @@ namespace cabrankengine::math {
 			z /= length;
 		}
 
-		bool isNormalized() const noexcept {
+		constexpr bool isNormalized() const noexcept {
 			float result = abs(x * x + y * y + z * z - 1.f);
 			return result < EPSILON;
 		}
@@ -57,7 +57,7 @@ namespace cabrankengine::math {
 			return *this;
 		}
 
-		constexpr Vector3 operator-() {
+		constexpr Vector3 operator-() noexcept {
 			return { -x, -y, -z };
 		}
 
@@ -65,7 +65,7 @@ namespace cabrankengine::math {
 			return { x * scale, y * scale, z * scale };
 		}
 
-		constexpr Vector3& operator*=(float scale) {
+		constexpr Vector3& operator*=(float scale) noexcept {
 			x *= scale;
 			y *= scale;
 			z *= scale;
