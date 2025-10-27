@@ -1,10 +1,11 @@
 #pragma once
 
 #include <cmath>
+#include <algorithm>
+
+#include "Constants.h"
 
 namespace cabrankengine::math {
-
-	constexpr float EPSILON = 1e-5f;
 
 	struct Vector3 {
 		float x, y, z;
@@ -36,10 +37,6 @@ namespace cabrankengine::math {
 		constexpr Vector3 operator-() noexcept;
 		constexpr Vector3 operator*(float scale) const noexcept;
 		constexpr Vector3& operator*=(float scale) noexcept;
-
-		constexpr float dot(const Vector3& other) const noexcept;
-		constexpr Vector3 cross(const Vector3& other) const noexcept;
-		constexpr bool perpendicular(const Vector3& other) const noexcept;
 	};
 
     inline constexpr Vector3 Vector3::Right     { (1.f), (0.f), (0.f) };
@@ -119,20 +116,29 @@ namespace cabrankengine::math {
 		return *this;
 	}
 
-	constexpr float Vector3::dot(const Vector3& other) const noexcept {
-		return x * other.x + y * other.y + z * other.z;
+	constexpr float dot(const Vector3& a, const Vector3& b) noexcept {
+		return a.x * b.x + a.y * b.y + a.z * b.z;
 	}
 
-	constexpr Vector3 Vector3::cross(const Vector3& other) const noexcept {
+	constexpr Vector3 cross(const Vector3& a, const Vector3& b) noexcept {
 		Vector3 res{};
-		res.x = y * other.z - z * other.y;
-		res.y = z * other.x - x * other.z;
-		res.z = x * other.y - y * other.x;
+		res.x = a.y * b.z - a.z * b.y;
+		res.y = a.z * b.x - a.x * b.z;
+		res.z = a.x * b.y - a.y * b.x;
 		return res;
 	}
 
-	constexpr bool Vector3::perpendicular(const Vector3& other) const noexcept {
-		return dot(other) == 0;
+	constexpr bool perpendicular(const Vector3& a, const Vector3& b) noexcept {
+		return dot(a, b) == 0;
+	}
+
+    float angleBetween(const Vector3& a, const Vector3& b) noexcept {
+		float denom = a.length() * b.length();
+		if (denom == 0.f)
+			return 0.f;
+		float cosTheta = dot(a, b) / denom;
+		cosTheta = std::clamp(cosTheta, -1.f, 1.f);
+		return std::acos(cosTheta);
 	}
 
 } // namespace cabrankengine::math
