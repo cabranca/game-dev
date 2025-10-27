@@ -1,22 +1,31 @@
 #pragma once
 
 #include <cmath>
+#include <limits>
 
 namespace cabrankengine::math {
 
 	constexpr float EPSILON = 1e-5f;
 
-    template<typename T>
 	struct Vector3 {
-		T x, y, z;
+		float x, y, z;
+
+		static const Vector3 Right;
+		static const Vector3 Left;
+		static const Vector3 Up;
+		static const Vector3 Down;
+		static const Vector3 Forward;
+		static const Vector3 Backward;
+		static const Vector3 Zero;
+		static const Vector3 One;
 
 		constexpr Vector3() noexcept : x(), y(), z() {}
 
-		explicit constexpr Vector3(T uniform) noexcept : x(uniform), y(uniform), z(uniform) {}
+		explicit constexpr Vector3(float uniform) noexcept : x(uniform), y(uniform), z(uniform) {}
 
-		constexpr Vector3(T x, T y, T z) noexcept : x(x), y(y), z(z) {}
+		constexpr Vector3(float x, float y, float z) noexcept : x(x), y(y), z(z) {}
 
-		constexpr float length() const noexcept {
+		float length() const noexcept {
 			return sqrt(x * x + y * y + z * z);
 		}
 
@@ -30,7 +39,7 @@ namespace cabrankengine::math {
 			z /= length;
 		}
 
-		constexpr bool isNormalized() const noexcept {
+		bool isNormalized() const noexcept {
 			float result = abs(x * x + y * y + z * z - 1.f);
 			return result < EPSILON;
 		}
@@ -85,7 +94,13 @@ namespace cabrankengine::math {
 		}
 	};
 
-    using Vector3f = Vector3<float>;
-    using Vector3i = Vector3<int>;
+    inline constexpr Vector3 Vector3::Right     { (1.f), (0.f), (0.f) };
+	inline constexpr Vector3 Vector3::Left      { (-1.f), (0.f), (0.f) };
+	inline constexpr Vector3 Vector3::Up        { (0.f), (1.f), (0.f) };
+	inline constexpr Vector3 Vector3::Down      { (0.f), (-1.f), (0.f) };
+	inline constexpr Vector3 Vector3::Forward   { (0.f), (0.f), (-1.f) };
+	inline constexpr Vector3 Vector3::Backward  { (0.f), (0.f), (1.f) };
+	inline constexpr Vector3 Vector3::Zero      { (0.f) };
+	inline constexpr Vector3 Vector3::One       { (1.f) };
 
 } // namespace cabrankengine::math
