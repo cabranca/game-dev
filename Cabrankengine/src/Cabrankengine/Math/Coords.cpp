@@ -6,40 +6,40 @@
 using namespace glm;
 
 namespace cabrankengine::coords {
-    
-    vec2 viewportToNormalized(float x, float y) {
-        float windowWidth = Application::get().getWindow().getWidth();
-        float windowHeight = Application::get().getWindow().getHeight();
 
-        float normalizedX = (2.0f * x) / windowWidth - 1.f; 
-        float normalizedY = (-2.0f * y) / windowHeight + 1.f;
+	vec2 viewportToNormalized(float x, float y) {
+		float windowWidth = static_cast<float>(Application::get().getWindow().getWidth());
+		float windowHeight = static_cast<float>(Application::get().getWindow().getHeight());
 
-        return vec2(normalizedX, normalizedY);
-    }
+		float normalizedX = (2.0f * x) / windowWidth - 1.f;
+		float normalizedY = (-2.0f * y) / windowHeight + 1.f;
 
-    vec2 viewportToWorld(float x, float y, const OrthographicCameraController& cameraController) {
-        float windowWidth = Application::get().getWindow().getWidth();
-        float windowHeight = Application::get().getWindow().getHeight();
+		return { normalizedX, normalizedY };
+	}
 
-        vec3 cameraPos = cameraController.getCamera().getPosition();
-        float cameraZoom = cameraController.getZoomLevel();
+	vec2 viewportToWorld(float x, float y, const OrthographicCameraController& cameraController) {
+		float windowWidth = static_cast<float>(Application::get().getWindow().getWidth());
+		float windowHeight = static_cast<float>(Application::get().getWindow().getHeight());
 
-        float worldX = (x + cameraPos.x - windowWidth / 2.f) / cameraZoom;
-        float worldY = (-y + cameraPos.y + windowHeight / 2.f) / cameraZoom;
-        
-        return vec2(worldX, worldY);
-    }
+		vec3 cameraPos = cameraController.getCamera().getPosition();
+		float cameraZoom = cameraController.getZoomLevel();
 
-    vec2 worldToViewport(const vec3& pos, const OrthographicCameraController& cameraController) {
-        float windowWidth = Application::get().getWindow().getWidth();
-        float windowHeight = Application::get().getWindow().getHeight();
+		float worldX = (x + cameraPos.x - windowWidth / 2.f) / cameraZoom;
+		float worldY = (-y + cameraPos.y + windowHeight / 2.f) / cameraZoom;
 
-        vec3 cameraPos = cameraController.getCamera().getPosition();
-        float cameraZoom = cameraController.getZoomLevel();
+		return { worldX, worldY };
+	}
 
-        float viewportX = (pos.x - cameraPos.x + windowWidth / 2.f) * cameraZoom;
-        float viewportY = (-pos.y + cameraPos.y + windowHeight / 2.f) * cameraZoom;
+	vec2 worldToViewport(const vec3& pos, const OrthographicCameraController& cameraController) {
+		float windowWidth = static_cast<float>(Application::get().getWindow().getWidth());
+		float windowHeight = static_cast<float>(Application::get().getWindow().getHeight());
 
-        return vec2(viewportX, viewportY);
-    }
-}
+		vec3 cameraPos = cameraController.getCamera().getPosition();
+		float cameraZoom = cameraController.getZoomLevel();
+
+		float viewportX = (pos.x - cameraPos.x + windowWidth / 2.f) * cameraZoom;
+		float viewportY = (-pos.y + cameraPos.y + windowHeight / 2.f) * cameraZoom;
+
+		return { viewportX, viewportY };
+	}
+} // namespace cabrankengine::coords

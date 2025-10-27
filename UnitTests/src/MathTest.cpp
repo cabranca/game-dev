@@ -258,7 +258,7 @@ TEST_CASE("Vector3 Angle Between") {
 	}
 
 	SECTION("Perpendicular vectors have pi/2 radians between them") {
-		REQUIRE(angleBetween(Vector3::Right, Vector3::Up) == Approx(static_cast<float>(TWO_PI)).margin(EPSILON));
+		REQUIRE(angleBetween(Vector3::Right, Vector3::Up) == Approx(static_cast<float>(HALF_PI)).margin(EPSILON));
 	}
 
 	SECTION("Angle with zero vector returns 0") {
