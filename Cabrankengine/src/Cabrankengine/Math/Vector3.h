@@ -3,6 +3,8 @@
 #include <cmath>
 #include <algorithm>
 
+#include <Cabrankengine/Core/Logger.h>
+
 #include "Constants.h"
 
 namespace cabrankengine::math {
@@ -37,6 +39,7 @@ namespace cabrankengine::math {
 		constexpr Vector3 operator-() noexcept;
 		constexpr Vector3 operator*(float scale) const noexcept;
 		constexpr Vector3& operator*=(float scale) noexcept;
+		constexpr float& operator[](int index) noexcept;
 	};
 
     inline constexpr Vector3 Vector3::Right     { (1.f), (0.f), (0.f) };
@@ -114,6 +117,20 @@ namespace cabrankengine::math {
 		y *= scale;
 		z *= scale;
 		return *this;
+	}
+
+	constexpr float& Vector3::operator[](int index) noexcept {
+        switch (index) {
+		    case 0:
+			    return x;
+		    case 1:
+			    return y;
+		    case 2:
+			    return z;
+		    default:
+			    CE_CORE_ERROR("Trying to acces a Vector with invalid index!");
+			    return x; // This must be handled in other way
+        }
 	}
 
 	constexpr float dot(const Vector3& a, const Vector3& b) noexcept {
