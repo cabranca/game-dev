@@ -18,9 +18,10 @@ namespace cabrankengine::math {
 		static const float Rows;
 		static const float Columns;
 
-		static constexpr Mat4 translate(const Vector3& vec) noexcept;
 		static constexpr Mat4 scale(float uniform) noexcept;
 		static constexpr Mat4 scale(const Vector3& vec) noexcept;
+		static constexpr Mat4 rotate(const Vector3& vec) noexcept;
+        static constexpr Mat4 translate(const Vector3& vec) noexcept;
 		constexpr Mat4 transpose() const noexcept;
 
 		constexpr Mat4() noexcept
@@ -54,15 +55,6 @@ namespace cabrankengine::math {
 	inline constexpr float Mat4::Rows{ 4 };
 	inline constexpr float Mat4::Columns{ 3 };
 
-    inline constexpr Mat4 Mat4::translate(const Vector3& vec) noexcept {
-		return {
-             0.f,   0.f,   0.f,
-             0.f,   0.f,   0.f,
-             0.f,   0.f,   0.f,
-            vec.x, vec.y, vec.z
-        };
-    }
-
     inline constexpr Mat4 Mat4::scale(float uniform) noexcept {
 		return {
             uniform,   0.f,     0.f,
@@ -78,6 +70,49 @@ namespace cabrankengine::math {
              0.f,  vec.y,  0.f,
              0.f,   0.f,  vec.z,
              0.f,   0.f,   0.f
+        };
+	}
+
+    inline constexpr Mat4 Mat4::rotate(const Vector3& vec) noexcept {
+		return {};
+    }
+
+    inline constexpr Mat4 rotateX(float angle) noexcept {
+		float angleInRadians = angle * PI / 180.f;
+		return {
+            1.f, 0.f, 0.f,
+            0.f, cos(angleInRadians), sin(angleInRadians),
+            0.f, -sin(angleInRadians), cos(angleInRadians),
+            0.f, 0.f, 0.f
+        };
+	}
+
+    inline constexpr Mat4 rotateY(float angle) noexcept {
+		float angleInRadians = angle * PI / 180.f;
+		return {
+            cos(angleInRadians), 0.f, -sin(angleInRadians),
+			0.f, 1.f, 0.f,
+			sin(angleInRadians), 0.f, cos(angleInRadians),
+            0.f, 0.f, 0.f
+		};
+	}
+
+    inline constexpr Mat4 rotateZ(float angle) noexcept {
+		float angleInRadians = angle * PI / 180.f;
+		return {
+            cos(angleInRadians), sin(angleInRadians), 0.f,
+			-sin(angleInRadians), cos(angleInRadians), 0.f,
+			0.f, 0.f, 1.f,
+			0.f, 0.f, 0.f
+		};
+	}
+
+	inline constexpr Mat4 Mat4::translate(const Vector3& vec) noexcept {
+		return {
+            0.f, 0.f, 0.f,
+            0.f, 0.f, 0.f,
+            0.f, 0.f, 0.f,
+            vec.x, vec.y, vec.z
         };
 	}
 
