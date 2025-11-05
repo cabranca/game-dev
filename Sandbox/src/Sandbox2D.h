@@ -31,6 +31,4 @@ class Sandbox2D : public cabrankengine::Layer {
 
 		cabrankengine::Registry* m_Registry;
 		uint32_t m_Player;
-
-		cabrankengine::TextRendererRaw* m_TextRenderer;
 };

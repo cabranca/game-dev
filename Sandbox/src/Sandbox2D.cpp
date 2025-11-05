@@ -8,7 +8,7 @@
 #include <Cabrankengine/Core/AudioEngine.h>
 #include <Cabrankengine/Debug/Instrumentator.h>
 #include <Cabrankengine/ECS/ECS.h>
-#include <Cabrankengine/Renderer/TextRendererRaw.h>
+#include <Cabrankengine/Renderer/TextRenderer.h>
 #include <Platform/OpenGL/OpenGLShader.h>
 
 using namespace cabrankengine;
@@ -50,15 +50,11 @@ void Sandbox2D::onAttach() {
 
 	m_Player = m_Registry->createEntity();
 	m_Registry->addComponent<CTransform>(m_Player, { {0,0,0}, {0,0,0}, {1,1,1} });
-
-	m_TextRenderer = new TextRendererRaw(1600, 900);
-	m_TextRenderer->load("assets/fonts/ocraext.TTF", 24);
 }
 
 void Sandbox2D::onDetach() {
 	CE_PROFILE_FUNCTION();
 	delete m_Registry;
-	delete m_TextRenderer;
 }
 
 void Sandbox2D::onUpdate(cabrankengine::Timestep delta) {
@@ -101,18 +97,16 @@ void Sandbox2D::onUpdate(cabrankengine::Timestep delta) {
 		//Renderer2D::endScene();
 
 		Renderer2D::beginScene(m_CameraController.getCamera());
-		/*for (float y = -360.f; y < 360.f; y += 36.f) {
+		for (float y = -360.f; y < 360.f; y += 36.f) {
 			for (float x = -360.f; x < 360.f; x += 36.f) {
 				glm::vec4 color = { m_SquareColor };
 				Renderer2D::drawQuad({ x, y }, { 30.f, 30.f }, color);
 			}
-		}*/
+		}
 
 		auto transform = m_Registry->getComponent<CTransform>(m_Player).value();
 		Renderer2D::drawQuad(transform->Position, { 100.0f, 100.0f }, m_SquareColor);
 		Renderer2D::endScene();
-
-		m_TextRenderer->renderText("ESTO ES UN TEXTO DE PRUEBA", 320.0f, static_cast<float>(450) - 20.0f, 1.0f, vec3(0.0f, 1.0f, 0.0f));
 	}
 }
 
