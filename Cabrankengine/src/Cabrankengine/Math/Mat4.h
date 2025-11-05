@@ -25,7 +25,8 @@ namespace cabrankengine::math {
 		constexpr Mat4 transpose() const noexcept;
 
 		constexpr Mat4() noexcept
-            : elements{
+            : elements {
+                Vector3(),
                 Vector3(),
                 Vector3(),
                 Vector3()
