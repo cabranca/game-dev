@@ -267,13 +267,171 @@ TEST_CASE("Vector3 Angle Between") {
 }
 
 // ====================================================
-// Matrix 4x4
+// Mat4 Constructors and Constants
 // ====================================================
-TEST_CASE("Mat4 product") {
+TEST_CASE("Mat4 Constructors and Constants") {
+	SECTION("Default constructor initializes to zeros") {
+		Mat4 m{};
+		for (const auto& row: m.elements)
+			REQUIRE(row == Vector3{ 0, 0, 0 });
+	}
+
+	SECTION("Identity matrix matches expected pattern") {
+		const auto& I = Mat4::Identity;
+		REQUIRE(I.elements[0] == Vector3{ 1, 0, 0 });
+		REQUIRE(I.elements[1] == Vector3{ 0, 1, 0 });
+		REQUIRE(I.elements[2] == Vector3{ 0, 0, 1 });
+		REQUIRE(I.elements[3] == Vector3{ 0, 0, 0 });
+	}
+
+	SECTION("Zero matrix has all zeros") {
+		const auto& Z = Mat4::Zero;
+		for (const auto& row: Z.elements)
+			REQUIRE(row == Vector3{ 0, 0, 0 });
+	}
+}
+
+// ====================================================
+// Equality and Inequality
+// ====================================================
+TEST_CASE("Mat4 Equality and Inequality") {
+	Mat4 A{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+	Mat4 B{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+	Mat4 C{ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
+
+	SECTION("Identical matrices are equal") {
+		REQUIRE(A == B);
+		REQUIRE_FALSE(A != B);
+	}
+
+	SECTION("Different matrices are not equal") {
+		REQUIRE(A != C);
+		REQUIRE_FALSE(A == C);
+	}
+}
+
+// ====================================================
+// Scale
+// ====================================================
+TEST_CASE("Mat4 Scaling") {
+	SECTION("Uniform scale produces diagonal matrix") {
+		Mat4 s = scale(2.f);
+		REQUIRE(s.elements[0] == Vector3{ 2, 0, 0 });
+		REQUIRE(s.elements[1] == Vector3{ 0, 2, 0 });
+		REQUIRE(s.elements[2] == Vector3{ 0, 0, 2 });
+		REQUIRE(s.elements[3] == Vector3{ 0, 0, 0 });
+	}
+
+	SECTION("Non-uniform scale uses vector components") {
+		Vector3 v{ 2, 3, 4 };
+		Mat4 s = scale(v);
+		REQUIRE(s.elements[0] == Vector3{ 2, 0, 0 });
+		REQUIRE(s.elements[1] == Vector3{ 0, 3, 0 });
+		REQUIRE(s.elements[2] == Vector3{ 0, 0, 4 });
+	}
+}
+
+// ====================================================
+// Translation
+// ====================================================
+TEST_CASE("Mat4 Translation") {
+	Vector3 t{ 10, 20, 30 };
+	Mat4 m = translate(t);
+
+	SECTION("Translation appears in last row") {
+		REQUIRE(m.elements[3] == t);
+	}
+
+	SECTION("All other rows are zero") {
+		REQUIRE(m.elements[0] == Vector3{ 0, 0, 0 });
+		REQUIRE(m.elements[1] == Vector3{ 0, 0, 0 });
+		REQUIRE(m.elements[2] == Vector3{ 0, 0, 0 });
+	}
+}
+
+// ====================================================
+// Rotation around single axes
+// ====================================================
+TEST_CASE("Mat4 Rotation around single axes") {
+	SECTION("Rotation X 90° swaps Y and Z with sign") {
+		Mat4 rx = rotateX(90.f);
+		REQUIRE(rx.elements[1].y == Approx(0.f).margin(EPSILON));
+		REQUIRE(rx.elements[1].z == Approx(1.f).margin(EPSILON));
+		REQUIRE(rx.elements[2].y == Approx(-1.f).margin(EPSILON));
+		REQUIRE(rx.elements[2].z == Approx(0.f).margin(EPSILON));
+	}
+
+	SECTION("Rotation Y 90° swaps X and Z") {
+		Mat4 ry = rotateY(90.f);
+		REQUIRE(ry.elements[0].x == Approx(0.f).margin(EPSILON));
+		REQUIRE(ry.elements[0].z == Approx(-1.f).margin(EPSILON));
+		REQUIRE(ry.elements[2].x == Approx(1.f).margin(EPSILON));
+		REQUIRE(ry.elements[2].z == Approx(0.f).margin(EPSILON));
+	}
+
+	SECTION("Rotation Z 90° swaps X and Y") {
+		Mat4 rz = rotateZ(90.f);
+		REQUIRE(rz.elements[0].x == Approx(0.f).margin(EPSILON));
+		REQUIRE(rz.elements[0].y == Approx(1.f).margin(EPSILON));
+		REQUIRE(rz.elements[1].x == Approx(-1.f).margin(EPSILON));
+		REQUIRE(rz.elements[1].y == Approx(0.f).margin(EPSILON));
+	}
+}
+
+// ====================================================
+// Combined Rotation (Euler)
+// ====================================================
+TEST_CASE("Mat4 Combined Euler Rotation") {
+	SECTION("Zero rotation returns Identity") {
+		Vector3 zeroAngles{ 0, 0, 0 };
+		Mat4 r = rotate(zeroAngles);
+		REQUIRE(r == Mat4::Identity);
+	}
+
+	SECTION("Composite rotation behaves like composition") {
+		Vector3 euler{ 90.f, 0.f, 0.f };
+		Mat4 composed = rotate(euler);
+		Mat4 manual = rotateZ(euler.z) * rotateY(euler.y) * rotateX(euler.x);
+		REQUIRE(composed == manual);
+	}
+}
+
+// ====================================================
+// Transpose
+// ====================================================
+TEST_CASE("Mat4 Transpose") {
+	Mat4 m{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0, 0 };
+	Mat4 t = m.transpose();
+
+	SECTION("Transposed swaps rows and columns of top 3x3") {
+		REQUIRE(t.elements[0] == Vector3{ 1, 4, 7 });
+		REQUIRE(t.elements[1] == Vector3{ 2, 5, 8 });
+		REQUIRE(t.elements[2] == Vector3{ 3, 6, 9 });
+	}
+
+	SECTION("Translation row resets to zero") {
+		REQUIRE(t.elements[3] == Vector3{ 0, 0, 0 });
+	}
+}
+
+// ====================================================
+// Matrix Product
+// ====================================================
+TEST_CASE("Mat4 Product") {
 	Mat4 A{ 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1 };
 	Mat4 B{ 2, 2, 2, 1, 1, 1, 3, 3, 3, 0, 0, 0 };
-
 	Mat4 expected{ 11, 11, 11, 7, 7, 7, 11, 11, 11, 7, 7, 7 };
 	Mat4 prod = A * B;
-	REQUIRE(prod == expected);
+
+	SECTION("Product matches expected values") {
+		REQUIRE(prod == expected);
+	}
+
+	SECTION("Multiplying by Identity returns same matrix") {
+		REQUIRE((A * Mat4::Identity) == A);
+	}
+
+	SECTION("Multiplying Identity by any matrix returns same matrix") {
+		REQUIRE((Mat4::Identity * A) == A);
+	}
 }

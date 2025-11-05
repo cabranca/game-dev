@@ -18,12 +18,6 @@ namespace cabrankengine::math {
 		static const int Rows;
 		static const int Columns;
 
-		static constexpr Mat4 scale(float uniform) noexcept;
-		static constexpr Mat4 scale(const Vector3& vec) noexcept;
-		static constexpr Mat4 rotate(const Vector3& vec) noexcept;
-        static constexpr Mat4 translate(const Vector3& vec) noexcept;
-		constexpr Mat4 transpose() const noexcept;
-
 		constexpr Mat4() noexcept
             : elements {
                 Vector3(),
@@ -44,7 +38,17 @@ namespace cabrankengine::math {
 		constexpr bool operator==(const Mat4& other) const noexcept;
 		constexpr bool operator!=(const Mat4& other) const noexcept;
 		constexpr Mat4 operator*(const Mat4& other) const noexcept;
+		constexpr Mat4 transpose() const noexcept;
 	};
+
+    constexpr Mat4 scale(float uniform) noexcept;
+	constexpr Mat4 scale(const Vector3&) noexcept;
+	constexpr Mat4 translate(const Vector3&) noexcept;
+	Mat4 rotateX(float angle) noexcept;
+	Mat4 rotateY(float angle) noexcept;
+	Mat4 rotateZ(float angle) noexcept;
+	Mat4 rotate(const Vector3& euler) noexcept;
+
 
 	inline constexpr Mat4 Mat4::Zero{};
 	inline constexpr Mat4 Mat4::Identity {
@@ -56,7 +60,39 @@ namespace cabrankengine::math {
 	inline constexpr int Mat4::Rows{ 4 };
 	inline constexpr int Mat4::Columns{ 3 };
 
-    inline constexpr Mat4 Mat4::scale(float uniform) noexcept {
+    constexpr bool Mat4::operator==(const Mat4& other) const noexcept {
+		return elements == other.elements;
+	}
+
+	constexpr bool Mat4::operator!=(const Mat4& other) const noexcept {
+		return elements != other.elements;
+	}
+
+	// Multiplies two affine 4x4 matrices stored as 4x3 (last column implicitly [0 0 0 1]).
+	constexpr Mat4 Mat4::operator*(const Mat4& other) const noexcept {
+		Mat4 transposed = other.transpose();
+		Mat4 res{};
+		// Rotational part
+		for (int i = 0; i < 3; ++i) {
+			for (int j = 0; j < 3; ++j)
+				res.elements[i][j] = dot(elements[i], transposed.elements[j]);
+		}
+
+		// Translation part (4th row)
+		res.elements[3].x = dot(elements[3], transposed.elements[0]) + other.elements[3].x;
+		res.elements[3].y = dot(elements[3], transposed.elements[1]) + other.elements[3].y;
+		res.elements[3].z = dot(elements[3], transposed.elements[2]) + other.elements[3].z;
+		return res;
+	}
+
+    // Transpose only the upper 3x3 rotation part.
+	// Translation is reset to zero.
+	inline constexpr Mat4 Mat4::transpose() const noexcept {
+		auto& e = elements;
+		return { e[0].x, e[1].x, e[2].x, e[0].y, e[1].y, e[2].y, e[0].z, e[1].z, e[2].z, 0.f, 0.f, 0.f };
+	}
+
+    inline constexpr Mat4 scale(float uniform) noexcept {
 		return {
             uniform,   0.f,     0.f,
               0.f,   uniform,   0.f,
@@ -65,7 +101,7 @@ namespace cabrankengine::math {
         };
 	}
 
-    inline constexpr Mat4 Mat4::scale(const Vector3& vec) noexcept {
+    inline constexpr Mat4 scale(const Vector3& vec) noexcept {
 		return {
             vec.x,  0.f,   0.f,
              0.f,  vec.y,  0.f,
@@ -74,7 +110,16 @@ namespace cabrankengine::math {
         };
 	}
 
-    inline constexpr Mat4 Mat4::rotate(const Vector3& euler) noexcept {
+	inline constexpr Mat4 translate(const Vector3& vec) noexcept {
+		return {
+            0.f, 0.f, 0.f,
+            0.f, 0.f, 0.f,
+            0.f, 0.f, 0.f,
+            vec.x, vec.y, vec.z
+        };
+	}
+
+    inline Mat4 rotate(const Vector3& euler) noexcept {
 		Mat4 rx = rotateX(euler.x);
 		Mat4 ry = rotateY(euler.y);
 		Mat4 rz = rotateZ(euler.z);
@@ -111,46 +156,4 @@ namespace cabrankengine::math {
 			0.f, 0.f, 0.f
 		};
 	}
-
-	inline constexpr Mat4 Mat4::translate(const Vector3& vec) noexcept {
-		return {
-            0.f, 0.f, 0.f,
-            0.f, 0.f, 0.f,
-            0.f, 0.f, 0.f,
-            vec.x, vec.y, vec.z
-        };
-	}
-
-    // Transpose only the upper 3x3 rotation part.
-	// Translation is reset to zero.
-    inline constexpr Mat4 Mat4::transpose() const noexcept {
-		auto& e = elements;
-		return {
-            e[0].x, e[1].x, e[2].x,
-            e[0].y, e[1].y, e[2].y,
-            e[0].z, e[1].z, e[2].z,
-            0.f, 0.f, 0.f
-        };
-    }
-
-	constexpr bool Mat4::operator==(const Mat4& other) const noexcept {
-		return elements == other.elements;
-	}
-
-	constexpr bool Mat4::operator!=(const Mat4& other) const noexcept {
-		return elements != other.elements;
-	}
-
-    // Multiplies two affine 4x4 matrices stored as 4x3 (last column implicitly [0 0 0 1]).
-    constexpr Mat4 Mat4::operator*(const Mat4& other) const noexcept {
-		Mat4 transposed = other.transpose();
-		Mat4 res{};
-		for (int i = 0; i < Rows; i++) {
-            for (int j = 0; j < Columns; j++) {
-				res.elements[i][j] = dot(elements[i], transposed.elements[j]);
-            }
-        }
-		return res;
-    }
-
 } // namespace cabrankengine::math
