@@ -1,5 +1,5 @@
 #include <catch.hpp>
-#include <Cabrankengine/Math/Mat4.h>
+#include <Cabrankengine/Math/MatrixFactory.h>
 
 using namespace cabrankengine::math;
 
@@ -277,7 +277,7 @@ TEST_CASE("Mat4 Constructors and Constants") {
 	}
 
 	SECTION("Identity matrix matches expected pattern") {
-		const auto& I = Mat4::Identity;
+		const auto& I = identityMat();
 		REQUIRE(I.elements[0] == Vector3{ 1, 0, 0 });
 		REQUIRE(I.elements[1] == Vector3{ 0, 1, 0 });
 		REQUIRE(I.elements[2] == Vector3{ 0, 0, 1 });
@@ -285,7 +285,7 @@ TEST_CASE("Mat4 Constructors and Constants") {
 	}
 
 	SECTION("Zero matrix has all zeros") {
-		const auto& Z = Mat4::Zero;
+		const auto& Z = zeroMat();
 		for (const auto& row: Z.elements)
 			REQUIRE(row == Vector3{ 0, 0, 0 });
 	}
@@ -385,7 +385,7 @@ TEST_CASE("Mat4 Combined Euler Rotation") {
 	SECTION("Zero rotation returns Identity") {
 		Vector3 zeroAngles{ 0, 0, 0 };
 		Mat4 r = rotate(zeroAngles);
-		REQUIRE(r == Mat4::Identity);
+		REQUIRE(r == identityMat());
 	}
 
 	SECTION("Composite rotation behaves like composition") {
@@ -428,10 +428,10 @@ TEST_CASE("Mat4 Product") {
 	}
 
 	SECTION("Multiplying by Identity returns same matrix") {
-		REQUIRE((A * Mat4::Identity) == A);
+		REQUIRE((A * identityMat()) == A);
 	}
 
 	SECTION("Multiplying Identity by any matrix returns same matrix") {
-		REQUIRE((Mat4::Identity * A) == A);
+		REQUIRE((identityMat() * A) == A);
 	}
 }
