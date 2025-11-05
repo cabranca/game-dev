@@ -2,6 +2,11 @@
 
 #include <Cabrankengine.h>
 
+namespace cabrankengine {
+	class Registry;
+	class TextRendererRaw;
+}
+
 class Sandbox2D : public cabrankengine::Layer {
 	public:
 		Sandbox2D();
@@ -23,4 +28,9 @@ class Sandbox2D : public cabrankengine::Layer {
 
 		glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
 		glm::vec4 m_SquareColorVariant = { 0.8f, 0.3f, 0.2f, 1.0f };
+
+		cabrankengine::Registry* m_Registry;
+		uint32_t m_Player;
+
+		cabrankengine::TextRendererRaw* m_TextRenderer;
 };

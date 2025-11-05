@@ -1,5 +1,5 @@
 #include <catch.hpp>
-#include <Cabrankengine/Math/Vector3.h>
+#include <Cabrankengine/Math/Mat4.h>
 
 using namespace cabrankengine::math;
 
@@ -264,4 +264,16 @@ TEST_CASE("Vector3 Angle Between") {
 	SECTION("Angle with zero vector returns 0") {
 		REQUIRE(angleBetween(Vector3::Zero, Vector3::Right) == Approx(0.f).margin(EPSILON));
 	}
+}
+
+// ====================================================
+// Matrix 4x4
+// ====================================================
+TEST_CASE("Mat4 product") {
+	Mat4 A{ 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1 };
+	Mat4 B{ 2, 2, 2, 1, 1, 1, 3, 3, 3, 0, 0, 0 };
+
+	Mat4 expected{ 11, 11, 11, 7, 7, 7, 11, 11, 11, 7, 7, 7 };
+	Mat4 prod = A * B;
+	REQUIRE(prod == expected);
 }

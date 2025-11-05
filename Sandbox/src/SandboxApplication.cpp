@@ -10,15 +10,15 @@
 #include <imgui.h>
 #include <Cabrankengine/Renderer/Texture.h>
 #include "Sandbox2D.h"
-#include <Cabrankengine/Renderer/TextRenderer.h>
+#include <Cabrankengine/Renderer/TextRendererRaw.h>
 
 class ExampleLayer : public cabrankengine::Layer {
 public:
 	ExampleLayer() : Layer("Example") {
 		
 
-		m_TextRenderer = new cabrankengine::TextRenderer(2560, 1440);
-		m_TextRenderer->load("assets/fonts/ocraext.ttf", 12);
+		m_TextRenderer = new cabrankengine::TextRendererRaw(1600, 900);
+		m_TextRenderer->load("assets/fonts/ocraext.ttf", 24);
 	}
 	
 	void onUpdate(cabrankengine::Timestep delta) override {
@@ -26,11 +26,11 @@ public:
 		cabrankengine::RenderCommand::setClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
 		cabrankengine::RenderCommand::clear();
 
-		m_TextRenderer->renderText("ESTO ES UN TEXTO DE PRUEBA", 100.0f, 100.0f, 10.f, glm::vec3(1.0f, 1.0f, 1.0f));
+		m_TextRenderer->renderText("ESTO ES UN TEXTO DE PRUEBA", 320.0f, 450.0f, 1.f, glm::vec3(0.0f, 1.0f, 1.0f));
 	}	
 
 private:
-	cabrankengine::TextRenderer* m_TextRenderer;
+	cabrankengine::TextRendererRaw* m_TextRenderer;
 };
 
 class Sandbox : public cabrankengine::Application {
