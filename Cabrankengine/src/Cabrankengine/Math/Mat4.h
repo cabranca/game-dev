@@ -78,7 +78,7 @@ namespace cabrankengine::math {
 		return {};
     }
 
-    inline constexpr Mat4 rotateX(float angle) noexcept {
+    inline Mat4 rotateX(float angle) noexcept {
 		float angleInRadians = angle * PI / 180.f;
 		return {
             1.f, 0.f, 0.f,
@@ -88,7 +88,7 @@ namespace cabrankengine::math {
         };
 	}
 
-    inline constexpr Mat4 rotateY(float angle) noexcept {
+    inline Mat4 rotateY(float angle) noexcept {
 		float angleInRadians = angle * PI / 180.f;
 		return {
             cos(angleInRadians), 0.f, -sin(angleInRadians),
@@ -98,7 +98,7 @@ namespace cabrankengine::math {
 		};
 	}
 
-    inline constexpr Mat4 rotateZ(float angle) noexcept {
+    inline Mat4 rotateZ(float angle) noexcept {
 		float angleInRadians = angle * PI / 180.f;
 		return {
             cos(angleInRadians), sin(angleInRadians), 0.f,
