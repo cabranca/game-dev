@@ -4,19 +4,23 @@
 
 namespace cabrankengine::math {
 
-	inline constexpr Mat4 zeroMat() {
+    constexpr Mat4 zeroMat() noexcept;
+	constexpr Mat4 identityMat() noexcept;
+    constexpr Mat4 scale(float uniform) noexcept;
+	constexpr Mat4 scale(const Vector3&) noexcept;
+	constexpr Mat4 translate(const Vector3&) noexcept;
+	Mat4 rotateX(float angle) noexcept;
+	Mat4 rotateY(float angle) noexcept;
+	Mat4 rotateZ(float angle) noexcept;
+	Mat4 rotate(const Vector3& euler) noexcept;
+	Mat4 ortho(float left, float right, float bottom, float top, float nearZ, float farZ) noexcept;
+
+	inline constexpr Mat4 zeroMat() noexcept {
 		return {};
 	}
 
-	inline constexpr Mat4 identityMat() {
+	inline constexpr Mat4 identityMat() noexcept {
 		return { 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f };
-	}
-
-	// Transpose only the upper 3x3 rotation part.
-	// Translation is reset to zero.
-	inline constexpr Mat4 Mat4::transpose() const noexcept {
-		auto& e = elements;
-		return { e[0].x, e[1].x, e[2].x, e[0].y, e[1].y, e[2].y, e[0].z, e[1].z, e[2].z, 0.f, 0.f, 0.f };
 	}
 
 	inline constexpr Mat4 scale(float uniform) noexcept {
@@ -31,15 +35,7 @@ namespace cabrankengine::math {
 		return { 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, vec.x, vec.y, vec.z };
 	}
 
-	inline Mat4 rotate(const Vector3& euler) noexcept {
-		Mat4 rx = rotateX(euler.x);
-		Mat4 ry = rotateY(euler.y);
-		Mat4 rz = rotateZ(euler.z);
-
-		return rz * ry * rx;
-	}
-
-	inline Mat4 rotateX(float angle) noexcept {
+    inline Mat4 rotateX(float angle) noexcept {
 		float angleInRadians = angle * PI / 180.f;
 		return {
 			1.f, 0.f, 0.f, 0.f, cos(angleInRadians), sin(angleInRadians), 0.f, -sin(angleInRadians), cos(angleInRadians), 0.f, 0.f, 0.f
@@ -58,6 +54,14 @@ namespace cabrankengine::math {
 		return {
 			cos(angleInRadians), sin(angleInRadians), 0.f, -sin(angleInRadians), cos(angleInRadians), 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f
 		};
+	}
+
+	inline Mat4 rotate(const Vector3& euler) noexcept {
+		Mat4 rx = rotateX(euler.x);
+		Mat4 ry = rotateY(euler.y);
+		Mat4 rz = rotateZ(euler.z);
+
+		return rz * ry * rx;
 	}
 
 	inline Mat4 ortho(float left, float right, float bottom, float top, float nearZ, float farZ) noexcept {

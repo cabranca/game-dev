@@ -60,4 +60,11 @@ namespace cabrankengine::math {
 		res.elements[3].z = dot(elements[3], transposed.elements[2]) + other.elements[3].z;
 		return res;
 	}
+
+    // Transpose only the upper 3x3 rotation part.
+	// Translation is reset to zero.
+	inline constexpr Mat4 Mat4::transpose() const noexcept {
+		auto& e = elements;
+		return { e[0].x, e[1].x, e[2].x, e[0].y, e[1].y, e[2].y, e[0].z, e[1].z, e[2].z, 0.f, 0.f, 0.f };
+	}
 } // namespace cabrankengine::math
