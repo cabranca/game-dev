@@ -15,8 +15,8 @@ namespace cabrankengine::math {
 
 		static const Mat4 Zero;
 		static const Mat4 Identity;
-		static const float Rows;
-		static const float Columns;
+		static const int Rows;
+		static const int Columns;
 
 		static constexpr Mat4 scale(float uniform) noexcept;
 		static constexpr Mat4 scale(const Vector3& vec) noexcept;
@@ -53,8 +53,8 @@ namespace cabrankengine::math {
         0.f, 0.f, 1.f,
         0.f, 0.f, 0.f
     };
-	inline constexpr float Mat4::Rows{ 4 };
-	inline constexpr float Mat4::Columns{ 3 };
+	inline constexpr int Mat4::Rows{ 4 };
+	inline constexpr int Mat4::Columns{ 3 };
 
     inline constexpr Mat4 Mat4::scale(float uniform) noexcept {
 		return {
