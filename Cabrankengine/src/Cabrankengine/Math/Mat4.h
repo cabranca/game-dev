@@ -74,8 +74,12 @@ namespace cabrankengine::math {
         };
 	}
 
-    inline constexpr Mat4 Mat4::rotate(const Vector3& vec) noexcept {
-		return {};
+    inline constexpr Mat4 Mat4::rotate(const Vector3& euler) noexcept {
+		Mat4 rx = rotateX(euler.x);
+		Mat4 ry = rotateY(euler.y);
+		Mat4 rz = rotateZ(euler.z);
+
+		return rz * ry * rx;
     }
 
     inline Mat4 rotateX(float angle) noexcept {
@@ -117,6 +121,8 @@ namespace cabrankengine::math {
         };
 	}
 
+    // Transpose only the upper 3x3 rotation part.
+	// Translation is reset to zero.
     inline constexpr Mat4 Mat4::transpose() const noexcept {
 		auto& e = elements;
 		return {
@@ -135,6 +141,7 @@ namespace cabrankengine::math {
 		return elements != other.elements;
 	}
 
+    // Multiplies two affine 4x4 matrices stored as 4x3 (last column implicitly [0 0 0 1]).
     constexpr Mat4 Mat4::operator*(const Mat4& other) const noexcept {
 		Mat4 transposed = other.transpose();
 		Mat4 res{};
