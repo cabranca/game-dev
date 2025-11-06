@@ -91,7 +91,7 @@ namespace cabrankengine {
         FT_Done_FreeType(ft);
     }
 
-    void TextRenderer::renderText(const std::string& text, float x, float y, float scale, vec3 color)
+    void TextRenderer::renderText(const std::string& text, float x, float y, float scale, const Vector3& color)
     {
          // activate corresponding render state	
          m_TextShader->bind();

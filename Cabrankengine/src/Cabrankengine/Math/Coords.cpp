@@ -1,17 +1,13 @@
 #include "Coords.h"
 
-#include <glm/glm.hpp>
-
 #include <Cabrankengine/Core/Application.h>
 #include <Cabrankengine/Core/Window.h>
 
 #include "Vector3.h"
 
-using namespace glm;
-
 namespace cabrankengine::math {
 
-	vec2 viewportToNormalized(float x, float y) {
+	glm::vec2 viewportToNormalized(float x, float y) {
 		float windowWidth = static_cast<float>(Application::get().getWindow().getWidth());
 		float windowHeight = static_cast<float>(Application::get().getWindow().getHeight());
 
@@ -21,7 +17,7 @@ namespace cabrankengine::math {
 		return { normalizedX, normalizedY };
 	}
 
-	vec2 viewportToWorld(float x, float y, const OrthographicCameraController& cameraController) {
+	glm::vec2 viewportToWorld(float x, float y, const OrthographicCameraController& cameraController) {
 		float windowWidth = static_cast<float>(Application::get().getWindow().getWidth());
 		float windowHeight = static_cast<float>(Application::get().getWindow().getHeight());
 
@@ -34,7 +30,7 @@ namespace cabrankengine::math {
 		return { worldX, worldY };
 	}
 
-	vec2 worldToViewport(const vec3& pos, const OrthographicCameraController& cameraController) {
+	glm::vec2 worldToViewport(const Vector3& pos, const OrthographicCameraController& cameraController) {
 		float windowWidth = static_cast<float>(Application::get().getWindow().getWidth());
 		float windowHeight = static_cast<float>(Application::get().getWindow().getHeight());
 
@@ -46,4 +42,4 @@ namespace cabrankengine::math {
 
 		return { viewportX, viewportY };
 	}
-} // namespace cabrankengine::coords
+} // namespace cabrankengine::math

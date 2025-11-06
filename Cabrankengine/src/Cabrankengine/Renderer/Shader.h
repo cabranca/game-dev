@@ -8,6 +8,8 @@
 #include <Cabrankengine/Core/Core.h>
 #include <Cabrankengine/Math/Mat4.h>
 
+using namespace cabrankengine::math;
+
 namespace cabrankengine {
 
 	// A Shader is a program that runs on the GPU and is used to render graphics.
@@ -31,13 +33,13 @@ namespace cabrankengine {
 			virtual void setFloat(const std::string& name, float value) = 0;
 
 			// Sets a 3 float vector in the shader program.
-			virtual void setFloat3(const std::string& name, const glm::vec3& vector) = 0;
+			virtual void setFloat3(const std::string& name, const Vector3& vector) = 0;
 
 			// Sets a 4 float vector in the shader program.
 			virtual void setFloat4(const std::string& name, const glm::vec4& vector) = 0;
 
 			// Sets a 4x4 float matrix in the shader program.
-		    virtual void setMat4(const std::string& name, const math::Mat4& value) = 0;
+		    virtual void setMat4(const std::string& name, const Mat4& value) = 0;
 
 			// Returns the name of the shader program given by the user.
 			virtual const std::string& getName() const = 0;

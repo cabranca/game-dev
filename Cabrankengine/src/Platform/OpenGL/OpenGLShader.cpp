@@ -10,6 +10,8 @@
 #include <Cabrankengine/Debug/Instrumentator.h>
 #include <Cabrankengine/Math/MatrixFactory.h>
 
+using namespace cabrankengine::math;
+
 namespace cabrankengine {
 
 	static GLenum ShaderTypeFromString(const std::string& type) {
@@ -78,7 +80,7 @@ namespace cabrankengine {
 		uploadUniformFloat1(name, value);
 	}
 
-	void OpenGLShader::setFloat3(const std::string& name, const glm::vec3& vector) {
+	void OpenGLShader::setFloat3(const std::string& name, const Vector3& vector) {
 		CE_PROFILE_FUNCTION();
 
 		uploadUniformFloat3(name, vector);
@@ -140,7 +142,7 @@ namespace cabrankengine {
 		glUniform2f(location, values.x, values.y);
 	}
 
-	void OpenGLShader::uploadUniformFloat3(const std::string& name, const glm::vec3& values) {
+	void OpenGLShader::uploadUniformFloat3(const std::string& name, const Vector3& values) {
 		CE_PROFILE_FUNCTION();
 
 		GLint location = glGetUniformLocation(m_RendererId, name.c_str());

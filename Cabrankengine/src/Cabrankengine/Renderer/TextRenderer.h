@@ -5,7 +5,8 @@
 
 #include <glm/glm.hpp>
 
-#include "Cabrankengine/Core/Core.h"
+#include <Cabrankengine/Core/Core.h>
+#include <Cabrankengine/Math/MatrixFactory.h>
 
 namespace cabrankengine {
 
@@ -37,7 +38,7 @@ namespace cabrankengine {
         void load(const std::string& font, unsigned int fontSize);
 
         // Renders a string of text using the precompiled list of characters.
-        void renderText(const std::string& text, float x, float y, float scale, glm::vec3 color = glm::vec3(1.0f));
+        void renderText(const std::string& text, float x, float y, float scale, const math::Vector3& color = math::Vector3(1.f));
     
     private:
         // Render state.
