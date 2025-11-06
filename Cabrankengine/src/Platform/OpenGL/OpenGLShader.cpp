@@ -8,6 +8,7 @@
 
 #include <Cabrankengine/Core/Logger.h>
 #include <Cabrankengine/Debug/Instrumentator.h>
+#include <Cabrankengine/Math/MatrixFactory.h>
 
 namespace cabrankengine {
 
@@ -89,7 +90,7 @@ namespace cabrankengine {
 		uploadUniformFloat4(name, vector);
 	}
 
-	void OpenGLShader::setMat4(const std::string& name, const glm::mat4& value) {
+	void OpenGLShader::setMat4(const std::string& name, const math::Mat4& value) {
 		CE_PROFILE_FUNCTION();
 
 		uploadUniformMat4(name, value);
@@ -172,7 +173,7 @@ namespace cabrankengine {
 		glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
-	void OpenGLShader::uploadUniformMat4(const std::string& name, const glm::mat4& matrix) {
+	void OpenGLShader::uploadUniformMat4(const std::string& name, const math::Mat4& matrix) {
 		CE_PROFILE_FUNCTION();
 
 		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
@@ -180,7 +181,7 @@ namespace cabrankengine {
 			CE_CORE_ERROR("Uniform {0} not found in shader!", name);
 			return;
 		}
-		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+		glUniformMatrix4fv(location, 1, GL_FALSE, math::toGLMatrix(matrix).data());
 	}
 
 	std::string OpenGLShader::readFile(const std::string& filepath) {

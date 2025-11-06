@@ -6,6 +6,7 @@
 #include <glm/ext/matrix_clip_space.hpp>
 
 #include <Cabrankengine/Core/Logger.h>
+#include <Cabrankengine/Math/MatrixFactory.h>
 
 #include "Buffer.h"
 #include "RenderCommand.h"
@@ -24,7 +25,7 @@ namespace cabrankengine {
     TextRenderer::TextRenderer(unsigned int width, unsigned int height) : m_ShaderLibrary(std::make_unique<ShaderLibrary>()) {
         // load and configure shader
         m_TextShader = m_ShaderLibrary->load("assets/shaders/Text.glsl");
-        m_TextShader->setMat4("projection", ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f));
+        m_TextShader->setMat4("projection", math::ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f, -1.f, 1.f));
         m_TextShader->setInt("text", 0);
 
         // configure vertex array/vertex buffer for texture quads

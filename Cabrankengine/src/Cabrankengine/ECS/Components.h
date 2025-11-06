@@ -1,16 +1,17 @@
 #pragma once
 
-#include <glm/glm.hpp>
+#include <Cabrankengine/Math/Vector3.h>
 
 namespace cabrankengine::components {
 
 	struct CTransform {
-		glm::vec3 Position{ 0.0f };
-		glm::vec3 Rotation{ 0.0f };
-		glm::vec3 Scale{ 1.0f };
+		math::Vector3 Position{ 0.0f };
+		math::Vector3 Rotation{ 0.0f };
+		math::Vector3 Scale{ 1.0f };
 	};
 
 	// Centered box
+    // TODO: add concept
 	template<typename VecType>
 	struct CCollisionBox {
 		VecType HalfExtents{ 0.5f };

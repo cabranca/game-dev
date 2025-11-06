@@ -37,7 +37,7 @@ void Sandbox2D::onAttach() {
 
 	//m_CheckerboardTexture = Texture2D::create("assets/textures/Checkerboard.png");
 
-	AudioEngine::playAudio("assets/sound/breakout.mp3", true);
+	//AudioEngine::playAudio("assets/sound/breakout.mp3", true);
 
 	m_Registry = new Registry();
 	m_Registry->registerComponent<CTransform>();
@@ -97,15 +97,15 @@ void Sandbox2D::onUpdate(cabrankengine::Timestep delta) {
 		//Renderer2D::endScene();
 
 		Renderer2D::beginScene(m_CameraController.getCamera());
-		for (float y = -360.f; y < 360.f; y += 36.f) {
+		/*for (float y = -360.f; y < 360.f; y += 36.f) {
 			for (float x = -360.f; x < 360.f; x += 36.f) {
 				glm::vec4 color = { m_SquareColor };
-				Renderer2D::drawQuad({ x, y }, { 30.f, 30.f }, color);
+				Renderer2D::drawQuad({ x, y, 0.f }, { 30.f, 30.f }, color);
 			}
-		}
+		}*/
 
 		auto transform = m_Registry->getComponent<CTransform>(m_Player).value();
-		Renderer2D::drawQuad(transform->Position, { 100.0f, 100.0f }, m_SquareColor);
+	    Renderer2D::drawQuad(transform->Position, { 100.0f, 100.0f }, m_SquareColor);
 		Renderer2D::endScene();
 	}
 }

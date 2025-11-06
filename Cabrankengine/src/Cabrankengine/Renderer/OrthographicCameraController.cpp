@@ -1,14 +1,18 @@
 #include "OrthographicCameraController.h"
 
+#include <glm/glm.hpp>
+
 #include <Cabrankengine/Core/Core.h>
 #include <Cabrankengine/Core/Input.h>
 #include <Cabrankengine/Debug/Instrumentator.h>
+
+
 
 namespace cabrankengine {
 
 	OrthographicCameraController::OrthographicCameraController(float width, float height, bool rotation)
 		: m_AspectRatio(width / height), m_ZoomLevel(1.0f), m_Rotation(rotation), m_Camera(-width / 2.f, width / 2.f, -height / 2.f, height / 2.f), 
-		m_CameraPosition(glm::vec3(0.f)), m_Width(width), m_Height(height) {
+		m_CameraPosition(math::Vector3()), m_Width(width), m_Height(height) {
 	}
 
 	void OrthographicCameraController::onUpdate(Timestep delta) {

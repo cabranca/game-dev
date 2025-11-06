@@ -67,4 +67,20 @@ namespace cabrankengine::math {
 		auto& e = elements;
 		return { e[0].x, e[1].x, e[2].x, e[0].y, e[1].y, e[2].y, e[0].z, e[1].z, e[2].z, 0.f, 0.f, 0.f };
 	}
+
+    // Row convention for the Vector
+	inline constexpr Vector3 transformPoint(const Vector3& v, const Mat4& m) noexcept {
+		auto trans = m.transpose();
+		return Vector3{ dot(v, trans.elements[0]), dot(v, trans.elements[1]), dot(v, trans.elements[2]) } + m.elements[3];
+	}
+
+    // Row convention for the Vector
+    inline constexpr Vector3 transformDirection(const Vector3& v, const Mat4& m) noexcept {
+		auto trans = m.transpose();
+		return Vector3{ dot(v, trans.elements[0]), dot(v, trans.elements[1]), dot(v, trans.elements[2]) } + m.elements[3];
+	}
+
+    inline constexpr Vector3 operator*(const Vector3& v, const Mat4& m) noexcept {
+		return transformPoint(v, m);
+	}
 } // namespace cabrankengine::math

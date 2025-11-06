@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Cabrankengine/Math/MatrixFactory.h>
+
 #include "RenderCommand.h"
 
 namespace cabrankengine {
@@ -25,7 +27,7 @@ namespace cabrankengine {
 			static void endScene();
 
 			// Submits a draw call to render a shader with a vertex array and an optional transformation matrix.
-			static void submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.f));
+			static void submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const math::Mat4& transform = math::identityMat());
 
 			// Sets the viewport dimensions for rendering.
 			static void onWindowResize(uint32_t width, uint32_t height);
@@ -36,7 +38,7 @@ namespace cabrankengine {
 		private:
 			// This structure holds data that is specific to the current scene being rendered.
 			struct SceneData {
-				glm::mat4 viewProjectionMatrix;
+				math::Mat4 viewProjectionMatrix;
 			};
 
 			inline static SceneData* s_SceneData = new Renderer::SceneData(); // Current scene data used for rendering.

@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 
 #include <Cabrankengine/Core/Core.h>
+#include <Cabrankengine/Math/Mat4.h>
 
 namespace cabrankengine {
 
@@ -36,7 +37,7 @@ namespace cabrankengine {
 			virtual void setFloat4(const std::string& name, const glm::vec4& vector) = 0;
 
 			// Sets a 4x4 float matrix in the shader program.
-			virtual void setMat4(const std::string& name, const glm::mat4& value) = 0;
+		    virtual void setMat4(const std::string& name, const math::Mat4& value) = 0;
 
 			// Returns the name of the shader program given by the user.
 			virtual const std::string& getName() const = 0;

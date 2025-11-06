@@ -9,6 +9,7 @@
 
 namespace cabrankengine::math {
 
+    // This Vector implementation uses row convention: The vector is a 1x3 matrix
 	struct Vector3 {
 		float x, y, z;
 
@@ -51,15 +52,15 @@ namespace cabrankengine::math {
 	inline constexpr Vector3 Vector3::Zero      { (0.f) };
 	inline constexpr Vector3 Vector3::One       { (1.f) };
 
-    constexpr float Vector3::lengthSquared() const noexcept {
+    inline constexpr float Vector3::lengthSquared() const noexcept {
 		return x * x + y * y + z * z;
 	}
 
-	float Vector3::length() const noexcept {
+	inline float Vector3::length() const noexcept {
 		return sqrt(lengthSquared());
 	}
 
-	void Vector3::normalize() noexcept {
+	inline void Vector3::normalize() noexcept {
 		float squared = lengthSquared();
 		if (squared == 0)
 			return;
@@ -69,57 +70,57 @@ namespace cabrankengine::math {
 		z /= length;
 	}
 
-	bool Vector3::isNormalized() const noexcept {
+	inline bool Vector3::isNormalized() const noexcept {
 		float result = abs(lengthSquared() - 1.f);
 		return result < EPSILON;
 	}
 
-	constexpr bool Vector3::operator==(const Vector3& other) const noexcept {
+	inline constexpr bool Vector3::operator==(const Vector3& other) const noexcept {
 		return x == other.x && y == other.y && z == other.z;
 	}
 
-	constexpr bool Vector3::operator!=(const Vector3& other) const noexcept {
+	inline constexpr bool Vector3::operator!=(const Vector3& other) const noexcept {
 		return x != other.x || y != other.y || z != other.z;
 	}
 
-	constexpr Vector3 Vector3::operator+(const Vector3& other) const noexcept {
+	inline constexpr Vector3 Vector3::operator+(const Vector3& other) const noexcept {
 		return { x + other.x, y + other.y, z + other.z };
 	}
 
-	constexpr Vector3& Vector3::operator+=(const Vector3& other) noexcept {
+	inline constexpr Vector3& Vector3::operator+=(const Vector3& other) noexcept {
 		x += other.x;
 		y += other.y;
 		z += other.z;
 		return *this;
 	}
 
-	constexpr Vector3 Vector3::operator-(const Vector3& other) const noexcept {
+	inline constexpr Vector3 Vector3::operator-(const Vector3& other) const noexcept {
 		return { x - other.x, y - other.y, z - other.z };
 	}
 
-	constexpr Vector3& Vector3::operator-=(const Vector3& other) noexcept {
+	inline constexpr Vector3& Vector3::operator-=(const Vector3& other) noexcept {
 		x -= other.x;
 		y -= other.y;
 		z -= other.z;
 		return *this;
 	}
 
-	constexpr Vector3 Vector3::operator-() noexcept {
+	inline constexpr Vector3 Vector3::operator-() noexcept {
 		return { -x, -y, -z };
 	}
 
-	constexpr Vector3 Vector3::operator*(float scale) const noexcept {
+	inline constexpr Vector3 Vector3::operator*(float scale) const noexcept {
 		return { x * scale, y * scale, z * scale };
 	}
 
-	constexpr Vector3& Vector3::operator*=(float scale) noexcept {
+	inline constexpr Vector3& Vector3::operator*=(float scale) noexcept {
 		x *= scale;
 		y *= scale;
 		z *= scale;
 		return *this;
 	}
 
-	constexpr float& Vector3::operator[](int index) noexcept {
+	inline constexpr float& Vector3::operator[](int index) noexcept {
         switch (index) {
 		    case 0:
 			    return x;
@@ -133,11 +134,11 @@ namespace cabrankengine::math {
         }
 	}
 
-	constexpr float dot(const Vector3& a, const Vector3& b) noexcept {
+	inline constexpr float dot(const Vector3& a, const Vector3& b) noexcept {
 		return a.x * b.x + a.y * b.y + a.z * b.z;
 	}
 
-	constexpr Vector3 cross(const Vector3& a, const Vector3& b) noexcept {
+	inline constexpr Vector3 cross(const Vector3& a, const Vector3& b) noexcept {
 		Vector3 res{};
 		res.x = a.y * b.z - a.z * b.y;
 		res.y = a.z * b.x - a.x * b.z;
@@ -145,11 +146,11 @@ namespace cabrankengine::math {
 		return res;
 	}
 
-	constexpr bool perpendicular(const Vector3& a, const Vector3& b) noexcept {
+	inline constexpr bool perpendicular(const Vector3& a, const Vector3& b) noexcept {
 		return dot(a, b) == 0;
 	}
 
-    float angleBetween(const Vector3& a, const Vector3& b) noexcept {
+    inline float angleBetween(const Vector3& a, const Vector3& b) noexcept {
 		float denom = a.length() * b.length();
 		if (denom == 0.f)
 			return 0.f;

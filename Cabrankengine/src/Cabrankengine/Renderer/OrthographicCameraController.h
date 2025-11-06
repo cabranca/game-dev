@@ -3,6 +3,7 @@
 #include <Cabrankengine/Core/Timestep.h>
 #include <Cabrankengine/Events/ApplicationEvent.h>
 #include <Cabrankengine/Events/MouseEvent.h>
+#include <Cabrankengine/Math/Vector3.h>
 
 #include "OrthographicCamera.h"
 
@@ -29,7 +30,7 @@ namespace cabrankengine {
 			float m_ZoomLevel;
 			bool m_Rotation; // ROLL
 			OrthographicCamera m_Camera;
-			glm::vec3 m_CameraPosition;
+			math::Vector3 m_CameraPosition;
 			float m_CameraTranslationSpeed = 100.0f; // Speed of the camera movement
 			float m_CurrentCameraTranslationSpeed = m_CameraTranslationSpeed;
 			float m_CameraRotation = 0.0f; // Rotation of the camera
