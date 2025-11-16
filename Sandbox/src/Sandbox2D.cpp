@@ -8,7 +8,6 @@
 #include <Cabrankengine/Core/AudioEngine.h>
 #include <Cabrankengine/Debug/Instrumentator.h>
 #include <Cabrankengine/ECS/ECS.h>
-#include <Cabrankengine/Renderer/TextRenderer.h>
 #include <Platform/OpenGL/OpenGLShader.h>
 
 using namespace cabrankengine;

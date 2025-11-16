@@ -16,7 +16,6 @@ IncludeDir["stb_image"] = "Cabrankengine/vendor/stb_image"
 IncludeDir["irrKlang"] = "Cabrankengine/vendor/irrKlang/include"
 IncludeDir["json"] = "Cabrankengine/vendor/json/include"
 IncludeDir["Catch2"] = "Cabrankengine/vendor/Catch2"
-IncludeDir["freetype"] = "Cabrankengine/vendor/freetype/include"
 
 include "Cabrankengine/vendor/GLFW"
 include "Cabrankengine/vendor/glad"
@@ -40,16 +39,16 @@ project "Cabrankengine"
     includedirs 
     {
         "%{prj.name}/src", "%{prj.name}/vendor/spdlog/include", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}", "%{IncludeDir.ImGui}", 
-        "%{IncludeDir.glm}", "%{IncludeDir.stb_image}", "%{IncludeDir.irrKlang}", "%{IncludeDir.json}", "%{IncludeDir.freetype}"
+        "%{IncludeDir.glm}", "%{IncludeDir.stb_image}", "%{IncludeDir.irrKlang}", "%{IncludeDir.json}"
     }
-    links {"GLFW", "glad", "ImGui", "IrrKlang", "freetype"}
+    links {"GLFW", "glad", "ImGui", "IrrKlang"}
 
     filter "system:windows"
         systemversion "latest"
         buildoptions { "/utf-8" }
 
         removefiles { "%{prj.name}/src/Platform/Linux/**.cpp", "%{prj.name}/src/Platform/Linux/**.h" }
-        libdirs { "%{prj.name}/vendor/irrKlang/lib", "%{prj.name}/vendor/freetype_test" }
+        libdirs { "%{prj.name}/vendor/irrKlang/lib" }
         links {"opengl32.lib"}
         defines {"GLFW_INCLUDE_NONE"}
 
@@ -84,8 +83,7 @@ project "Sandbox"
 
     files {"%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp"}
     includedirs {"Cabrankengine/vendor/spdlog/include", "Cabrankengine/src", "%{IncludeDir.glm}", "%{IncludeDir.ImGui}", "%{IncludeDir.irrKlang}", "%{IncludeDir.freetype}"}
-    links {"freetype", "Cabrankengine", "GLFW", "glad", "ImGui"}
-    libdirs { "Cabrankengine/vendor/freetype_test" }
+    links {"Cabrankengine", "GLFW", "glad", "ImGui"}
 
     filter "system:windows"
         systemversion "latest"

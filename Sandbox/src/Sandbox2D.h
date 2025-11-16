@@ -4,7 +4,6 @@
 
 namespace cabrankengine {
 	class Registry;
-	class TextRendererRaw;
 }
 
 class Sandbox2D : public cabrankengine::Layer {

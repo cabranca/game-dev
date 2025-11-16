@@ -5,10 +5,6 @@
 
 #include <Cabrankengine/Core/Core.h>
 
-// Forward declaration
-struct FT_FaceRec_;
-typedef struct FT_FaceRec_* FT_Face;
-
 namespace cabrankengine {
 
 	// Enum class representing different image formats for textures.
@@ -69,7 +65,5 @@ namespace cabrankengine {
 
 			// Creates a new Texture2D instance from a file path.
 			static Ref<Texture2D> create(const std::string& path);
-
-			static Ref<Texture2D> create(const FT_Face& face);
 	};
 }
