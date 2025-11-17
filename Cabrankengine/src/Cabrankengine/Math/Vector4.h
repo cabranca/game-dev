@@ -10,7 +10,7 @@ namespace cabrankengine::math {
 		constexpr Vector4() noexcept : x(), y(), z(), w() {}
 		explicit constexpr Vector4(float uniform) noexcept : x(uniform), y(uniform), z(uniform), w(uniform) {}
 		constexpr Vector4(float x, float y, float z, float w) noexcept : x(x), y(y), z(z), w(w) {}
-		constexpr Vector4(const Vector3& v, float w = 0.f) noexcept : x(v.x), y(v.y), z(v.z), w(w) {}
+		constexpr Vector4(const Vector3& v, float w = 1.f) noexcept : x(v.x), y(v.y), z(v.z), w(w) {}
 
 		constexpr float lengthSquared() const noexcept;
 		float length() const noexcept;

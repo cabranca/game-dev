@@ -82,8 +82,10 @@ namespace cabrankengine::math {
 		float fn = farZ - nearZ;
 
 		return {
-			2.f / rl, 0.f, 0.f, 0.f, 2.f / tb, 0.f, 0.f, 0.f, -2.f / fn, -(right + left) / rl, -(top + bottom) / tb, -(farZ + nearZ) / fn,
-			0.f, 0.f, 0.f, 1.f
+			2.f / rl, 0.f, 0.f, 0.f, 
+			0.f, 2.f / tb, 0.f, 0.f, 
+			0.f, 0.f, -2.f / fn, 0.f, 
+			-(right + left) / rl, -(top + bottom) / tb, -(farZ + nearZ) / fn, 1.f
 		};
 	}
 

@@ -7,9 +7,6 @@
 
 namespace cabrankengine::math {
 
-    // This struct stores a 4x3 matrix representing a 4x4 matrix.
-    // The last column is elided as it is trivial in computation.
-
 	struct Mat4 {
         std::array<Vector4, 4> elements;
 
@@ -44,41 +41,40 @@ namespace cabrankengine::math {
 		return elements != other.elements;
 	}
 
+	// Generalized for every matrix
 	constexpr Mat4 Mat4::operator*(const Mat4& other) const noexcept {
 		Mat4 transposed = other.transpose();
 		Mat4 res{};
-		// Rotational part
-		for (int i = 0; i < 3; ++i) {
-			for (int j = 0; j < 3; ++j)
+
+		for (int i = 0; i < 4; ++i) {
+			for (int j = 0; j < 4; ++j)
 				res.elements[i][j] = dot(elements[i], transposed.elements[j]);
 		}
-
-		// Translation part (4th row)
-		res.elements[3].x = dot(elements[3], transposed.elements[0]) + other.elements[3].x;
-		res.elements[3].y = dot(elements[3], transposed.elements[1]) + other.elements[3].y;
-		res.elements[3].z = dot(elements[3], transposed.elements[2]) + other.elements[3].z;
 		return res;
 	}
 
 	inline constexpr Mat4 Mat4::transpose() const noexcept {
 		auto& e = elements;
-		return { e[0].x, e[1].x, e[2].x, e[3].x, e[0].y, e[1].y, e[2].y, e[3].y,
-			     e[0].z, e[1].z, e[2].z, e[3].z, e[0].w, e[1].w, e[2].w, e[3].w };
+		return { 
+			e[0].x, e[1].x, e[2].x, e[3].x, 
+			e[0].y, e[1].y, e[2].y, e[3].y,
+			e[0].z, e[1].z, e[2].z, e[3].z, 
+			e[0].w, e[1].w, e[2].w, e[3].w 
+		};
 	}
 
-    // Row convention for the Vector
-	inline constexpr Vector3 transformPoint(const Vector3& v, const Mat4& m) noexcept {
-		auto trans = m.transpose();
-		return Vector3{ dot(v, trans.elements[0]), dot(v, trans.elements[1]), dot(v, trans.elements[2])  } /*+ m.elements[3]*/;
+    inline constexpr Vector4 operator*(const Vector4& v, const Mat4& m) noexcept {
+		Vector4 res{};
+		const auto transposed = m.transpose();
+		for (int i = 0; i < 4; i++) {
+			res[i] = dot(v, transposed.elements.at(i));
+		}
+		return res;
 	}
 
-    // Row convention for the Vector
-    inline constexpr Vector3 transformDirection(const Vector3& v, const Mat4& m) noexcept {
-		auto trans = m.transpose();
-		return Vector3{ dot(v, trans.elements[0]), dot(v, trans.elements[1]), dot(v, trans.elements[2]) } /*+ m.elements[3]*/;
-	}
-
-    inline constexpr Vector3 operator*(const Vector3& v, const Mat4& m) noexcept {
-		return transformPoint(v, m);
+	inline constexpr Vector3 operator*(const Vector3& v, const Mat4& m) noexcept {
+		const Vector4 aux{ v };
+		const auto result = aux * m;
+		return Vector3{ result.x, result.y, result.z };
 	}
 } // namespace cabrankengine::math
