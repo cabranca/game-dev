@@ -1,7 +1,5 @@
 #include "OpenGLTexture.h"
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
 #include <stb_image.h>
 
 #include <Cabrankengine/Core/Logger.h>
@@ -101,19 +99,6 @@ namespace cabrankengine {
 			stbi_image_free(data);
 		}
 	}
-
-    OpenGLTexture2D::OpenGLTexture2D(const FT_Face &face) {
-		// generate texture
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
-		glTextureStorage2D(m_RendererID, 1, GL_R8, face->glyph->bitmap.width, face->glyph->bitmap.rows);
-		glTextureSubImage2D(m_RendererID, 0, 0, 0, face->glyph->bitmap.width, face->glyph->bitmap.rows, GL_RED, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
-
-		// set texture options
-		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    }
 
     OpenGLTexture2D::~OpenGLTexture2D() {
 		CE_PROFILE_FUNCTION();
