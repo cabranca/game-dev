@@ -39,21 +39,21 @@ namespace cabrankengine::math {
     inline Mat4 rotateX(float angle) noexcept {
 		float angleInRadians = angle * PI / 180.f;
 		return {
-			1.f, 0.f, 0.f, 0.f, cos(angleInRadians), sin(angleInRadians), 0.f, -sin(angleInRadians), cos(angleInRadians), 0.f, 0.f, 0.f
+			1.f, 0.f, 0.f, 0.f, cosf(angleInRadians), sinf(angleInRadians), 0.f, -sinf(angleInRadians), cosf(angleInRadians), 0.f, 0.f, 0.f
 		};
 	}
 
 	inline Mat4 rotateY(float angle) noexcept {
 		float angleInRadians = angle * PI / 180.f;
 		return {
-			cos(angleInRadians), 0.f, -sin(angleInRadians), 0.f, 1.f, 0.f, sin(angleInRadians), 0.f, cos(angleInRadians), 0.f, 0.f, 0.f
+			cosf(angleInRadians), 0.f, -sinf(angleInRadians), 0.f, 1.f, 0.f, sinf(angleInRadians), 0.f, cosf(angleInRadians), 0.f, 0.f, 0.f
 		};
 	}
 
 	inline Mat4 rotateZ(float angle) noexcept {
 		float angleInRadians = angle * PI / 180.f;
 		return {
-			cos(angleInRadians), sin(angleInRadians), 0.f, -sin(angleInRadians), cos(angleInRadians), 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f
+			cosf(angleInRadians), sinf(angleInRadians), 0.f, -sinf(angleInRadians), cosf(angleInRadians), 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f
 		};
 	}
 
