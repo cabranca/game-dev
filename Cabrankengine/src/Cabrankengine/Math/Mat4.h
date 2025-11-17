@@ -3,7 +3,7 @@
 #include <array>
 
 #include "Constants.h"
-#include "Vector3.h"
+#include "Vector4.h"
 
 namespace cabrankengine::math {
 
@@ -11,23 +11,23 @@ namespace cabrankengine::math {
     // The last column is elided as it is trivial in computation.
 
 	struct Mat4 {
-        std::array<Vector3, 4> elements;
+        std::array<Vector4, 4> elements;
 
 		constexpr Mat4() noexcept
             : elements {
-                Vector3(),
-                Vector3(),
-                Vector3(),
-                Vector3()
+                Vector4(),
+                Vector4(),
+                Vector4(),
+                Vector4()
             } {}
 
-		constexpr Mat4(float ix, float iy, float iz, float jx, float jy, float jz, float kx, float ky, float kz, float tx, float ty,
-		               float tz) noexcept
+		constexpr Mat4(float ix, float iy, float iz, float iw, float jx, float jy, float jz, float jw, float kx, float ky, float kz, float kw, float tx, float ty,
+		               float tz, float tw) noexcept
 		    : elements{
-                Vector3(ix, iy, iz),
-                Vector3(jx, jy, jz),
-                Vector3(kx, ky, kz),
-                Vector3(tx, ty, tz)
+                Vector4(ix, iy, iz, iw),
+                Vector4(jx, jy, jz, jw),
+                Vector4(kx, ky, kz, kw),
+                Vector4(tx, ty, tz, tw)
             } {}
 
 		constexpr bool operator==(const Mat4& other) const noexcept;
@@ -44,7 +44,6 @@ namespace cabrankengine::math {
 		return elements != other.elements;
 	}
 
-	// Multiplies two affine 4x4 matrices stored as 4x3 (last column implicitly [0 0 0 1]).
 	constexpr Mat4 Mat4::operator*(const Mat4& other) const noexcept {
 		Mat4 transposed = other.transpose();
 		Mat4 res{};
@@ -61,23 +60,22 @@ namespace cabrankengine::math {
 		return res;
 	}
 
-    // Transpose only the upper 3x3 rotation part.
-	// Translation is reset to zero.
 	inline constexpr Mat4 Mat4::transpose() const noexcept {
 		auto& e = elements;
-		return { e[0].x, e[1].x, e[2].x, e[0].y, e[1].y, e[2].y, e[0].z, e[1].z, e[2].z, 0.f, 0.f, 0.f };
+		return { e[0].x, e[1].x, e[2].x, e[3].x, e[0].y, e[1].y, e[2].y, e[3].y,
+			     e[0].z, e[1].z, e[2].z, e[3].z, e[0].w, e[1].w, e[2].w, e[3].w };
 	}
 
     // Row convention for the Vector
 	inline constexpr Vector3 transformPoint(const Vector3& v, const Mat4& m) noexcept {
 		auto trans = m.transpose();
-		return Vector3{ dot(v, trans.elements[0]), dot(v, trans.elements[1]), dot(v, trans.elements[2]) } + m.elements[3];
+		return Vector3{ dot(v, trans.elements[0]), dot(v, trans.elements[1]), dot(v, trans.elements[2])  } /*+ m.elements[3]*/;
 	}
 
     // Row convention for the Vector
     inline constexpr Vector3 transformDirection(const Vector3& v, const Mat4& m) noexcept {
 		auto trans = m.transpose();
-		return Vector3{ dot(v, trans.elements[0]), dot(v, trans.elements[1]), dot(v, trans.elements[2]) } + m.elements[3];
+		return Vector3{ dot(v, trans.elements[0]), dot(v, trans.elements[1]), dot(v, trans.elements[2]) } /*+ m.elements[3]*/;
 	}
 
     inline constexpr Vector3 operator*(const Vector3& v, const Mat4& m) noexcept {

@@ -21,39 +21,50 @@ namespace cabrankengine::math {
 	}
 
 	inline constexpr Mat4 identityMat() noexcept {
-		return { 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f };
+		return { 1.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 0.f, 1.f };
 	}
 
 	inline constexpr Mat4 scale(float uniform) noexcept {
-		return { uniform, 0.f, 0.f, 0.f, uniform, 0.f, 0.f, 0.f, uniform, 0.f, 0.f, 0.f };
+		return { uniform, 0.f, 0.f, 0.f, 0.f, uniform, 0.f, 0.f, 0.f, 0.f, uniform, 0.f, 0.f, 0.f, 0.f, 1.f };
 	}
 
 	inline constexpr Mat4 scale(const Vector3& vec) noexcept {
-		return { vec.x, 0.f, 0.f, 0.f, vec.y, 0.f, 0.f, 0.f, vec.z, 0.f, 0.f, 0.f };
+		return { vec.x, 0.f, 0.f, 0.f, 0.f, vec.y, 0.f, 0.f, 0.f, 0.f, vec.z, 0.f, 0.f, 0.f, 0.f, 1.f };
 	}
 
 	inline constexpr Mat4 translate(const Vector3& vec) noexcept {
-		return { 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, vec.x, vec.y, vec.z };
+		return { 1.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, vec.x, vec.y, vec.z, 1.f };
 	}
 
     inline Mat4 rotateX(float angle) noexcept {
 		float angleInRadians = angle * PI / 180.f;
-		return {
-			1.f, 0.f, 0.f, 0.f, cosf(angleInRadians), sinf(angleInRadians), 0.f, -sinf(angleInRadians), cosf(angleInRadians), 0.f, 0.f, 0.f
+		return { 1.f, 0.f, 0.f, 0.f, 0.f, cosf(angleInRadians), sinf(angleInRadians), 0.f, 0.f, -sinf(angleInRadians), cosf(angleInRadians),
+			     0.f, 0.f, 0.f, 0.f, 1.f
 		};
 	}
 
 	inline Mat4 rotateY(float angle) noexcept {
 		float angleInRadians = angle * PI / 180.f;
-		return {
-			cosf(angleInRadians), 0.f, -sinf(angleInRadians), 0.f, 1.f, 0.f, sinf(angleInRadians), 0.f, cosf(angleInRadians), 0.f, 0.f, 0.f
+		return { cosf(angleInRadians), 0.f, -sinf(angleInRadians), 0.f, 0.f, 1.f, 0.f, 0.f,
+			     sinf(angleInRadians), 0.f, cosf(angleInRadians), 0.f, 0.f, 0.f, 0.f, 1.f
 		};
 	}
 
 	inline Mat4 rotateZ(float angle) noexcept {
 		float angleInRadians = angle * PI / 180.f;
-		return {
-			cosf(angleInRadians), sinf(angleInRadians), 0.f, -sinf(angleInRadians), cosf(angleInRadians), 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f
+		return { cosf(angleInRadians), sinf(angleInRadians), 0.f,
+			     0.f,
+			     -sinf(angleInRadians),
+			     cosf(angleInRadians),
+			     0.f,
+			     0.f,
+			     0.f,
+			     0.f,
+			     1.f,
+			     0.f,
+			     0.f,
+			     0.f,
+			     0.f, 1.f
 		};
 	}
 
@@ -71,7 +82,8 @@ namespace cabrankengine::math {
 		float fn = farZ - nearZ;
 
 		return {
-			2.f / rl, 0.f, 0.f, 0.f, 2.f / tb, 0.f, 0.f, 0.f, -2.f / fn, -(right + left) / rl, -(top + bottom) / tb, -(farZ + nearZ) / fn
+			2.f / rl, 0.f, 0.f, 0.f, 2.f / tb, 0.f, 0.f, 0.f, -2.f / fn, -(right + left) / rl, -(top + bottom) / tb, -(farZ + nearZ) / fn,
+			0.f, 0.f, 0.f, 1.f
 		};
 	}
 
@@ -83,7 +95,7 @@ namespace cabrankengine::math {
 		inv.elements[2] = Vector3{ m.elements[0].z, m.elements[1].z, m.elements[2].z };
 
 		// Invert translation
-		const Vector3& t = m.elements[3];
+		const Vector4& t = m.elements[3];
 		inv.elements[3].x = -(t.x * inv.elements[0].x + t.y * inv.elements[1].x + t.z * inv.elements[2].x);
 		inv.elements[3].y = -(t.x * inv.elements[0].y + t.y * inv.elements[1].y + t.z * inv.elements[2].y);
 		inv.elements[3].z = -(t.x * inv.elements[0].z + t.y * inv.elements[1].z + t.z * inv.elements[2].z);
