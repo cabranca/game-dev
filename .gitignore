@@ -21,3 +21,4 @@ GenerateFiles.bat
 imgui.ini
 compile_commands.json
 /.cache
+premake5
