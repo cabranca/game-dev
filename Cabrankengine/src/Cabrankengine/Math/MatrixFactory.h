@@ -89,6 +89,18 @@ namespace cabrankengine::math {
 		};
 	}
 
+	inline Mat4 perspective(float fovy, float aspect, float nearZ, float farZ) noexcept {
+		float f = 1.0f / std::tan(fovy * 0.5f);
+		float nf = nearZ - farZ;
+
+		return Mat4 {
+			f / aspect, 0.f, 0.f, 0.f,
+			0.f,        f,   0.f, 0.f,
+			0.f,        0.f, (farZ + nearZ) / nf, -1.f,
+			0.f,        0.f, (2.f * farZ * nearZ) / nf, 0.f
+		};
+	}
+
     inline Mat4 inverse(const Mat4& m) noexcept {
 		// Transpose rotation part.
 		Mat4 inv{};
