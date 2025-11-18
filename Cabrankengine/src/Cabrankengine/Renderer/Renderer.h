@@ -7,7 +7,7 @@
 namespace cabrankengine {
 
 	// Forward declarations
-	class OrthographicCamera; // Represents an orthographic camera used for rendering 2D scenes.
+	class Camera; // Represents a camera used for rendering scenes.
 	class Shader; // Represents a shader program used for rendering.
 	class VertexArray; // Represents a vertex array object that holds vertex data for rendering.
 
@@ -21,7 +21,7 @@ namespace cabrankengine {
 			static void shutdown();
 
 			// Sets the necessary general data to render a scene, such as the camera, the lighting, etc.
-			static void beginScene(OrthographicCamera& camera);
+			static void beginScene(const Camera& camera);
 
 			// Ends the current scene, finalizing rendering operations.
 			static void endScene();

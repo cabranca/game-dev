@@ -3,7 +3,7 @@
 #include <Cabrankengine/Debug/Instrumentator.h>
 #include <Platform/OpenGL/OpenGLShader.h>
 
-#include "OrthographicCamera.h"
+#include "Camera.h"
 #include "Renderer2D.h"
 #include "Shader.h"
 #include "VertexArray.h"
@@ -22,12 +22,12 @@ namespace cabrankengine {
 		Renderer2D::shutdown();
 	}
 
-	void Renderer::beginScene(OrthographicCamera& camera) {
+	void Renderer::beginScene(const Camera& camera) {
 		s_SceneData->viewProjectionMatrix = camera.getViewProjectionMatrix();
 	}
 
 	void Renderer::endScene() {
-
+		
 	}
 
 	void Renderer::submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const math::Mat4& transform) {
