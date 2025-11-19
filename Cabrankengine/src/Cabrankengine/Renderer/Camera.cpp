@@ -3,7 +3,8 @@
 namespace cabrankengine {
 
 	Camera::Camera(const math::Mat4& projectionMatrix, const math::Mat4& viewMatrix) noexcept
-	    : m_Transform(math::identityMat()), m_ProjectionMatrix(projectionMatrix), m_ViewMatrix(viewMatrix) {}
+	    : m_Transform(math::identityMat()), m_ProjectionMatrix(projectionMatrix), m_ViewMatrix(viewMatrix),
+	      m_ViewProjectionMatrix(m_ProjectionMatrix) {}
 
 	const math::Mat4& Camera::getTransform() const noexcept {
 		return m_Transform;
