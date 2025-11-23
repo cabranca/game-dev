@@ -1,12 +1,12 @@
 #pragma once
 
-#include <glm/glm.hpp>
-
 #include <Cabrankengine/Renderer/OrthographicCameraController.h>
+
+#include "Vector2.h"
 
 namespace cabrankengine::math {
 
-	glm::vec2 viewportToNormalized(float x, float y);
-	glm::vec2 viewportToWorld(float x, float y, const OrthographicCameraController& cameraController);
-	glm::vec2 worldToViewport(const Vector3& pos, const OrthographicCameraController& cameraController);
+	Vector2 viewportToNormalized(float x, float y);
+	Vector2 viewportToWorld(float x, float y, const OrthographicCameraController& cameraController);
+	Vector2 worldToViewport(const Vector3& pos, const OrthographicCameraController& cameraController);
 } // namespace cabrankengine::math

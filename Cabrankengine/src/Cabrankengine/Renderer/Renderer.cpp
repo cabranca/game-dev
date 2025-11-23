@@ -15,6 +15,8 @@
 
 namespace cabrankengine {
 
+	using namespace math;
+
 	void Renderer::init() {
 		CE_PROFILE_FUNCTION();
 
@@ -34,10 +36,10 @@ namespace cabrankengine {
 		
 	}
 
-	void Renderer::submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const math::Mat4& transform) {
+	void Renderer::submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const Mat4& transform) {
 		shader->bind();
 		std::dynamic_pointer_cast<OpenGLShader>(shader)->uploadUniformMat4("projection", s_SceneData->viewProjectionMatrix);
-		std::dynamic_pointer_cast<OpenGLShader>(shader)->uploadUniformMat4("view", translate(Vector3(0.0f, 0.0f, -3.0f)));
+		std::dynamic_pointer_cast<OpenGLShader>(shader)->uploadUniformMat4("view", identityMat());
 		std::dynamic_pointer_cast<OpenGLShader>(shader)->uploadUniformMat4("model", transform);
 		vertexArray->bind();
 		RenderCommand::drawIndexed(vertexArray);

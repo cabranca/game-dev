@@ -20,7 +20,7 @@ namespace cabrankengine {
         template<typename VecType>
         Collision<VecType> AABB(const VecType& pos1, const components::CCollisionBox<VecType>& b1,
             const VecType& pos2, const components::CCollisionBox<VecType>& b2) {
-            VecType delta = glm::abs(pos1 - pos2);
+            VecType delta = abs(pos1 - pos2);
             VecType overlap = b1.HalfExtents + b2.HalfExtents - delta;
 
             for (int i = 0; i < int(VecType().length()); ++i) {
@@ -46,14 +46,14 @@ namespace cabrankengine {
         template<typename VecType>
         Collision<VecType> Sphere(const VecType& pos1, float radius1, const VecType& pos2, float radius2) {
             VecType delta = pos2 - pos1;
-            float dist2 = glm::dot(delta, delta);
+            float dist2 = dot(delta, delta);
             float radiusSum = radius1 + radius2;
 
             if (dist2 > radiusSum * radiusSum) {
                 return { VecType(0.0f), 0.0f, false };
             }
 
-            float dist = glm::sqrt(dist2);
+            float dist = sqrt(dist2);
 
             // Avoid dividing by zero if the centers match
             VecType normal = (dist > 0.0001f) ? (delta / dist) : VecType(0.0f);
@@ -70,17 +70,17 @@ namespace cabrankengine {
             for (int i = 0; i < int(VecType().length()); ++i) {
                 float min = boxPos[i] - box.HalfExtents[i];
                 float max = boxPos[i] + box.HalfExtents[i];
-                closestPoint[i] = glm::clamp(spherePos[i], min, max);
+                closestPoint[i] = std::clamp(spherePos[i], min, max);
             }
 
             VecType delta = spherePos - closestPoint;
-            float dist2 = glm::dot(delta, delta);
+            float dist2 = dot(delta, delta);
 
             if (dist2 > radius * radius) {
                 return { VecType(0.0f), 0.0f, false };
             }
 
-            float dist = glm::sqrt(dist2);
+            float dist = sqrt(dist2);
 
             // Collision Normal from AABB to Sphere
             VecType normal;
@@ -90,7 +90,7 @@ namespace cabrankengine {
             else {
                 // Border case: sphere center inside AABB
                 // We take the direction of minimum penetration, as in AABB-AABB
-                VecType overlap = box.HalfExtents - glm::abs(spherePos - boxPos);
+                VecType overlap = box.HalfExtents - abs(spherePos - boxPos);
                 int minAxis = 0;
                 float minOverlap = overlap[0];
                 for (int i = 1; i < int(VecType().length()); ++i) {

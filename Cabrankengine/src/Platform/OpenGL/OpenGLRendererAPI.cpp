@@ -19,8 +19,8 @@ namespace cabrankengine {
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	}
 
-	void OpenGLRendererAPI::setClearColor(const glm::vec4& color) {
-		glClearColor(color.r, color.g, color.b, color.a);
+	void OpenGLRendererAPI::setClearColor(const math::Vector4& color) {
+		glClearColor(color.x, color.y, color.z, color.w);
 	}
 
 	void OpenGLRendererAPI::clear() {

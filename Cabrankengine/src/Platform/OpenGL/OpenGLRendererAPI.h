@@ -10,7 +10,7 @@ namespace cabrankengine {
 			virtual void init() override;
 
 			// Sets the color used to clear the screen.
-			virtual void setClearColor(const glm::vec4& color) override;
+			virtual void setClearColor(const math::Vector4& color) override;
 
 			// Clears the screen with the previously set clear color.
 			virtual void clear() override;

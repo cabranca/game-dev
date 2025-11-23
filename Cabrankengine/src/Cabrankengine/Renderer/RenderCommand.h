@@ -13,7 +13,7 @@ namespace cabrankengine {
 			static void init() { s_RendererAPI->init(); }
 
 			// Sets the color used to clear the screen.
-			static void setClearColor(const glm::vec4& color) { s_RendererAPI->setClearColor(color); }
+			static void setClearColor(const math::Vector4& color) { s_RendererAPI->setClearColor(color); }
 
 			// Clears the screen with the previously set clear color.
 			static void clear() { s_RendererAPI->clear(); }

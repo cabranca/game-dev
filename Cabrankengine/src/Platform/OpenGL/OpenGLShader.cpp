@@ -10,9 +10,9 @@
 #include <Cabrankengine/Debug/Instrumentator.h>
 #include <Cabrankengine/Math/MatrixFactory.h>
 
-using namespace cabrankengine::math;
-
 namespace cabrankengine {
+
+	using namespace math;
 
 	static GLenum ShaderTypeFromString(const std::string& type) {
 		if (type == "vertex")
@@ -86,13 +86,13 @@ namespace cabrankengine {
 		uploadUniformFloat3(name, vector);
 	}
 
-	void OpenGLShader::setFloat4(const std::string& name, const glm::vec4& vector) {
+	void OpenGLShader::setFloat4(const std::string& name, const Vector4& vector) {
 		CE_PROFILE_FUNCTION();
 
 		uploadUniformFloat4(name, vector);
 	}
 
-	void OpenGLShader::setMat4(const std::string& name, const math::Mat4& value) {
+	void OpenGLShader::setMat4(const std::string& name, const Mat4& value) {
 		CE_PROFILE_FUNCTION();
 
 		uploadUniformMat4(name, value);
@@ -131,7 +131,7 @@ namespace cabrankengine {
 		glUniform1f(location, value);
 	}
 
-	void OpenGLShader::uploadUniformFloat2(const std::string& name, const glm::vec2& values) {
+	void OpenGLShader::uploadUniformFloat2(const std::string& name, const Vector2& values) {
 		CE_PROFILE_FUNCTION();
 
 		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
@@ -153,7 +153,7 @@ namespace cabrankengine {
 		glUniform3f(location, values.x, values.y, values.z);
 	}
 
-	void OpenGLShader::uploadUniformFloat4(const std::string& name, const glm::vec4& values) {
+	void OpenGLShader::uploadUniformFloat4(const std::string& name, const Vector4& values) {
 		CE_PROFILE_FUNCTION();
 
 		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
@@ -175,7 +175,7 @@ namespace cabrankengine {
 		glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
-	void OpenGLShader::uploadUniformMat4(const std::string& name, const math::Mat4& matrix) {
+	void OpenGLShader::uploadUniformMat4(const std::string& name, const Mat4& matrix) {
 		CE_PROFILE_FUNCTION();
 
 		GLint location = glGetUniformLocation(m_RendererId, name.c_str());

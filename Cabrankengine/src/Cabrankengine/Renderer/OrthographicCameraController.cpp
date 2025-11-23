@@ -1,14 +1,13 @@
 #include "OrthographicCameraController.h"
 
-#include <glm/glm.hpp>
-
 #include <Cabrankengine/Core/Core.h>
 #include <Cabrankengine/Core/Input.h>
 #include <Cabrankengine/Debug/Instrumentator.h>
-
-
+#include <Cabrankengine/Math/Common.h>
 
 namespace cabrankengine {
+
+	using namespace math;
 
 	OrthographicCameraController::OrthographicCameraController(float width, float height, bool rotation)
 		: m_AspectRatio(width / height), m_ZoomLevel(1.0f), m_Rotation(rotation), m_Camera(-width / 2.f, width / 2.f, -height / 2.f, height / 2.f), 
@@ -19,20 +18,20 @@ namespace cabrankengine {
 		CE_PROFILE_FUNCTION();
 
 		if (Input::isKeyPressed(Key::A)) {
-			m_CameraPosition.x -= cos(glm::radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
-			m_CameraPosition.y -= sin(glm::radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
+			m_CameraPosition.x -= cosf(radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
+			m_CameraPosition.y -= sinf(radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
 		}
 		else if (Input::isKeyPressed(Key::D)) {
-			m_CameraPosition.x += cos(glm::radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
-			m_CameraPosition.y += sin(glm::radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
+			m_CameraPosition.x += cosf(radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
+			m_CameraPosition.y += sinf(radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
 		}
 		if (Input::isKeyPressed(Key::S)) {
-			m_CameraPosition.x -= -sin(glm::radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
-			m_CameraPosition.y -= cos(glm::radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
+			m_CameraPosition.x -= -sinf(radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
+			m_CameraPosition.y -= cosf(radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
 		}
 		else if (Input::isKeyPressed(Key::W)) {
-			m_CameraPosition.x += -sin(glm::radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
-			m_CameraPosition.y += cos(glm::radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
+			m_CameraPosition.x += -sinf(radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
+			m_CameraPosition.y += cosf(radians(m_CameraRotation)) * m_CurrentCameraTranslationSpeed * delta;
 		}
 
 		if (m_Rotation) {

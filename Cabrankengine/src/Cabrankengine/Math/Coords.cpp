@@ -7,7 +7,7 @@
 
 namespace cabrankengine::math {
 
-	glm::vec2 viewportToNormalized(float x, float y) {
+	Vector2 viewportToNormalized(float x, float y) {
 		float windowWidth = static_cast<float>(Application::get().getWindow().getWidth());
 		float windowHeight = static_cast<float>(Application::get().getWindow().getHeight());
 
@@ -17,7 +17,7 @@ namespace cabrankengine::math {
 		return { normalizedX, normalizedY };
 	}
 
-	glm::vec2 viewportToWorld(float x, float y, const OrthographicCameraController& cameraController) {
+	Vector2 viewportToWorld(float x, float y, const OrthographicCameraController& cameraController) {
 		float windowWidth = static_cast<float>(Application::get().getWindow().getWidth());
 		float windowHeight = static_cast<float>(Application::get().getWindow().getHeight());
 
@@ -30,7 +30,7 @@ namespace cabrankengine::math {
 		return { worldX, worldY };
 	}
 
-	glm::vec2 worldToViewport(const Vector3& pos, const OrthographicCameraController& cameraController) {
+	Vector2 worldToViewport(const Vector3& pos, const OrthographicCameraController& cameraController) {
 		float windowWidth = static_cast<float>(Application::get().getWindow().getWidth());
 		float windowHeight = static_cast<float>(Application::get().getWindow().getHeight());
 

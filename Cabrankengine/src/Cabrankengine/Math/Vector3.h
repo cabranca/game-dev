@@ -1,11 +1,6 @@
 #pragma once
 
-#include <cmath>
-#include <algorithm>
-
-#include <Cabrankengine/Core/Logger.h>
-
-#include "Constants.h"
+#include "Vector2.h"
 
 namespace cabrankengine::math {
 
@@ -25,6 +20,7 @@ namespace cabrankengine::math {
 		constexpr Vector3() noexcept : x(), y(), z() {}
 		explicit constexpr Vector3(float uniform) noexcept : x(uniform), y(uniform), z(uniform) {}
 		constexpr Vector3(float x, float y, float z) noexcept : x(x), y(y), z(z) {}
+		explicit constexpr Vector3(Vector2 xy, float z = 0) : x(xy.x), y(xy.y), z(z) {}
 
 		constexpr float lengthSquared() const noexcept;
 		float length() const noexcept;

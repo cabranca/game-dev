@@ -2,6 +2,7 @@
 
 // For use by Cabrankengine Application
 #include <Cabrankengine/Core/Application.h>
+#include <Cabrankengine/Core/AudioEngine.h>
 #include <Cabrankengine/Core/Layer.h>
 #include <Cabrankengine/Core/Logger.h>
 #include <Cabrankengine/Core/Timestep.h>
@@ -12,7 +13,11 @@
 
 #include <Cabrankengine/Debug/Instrumentator.h>
 
+#include <Cabrankengine/ECS/ECS.h>
+
 #include <Cabrankengine/ImGui/ImGuiLayer.h>
+
+#include <Cabrankengine/Math/MatrixFactory.h>
 
 
 // --- Renderer ---

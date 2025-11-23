@@ -2,7 +2,6 @@
 
 #include <cstdint>
 #include <unordered_map>
-#include <glm/glm.hpp>
 
 #include <Cabrankengine/Math/Mat4.h>
 #include <Cabrankengine/Renderer/Shader.h>
@@ -37,7 +36,7 @@ namespace cabrankengine {
 			void setFloat3(const std::string& name, const math::Vector3& vector) override;
 
 			// Sets a 4 float vector in the shader program.
-			void setFloat4(const std::string& name, const glm::vec4& vector) override;
+			void setFloat4(const std::string& name, const math::Vector4& vector) override;
 
 			// Sets a 4x4 float matrix in the shader program.
 		    void setMat4(const std::string& name, const math::Mat4& value) override;
@@ -49,9 +48,9 @@ namespace cabrankengine {
 			void uploadUniformInt(const std::string& name, int value);
 			void uploadUniformIntArray(const std::string& name, int* values, uint32_t count);
 			void uploadUniformFloat1(const std::string& name, float value);
-			void uploadUniformFloat2(const std::string& name, const glm::vec2& values);
+			void uploadUniformFloat2(const std::string& name, const math::Vector2& values);
 			void uploadUniformFloat3(const std::string& name, const math::Vector3& values);
-			void uploadUniformFloat4(const std::string& name, const glm::vec4& values);
+			void uploadUniformFloat4(const std::string& name, const math::Vector4& values);
 			void uploadUniformMat3(const std::string& name, const glm::mat3& matrix);
 			void uploadUniformMat4(const std::string& name, const math::Mat4& matrix);
 

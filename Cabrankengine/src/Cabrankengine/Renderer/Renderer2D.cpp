@@ -1,7 +1,5 @@
 #include "Renderer2D.h"
 
-#include <glm/gtc/matrix_transform.hpp>
-
 #include <Cabrankengine/Core/Core.h>
 #include <Cabrankengine/Debug/Instrumentator.h>
 #include <Cabrankengine/Math/MatrixFactory.h>
@@ -11,15 +9,14 @@
 #include "Shader.h"
 #include "VertexArray.h"
 
-using namespace glm;
-using namespace cabrankengine::math;
-
 namespace cabrankengine {
+
+	using namespace math;
 
 	struct QuadVertex {
 		Vector3 Position;
-		vec4 Color;
-		vec2 TexCoord;
+		Vector4 Color;
+		Vector2 TexCoord;
 		float TexIndex;
 		float TilingFactor;
 	};
@@ -148,11 +145,11 @@ namespace cabrankengine {
 		s_Data.TextureSlotIndex = 1;
 	}
 
-	void Renderer2D::drawQuad(const vec2& position, const vec2& size, const vec4& color) {
+	void Renderer2D::drawQuad(const Vector2& position, const Vector2& size, const Vector4& color) {
 		drawQuad(Vector3(position.x, position.y, 0.0f), size, color);
 	}
 
-	void Renderer2D::drawQuad(const Vector3& position, const vec2& size, const vec4& color) {
+	void Renderer2D::drawQuad(const Vector3& position, const Vector2& size, const Vector4& color) {
 		CE_PROFILE_FUNCTION();
 
 		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
@@ -165,28 +162,28 @@ namespace cabrankengine {
 
 		s_Data.QuadVertexBufferPtr->Position = s_Data.QuadVertexPositions[0] * transform;
 		s_Data.QuadVertexBufferPtr->Color = color;
-		s_Data.QuadVertexBufferPtr->TexCoord = vec2(0.0f, 0.0f);
+		s_Data.QuadVertexBufferPtr->TexCoord = Vector2(0.0f, 0.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex = texIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadVertexBufferPtr->Position = s_Data.QuadVertexPositions[1] * transform;
 		s_Data.QuadVertexBufferPtr->Color = color;
-		s_Data.QuadVertexBufferPtr->TexCoord = vec2(1.0f, 0.0f);
+		s_Data.QuadVertexBufferPtr->TexCoord = Vector2(1.0f, 0.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex = texIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadVertexBufferPtr->Position = s_Data.QuadVertexPositions[2] * transform;
 		s_Data.QuadVertexBufferPtr->Color = color;
-		s_Data.QuadVertexBufferPtr->TexCoord = vec2(1.0f, 1.0f);
+		s_Data.QuadVertexBufferPtr->TexCoord = Vector2(1.0f, 1.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex = texIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadVertexBufferPtr->Position = s_Data.QuadVertexPositions[3] * transform;
 		s_Data.QuadVertexBufferPtr->Color = color;
-		s_Data.QuadVertexBufferPtr->TexCoord = vec2(0.0f, 1.0f);
+		s_Data.QuadVertexBufferPtr->TexCoord = Vector2(0.0f, 1.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex = texIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
@@ -196,17 +193,17 @@ namespace cabrankengine {
 		s_Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::drawQuad(const vec2& position, const vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor) {
+	void Renderer2D::drawQuad(const Vector2& position, const Vector2& size, const Ref<Texture2D>& texture, float tilingFactor, const Vector4& tintColor) {
 		drawQuad(Vector3(position.x, position.y, 0.0f), size, texture, tilingFactor, tintColor);
 	}
 
-	void Renderer2D::drawQuad(const Vector3& position, const vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor) {
+	void Renderer2D::drawQuad(const Vector3& position, const Vector2& size, const Ref<Texture2D>& texture, float tilingFactor, const Vector4& tintColor) {
 		CE_PROFILE_FUNCTION();
 
 		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
 			flushAndReset();
 
-		constexpr vec4 color(1.f);
+		constexpr Vector4 color(1.f);
 
 		float textureIndex = 0.0f;
 		for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++) {
@@ -226,28 +223,28 @@ namespace cabrankengine {
 
 		s_Data.QuadVertexBufferPtr->Position = s_Data.QuadVertexPositions[0] * transform;
 		s_Data.QuadVertexBufferPtr->Color = color;
-		s_Data.QuadVertexBufferPtr->TexCoord = vec2(0.0f, 0.0f);
+		s_Data.QuadVertexBufferPtr->TexCoord = Vector2(0.0f, 0.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadVertexBufferPtr->Position = s_Data.QuadVertexPositions[1] * transform;
 		s_Data.QuadVertexBufferPtr->Color = color;
-		s_Data.QuadVertexBufferPtr->TexCoord = vec2(1.0f, 0.0f);
+		s_Data.QuadVertexBufferPtr->TexCoord = Vector2(1.0f, 0.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadVertexBufferPtr->Position = s_Data.QuadVertexPositions[2] * transform;
 		s_Data.QuadVertexBufferPtr->Color = color;
-		s_Data.QuadVertexBufferPtr->TexCoord = vec2(1.0f, 1.0f);
+		s_Data.QuadVertexBufferPtr->TexCoord = Vector2(1.0f, 1.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadVertexBufferPtr->Position = s_Data.QuadVertexPositions[3] * transform;
 		s_Data.QuadVertexBufferPtr->Color = color;
-		s_Data.QuadVertexBufferPtr->TexCoord = vec2(0.0f, 1.0f);
+		s_Data.QuadVertexBufferPtr->TexCoord = Vector2(0.0f, 1.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
@@ -257,11 +254,11 @@ namespace cabrankengine {
 		s_Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::drawRotatedQuad(const vec2& position, const vec2& size, float rotation, const vec4& color) {
+	void Renderer2D::drawRotatedQuad(const Vector2& position, const Vector2& size, float rotation, const Vector4& color) {
 		drawRotatedQuad(Vector3(position.x, position.y, 0.0f), size, rotation, color);
 	}
 
-	void Renderer2D::drawRotatedQuad(const Vector3& position, const vec2& size, float rotation, const vec4& color) {
+	void Renderer2D::drawRotatedQuad(const Vector3& position, const Vector2& size, float rotation, const Vector4& color) {
 		CE_PROFILE_FUNCTION();
 
 		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
@@ -274,28 +271,28 @@ namespace cabrankengine {
 
 		s_Data.QuadVertexBufferPtr->Position = s_Data.QuadVertexPositions[0] * transform;
 		s_Data.QuadVertexBufferPtr->Color = color;
-		s_Data.QuadVertexBufferPtr->TexCoord = vec2(0.0f, 0.0f);
+		s_Data.QuadVertexBufferPtr->TexCoord = Vector2(0.0f, 0.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex = texIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadVertexBufferPtr->Position = s_Data.QuadVertexPositions[1] * transform;
 		s_Data.QuadVertexBufferPtr->Color = color;
-		s_Data.QuadVertexBufferPtr->TexCoord = vec2(1.0f, 0.0f);
+		s_Data.QuadVertexBufferPtr->TexCoord = Vector2(1.0f, 0.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex = texIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadVertexBufferPtr->Position = s_Data.QuadVertexPositions[2] * transform;
 		s_Data.QuadVertexBufferPtr->Color = color;
-		s_Data.QuadVertexBufferPtr->TexCoord = vec2(1.0f, 1.0f);
+		s_Data.QuadVertexBufferPtr->TexCoord = Vector2(1.0f, 1.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex = texIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadVertexBufferPtr->Position = s_Data.QuadVertexPositions[3] * transform;
 		s_Data.QuadVertexBufferPtr->Color = color;
-		s_Data.QuadVertexBufferPtr->TexCoord = vec2(0.0f, 1.0f);
+		s_Data.QuadVertexBufferPtr->TexCoord = Vector2(0.0f, 1.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex = texIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
@@ -305,17 +302,17 @@ namespace cabrankengine {
 		s_Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::drawRotatedQuad(const vec2& position, const vec2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor) {
+	void Renderer2D::drawRotatedQuad(const Vector2& position, const Vector2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor, const Vector4& tintColor) {
 		drawRotatedQuad(Vector3(position.x, position.y, 0.0f), size, rotation, texture, tilingFactor, tintColor);
 	}
 
-	void Renderer2D::drawRotatedQuad(const Vector3& position, const vec2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor) {
+	void Renderer2D::drawRotatedQuad(const Vector3& position, const Vector2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor, const Vector4& tintColor) {
 		CE_PROFILE_FUNCTION();
 
 		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
 			flushAndReset();
 
-		constexpr vec4 color(1.f);
+		constexpr Vector4 color(1.f);
 
 		float textureIndex = 0.0f;
 		for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++) {
@@ -335,28 +332,28 @@ namespace cabrankengine {
 
 		s_Data.QuadVertexBufferPtr->Position = s_Data.QuadVertexPositions[0] * transform;
 		s_Data.QuadVertexBufferPtr->Color = color;
-		s_Data.QuadVertexBufferPtr->TexCoord = vec2(0.0f, 0.0f);
+		s_Data.QuadVertexBufferPtr->TexCoord = Vector2(0.0f, 0.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadVertexBufferPtr->Position = s_Data.QuadVertexPositions[1] * transform;
 		s_Data.QuadVertexBufferPtr->Color = color;
-		s_Data.QuadVertexBufferPtr->TexCoord = vec2(1.0f, 0.0f);
+		s_Data.QuadVertexBufferPtr->TexCoord = Vector2(1.0f, 0.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadVertexBufferPtr->Position = s_Data.QuadVertexPositions[2] * transform;
 		s_Data.QuadVertexBufferPtr->Color = color;
-		s_Data.QuadVertexBufferPtr->TexCoord = vec2(1.0f, 1.0f);
+		s_Data.QuadVertexBufferPtr->TexCoord = Vector2(1.0f, 1.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadVertexBufferPtr->Position = s_Data.QuadVertexPositions[3] * transform;
 		s_Data.QuadVertexBufferPtr->Color = color;
-		s_Data.QuadVertexBufferPtr->TexCoord = vec2(0.0f, 1.0f);
+		s_Data.QuadVertexBufferPtr->TexCoord = Vector2(0.0f, 1.0f);
 		s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexBufferPtr++;

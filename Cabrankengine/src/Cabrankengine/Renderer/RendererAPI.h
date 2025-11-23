@@ -1,8 +1,7 @@
 #pragma once
 
-#include <glm/glm.hpp>
-
 #include <Cabrankengine/Core/Core.h>
+#include <Cabrankengine/Math/Vector4.h>
 
 namespace cabrankengine {
 
@@ -19,7 +18,7 @@ namespace cabrankengine {
 			virtual void init() = 0;
 
 			// Sets the color used to clear the screen.
-			virtual void setClearColor(const glm::vec4& color) = 0;
+			virtual void setClearColor(const math::Vector4& color) = 0;
 
 			// Clears the screen with the previously set clear color.
 			virtual void clear() = 0;

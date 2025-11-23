@@ -1,7 +1,5 @@
 #pragma once
 
-#include <glm/glm.hpp>
-
 #include <Cabrankengine/Math/Mat4.h>
 
 #include "OrthographicCamera.h"
@@ -21,15 +19,15 @@ namespace cabrankengine {
 
 			static void flush();
 
-			static void drawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color);
-			static void drawQuad(const math::Vector3& position, const glm::vec2& size, const glm::vec4& color);
-			static void drawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
-			static void drawQuad(const math::Vector3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
+			static void drawQuad(const math::Vector2& position, const math::Vector2& size, const math::Vector4& color);
+			static void drawQuad(const math::Vector3& position, const math::Vector2& size, const math::Vector4& color);
+			static void drawQuad(const math::Vector2& position, const math::Vector2& size, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const math::Vector4& tintColor = math::Vector4(1.0f));
+			static void drawQuad(const math::Vector3& position, const math::Vector2& size, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const math::Vector4& tintColor = math::Vector4(1.0f));
 
-			static void drawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color);
-			static void drawRotatedQuad(const math::Vector3& position, const glm::vec2& size, float rotation, const glm::vec4& color);
-			static void drawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
-			static void drawRotatedQuad(const math::Vector3& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
+			static void drawRotatedQuad(const math::Vector2& position, const math::Vector2& size, float rotation, const math::Vector4& color);
+			static void drawRotatedQuad(const math::Vector3& position, const math::Vector2& size, float rotation, const math::Vector4& color);
+			static void drawRotatedQuad(const math::Vector2& position, const math::Vector2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const math::Vector4& tintColor = math::Vector4(1.0f));
+			static void drawRotatedQuad(const math::Vector3& position, const math::Vector2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const math::Vector4& tintColor = math::Vector4(1.0f));
 	
 			struct Statistics {
 				uint32_t DrawCalls = 0;
