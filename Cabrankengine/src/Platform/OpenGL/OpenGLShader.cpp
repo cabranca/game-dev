@@ -183,7 +183,7 @@ namespace cabrankengine {
 			CE_CORE_ERROR("Uniform {0} not found in shader!", name);
 			return;
 		}
-		glUniformMatrix4fv(location, 1, GL_FALSE, math::toGLMatrix(matrix).data());
+		glUniformMatrix4fv(location, 1, GL_FALSE, reinterpret_cast<const float*>(matrix.elements.data()));
 	}
 
 	std::string OpenGLShader::readFile(const std::string& filepath) {

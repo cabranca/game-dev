@@ -22,7 +22,7 @@ namespace cabrankengine {
 
 		Mat4 translation = translate( m_Position);
 		Mat4 rotation = rotateZ(m_Rotation);
-		m_ViewMatrix = inverse(translation * rotation);
+		m_ViewMatrix = inverseAffine(translation * rotation);
 		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 	}
 }
