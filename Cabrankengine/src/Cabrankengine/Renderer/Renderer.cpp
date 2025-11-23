@@ -1,5 +1,9 @@
 #include "Renderer.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include <Cabrankengine/Debug/Instrumentator.h>
 #include <Platform/OpenGL/OpenGLShader.h>
 
@@ -32,8 +36,9 @@ namespace cabrankengine {
 
 	void Renderer::submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const math::Mat4& transform) {
 		shader->bind();
-		std::dynamic_pointer_cast<OpenGLShader>(shader)->uploadUniformMat4("u_ViewProjection", s_SceneData->viewProjectionMatrix);
-		std::dynamic_pointer_cast<OpenGLShader>(shader)->uploadUniformMat4("u_Transform", transform);
+		std::dynamic_pointer_cast<OpenGLShader>(shader)->uploadUniformMat4("projection", s_SceneData->viewProjectionMatrix);
+		std::dynamic_pointer_cast<OpenGLShader>(shader)->uploadUniformMat4("view", translate(Vector3(0.0f, 0.0f, -3.0f)));
+		std::dynamic_pointer_cast<OpenGLShader>(shader)->uploadUniformMat4("model", transform);
 		vertexArray->bind();
 		RenderCommand::drawIndexed(vertexArray);
 	}

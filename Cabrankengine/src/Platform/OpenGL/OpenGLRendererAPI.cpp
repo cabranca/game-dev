@@ -34,7 +34,7 @@ namespace cabrankengine {
 	}
 
 	void OpenGLRendererAPI::drawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount) {
-		uint32_t count = indexCount ? vertexArray->getIndexBuffer()->getCount() : indexCount;
+		uint32_t count = indexCount == 0 ? vertexArray->getIndexBuffer()->getCount() : indexCount;
 		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 	}
 

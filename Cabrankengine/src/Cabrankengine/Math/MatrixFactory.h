@@ -82,10 +82,10 @@ namespace cabrankengine::math {
 		float fn = farZ - nearZ;
 
 		return {
-			2.f / rl, 0.f, 0.f, 0.f, 
-			0.f, 2.f / tb, 0.f, 0.f, 
-			0.f, 0.f, -2.f / fn, 0.f, 
-			-(right + left) / rl, -(top + bottom) / tb, -(farZ + nearZ) / fn, 1.f
+			2.f / rl, 0.f, 0.f, -(right + left) / rl, 
+			0.f, 2.f / tb, 0.f, -(top + bottom) / tb, 
+			0.f, 0.f, -2.f / fn, -(farZ + nearZ) / fn, 
+			0.f, 0.f, 0.f, 1.f
 		};
 	}
 
@@ -119,6 +119,12 @@ namespace cabrankengine::math {
 
     inline std::array<float, 16> toGLMatrix(const Mat4& m) noexcept {
 		const auto& e = m.elements;
-		return { e[0].x, e[1].x, e[2].x, 0.f, e[0].y, e[1].y, e[2].y, 0.f, e[0].z, e[1].z, e[2].z, 0.f, e[3].x, e[3].y, e[3].z, 1.f };
+		std::array<float, 16> res;
+		for(int i = 0; i < 4; i++){
+			for (int j = 0; j < 4; j++){
+				res[i*4+j] = e.at(i)[j];
+			}
+		}
+		return res;
 	}
 } // namespace cabrankengine::math
