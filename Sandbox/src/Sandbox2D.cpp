@@ -1,13 +1,8 @@
 #include "Sandbox2D.h"
 
 #include <chrono>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
 
-#include <Cabrankengine/Core/AudioEngine.h>
-#include <Cabrankengine/Debug/Instrumentator.h>
-#include <Cabrankengine/ECS/ECS.h>
 #include <Platform/OpenGL/OpenGLShader.h>
 
 using namespace cabrankengine;
@@ -29,7 +24,7 @@ public:
 std::shared_ptr<MovementSystem> movSystem = nullptr;
 
 
-Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_CameraController(1600.0f, 900), m_Registry(nullptr), m_Player() {}
+Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_Camera(-800.f, 800.f, -450.f, 450.f), m_Registry(nullptr), m_Player() {}
 
 void Sandbox2D::onAttach() {
 	CE_PROFILE_FUNCTION();
@@ -60,7 +55,6 @@ void Sandbox2D::onUpdate(cabrankengine::Timestep delta) {
 	CE_PROFILE_FUNCTION();
 
 	// Update
-	m_CameraController.onUpdate(delta);
 	movSystem->update(*m_Registry, delta);
 
 	// Render
@@ -76,7 +70,7 @@ void Sandbox2D::onUpdate(cabrankengine::Timestep delta) {
 		rotation += delta * 90.f;
 
 		CE_PROFILE_SCOPE("Renderer Draw");
-		//Renderer2D::beginScene(m_CameraController.getCamera());
+		//Renderer2D::beginScene(m_Camera.getCamera());
 
 		////Rotated red square
 		//Renderer2D::drawRotatedQuad({ 640.f, 0.0f }, { 288.f, 288.f }, -45.0f, { 0.8f, 0.2f, 0.3f, 1.0f });
@@ -95,7 +89,7 @@ void Sandbox2D::onUpdate(cabrankengine::Timestep delta) {
 
 		//Renderer2D::endScene();
 
-		Renderer2D::beginScene(m_CameraController.getCamera());
+		Renderer2D::beginScene(m_Camera);
 		/*for (float y = -360.f; y < 360.f; y += 36.f) {
 			for (float x = -360.f; x < 360.f; x += 36.f) {
 				glm::vec4 color = { m_SquareColor };
@@ -120,11 +114,11 @@ void Sandbox2D::onImGuiRender() {
 	ImGui::Text("Vertices: %d", stats.getTotalVertexCount());
 	ImGui::Text("Indices %d:", stats.getTotalIndexCount());
 
-	ImGui::ColorEdit4("Squares Color", glm::value_ptr(m_SquareColor));
+	ImGui::ColorEdit4("Squares Color", &m_SquareColor.x);
 
 	ImGui::End();
 }
 
 void Sandbox2D::onEvent(cabrankengine::Event& e) {
-	m_CameraController.onEvent(e);
+	//m_Camera.onEvent(e);
 }
