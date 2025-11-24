@@ -5,12 +5,8 @@
 
 #include <Cabrankengine/Events/KeyEvent.h>
 #include <Platform/OpenGL/OpenGLShader.h>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
-#include <Cabrankengine/Renderer/Texture.h>
 #include "Sandbox2D.h"
-#include <Cabrankengine/Renderer/PerspectiveCamera.h>
 
 using namespace cabrankengine;
 using namespace cabrankengine::math;

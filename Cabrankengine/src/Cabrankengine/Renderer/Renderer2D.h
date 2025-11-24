@@ -2,7 +2,7 @@
 
 #include <Cabrankengine/Math/Mat4.h>
 
-#include "OrthographicCamera.h"
+#include "Camera.h"
 #include "Texture.h"
 
 namespace cabrankengine::rendering {
