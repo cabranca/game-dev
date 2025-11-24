@@ -7,6 +7,8 @@
 
 namespace cabrankengine::math {
 
+	using namespace rendering;
+
 	Vector2 viewportToNormalized(float x, float y) {
 		float windowWidth = static_cast<float>(Application::get().getWindow().getWidth());
 		float windowHeight = static_cast<float>(Application::get().getWindow().getHeight());

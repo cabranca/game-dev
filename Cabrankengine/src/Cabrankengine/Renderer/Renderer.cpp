@@ -13,7 +13,7 @@
 #include "VertexArray.h"
 
 
-namespace cabrankengine {
+namespace cabrankengine::rendering {
 
 	using namespace math;
 
@@ -38,9 +38,9 @@ namespace cabrankengine {
 
 	void Renderer::submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const Mat4& transform) {
 		shader->bind();
-		std::dynamic_pointer_cast<OpenGLShader>(shader)->uploadUniformMat4("projection", s_SceneData->viewProjectionMatrix);
-		std::dynamic_pointer_cast<OpenGLShader>(shader)->uploadUniformMat4("view", identityMat());
-		std::dynamic_pointer_cast<OpenGLShader>(shader)->uploadUniformMat4("model", transform);
+		std::dynamic_pointer_cast<platform::opengl::OpenGLShader>(shader)->uploadUniformMat4("projection", s_SceneData->viewProjectionMatrix);
+		std::dynamic_pointer_cast<platform::opengl::OpenGLShader>(shader)->uploadUniformMat4("view", identityMat());
+		std::dynamic_pointer_cast<platform::opengl::OpenGLShader>(shader)->uploadUniformMat4("model", transform);
 		vertexArray->bind();
 		RenderCommand::drawIndexed(vertexArray);
 	}

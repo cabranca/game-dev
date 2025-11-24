@@ -6,7 +6,9 @@
 #include <Cabrankengine/Debug/Instrumentator.h>
 
 
-namespace cabrankengine {
+namespace cabrankengine::platform::opengl {
+
+	using namespace rendering;
 
 	namespace utils {
 

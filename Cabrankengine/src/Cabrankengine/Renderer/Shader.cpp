@@ -6,7 +6,7 @@
 #include "Renderer.h"
 
 
-namespace cabrankengine {
+namespace cabrankengine::rendering {
 
 	Ref<Shader> Shader::create(const std::string& filepath) {
 		switch (Renderer::getAPI()) {
@@ -14,7 +14,7 @@ namespace cabrankengine {
 				CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
 				return nullptr;
 			case RendererAPI::API::OpenGL:
-				return createRef<OpenGLShader>(filepath);
+				return createRef<platform::opengl::OpenGLShader>(filepath);
 		}
 		CE_CORE_ASSERT(false, "Unknown RendererAPI!");
 		return nullptr;
@@ -26,7 +26,7 @@ namespace cabrankengine {
 				CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
 				return nullptr;
 			case RendererAPI::API::OpenGL:
-				return createRef<OpenGLShader>(name, vertexSrc, fragmentSrc);
+				return createRef<platform::opengl::OpenGLShader>(name, vertexSrc, fragmentSrc);
 		}
 
 		CE_CORE_ASSERT(false, "Unknown RendererAPI!");

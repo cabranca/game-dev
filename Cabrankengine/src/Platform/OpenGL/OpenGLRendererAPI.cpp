@@ -6,7 +6,9 @@
 #include <Cabrankengine/Renderer/VertexArray.h>
 #include <Cabrankengine/Renderer/Buffer.h>
 
-namespace cabrankengine {
+namespace cabrankengine::platform::opengl {
+
+	using namespace rendering;
 
 	void OpenGLRendererAPI::init() {
 		CE_PROFILE_FUNCTION();

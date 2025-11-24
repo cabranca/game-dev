@@ -2,7 +2,7 @@
 
 #include "Camera.h"
 
-namespace cabrankengine {
+namespace cabrankengine::rendering {
 
     class PerspectiveCamera : public Camera {
         public:

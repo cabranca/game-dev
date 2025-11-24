@@ -6,7 +6,8 @@
 #include <Platform/OpenGL/OpenGLShader.h>
 
 using namespace cabrankengine;
-using namespace cabrankengine::components;
+using namespace cabrankengine::ecs;
+using namespace cabrankengine::rendering;
 using namespace glm;
 
 class MovementSystem : public ISystem {

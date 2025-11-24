@@ -6,7 +6,9 @@ struct GLFWwindow; // Forward declaration of the GLFWwindow struct
 
 namespace cabrankengine {
 
-	class GraphicsContext; // Forward declaration of the GraphicsContext class
+    namespace rendering {
+        class GraphicsContext; // Forward declaration of the GraphicsContext class
+    }
 
     class LinuxWindow : public Window {
         public:
@@ -43,7 +45,7 @@ namespace cabrankengine {
             void shutdown();
 
             GLFWwindow* m_Window; // Actual window object
-		    GraphicsContext* m_Context; // Graphics context for rendering
+		    rendering::GraphicsContext* m_Context; // Graphics context for rendering
 
             // Data of the window to work with GLFW
             struct WindowData {

@@ -9,7 +9,7 @@
 #include "Shader.h"
 #include "VertexArray.h"
 
-namespace cabrankengine {
+namespace cabrankengine::rendering {
 
 	using namespace math;
 

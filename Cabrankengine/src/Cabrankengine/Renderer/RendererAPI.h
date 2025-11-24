@@ -3,7 +3,7 @@
 #include <Cabrankengine/Core/Core.h>
 #include <Cabrankengine/Math/Vector4.h>
 
-namespace cabrankengine {
+namespace cabrankengine::rendering {
 
 	class VertexArray; // Forward declaration of VertexArray class.
 

@@ -9,9 +9,9 @@
 // TODO: Remove!!
 typedef unsigned int GLenum;
 
-namespace cabrankengine {
+namespace cabrankengine::platform::opengl {
 
-	class OpenGLShader : public Shader {
+	class OpenGLShader : public rendering::Shader {
 		public:
 			OpenGLShader(const std::string& filepath);
 			OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);

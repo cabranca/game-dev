@@ -6,7 +6,7 @@
 #include <Cabrankengine/Core/Logger.h>
 #include <Cabrankengine/Debug/Instrumentator.h>
 
-namespace cabrankengine {
+namespace cabrankengine::platform::opengl {
 
 	OpenGLContext::OpenGLContext(GLFWwindow* windowHandle) : m_WindowHandle(windowHandle) {
 		CE_CORE_ASSERT(m_WindowHandle, "Window handle is null!");

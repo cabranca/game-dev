@@ -5,7 +5,7 @@
 
 #include <Cabrankengine/Core/Core.h>
 
-namespace cabrankengine {
+namespace cabrankengine::rendering {
 
 	// Enum class representing different image formats for textures.
 	enum class ImageFormat {

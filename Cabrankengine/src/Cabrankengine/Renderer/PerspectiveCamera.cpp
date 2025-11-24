@@ -1,9 +1,9 @@
 #include "PerspectiveCamera.h"
 
-namespace cabrankengine {
+namespace cabrankengine::rendering {
 
 	using namespace math;
 
-	cabrankengine::PerspectiveCamera::PerspectiveCamera(float fovy, float aspect, float nearZ, float farZ)
+	PerspectiveCamera::PerspectiveCamera(float fovy, float aspect, float nearZ, float farZ)
 	    : Camera(perspective(fovy, aspect, nearZ, farZ), identityMat()) {}
 } // namespace cabrankengine

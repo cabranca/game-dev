@@ -2,9 +2,9 @@
 
 #include <Cabrankengine/Renderer/VertexArray.h>
 
-namespace cabrankengine {
+namespace cabrankengine::platform::opengl {
 
-	class OpenGLVertexArray : public VertexArray {
+	class OpenGLVertexArray : public rendering::VertexArray {
 		public:
 			OpenGLVertexArray();
 			~OpenGLVertexArray();
@@ -16,20 +16,20 @@ namespace cabrankengine {
 			virtual void unbind() const override;
 
 			// Adds a vertex buffer to the vertex array.
-			virtual void addVertexBuffer(const Ref<VertexBuffer>& vertexBuffer) override;
+			virtual void addVertexBuffer(const Ref<rendering::VertexBuffer>& vertexBuffer) override;
 			
 			// Sets the index buffer for the vertex array.
-			virtual void setIndexBuffer(const Ref<IndexBuffer>& indexBuffer) override;
+			virtual void setIndexBuffer(const Ref<rendering::IndexBuffer>& indexBuffer) override;
 
 			// Returns the vertex buffers in the vertex array.
-			virtual const std::vector<Ref<VertexBuffer>>& getVertexBuffers() const override { return m_VertexBuffers; }
+			virtual const std::vector<Ref<rendering::VertexBuffer>>& getVertexBuffers() const override { return m_VertexBuffers; }
 			
 			// Returns the index buffer in the vertex array.
-			virtual const Ref<IndexBuffer>& getIndexBuffer() const override { return m_IndexBuffer; }
+			virtual const Ref<rendering::IndexBuffer>& getIndexBuffer() const override { return m_IndexBuffer; }
 
 		private:
-			std::vector<Ref<VertexBuffer>> m_VertexBuffers; // Vector of vertex buffers in the vertex array
-			Ref<IndexBuffer> m_IndexBuffer; // Index buffer in the vertex array
+			std::vector<Ref<rendering::VertexBuffer>> m_VertexBuffers; // Vector of vertex buffers in the vertex array
+			Ref<rendering::IndexBuffer> m_IndexBuffer; // Index buffer in the vertex array
 
 			uint32_t m_RendererId; // Renderer ID for the OpenGL vertex array, used to identify it in the OpenGL context
 	};

@@ -5,7 +5,7 @@
 
 #include <Cabrankengine/Core/Core.h>
 
-namespace cabrankengine {
+namespace cabrankengine::rendering {
 
 	// Forward declarations
 	class VertexBuffer; // VertexBuffer is a class that represents a buffer containing vertex data.

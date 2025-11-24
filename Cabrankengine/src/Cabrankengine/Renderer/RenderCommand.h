@@ -2,7 +2,7 @@
 
 #include "RendererAPI.h"
 
-namespace cabrankengine {
+namespace cabrankengine::rendering {
 	
 	// RenderCommand is a class that provides a static interface for rendering commands.
 	// Now it seems to just forward calls to the RendererAPI, but in the future the idea

@@ -5,7 +5,9 @@
 #include <Cabrankengine/Debug/Instrumentator.h>
 #include <Cabrankengine/Renderer/Buffer.h>
 
-namespace cabrankengine {
+namespace cabrankengine::platform::opengl {
+
+	using namespace rendering;
 
 	static GLenum ShaderDataType2OpenGLBaseType(ShaderDataType type) {
 		switch (type) {

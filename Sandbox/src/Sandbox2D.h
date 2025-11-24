@@ -14,16 +14,16 @@ class Sandbox2D : public cabrankengine::Layer {
 		virtual void onEvent(cabrankengine::Event& e) override;
 
 	private:
-		cabrankengine::OrthographicCamera m_Camera;
+		cabrankengine::rendering::OrthographicCamera m_Camera;
 
 		// Temp
-		cabrankengine::Ref<cabrankengine::VertexArray> m_SquareVA;
+		cabrankengine::Ref<cabrankengine::rendering::VertexArray> m_SquareVA;
 
-		cabrankengine::Ref<cabrankengine::Texture2D> m_CheckerboardTexture;
+		cabrankengine::Ref<cabrankengine::rendering::Texture2D> m_CheckerboardTexture;
 
 		cabrankengine::math::Vector4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
 		cabrankengine::math::Vector4 m_SquareColorVariant = { 0.8f, 0.3f, 0.2f, 1.0f };
 
-		cabrankengine::Registry* m_Registry;
+		cabrankengine::ecs::Registry* m_Registry;
 		uint32_t m_Player;
 };

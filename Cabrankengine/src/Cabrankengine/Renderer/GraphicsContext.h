@@ -1,6 +1,6 @@
 #pragma once
 
-namespace cabrankengine {
+namespace cabrankengine::rendering {
 
 	// GraphicsContext is an abstract class that defines the interface for a graphics context.
 	class GraphicsContext {

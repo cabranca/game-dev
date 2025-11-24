@@ -5,9 +5,9 @@
 // Forward declarations
 struct GLFWwindow;
 
-namespace cabrankengine {
+namespace cabrankengine::platform::opengl {
 
-	class OpenGLContext : public GraphicsContext {
+	class OpenGLContext : public rendering::GraphicsContext {
 	public:
 		OpenGLContext(GLFWwindow* windowHandle);
 

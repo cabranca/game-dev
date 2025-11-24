@@ -5,7 +5,7 @@
 #include "OrthographicCamera.h"
 #include "Texture.h"
 
-namespace cabrankengine {
+namespace cabrankengine::rendering {
 
 	class Renderer2D {
 		public:

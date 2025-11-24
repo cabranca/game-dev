@@ -2,7 +2,7 @@
 
 #include <Cabrankengine/Math/MatrixFactory.h>
 
-namespace cabrankengine {
+namespace cabrankengine::rendering {
 
 	class Camera {
 	  public:

@@ -2,7 +2,7 @@
 
 #include "Camera.h"
 
-namespace cabrankengine {
+namespace cabrankengine::rendering {
 
 	// Class representing an orthographic camera.
 	// An orthographic camera is a type of camera that uses orthographic projection,

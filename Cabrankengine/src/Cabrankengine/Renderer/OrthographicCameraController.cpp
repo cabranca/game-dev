@@ -5,7 +5,7 @@
 #include <Cabrankengine/Debug/Instrumentator.h>
 #include <Cabrankengine/Math/Common.h>
 
-namespace cabrankengine {
+namespace cabrankengine::rendering {
 
 	using namespace math;
 

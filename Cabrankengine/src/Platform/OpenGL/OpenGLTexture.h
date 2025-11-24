@@ -4,16 +4,16 @@
 
 #include <Cabrankengine/Renderer/Texture.h>
 
-namespace cabrankengine {
+namespace cabrankengine::platform::opengl {
 
-	class OpenGLTexture2D : public Texture2D {
+	class OpenGLTexture2D : public rendering::Texture2D {
 		public:
-			OpenGLTexture2D(const TextureSpecification& specification);
+			OpenGLTexture2D(const rendering::TextureSpecification& specification);
 			OpenGLTexture2D(const std::string& path);
 			virtual ~OpenGLTexture2D();
 
 			// Returns the specification of the texture, which includes its width, height, format, and mip generation status.
-			virtual const TextureSpecification& getSpecification() const override { return m_Specification; }
+			virtual const rendering::TextureSpecification& getSpecification() const override { return m_Specification; }
 
 			// Returns the texture width
 			virtual uint32_t getWidth() const override { return m_Width; }
@@ -41,7 +41,7 @@ namespace cabrankengine {
 				return m_RendererID == other.getRendererID();
 			}
 		private:
-			TextureSpecification m_Specification; // Specification of the texture, including width, height, format, and mip generation status
+			rendering::TextureSpecification m_Specification; // Specification of the texture, including width, height, format, and mip generation status
 
 			std::string m_Path; // Path to the texture file, used for loading the texture from disk
 			bool m_IsLoaded = false; // Flag indicating whether the texture has been loaded successfully

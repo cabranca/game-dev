@@ -2,9 +2,9 @@
 
 #include <Cabrankengine/Renderer/RendererAPI.h>
 
-namespace cabrankengine {
+namespace cabrankengine::platform::opengl {
 
-	class OpenGLRendererAPI : public RendererAPI {
+	class OpenGLRendererAPI : public rendering::RendererAPI {
 		public:
 			// Initializes the renderer API. This method should be called before any rendering operations.
 			virtual void init() override;
@@ -16,10 +16,10 @@ namespace cabrankengine {
 			virtual void clear() override;
 
 			// Draws the vertex array vertices in order
-			virtual void draw(const Ref<VertexArray>& vertexArray) override;
+			virtual void draw(const Ref<rendering::VertexArray>& vertexArray) override;
 
 			// Draws the indexed vertices from the vertex array.
-			virtual void drawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0) override;
+			virtual void drawIndexed(const Ref<rendering::VertexArray>& vertexArray, uint32_t indexCount = 0) override;
 
 			// Sets the viewport dimensions for rendering.
 			virtual void setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) override;

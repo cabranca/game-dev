@@ -4,7 +4,7 @@
 
 #include "RenderCommand.h"
 
-namespace cabrankengine {
+namespace cabrankengine::rendering {
 
 	// Forward declarations
 	class Camera; // Represents a camera used for rendering scenes.

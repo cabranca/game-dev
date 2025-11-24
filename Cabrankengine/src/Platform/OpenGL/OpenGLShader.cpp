@@ -10,9 +10,10 @@
 #include <Cabrankengine/Debug/Instrumentator.h>
 #include <Cabrankengine/Math/MatrixFactory.h>
 
-namespace cabrankengine {
+namespace cabrankengine::platform::opengl {
 
 	using namespace math;
+	using namespace rendering;
 
 	static GLenum ShaderTypeFromString(const std::string& type) {
 		if (type == "vertex")

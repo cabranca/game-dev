@@ -2,7 +2,7 @@
 
 #include <Platform/OpenGL/OpenGLRendererAPI.h>
 
-namespace cabrankengine {
+namespace cabrankengine::rendering {
 
-	RendererAPI* RenderCommand::s_RendererAPI = new OpenGLRendererAPI;
+	RendererAPI* RenderCommand::s_RendererAPI = new platform::opengl::OpenGLRendererAPI;
 }

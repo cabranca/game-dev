@@ -14,11 +14,13 @@
 
 using namespace cabrankengine;
 using namespace cabrankengine::math;
+using namespace cabrankengine::rendering;
+using namespace cabrankengine::platform::opengl;
 
-class ExampleLayer : public cabrankengine::Layer {
+class ExampleLayer : public Layer {
   public:
 	ExampleLayer() : Layer("Example"), m_Camera(-16.f / 9.f, 16.f / 9.f, -1.f, 1.f) {
-		m_SquareVA = cabrankengine::VertexArray::create();
+		m_SquareVA = VertexArray::create();
 
 		float squareVertices[5 * 4] = {
 			 0.5f,  0.5f,  0.0f,    1.0f, 1.0f,
@@ -27,35 +29,35 @@ class ExampleLayer : public cabrankengine::Layer {
 			-0.5f,  0.5f,  0.0f,    0.0f, 1.0f
 		};
 
-		cabrankengine::Ref<cabrankengine::VertexBuffer> squareVB = cabrankengine::VertexBuffer::create(squareVertices, sizeof(squareVertices));
+		Ref<VertexBuffer> squareVB = VertexBuffer::create(squareVertices, sizeof(squareVertices));
 
-		squareVB->setLayout({ { cabrankengine::ShaderDataType::Float3, "pos" }, { cabrankengine::ShaderDataType::Float2, "tex" } });
+		squareVB->setLayout({ { ShaderDataType::Float3, "pos" }, { ShaderDataType::Float2, "tex" } });
 
 		m_SquareVA->addVertexBuffer(squareVB);
 
 		uint32_t squareIndices[6] = { 0, 1, 3, 1, 2, 3 };
 
-		cabrankengine::Ref<cabrankengine::IndexBuffer> squareIB = cabrankengine::IndexBuffer::create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
+		Ref<IndexBuffer> squareIB = IndexBuffer::create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 
 		m_SquareVA->setIndexBuffer(squareIB);
 
 		auto textureShader = m_ShaderLibrary.load("assets/shaders/OldTexture.glsl");
 
-		m_Texture = cabrankengine::Texture2D::create("assets/textures/Checkerboard.png");
+		m_Texture = Texture2D::create("assets/textures/Checkerboard.png");
 
-		m_LogoTexture = cabrankengine::Texture2D::create("assets/textures/ChernoLogo.png");
+		m_LogoTexture = Texture2D::create("assets/textures/ChernoLogo.png");
 
-		std::dynamic_pointer_cast<cabrankengine::OpenGLShader>(textureShader)->bind();
+		std::dynamic_pointer_cast<OpenGLShader>(textureShader)->bind();
 
-		std::dynamic_pointer_cast<cabrankengine::OpenGLShader>(textureShader)->uploadUniformInt("texture1", 0);
-		std::dynamic_pointer_cast<cabrankengine::OpenGLShader>(textureShader)->uploadUniformInt("texture2", 1);
+		std::dynamic_pointer_cast<OpenGLShader>(textureShader)->uploadUniformInt("texture1", 0);
+		std::dynamic_pointer_cast<OpenGLShader>(textureShader)->uploadUniformInt("texture2", 1);
 		
 	}
 
-	void onUpdate(cabrankengine::Timestep delta) override {
+	void onUpdate(Timestep delta) override {
 
-		cabrankengine::RenderCommand::setClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
-		cabrankengine::RenderCommand::clear();
+		RenderCommand::setClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
+		RenderCommand::clear();
 
 		Renderer::beginScene(m_Camera);
 		auto textureShader = m_ShaderLibrary.get("OldTexture");
@@ -66,23 +68,23 @@ class ExampleLayer : public cabrankengine::Layer {
 		textureShader->bind();
 		static float rotation = 0.f;
 		rotation += delta * 90.f;
-		cabrankengine::Renderer::submit(textureShader, m_SquareVA, rotateX(rotation));
+		Renderer::submit(textureShader, m_SquareVA, rotateX(rotation));
 
 		m_LogoTexture->bind();
 
-		//cabrankengine::Renderer::submit(textureShader, m_SquareVA);
+		//Renderer::submit(textureShader, m_SquareVA);
 		Renderer::endScene();
 	}
 
   private:
 	OrthographicCamera m_Camera;
-	cabrankengine::ShaderLibrary m_ShaderLibrary;
-	cabrankengine::Ref<cabrankengine::Texture2D> m_Texture, m_LogoTexture;
-	cabrankengine::Ref<cabrankengine::VertexArray> m_SquareVA;
+	ShaderLibrary m_ShaderLibrary;
+	Ref<Texture2D> m_Texture, m_LogoTexture;
+	Ref<VertexArray> m_SquareVA;
 	glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f }; // Color of the square
 };
 
-class Sandbox : public cabrankengine::Application {
+class Sandbox : public Application {
   public:
 	Sandbox() {
 		//pushLayer(new ExampleLayer());
@@ -91,6 +93,6 @@ class Sandbox : public cabrankengine::Application {
 	~Sandbox() {}
 };
 
-cabrankengine::Application* cabrankengine::createApplication() {
+Application* cabrankengine::createApplication() {
 	return new Sandbox();
 }

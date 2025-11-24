@@ -15,6 +15,8 @@
 
 namespace cabrankengine {
 
+	using namespace rendering;
+
 	Application::Application() : m_Running(true), m_LastFrameTime(0.0f)
 	{
 		CE_PROFILE_FUNCTION();

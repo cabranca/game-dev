@@ -5,7 +5,7 @@
 
 using namespace cabrankengine::math;
 
-namespace cabrankengine {
+namespace cabrankengine::rendering {
 
 	OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top)
 		: Camera(ortho(left, right, bottom, top, -1.f, 1.f), identityMat()), m_Position(), m_Rotation() {}

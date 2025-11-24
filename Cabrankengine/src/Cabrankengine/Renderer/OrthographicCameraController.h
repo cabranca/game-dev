@@ -7,7 +7,7 @@
 
 #include "OrthographicCamera.h"
 
-namespace cabrankengine {
+namespace cabrankengine::rendering {
 
 	class OrthographicCameraController {
 		public:

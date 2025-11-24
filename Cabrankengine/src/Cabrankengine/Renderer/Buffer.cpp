@@ -6,7 +6,7 @@
 #include "Renderer.h"
 
 
-namespace cabrankengine {
+namespace cabrankengine::rendering {
 
 	// TODO: check for alternatives. It seems odd to me that the base class knows the derived classes.
 
@@ -16,7 +16,7 @@ namespace cabrankengine {
 				CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); 
 				return nullptr;
 			case RendererAPI::API::OpenGL:
-				return createRef<OpenGLVertexBuffer>(size);
+				return createRef<platform::opengl::OpenGLVertexBuffer>(size);
 			}
 		return nullptr;
 	}
@@ -27,7 +27,7 @@ namespace cabrankengine {
 			CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); 
 			return nullptr;
 		case RendererAPI::API::OpenGL:
-			return createRef<OpenGLVertexBuffer>(vertices, size);
+			return createRef<platform::opengl::OpenGLVertexBuffer>(vertices, size);
 		}
 
 		return nullptr;
@@ -39,7 +39,7 @@ namespace cabrankengine {
 			CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
 			return nullptr;
 		case RendererAPI::API::OpenGL:
-			return createRef<OpenGLIndexBuffer>(indices, count);
+			return createRef<platform::opengl::OpenGLIndexBuffer>(indices, count);
 		}
 
 		return nullptr;

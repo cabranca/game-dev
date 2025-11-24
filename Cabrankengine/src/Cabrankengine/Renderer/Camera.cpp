@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-namespace cabrankengine {
+namespace cabrankengine::rendering {
 
 	Camera::Camera(const math::Mat4& projectionMatrix, const math::Mat4& viewMatrix) noexcept
 	    : m_Transform(math::identityMat()), m_ProjectionMatrix(projectionMatrix), m_ViewMatrix(viewMatrix),
