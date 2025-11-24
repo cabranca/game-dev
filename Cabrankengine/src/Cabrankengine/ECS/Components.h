@@ -2,7 +2,7 @@
 
 #include <Cabrankengine/Math/Vector3.h>
 
-namespace cabrankengine::components {
+namespace cabrankengine::ecs {
 
 	struct CTransform {
 		math::Vector3 Position{ 0.0f };

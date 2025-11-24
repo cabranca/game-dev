@@ -3,7 +3,7 @@
 #include <bitset>
 #include <cstdint>
 
-namespace {
+namespace cabrankengine::ecs {
 
 	using Entity = uint32_t;
 

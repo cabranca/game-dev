@@ -6,7 +6,7 @@
 #include <Cabrankengine/Core/Logger.h>
 #include <Cabrankengine/ECS/Common.h>
 
-namespace cabrankengine {
+namespace cabrankengine::ecs {
 
 	/// <summary>
 	/// This interface is needed because the ComponentManager has a collection of templated component arrays.

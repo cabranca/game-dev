@@ -2,7 +2,7 @@
 
 #include <Cabrankengine/Core/Logger.h>
 
-namespace cabrankengine {
+namespace cabrankengine::ecs {
 
 	EntityManager::EntityManager() {
 		for (Entity e = 0; e < MAX_ENTITIES; e++)

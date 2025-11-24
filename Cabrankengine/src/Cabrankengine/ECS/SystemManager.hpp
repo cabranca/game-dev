@@ -7,7 +7,7 @@
 #include <Cabrankengine/Core/Logger.h>
 #include <Cabrankengine/ECS/Common.h>
 
-namespace cabrankengine {
+namespace cabrankengine::ecs {
 
 	class Registry;
 

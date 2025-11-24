@@ -5,7 +5,7 @@
 
 #include <Cabrankengine/ECS/Common.h>
 
-namespace cabrankengine {
+namespace cabrankengine::ecs {
 
 	/// <summary>
 	/// This class is supposed to handle Entities creation, destruction and signature setting.
