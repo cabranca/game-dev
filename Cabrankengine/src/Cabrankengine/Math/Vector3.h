@@ -36,6 +36,8 @@ namespace cabrankengine::math {
 		constexpr Vector3 operator-() noexcept;
 		constexpr Vector3 operator*(float scale) const noexcept;
 		constexpr Vector3& operator*=(float scale) noexcept;
+		constexpr Vector3 operator/(float scale) const noexcept;
+		constexpr Vector3& operator/=(float scale) noexcept;
 		constexpr float& operator[](int index) noexcept;
 		constexpr const float& operator[](int index) const noexcept;
 	};
@@ -114,6 +116,19 @@ namespace cabrankengine::math {
 		x *= scale;
 		y *= scale;
 		z *= scale;
+		return *this;
+	}
+
+	inline constexpr Vector3 Vector3::operator/(float scale) const noexcept {
+		CE_ASSERT(scale != 0, "Trying to divide by zero!");
+		return { x / scale, y / scale, z / scale };
+	}
+
+	inline constexpr Vector3& Vector3::operator/=(float scale) noexcept {
+		CE_ASSERT(scale != 0, "Trying to divide by zero!");
+		x /= scale;
+		y /= scale;
+		z /= scale;
 		return *this;
 	}
 
