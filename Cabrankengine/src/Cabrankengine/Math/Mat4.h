@@ -7,7 +7,7 @@
 namespace cabrankengine::math {
 
 	// Our 4x4 Matrix representation is row-major and it stores values as Mat4[row][col]
-	// TODO: add cheaper operations for affine matrices
+	// TODO: add inversion.
 	// TODO: add accesor operator.
 	struct Mat4 {
         std::array<Vector4, 4> elements;
@@ -29,8 +29,11 @@ namespace cabrankengine::math {
                 Vector4(tx, ty, tz, tw)
             } {}
 
+		constexpr Mat4(Vector3 row0, Vector3 row1, Vector3 row2, Vector3 row3) : elements{ row0, row1, row2, row3 } {}
+
 		constexpr bool operator==(const Mat4& other) const noexcept;
 		constexpr bool operator!=(const Mat4& other) const noexcept;
+		constexpr Mat4 operator+(const Mat4& other) const noexcept;
 		constexpr Mat4 operator*(const Mat4& other) const noexcept;
 		constexpr Mat4 transpose() const noexcept;
 	};
@@ -41,6 +44,16 @@ namespace cabrankengine::math {
 
 	constexpr bool Mat4::operator!=(const Mat4& other) const noexcept {
 		return elements != other.elements;
+	}
+
+	constexpr Mat4 Mat4::operator+(const Mat4& other) const noexcept {
+		Mat4 res{};
+
+		for (int i = 0; i < 4; ++i) {
+			for (int j = 0; j < 4; ++j)
+				res.elements[i][j] = elements[i][j] + other.elements[i][j];
+		}
+		return res;
 	}
 
 	// Generalized for every matrix
