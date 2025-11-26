@@ -6,15 +6,15 @@ namespace cabrankengine::math {
 
     constexpr Mat4 zeroMat() noexcept;
 	constexpr Mat4 identityMat() noexcept;
-    constexpr Mat4 scale(float uniform) noexcept;
-	constexpr Mat4 scale(const Vector3&) noexcept;
-	constexpr Mat4 translate(const Vector3&) noexcept;
+    constexpr Mat4 scaleUniform(float uniform) noexcept;
+	constexpr Mat4 scaleXYZ(const Vector3&) noexcept;
+	constexpr Mat4 translation(const Vector3&) noexcept;
 	Mat4 rotateX(float angle) noexcept;
 	Mat4 rotateY(float angle) noexcept;
 	Mat4 rotateZ(float angle) noexcept;
-	Mat4 rotate(const Vector3& euler) noexcept;
+	Mat4 rotateXYZ(const Vector3& euler) noexcept;
 	Mat4 ortho(float left, float right, float bottom, float top, float nearZ, float farZ) noexcept;
-	Mat4 inverse(const Mat4& mat) noexcept;
+	Mat4 inverseAffine(const Mat4& mat) noexcept;
 
 	inline constexpr Mat4 zeroMat() noexcept {
 		return {};
@@ -29,14 +29,14 @@ namespace cabrankengine::math {
 		};
 	}
 
-	inline constexpr Mat4 scale(float uniform) noexcept {
+	inline constexpr Mat4 scaleUniform(float uniform) noexcept {
 		Mat4 res = identityMat();
 		auto& e = res.elements;
 		e[0][0] = e[1][1] = e[2][2] = uniform;
 		return res;
 	}
 
-	inline constexpr Mat4 scale(const Vector3& vec) noexcept {
+	inline constexpr Mat4 scaleXYZ(const Vector3& vec) noexcept {
 		Mat4 res = identityMat();
 		auto& e = res.elements;
 		e[0][0] = vec.x;
@@ -45,7 +45,7 @@ namespace cabrankengine::math {
 		return res;
 	}
 
-	inline constexpr Mat4 translate(const Vector3& vec) noexcept {
+	inline constexpr Mat4 translation(const Vector3& vec) noexcept {
 		Mat4 res = identityMat();
 		auto& e = res.elements;
 		e[3] = Vector4(vec);
@@ -84,7 +84,7 @@ namespace cabrankengine::math {
 		};
 	}
 
-	inline Mat4 rotate(const Vector3& euler) noexcept {
+	inline Mat4 rotateXYZ(const Vector3& euler) noexcept {
 		Mat4 rx = rotateX(euler.x);
 		Mat4 ry = rotateY(euler.y);
 		Mat4 rz = rotateZ(euler.z);
