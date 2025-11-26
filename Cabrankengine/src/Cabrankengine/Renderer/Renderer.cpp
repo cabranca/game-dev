@@ -29,7 +29,8 @@ namespace cabrankengine::rendering {
 	}
 
 	void Renderer::beginScene(const Camera& camera) {
-		s_SceneData->viewProjectionMatrix = camera.getViewProjectionMatrix();
+		s_SceneData->projectionMatrix = camera.getProjectionMatrix();
+		s_SceneData->viewMatrix = camera.getViewMatrix();
 	}
 
 	void Renderer::endScene() {
@@ -38,8 +39,8 @@ namespace cabrankengine::rendering {
 
 	void Renderer::submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const Mat4& transform) {
 		shader->bind();
-		std::dynamic_pointer_cast<platform::opengl::OpenGLShader>(shader)->uploadUniformMat4("projection", s_SceneData->viewProjectionMatrix);
-		std::dynamic_pointer_cast<platform::opengl::OpenGLShader>(shader)->uploadUniformMat4("view", identityMat());
+		std::dynamic_pointer_cast<platform::opengl::OpenGLShader>(shader)->uploadUniformMat4("projection", s_SceneData->projectionMatrix);
+		std::dynamic_pointer_cast<platform::opengl::OpenGLShader>(shader)->uploadUniformMat4("view", s_SceneData->viewMatrix);
 		std::dynamic_pointer_cast<platform::opengl::OpenGLShader>(shader)->uploadUniformMat4("model", transform);
 		vertexArray->bind();
 		RenderCommand::drawIndexed(vertexArray);

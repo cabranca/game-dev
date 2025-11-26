@@ -38,7 +38,8 @@ namespace cabrankengine::rendering {
 		private:
 			// This structure holds data that is specific to the current scene being rendered.
 			struct SceneData {
-				math::Mat4 viewProjectionMatrix;
+				math::Mat4 projectionMatrix;
+				math::Mat4 viewMatrix;
 			};
 
 			inline static SceneData* s_SceneData = new Renderer::SceneData(); // Current scene data used for rendering.
