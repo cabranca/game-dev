@@ -1,18 +1,20 @@
 #pragma once
 
-#include <Cabrankengine/Math/MatrixFactory.h>
+#include <Cabrankengine/Math/Transform.h>
 
 namespace cabrankengine::rendering {
 
 	class Camera {
 	  public:
-		Camera(const math::Mat4& projectionMatrix, const math::Mat4& ViewMatrix) noexcept;
+		explicit Camera(const math::Mat4& projectionMatrix, const math::Transform& transform = math::Transform()) noexcept;
 
-		const math::Mat4& getTransform() const noexcept;
-		void setTransform(const math::Mat4& transform) noexcept;
+		const math::Transform& getTransform() const noexcept;
+		void setTransform(const math::Transform& transform) noexcept;
 		void setTransform(const math::Vector3& position, const math::Vector3& rotation, const math::Vector3& scale) noexcept;
 		math::Vector3 getWorldPosition();
 		void setWorldPosition(const math::Vector3& newPos);
+		math::Vector3 getWorldRotation();
+		void setWorldRotation(const math::Vector3& newRotation);
 		
 		const math::Mat4& getViewMatrix() const noexcept;
 		const math::Mat4& getProjectionMatrix() const noexcept;
@@ -20,7 +22,7 @@ namespace cabrankengine::rendering {
 
 
 	  protected:
-		math::Mat4 m_Transform; // Model matrix of the camera
+		math::Transform m_Transform; // Model matrix of the camera
 		math::Mat4 m_ViewMatrix; // Inverse of the Transform. Conerts World Space into View Space
 		math::Mat4 m_ProjectionMatrix; // Projection (orthographic or perspective) to transform from View Space to Clip Space
 		math::Mat4 m_ViewProjectionMatrix; // View and projection matrices multiplied in CPU before compunting in the shader
@@ -32,8 +34,8 @@ namespace cabrankengine::rendering {
 
 	class PerspectiveCamera : public Camera {
         public:
-            PerspectiveCamera(float fovy, float aspect, float nearZ, float farZ) 
-				: Camera(math::perspective(fovy, aspect, nearZ, farZ), math::identityMat()) {}
+            PerspectiveCamera(float fovy, float aspect, float nearZ, float farZ, const math::Transform& transform = math::Transform()) 
+				: Camera(math::perspective(fovy, aspect, nearZ, farZ), transform) {}
     };
 
 	// Class representing an orthographic camera.
@@ -42,8 +44,8 @@ namespace cabrankengine::rendering {
 	class OrthographicCamera : public Camera {
 		public:
 			// Constructor that initializes the orthographic camera with the specified left, right, bottom, and top clipping planes.
-			OrthographicCamera(float left, float right, float bottom, float top)
-				: Camera(math::ortho(left, right, bottom, top, -1.f, 1.f), math::identityMat()) {}
+			OrthographicCamera(float left, float right, float bottom, float top, const math::Transform& transform = math::Transform())
+				: Camera(math::ortho(left, right, bottom, top, -1.f, 1.f), transform) {}
 
 			void setProjection(float left, float right, float bottom, float top) {
 				m_ProjectionMatrix = math::ortho(left, right, bottom, top, -1.f, 1.f);

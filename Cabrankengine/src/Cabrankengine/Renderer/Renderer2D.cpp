@@ -158,7 +158,7 @@ namespace cabrankengine::rendering {
 		constexpr float texIndex = 0.f;
 		constexpr float tilingFactor = 1.f;
 
-		Mat4 transform = math::scale({ size.x, size.y, 1.f }) * math::translate(position);
+		Mat4 transform = math::scaleXYZ({ size.x, size.y, 1.f }) * math::translation(position);
 
 		s_Data.QuadVertexBufferPtr->Position = s_Data.QuadVertexPositions[0] * transform;
 		s_Data.QuadVertexBufferPtr->Color = color;
@@ -219,7 +219,7 @@ namespace cabrankengine::rendering {
 			s_Data.TextureSlotIndex++;
 		}
 
-		Mat4 transform = math::translate(position) * math::scale({ size.x, size.y, 1.f });
+		Mat4 transform = math::translation(position) * math::scaleXYZ({ size.x, size.y, 1.f });
 
 		s_Data.QuadVertexBufferPtr->Position = s_Data.QuadVertexPositions[0] * transform;
 		s_Data.QuadVertexBufferPtr->Color = color;
@@ -267,7 +267,7 @@ namespace cabrankengine::rendering {
 		constexpr float texIndex = 0.f;
 		constexpr float tilingFactor = 1.f;
 
-		Mat4 transform = math::translate(position) * rotateZ(rotation) * math::scale({size.x, size.y, 1.f});
+		Mat4 transform = math::translation(position) * rotateZ(rotation) * math::scaleXYZ({size.x, size.y, 1.f});
 
 		s_Data.QuadVertexBufferPtr->Position = s_Data.QuadVertexPositions[0] * transform;
 		s_Data.QuadVertexBufferPtr->Color = color;
@@ -328,7 +328,7 @@ namespace cabrankengine::rendering {
 			s_Data.TextureSlotIndex++;
 		}
 
-		Mat4 transform = math::translate(position) * rotateZ(rotation) * math::scale({ size.x, size.y, 1.f });
+		Mat4 transform = math::translation(position) * rotateZ(rotation) * math::scaleXYZ({ size.x, size.y, 1.f });
 
 		s_Data.QuadVertexBufferPtr->Position = s_Data.QuadVertexPositions[0] * transform;
 		s_Data.QuadVertexBufferPtr->Color = color;
