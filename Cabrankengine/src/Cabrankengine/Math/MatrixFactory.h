@@ -89,7 +89,7 @@ namespace cabrankengine::math {
 		Mat4 ry = rotateY(euler.y);
 		Mat4 rz = rotateZ(euler.z);
 
-		return rz * ry * rx;
+		return rz * rx * ry;
 	}
 
 	inline Mat4 ortho(float left, float right, float bottom, float top, float nearZ, float farZ) noexcept {
@@ -135,6 +135,7 @@ namespace cabrankengine::math {
 		inv.elements[3].x = -(t.x * inv.elements[0].x + t.y * inv.elements[1].x + t.z * inv.elements[2].x);
 		inv.elements[3].y = -(t.x * inv.elements[0].y + t.y * inv.elements[1].y + t.z * inv.elements[2].y);
 		inv.elements[3].z = -(t.x * inv.elements[0].z + t.y * inv.elements[1].z + t.z * inv.elements[2].z);
+		inv.elements[3].w = 1;
 
 		return inv;
 	}
