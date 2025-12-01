@@ -26,7 +26,7 @@ namespace cabrankengine::math {
 
 		constexpr float lengthSquared() const noexcept;
 		float length() const noexcept;
-		void normalize() noexcept;
+		void normalized() noexcept;
 		bool isNormalized() const noexcept;
 
 		constexpr bool operator==(const Vector2& other) const noexcept;
@@ -57,7 +57,7 @@ namespace cabrankengine::math {
 		return sqrt(lengthSquared());
 	}
 
-	inline void Vector2::normalize() noexcept {
+	inline void Vector2::normalized() noexcept {
 		float squared = lengthSquared();
 		if (squared == 0)
 			return;
