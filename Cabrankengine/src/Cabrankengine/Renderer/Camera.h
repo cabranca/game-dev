@@ -15,6 +15,7 @@ namespace cabrankengine::rendering {
 		void setWorldPosition(const math::Vector3& newPos);
 		math::Vector3 getWorldRotation();
 		void setWorldRotation(const math::Vector3& newRotation);
+		void setWorldRotationAndPosition(const math::Vector3& newRotation, const math::Vector3& newPos);
 		
 		const math::Mat4& getViewMatrix() const noexcept;
 		const math::Mat4& getProjectionMatrix() const noexcept;

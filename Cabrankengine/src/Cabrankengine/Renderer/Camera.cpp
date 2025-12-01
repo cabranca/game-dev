@@ -41,6 +41,12 @@ namespace cabrankengine::rendering {
 		recalculateViewMatrix();
 	}
 
+	void Camera::setWorldRotationAndPosition(const math::Vector3& newRotation, const math::Vector3& newPos) {
+		m_Transform.rotation = newRotation;
+		m_Transform.position = newPos;
+		recalculateViewMatrix();
+	}
+
 	const Mat4& Camera::getViewMatrix() const noexcept {
 		return m_ViewMatrix;
 	}
