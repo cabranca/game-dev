@@ -6,29 +6,47 @@ namespace cabrankengine::rendering {
 
 	using namespace math;
 
-    CameraController::CameraController(Camera camera) : m_Camera(std::move(camera)) {}
-	
-    void CameraController::onUpdate(Timestep delta) {
-		Vector3 position = m_Camera.getWorldPosition();
-		Vector3 rotation = m_Camera.getWorldRotation();
+	CameraController::CameraController(Camera camera)
+	    : m_Camera(std::move(camera)), m_LastMouseX(), m_LastMouseY(), m_RotationSpeed(5.f), m_TranslationSpeed(10.f),
+	      m_CameraPos(m_Camera.getWorldPosition()), m_CameraRot(m_Camera.getWorldRotation() + Vector3(0.f, -90.f, 0.f)) {}
 
-		if (Input::isKeyPressed(Key::A)) 
-			position.x -= delta;
+	void CameraController::onUpdate(Timestep delta) {
+
+		Vector3 forward{};
+		forward.x = - cosf(radians(m_CameraRot.y)) * cosf(radians(m_CameraRot.x));
+		forward.y = - sinf(radians(m_CameraRot.x));
+		forward.z = sinf(radians(m_CameraRot.y)) * cosf(radians(m_CameraRot.x));
+		forward.normalized();
+		Vector3 right = cross(Vector3::Up, forward).normalize();
+
+		if (Input::isKeyPressed(Key::A))
+			m_CameraPos -= right * m_TranslationSpeed * delta;
 		else if (Input::isKeyPressed(Key::D))
-			position.x += delta;
+			m_CameraPos += right * m_TranslationSpeed * delta;
 		if (Input::isKeyPressed(Key::S))
-			position.y -= delta;
+			m_CameraPos -= forward * m_TranslationSpeed * delta;
 		else if (Input::isKeyPressed(Key::W))
-			position.y += delta;
+			m_CameraPos += forward * m_TranslationSpeed * delta;
 
-		if (Input::isKeyPressed(Key::E))
-			rotation.z -= delta;
-		else if (Input::isKeyPressed(Key::Q))
-			rotation.z += delta;
+		// if (Input::isKeyPressed(Key::E))
+		// 	m_CameraRot.z -= 50.f * delta;
+		// else if (Input::isKeyPressed(Key::Q))
+		// 	m_CameraRot.z += 50.f * delta;
 
-		m_Camera.setWorldRotation(rotation);
-		m_Camera.setWorldPosition(position);
-    }
+		auto [mouseX, mouseY] = Input::getMousePosition();
+		if (m_LastMouseX != 0 ) {
+			m_CameraRot.y += (mouseX - m_LastMouseX) * m_RotationSpeed * delta;
+			m_CameraRot.x += (mouseY - m_LastMouseY) * m_RotationSpeed * delta;
+		}
+		m_LastMouseX = mouseX;
+		m_LastMouseY = mouseY;
+		if (m_CameraRot.x > 89.0f)
+			m_CameraRot.x = 89.0f;
+		if (m_CameraRot.x < -89.0f)
+			m_CameraRot.x = -89.0f;
+
+		m_Camera.setWorldRotationAndPosition(m_CameraRot + Vector3(0.f, 90.f, 0.f), m_CameraPos);
+	}
 
 	const Camera& CameraController::getCamera() const noexcept {
 		return m_Camera;

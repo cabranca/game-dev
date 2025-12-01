@@ -15,5 +15,9 @@ namespace cabrankengine::rendering {
 
       private:
         Camera m_Camera;
+        math::Vector3 m_CameraPos;
+        math::Vector3 m_CameraRot; // It always has a -90° yaw offset due to OpenGL default orientation.
+        float m_LastMouseX, m_LastMouseY;
+        float m_RotationSpeed, m_TranslationSpeed;
     };
 }
