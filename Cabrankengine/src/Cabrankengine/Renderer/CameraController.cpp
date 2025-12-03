@@ -20,9 +20,9 @@ namespace cabrankengine::rendering {
 		Vector3 right = cross(Vector3::Up, forward).normalize();
 
 		if (Input::isKeyPressed(Key::A))
-			m_CameraPos -= right * m_TranslationSpeed * delta;
-		else if (Input::isKeyPressed(Key::D))
 			m_CameraPos += right * m_TranslationSpeed * delta;
+		else if (Input::isKeyPressed(Key::D))
+			m_CameraPos -= right * m_TranslationSpeed * delta;
 		if (Input::isKeyPressed(Key::S))
 			m_CameraPos -= forward * m_TranslationSpeed * delta;
 		else if (Input::isKeyPressed(Key::W))
@@ -35,8 +35,8 @@ namespace cabrankengine::rendering {
 
 		auto [mouseX, mouseY] = Input::getMousePosition();
 		if (m_LastMouseX != 0 ) {
-			m_CameraRot.y += (mouseX - m_LastMouseX) * m_RotationSpeed * delta;
-			m_CameraRot.x += (mouseY - m_LastMouseY) * m_RotationSpeed * delta;
+			m_CameraRot.y += (m_LastMouseX - mouseX) * m_RotationSpeed * delta;
+			//m_CameraRot.x += (m_LastMouseY - mouseY) * m_RotationSpeed * delta;
 		}
 		m_LastMouseX = mouseX;
 		m_LastMouseY = mouseY;
