@@ -5,7 +5,13 @@
 namespace cabrankengine::math {
 
     struct Vector4 {
-		float x, y, z, w;
+		union {
+			struct {
+				float x, y, z, w;
+			};
+
+			float coords[4];
+		};
 
 		constexpr Vector4() noexcept : x(), y(), z(), w() {}
 		explicit constexpr Vector4(float uniform) noexcept : x(uniform), y(uniform), z(uniform), w(uniform) {}
@@ -122,35 +128,13 @@ namespace cabrankengine::math {
 	}
 
 	inline constexpr float& Vector4::operator[](int index) noexcept {
-		switch (index) {
-		    case 0:
-			    return x;
-		    case 1:
-			    return y;
-		    case 2:
-			    return z;
-		    case 3:
-			    return w;
-		    default:
-			    CE_CORE_ERROR("Trying to access Vector4 with invalid index!");
-			    return x;
-		}
+		CE_ASSERT(index >= 0 || index < 4, "Trying to acces a Vector with invalid index!")
+		return coords[index];
 	}
 
 	inline constexpr const float& Vector4::operator[](int index) const noexcept {
-		switch (index) {
-		    case 0:
-			    return x;
-		    case 1:
-			    return y;
-		    case 2:
-			    return z;
-		    case 3:
-			    return w;
-		    default:
-			    CE_CORE_ERROR("Trying to access Vector4 with invalid index!");
-			    return x;
-		}
+		CE_ASSERT(index >= 0 || index < 4, "Trying to acces a Vector with invalid index!")
+		return coords[index];
 	}
 
 	inline constexpr Vector3 Vector4::toVector3() const noexcept {

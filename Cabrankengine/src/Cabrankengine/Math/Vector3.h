@@ -6,7 +6,13 @@ namespace cabrankengine::math {
 
     // This Vector implementation uses row convention: The vector is a 1x3 matrix
 	struct Vector3 {
-		float x, y, z;
+		union {
+			struct {
+				float x, y, z;
+			};
+
+			float coords[3];
+		};
 
 		static const Vector3 Right;
 		static const Vector3 Left;
@@ -142,31 +148,13 @@ namespace cabrankengine::math {
 	}
 
 	inline constexpr float& Vector3::operator[](int index) noexcept {
-        switch (index) {
-		    case 0:
-			    return x;
-		    case 1:
-			    return y;
-		    case 2:
-			    return z;
-		    default:
-			    CE_CORE_ERROR("Trying to acces a Vector with invalid index!");
-			    return x; // This must be handled in other way
-        }
+        CE_ASSERT(index >= 0 || index < 3, "Trying to acces a Vector with invalid index!")
+		return coords[index];
 	}
 
     inline constexpr const float& Vector3::operator[](int index) const noexcept {
-		switch (index) {
-		    case 0:
-			    return x;
-		    case 1:
-			    return y;
-		    case 2:
-			    return z;
-		    default:
-			    CE_CORE_ERROR("Trying to access Vector4 with invalid index!");
-			    return x;
-		}
+		CE_ASSERT(index >= 0 || index < 3, "Trying to acces a Vector with invalid index!")
+		return coords[index];
 	}
 
 	inline constexpr float dot(const Vector3& a, const Vector3& b) noexcept {
