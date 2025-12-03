@@ -24,13 +24,13 @@ namespace cabrankengine::rendering {
 			m_CameraPos += right * m_TranslationSpeed * delta;
 		else if (Input::isKeyPressed(Key::D))
 			m_CameraPos -= right * m_TranslationSpeed * delta;
-		if (Input::isKeyPressed(Key::S))
-			m_CameraPos -= forward * m_TranslationSpeed * delta;
-		else if (Input::isKeyPressed(Key::W))
+		if (Input::isKeyPressed(Key::W))
 			m_CameraPos += forward * m_TranslationSpeed * delta;
-		if (Input::isKeyPressed(Key::Q))
+		else if (Input::isKeyPressed(Key::S))
+			m_CameraPos -= forward * m_TranslationSpeed * delta;
+		if (Input::isKeyPressed(Key::E))
 			m_CameraPos += up * m_TranslationSpeed * delta;
-		else if (Input::isKeyPressed(Key::E))
+		else if (Input::isKeyPressed(Key::Q))
 			m_CameraPos -= up * m_TranslationSpeed * delta;
 
 		// if (Input::isKeyPressed(Key::E))
