@@ -15,7 +15,7 @@ using namespace cabrankengine::platform::opengl;
 
 class ExampleLayer : public Layer {
   public:
-	ExampleLayer() : Layer("Example"), m_CameraController(PerspectiveCamera(-16.f / 9.f, 16.f / 9.f, 0.1f, 100.f)) {
+	ExampleLayer() : Layer("Example"), m_CameraController(PerspectiveCamera(PI / 4.f, 16.f / 9.f, 0.1f, 100.f)) {
 		m_SquareVA = VertexArray::create();
 
 		float squareVertices[5 * 36] = {
@@ -77,7 +77,7 @@ class ExampleLayer : public Layer {
 
 		m_SquareVA->setIndexBuffer(squareIB);
 
-		auto textureShader = m_ShaderLibrary.load("assets/shaders/OldTexture.glsl");
+		auto textureShader = m_ShaderLibrary.load("assets/shaders/Texture3D.glsl");
 
 		m_Texture = Texture2D::create("assets/textures/Checkerboard.png");
 
@@ -97,7 +97,7 @@ class ExampleLayer : public Layer {
 		m_CameraController.onUpdate(delta);
 
 		Renderer::beginScene(m_CameraController.getCamera());
-		auto textureShader = m_ShaderLibrary.get("OldTexture");
+		auto textureShader = m_ShaderLibrary.get("Texture3D");
 
 		m_Texture->bind(0);
 		m_LogoTexture->bind(1);
