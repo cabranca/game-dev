@@ -18,7 +18,8 @@ namespace cabrankengine::rendering {
 		forward.z = sinf(radians(m_CameraRot.y)) * cosf(radians(m_CameraRot.x));
 		forward.normalized();
 		Vector3 right = cross(Vector3::Up, forward).normalize();
-
+		Vector3 up = cross(forward, right).normalize();
+		
 		if (Input::isKeyPressed(Key::A))
 			m_CameraPos += right * m_TranslationSpeed * delta;
 		else if (Input::isKeyPressed(Key::D))
@@ -27,6 +28,10 @@ namespace cabrankengine::rendering {
 			m_CameraPos -= forward * m_TranslationSpeed * delta;
 		else if (Input::isKeyPressed(Key::W))
 			m_CameraPos += forward * m_TranslationSpeed * delta;
+		if (Input::isKeyPressed(Key::Q))
+			m_CameraPos += up * m_TranslationSpeed * delta;
+		else if (Input::isKeyPressed(Key::E))
+			m_CameraPos -= up * m_TranslationSpeed * delta;
 
 		// if (Input::isKeyPressed(Key::E))
 		// 	m_CameraRot.z -= 50.f * delta;
