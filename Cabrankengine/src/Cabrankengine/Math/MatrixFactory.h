@@ -31,24 +31,21 @@ namespace cabrankengine::math {
 
 	inline constexpr Mat4 scaleUniform(float uniform) noexcept {
 		Mat4 res = identityMat();
-		auto& e = res.elements;
-		e[0][0] = e[1][1] = e[2][2] = uniform;
+		res[0][0] = res[1][1] = res[2][2] = uniform;
 		return res;
 	}
 
 	inline constexpr Mat4 scaleXYZ(const Vector3& vec) noexcept {
 		Mat4 res = identityMat();
-		auto& e = res.elements;
-		e[0][0] = vec.x;
-		e[1][1] = vec.y;
-		e[2][2] = vec.z;
+		res[0][0] = vec.x;
+		res[1][1] = vec.y;
+		res[2][2] = vec.z;
 		return res;
 	}
 
 	inline constexpr Mat4 translation(const Vector3& vec) noexcept {
 		Mat4 res = identityMat();
-		auto& e = res.elements;
-		e[3] = Vector4(vec);
+		res[3] = Vector4(vec);
 		return res;
 	}
 
@@ -97,13 +94,12 @@ namespace cabrankengine::math {
 		float tb = top - bottom;
 		float fn = farZ - nearZ;
 		Mat4 res = identityMat();
-		auto& elem = res.elements;
-		elem[0][0] = 2.f / rl;
-		elem[1][1] = 2.f / tb;
-		elem[2][2] = -2.f / fn;
-		elem[3][0] = -(right + left) / rl;
-		elem[3][1] = -(top + bottom) / tb;
-		elem[3][2] = -(farZ + nearZ) / fn;
+		res[0][0] = 2.f / rl;
+		res[1][1] = 2.f / tb;
+		res[2][2] = -2.f / fn;
+		res[3][0] = -(right + left) / rl;
+		res[3][1] = -(top + bottom) / tb;
+		res[3][2] = -(farZ + nearZ) / fn;
 
 		return res;
 	}
@@ -112,12 +108,11 @@ namespace cabrankengine::math {
 		float f = 1.0f / std::tan(fovy * 0.5f);
 		float nf = nearZ - farZ;
 		Mat4 res = zeroMat();
-		auto& elem = res.elements;
-		elem[0][0] = f / aspect;
-		elem[1][1] = f;
-		elem[2][2] = (farZ + nearZ) / nf;
-		elem[2][3] = -1.f;
-		elem[3][2] = (2.f * farZ * nearZ) / nf;
+		res[0][0] = f / aspect;
+		res[1][1] = f;
+		res[2][2] = (farZ + nearZ) / nf;
+		res[2][3] = -1.f;
+		res[3][2] = (2.f * farZ * nearZ) / nf;
 
 		return res;
 	}

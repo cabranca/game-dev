@@ -31,12 +31,24 @@ namespace cabrankengine::math {
 
 		constexpr Mat4(Vector3 row0, Vector3 row1, Vector3 row2, Vector3 row3) : elements{ row0, row1, row2, row3 } {}
 
+		constexpr const Vector4& operator[](int index) const noexcept;
+		constexpr Vector4& operator[](int index) noexcept;
 		constexpr bool operator==(const Mat4& other) const noexcept;
 		constexpr bool operator!=(const Mat4& other) const noexcept;
 		constexpr Mat4 operator+(const Mat4& other) const noexcept;
 		constexpr Mat4 operator*(const Mat4& other) const noexcept;
 		constexpr Mat4 transpose() const noexcept;
 	};
+
+	constexpr const Vector4& Mat4::operator[](int index) const noexcept {
+		CE_ASSERT(index >= 0 || index < 4, "Trying to acces a Vector with invalid index!");
+		return elements[index];
+	}
+
+	constexpr Vector4& Mat4::operator[](int index) noexcept {
+		CE_ASSERT(index >= 0 || index < 4, "Trying to acces a Vector with invalid index!");
+		return elements[index];
+	}
 
     constexpr bool Mat4::operator==(const Mat4& other) const noexcept {
 		return elements == other.elements;
@@ -51,7 +63,7 @@ namespace cabrankengine::math {
 
 		for (int i = 0; i < 4; ++i) {
 			for (int j = 0; j < 4; ++j)
-				res.elements[i][j] = elements[i][j] + other.elements[i][j];
+				res[i][j] = elements[i][j] + other[i][j];
 		}
 		return res;
 	}
@@ -63,7 +75,7 @@ namespace cabrankengine::math {
 
 		for (int i = 0; i < 4; ++i) {
 			for (int j = 0; j < 4; ++j)
-				res.elements[i][j] = dot(elements[i], transposed.elements[j]);
+				res[i][j] = dot(elements[i], transposed[j]);
 		}
 		return res;
 	}
@@ -83,7 +95,7 @@ namespace cabrankengine::math {
 		Vector4 res{};
 		const auto transposed = m.transpose();
 		for (int i = 0; i < 4; i++) {
-			res[i] = dot(v, transposed.elements.at(i));
+			res[i] = dot(v, transposed[i]);
 		}
 		return res;
 	}

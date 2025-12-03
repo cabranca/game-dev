@@ -128,12 +128,12 @@ namespace cabrankengine::math {
 	}
 
 	inline constexpr float& Vector4::operator[](int index) noexcept {
-		CE_ASSERT(index >= 0 || index < 4, "Trying to acces a Vector with invalid index!")
+		CE_ASSERT(index >= 0 || index < 4, "Trying to acces a Vector with invalid index!");
 		return coords[index];
 	}
 
 	inline constexpr const float& Vector4::operator[](int index) const noexcept {
-		CE_ASSERT(index >= 0 || index < 4, "Trying to acces a Vector with invalid index!")
+		CE_ASSERT(index >= 0 || index < 4, "Trying to acces a Vector with invalid index!");
 		return coords[index];
 	}
 
