@@ -31,12 +31,15 @@ namespace cabrankengine {
 			// Returns the current mouse Y position.
 			static float getMouseY() { return s_Instance->getMouseYImpl(); }
 
+			static void setInputMode(bool captureMouse, bool hideMouse) { return s_Instance->setInputModeImpl(captureMouse, hideMouse); }
+
 		protected:
 			virtual bool isKeyPressedImpl(KeyCode keyCode) = 0;
 			virtual bool isMouseButtonPressedImpl(MouseCode mouseCode) = 0;
 			virtual std::pair<float, float> getMousePositionImpl() = 0;
 			virtual float getMouseXImpl() = 0;
 			virtual float getMouseYImpl() = 0;
+			virtual void setInputModeImpl(bool captureMouse, bool hideMouse) = 0;
 
 		private:
 			// This could be initialized inline but it is initialized in the platform specific implementation file.

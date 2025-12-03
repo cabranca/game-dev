@@ -20,5 +20,7 @@ namespace cabrankengine {
 
 			// Returns the current mouse Y position.
 			virtual float getMouseYImpl() override;
+
+			void setInputModeImpl(bool captureMouse, bool hideMouse);
 	};
 }
