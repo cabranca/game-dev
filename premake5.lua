@@ -107,7 +107,7 @@ project "Sandbox"
         postbuildcommands 
         {
             'cp -ru %{wks.location}/Cabrankengine/vendor/irrKlang/so/* %{cfg.targetdir}/',
-            'cp -ru %{prj.location}/assets/ %{cfg.targetdir}/assets/',
+            'cp -ru %{prj.location}/assets/ %{cfg.targetdir}/',
             'cp -u %{prj.location}/config.json %{cfg.targetdir}/config.json 2>/dev/null || true'
         }
         
