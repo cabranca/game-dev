@@ -6,6 +6,7 @@
 
 namespace cabrankengine::rendering {
 
+    // Actually a FPS Camera Controller.
     class CameraController {
       public:
         CameraController(Camera camera);
