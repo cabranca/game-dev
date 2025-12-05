@@ -16,77 +16,68 @@ using namespace cabrankengine::platform::opengl;
 class ExampleLayer : public Layer {
   public:
 	ExampleLayer() : Layer("Example"), m_CameraController(PerspectiveCamera(PI / 4.f, 16.f / 9.f, 0.1f, 100.f)) {
-		m_SquareVA = VertexArray::create();
+		m_CubeVA = VertexArray::create();
 
-		float squareVertices[5 * 36] = {
-			-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-			0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-			0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-			0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-			0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-			0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-			0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-			-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-			-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-			-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-			-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-			0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-			0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-			0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-			0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-			0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-			0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-			0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-			0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-			0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-			0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-			0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-			0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-			-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+		float lightningCubeVertices[6 * 36] = {
+			-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+ 			 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 
+			 0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 
+			 0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 
+			-0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 
+			-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 
+			-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+			 0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+			 0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+			 0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+			-0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+			-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+			-0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+			-0.5f, 0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+			-0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+			-0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+			-0.5f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+			-0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+			 0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+			 0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+			 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+			 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+			 0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+			 0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+			-0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+			 0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+			 0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+			 0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+			-0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+			-0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+			-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			 0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			 0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+			 0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+			-0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+			-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f
 		};
 
-		Ref<VertexBuffer> squareVB = VertexBuffer::create(squareVertices, sizeof(squareVertices));
+		Ref<VertexBuffer> squareVB = VertexBuffer::create(lightningCubeVertices, sizeof(lightningCubeVertices));
 
-		squareVB->setLayout({ { ShaderDataType::Float3, "pos" }, { ShaderDataType::Float2, "tex" } });
+		squareVB->setLayout({ { ShaderDataType::Float3, "pos" }, { ShaderDataType::Float3, "normal" } });
 
-		m_SquareVA->addVertexBuffer(squareVB);
+		m_CubeVA->addVertexBuffer(squareVB);
 
-		uint32_t squareIndices[36];
+		uint32_t lightningCubeIndices[36];
 		for (int i = 0; i < 36; i++) {
-			squareIndices[i] = i;
+			lightningCubeIndices[i] = i;
 		}
 
-		Ref<IndexBuffer> squareIB = IndexBuffer::create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
+		Ref<IndexBuffer> squareIB = IndexBuffer::create(lightningCubeIndices, sizeof(lightningCubeIndices) / sizeof(uint32_t));
 
-		m_SquareVA->setIndexBuffer(squareIB);
+		m_CubeVA->setIndexBuffer(squareIB);
 
-		auto textureShader = m_ShaderLibrary.load("assets/shaders/Texture3D.glsl");
+		auto lightingShader = m_ShaderLibrary.load("assets/shaders/Lightning.glsl");
 
-		m_Texture = Texture2D::create("assets/textures/Checkerboard.png");
-
-		m_LogoTexture = Texture2D::create("assets/textures/ChernoLogo.png");
-
-		std::dynamic_pointer_cast<OpenGLShader>(textureShader)->bind();
-
-		std::dynamic_pointer_cast<OpenGLShader>(textureShader)->uploadUniformInt("texture1", 0);
-		std::dynamic_pointer_cast<OpenGLShader>(textureShader)->uploadUniformInt("texture2", 1);
+		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->bind();
+		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("lightPos", Vector3());
+		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("objectColor", Vector3(1.0f, 0.5f, 0.31f));
+        std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("lightColor", Vector3(1.0f, 1.0f, 1.0f));
 	}
 
 	void onUpdate(Timestep delta) override {
@@ -97,24 +88,22 @@ class ExampleLayer : public Layer {
 		m_CameraController.onUpdate(delta);
 
 		Renderer::beginScene(m_CameraController.getCamera());
-		auto textureShader = m_ShaderLibrary.get("Texture3D");
-
-		m_Texture->bind(0);
-		m_LogoTexture->bind(1);
-
+		auto textureShader = m_ShaderLibrary.get("Lightning");
 		textureShader->bind();
+		std::dynamic_pointer_cast<OpenGLShader>(textureShader)->uploadUniformFloat3("viewPos", m_CameraController.getCamera().getWorldPosition());
+		
 		static float rotation = 0.f;
 		rotation += delta * 30.f;
 
 		for (int i = 0; i < 10; i++) {
-			Renderer::submit(textureShader, m_SquareVA, rotateXYZ(Vector3(rotation, rotation, 0.f)) * translation(cubePositions[i]));
+			Renderer::submit(textureShader, m_CubeVA, rotateXYZ(Vector3(rotation, rotation, 0.f)) * translation(cubeVertexPositions[i]));
 		}
 		
 		Renderer::endScene();
 	}
 
   private:
-	Vector3 cubePositions[10] = {
+	Vector3 cubeVertexPositions[10] = {
 		Vector3( 0.0f,  0.0f,  0.0f), 
 		Vector3( 2.0f,  5.0f, -15.0f), 
 		Vector3(-1.5f, -2.2f, -2.5f),  
@@ -129,8 +118,8 @@ class ExampleLayer : public Layer {
 
 	CameraController m_CameraController;
 	ShaderLibrary m_ShaderLibrary;
-	Ref<Texture2D> m_Texture, m_LogoTexture;
-	Ref<VertexArray> m_SquareVA;
+	Ref<VertexArray> m_CubeVA;
+	Ref<VertexArray> m_LightVA;
 	Vector3 m_SquareColor = { 0.2f, 0.3f, 0.8f }; // Color of the square
 };
 
