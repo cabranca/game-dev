@@ -11,9 +11,9 @@ namespace cabrankengine::rendering {
 		const math::Transform& getTransform() const noexcept;
 		void setTransform(const math::Transform& transform) noexcept;
 		void setTransform(const math::Vector3& position, const math::Vector3& rotation, const math::Vector3& scale) noexcept;
-		math::Vector3 getWorldPosition();
+		math::Vector3 getWorldPosition() const;
 		void setWorldPosition(const math::Vector3& newPos);
-		math::Vector3 getWorldRotation();
+		math::Vector3 getWorldRotation() const;
 		void setWorldRotation(const math::Vector3& newRotation);
 		void setWorldRotationAndPosition(const math::Vector3& newRotation, const math::Vector3& newPos);
 		

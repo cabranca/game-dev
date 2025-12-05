@@ -23,7 +23,7 @@ namespace cabrankengine::rendering {
 		recalculateViewMatrix();
 	}
 
-	math::Vector3 Camera::getWorldPosition() {
+	math::Vector3 Camera::getWorldPosition() const {
 		return m_Transform.position;
 	}
 
@@ -32,7 +32,7 @@ namespace cabrankengine::rendering {
 		recalculateViewMatrix();
 	}
 
-	math::Vector3 Camera::getWorldRotation() {
+	math::Vector3 Camera::getWorldRotation() const {
 		return m_Transform.rotation;
 	}
 
