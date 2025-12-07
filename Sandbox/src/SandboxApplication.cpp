@@ -18,48 +18,54 @@ class ExampleLayer : public Layer {
 	ExampleLayer() : Layer("Example"), m_CameraController(PerspectiveCamera(PI / 4.f, 16.f / 9.f, 0.1f, 100.f)) {
 		m_CubeVA = VertexArray::create();
 
-		float lightningCubeVertices[6 * 36] = {
-			-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
- 			 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 
-			 0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 
-			 0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 
-			-0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 
-			-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 
-			-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-			 0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-			 0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-			 0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-			-0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-			-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-			-0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
-			-0.5f, 0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
-			-0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
-			-0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
-			-0.5f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
-			-0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
-			 0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
-			 0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-			 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-			 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-			 0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
-			 0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
-			-0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
-			 0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
-			 0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
-			 0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
-			-0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
-			-0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
-			-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-			 0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-			 0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
-			 0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
-			-0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
-			-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f
+		float lightningCubeVertices[8 * 36] = {
+			// positions          // normals           // texture coords
+			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+			0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
+			0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+			0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+			-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+
+			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
+			0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
+			0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+			0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+			-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 1.0f,
+			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
+
+			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+			-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+			-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+
+			0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+			0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+			0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+			0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+			0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+			0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+
+			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
+			0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
+			0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+			0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+			-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
+
+			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
+			0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
+			0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+			0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+			-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
+			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
 		};
 
 		Ref<VertexBuffer> squareVB = VertexBuffer::create(lightningCubeVertices, sizeof(lightningCubeVertices));
 
-		squareVB->setLayout({ { ShaderDataType::Float3, "pos" }, { ShaderDataType::Float3, "normal" } });
+		squareVB->setLayout({ { ShaderDataType::Float3, "pos" }, { ShaderDataType::Float3, "normal" }, { ShaderDataType::Float2, "texCoords" } });
 
 		m_CubeVA->addVertexBuffer(squareVB);
 
@@ -72,17 +78,26 @@ class ExampleLayer : public Layer {
 
 		m_CubeVA->setIndexBuffer(squareIB);
 
+		m_WoodenBoxTexture = Texture2D::create("assets/textures/container2.png");
+		m_WoodenBoxSpecularTexture = Texture2D::create("assets/textures/container2_specular.png");
 		auto lightingShader = m_ShaderLibrary.load("assets/shaders/Lightning.glsl");
 
 		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->bind();
-		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("material.ambient", Vector3(1.0f, 0.5f, 0.31f));
-		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("material.diffuse", Vector3(1.0f, 0.5f, 0.31f));
+		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformInt("material.diffuse", 0);
+		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformInt("material.specular", 1);
 		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("material.specular", Vector3(0.5f, 0.5f, 0.5f));
-		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat1("material.shininess", 32.f);
-
-		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("light.position", Vector3());
+		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat1("material.shininess", 64.f);
 		
-
+		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("light.ambient", Vector3(0.1f));
+		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("light.diffuse", Vector3(0.8f));
+		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("light.specular", Vector3(1.f));
+		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat1("light.constant", 1.f);
+		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat1("light.linear", 0.09f);
+		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat1("light.quadratic", 0.032f);
+		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat1("light.cutOff", cosf(radians(12.5f)));
+		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat1("light.outerCutOff", cosf(radians(17.5f)));
+		
+		
 	}
 
 	void onUpdate(Timestep delta) override {
@@ -95,25 +110,27 @@ class ExampleLayer : public Layer {
 		Renderer::beginScene(m_CameraController.getCamera());
 		auto lightingShader = m_ShaderLibrary.get("Lightning");
 		lightingShader->bind();
+
+
+		const auto cameraRotation = m_CameraController.getCamera().getWorldRotation() + Vector3(0.f, -90.f, 0.f);
+		Vector3 cameraForward{};
+		cameraForward.x = - cosf(radians(cameraRotation.y)) * cosf(radians(cameraRotation.x));
+		cameraForward.y = - sinf(radians(cameraRotation.x));
+		cameraForward.z = sinf(radians(cameraRotation.y)) * cosf(radians(cameraRotation.x));
+		cameraForward.normalized();
+
 		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("viewPos", m_CameraController.getCamera().getWorldPosition());
+		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("light.position", m_CameraController.getCamera().getWorldPosition());
+		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("light.direction", cameraForward);
 
 		static float rotation = 0.f;
 		rotation += delta * 30.f;
-
-		Vector3 lightColor;
-        lightColor.x = sinf(rotation * 0.02f);
-        lightColor.y = sinf(rotation * 0.07f);
-        lightColor.z = sinf(rotation * 0.013f);
-        Vector3 diffuseColor = lightColor   * 0.5f; // decrease the influence
-        Vector3 ambientColor = diffuseColor * 0.2f; // low influence
-        std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("light.ambient", ambientColor);
-		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("light.diffuse", diffuseColor);
-		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("light.specular", Vector3(1.f));
 		
-		
+		m_WoodenBoxTexture->bind(0);
+		m_WoodenBoxSpecularTexture->bind(1);
 
 		for (int i = 0; i < 9; i++) {
-			Renderer::submit(lightingShader, m_CubeVA, rotateXYZ(Vector3(rotation, rotation, 0.f)) * translation(cubeVertexPositions[i]));
+			Renderer::submit(lightingShader, m_CubeVA, translation(cubeVertexPositions[i]));
 		}
 		
 		Renderer::endScene();
@@ -137,6 +154,8 @@ class ExampleLayer : public Layer {
 	Ref<VertexArray> m_CubeVA;
 	Ref<VertexArray> m_LightVA;
 	Vector3 m_SquareColor = { 0.2f, 0.3f, 0.8f }; // Color of the square
+	Ref<Texture2D> m_WoodenBoxTexture;
+	Ref<Texture2D> m_WoodenBoxSpecularTexture;
 };
 
 class Sandbox : public Application {
