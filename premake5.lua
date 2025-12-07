@@ -8,6 +8,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
+IncludeDir["assimp"] = "Cabrankengine/vendor/assimp/include"
 IncludeDir["GLFW"] = "Cabrankengine/vendor/GLFW/include"
 IncludeDir["glad"] = "Cabrankengine/vendor/glad/include"
 IncludeDir["ImGui"] = "Cabrankengine/vendor/imgui"
@@ -17,6 +18,7 @@ IncludeDir["irrKlang"] = "Cabrankengine/vendor/irrKlang/include"
 IncludeDir["json"] = "Cabrankengine/vendor/json/include"
 IncludeDir["Catch2"] = "Cabrankengine/vendor/Catch2"
 
+include "Cabrankengine/vendor/assimp"
 include "Cabrankengine/vendor/GLFW"
 include "Cabrankengine/vendor/glad"
 include "Cabrankengine/vendor/imgui"
@@ -39,9 +41,9 @@ project "Cabrankengine"
     includedirs 
     {
         "%{prj.name}/src", "%{prj.name}/vendor/spdlog/include", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}", "%{IncludeDir.ImGui}", 
-        "%{IncludeDir.glm}", "%{IncludeDir.stb_image}", "%{IncludeDir.irrKlang}", "%{IncludeDir.json}"
+        "%{IncludeDir.glm}", "%{IncludeDir.stb_image}", "%{IncludeDir.irrKlang}", "%{IncludeDir.json}", "%{IncludeDir.assimp}"
     }
-    links {"GLFW", "glad", "ImGui", "IrrKlang"}
+    links {"GLFW", "glad", "ImGui", "IrrKlang", "Assimp"}
 
     filter "system:windows"
         systemversion "latest"
