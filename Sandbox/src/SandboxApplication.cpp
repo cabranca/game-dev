@@ -81,6 +81,7 @@ class ExampleLayer : public Layer {
 		m_WoodenBoxTexture = Texture2D::create("assets/textures/container2.png");
 		m_WoodenBoxSpecularTexture = Texture2D::create("assets/textures/container2_specular.png");
 		auto lightingShader = m_ShaderLibrary.load("assets/shaders/Lightning.glsl");
+		m_ShaderLibrary.load("assets/shaders/LightSource.glsl");
 
 		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->bind();
 		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformInt("material.diffuse", 0);
@@ -88,16 +89,20 @@ class ExampleLayer : public Layer {
 		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("material.specular", Vector3(0.5f, 0.5f, 0.5f));
 		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat1("material.shininess", 64.f);
 		
-		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("light.ambient", Vector3(0.1f));
-		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("light.diffuse", Vector3(0.8f));
-		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("light.specular", Vector3(1.f));
-		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat1("light.constant", 1.f);
-		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat1("light.linear", 0.09f);
-		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat1("light.quadratic", 0.032f);
-		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat1("light.cutOff", cosf(radians(12.5f)));
-		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat1("light.outerCutOff", cosf(radians(17.5f)));
-		
-		
+		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("dirLight.direction", Vector3(-0.2f, -1.0f, -0.3f));
+		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("dirLight.ambient", Vector3(0.05f));
+		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("dirLight.diffuse", Vector3(0.4f));
+		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("dirLight.specular", Vector3(0.5f));
+
+		for (int i = 0; i < m_PointLightPositions.size(); i++) {
+			std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("pointLights[" + std::to_string(i) + "].position", m_CameraController.getCamera().getWorldPosition());
+			std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("pointLights[" + std::to_string(i) + "].ambient", Vector3(0.05f));
+			std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("pointLights[" + std::to_string(i) + "].diffuse", Vector3(0.8f));
+			std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("pointLights[" + std::to_string(i) + "].specular", Vector3(1.f));
+			std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat1("pointLights[" + std::to_string(i) + "].constant", 1.f);
+			std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat1("pointLights[" + std::to_string(i) + "].linear", 0.09f);
+			std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat1("pointLights[" + std::to_string(i) + "].quadratic", 0.032f);
+		}
 	}
 
 	void onUpdate(Timestep delta) override {
@@ -120,8 +125,6 @@ class ExampleLayer : public Layer {
 		cameraForward.normalized();
 
 		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("viewPos", m_CameraController.getCamera().getWorldPosition());
-		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("light.position", m_CameraController.getCamera().getWorldPosition());
-		std::dynamic_pointer_cast<OpenGLShader>(lightingShader)->uploadUniformFloat3("light.direction", cameraForward);
 
 		static float rotation = 0.f;
 		rotation += delta * 30.f;
@@ -130,14 +133,18 @@ class ExampleLayer : public Layer {
 		m_WoodenBoxSpecularTexture->bind(1);
 
 		for (int i = 0; i < 9; i++) {
-			Renderer::submit(lightingShader, m_CubeVA, translation(cubeVertexPositions[i]));
+			Renderer::submit(lightingShader, m_CubeVA, translation(m_CubeVertexPositions[i]));
 		}
+
+		auto lightSourceShader = m_ShaderLibrary.get("LightSource");
+		for (const auto& lightPos : m_PointLightPositions)
+			Renderer::submit(lightSourceShader, m_CubeVA, scaleUniform(0.2f) * translation(lightPos));
 		
 		Renderer::endScene();
 	}
 
   private:
-	Vector3 cubeVertexPositions[9] = {
+	Vector3 m_CubeVertexPositions[9] = {
 		Vector3( 2.0f,  5.0f, -15.0f), 
 		Vector3(-1.5f, -2.2f, -2.5f),  
 		Vector3(-3.8f, -2.0f, -12.3f),  
@@ -147,6 +154,13 @@ class ExampleLayer : public Layer {
 		Vector3( 1.5f,  2.0f, -2.5f), 
 		Vector3( 1.5f,  0.2f, -1.5f), 
 		Vector3(-1.3f,  1.0f, -1.5f)  
+	};
+
+	std::array<Vector3, 4> m_PointLightPositions = {
+		Vector3( 0.7f,  0.2f,  2.0f),
+		Vector3( 2.3f, -3.3f, -4.0f),
+		Vector3(-4.0f,  2.0f, -12.0f),
+		Vector3( 0.0f,  0.0f, -3.0f)
 	};
 
 	CameraController m_CameraController;
