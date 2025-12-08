@@ -58,4 +58,8 @@ namespace cabrankengine::rendering {
 	const Camera& CameraController::getCamera() const noexcept {
 		return m_Camera;
 	}
+
+	Camera& CameraController::getCamera() noexcept {
+		return m_Camera;
+	}
 } // namespace cabrankengine::rendering

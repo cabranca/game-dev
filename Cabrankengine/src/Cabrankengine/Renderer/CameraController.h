@@ -13,6 +13,7 @@ namespace cabrankengine::rendering {
         void onUpdate(Timestep delta);
 
         const Camera& getCamera() const noexcept;
+        Camera& getCamera() noexcept;
 
       private:
         Camera m_Camera;
