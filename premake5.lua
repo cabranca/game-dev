@@ -84,8 +84,12 @@ project "Sandbox"
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
     files {"%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp"}
-    includedirs {"Cabrankengine/vendor/spdlog/include", "Cabrankengine/src", "%{IncludeDir.glm}", "%{IncludeDir.ImGui}", "%{IncludeDir.irrKlang}", "%{IncludeDir.freetype}"}
-    links {"Cabrankengine", "GLFW", "glad", "ImGui"}
+    includedirs 
+    {
+        "Cabrankengine/vendor/spdlog/include", "Cabrankengine/src", "%{IncludeDir.glm}", 
+        "%{IncludeDir.ImGui}", "%{IncludeDir.irrKlang}", "%{IncludeDir.freetype}", "%{IncludeDir.assimp}",
+    }
+    links {"Cabrankengine", "GLFW", "glad", "ImGui", "Assimp"}
 
     filter "system:windows"
         systemversion "latest"
