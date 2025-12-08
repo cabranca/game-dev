@@ -16,7 +16,7 @@ namespace cabrankengine::platform::opengl {
 		glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
 	}
 
-	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size) : m_RendererId() {
+	OpenGLVertexBuffer::OpenGLVertexBuffer(void* vertices, uint32_t size) : m_RendererId() {
 		CE_PROFILE_FUNCTION();
 
 		glCreateBuffers(1, &m_RendererId); // TODO: research this functions. Cherno thought that "create" elminiated the need of "bind" but it does not.
