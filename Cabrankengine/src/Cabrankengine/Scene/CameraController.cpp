@@ -9,7 +9,8 @@ namespace cabrankengine::scene {
 	CameraController::CameraController(Camera camera)
 	    : m_Camera(std::move(camera)), m_LastMouseX(), m_LastMouseY(), m_RotationSpeed(5.f), m_TranslationSpeed(10.f),
 	      m_CameraPos(m_Camera.getWorldPosition()), m_CameraRot(m_Camera.getWorldRotation() + Vector3(0.f, -90.f, 0.f)) {
-		Input::setInputMode(true, true);
+		// UNCOMMENT TO CAPTURE MOUSE
+		//Input::setInputMode(true, true);
 	}
 
 	void CameraController::onUpdate(Timestep delta) {

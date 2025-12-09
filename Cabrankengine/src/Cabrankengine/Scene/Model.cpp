@@ -6,18 +6,10 @@ namespace cabrankengine::scene {
 
 	using namespace rendering;
 
-	Model::Model(std::string_view path) {
-		loadModel(path);
-	}
-
-	void Model::draw(const Ref<Shader>& shader) {
-		for (const auto& mesh: m_Meshes)
-			mesh.draw(shader);
-	}
-
-	void Model::loadModel(std::string_view path) {
+	Model::Model(const std::string& path) {
 		Assimp::Importer importer;
-		const aiScene* scene = importer.ReadFile(path.data(), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+		const aiScene* scene = importer.ReadFile(path.c_str(), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs |
+		                                                          aiProcess_CalcTangentSpace);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
 			CE_CORE_ERROR("Failed to load model from path {0}. {1}", path.data(), importer.GetErrorString());
@@ -25,6 +17,11 @@ namespace cabrankengine::scene {
 		}
 		m_Directory = path.substr(0, path.find_last_of('/'));
 		processNode(scene->mRootNode, scene);
+	}
+
+	void Model::draw(const Ref<Shader>& shader) {
+		for (const auto& mesh: m_Meshes)
+			mesh.draw(shader);
 	}
 
 	void Model::processNode(aiNode* node, const aiScene* scene) {
@@ -76,47 +73,40 @@ namespace cabrankengine::scene {
 		// normal: texture_normalN
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
-		std::vector<TextureWrapper> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+		std::vector<TextureWrapper> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, TextureType::Diffuse);
 		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-		std::vector<TextureWrapper> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+		std::vector<TextureWrapper> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, TextureType::Specular);
 		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-		std::vector<TextureWrapper> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal"); // ESTO ESTA MAL
+		std::vector<TextureWrapper> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, TextureType::Normal);
 		textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
-		std::vector<TextureWrapper> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
-		textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
 		return Mesh(vertices, indices, textures);
 	}
 
-	std::vector<TextureWrapper> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName) {
+	std::vector<TextureWrapper> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, TextureType typeName) {
 		std::vector<TextureWrapper> textures;
-        for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
-            aiString str;	
-            mat->GetTexture(type, i, &str);
-            bool skip = false;
-            for (unsigned int j = 0; j < m_TexturesLoaded.size(); j++) {
+		for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
+			aiString str;
+			mat->GetTexture(type, i, &str);
+			bool skip = false;
+			for (unsigned int j = 0; j < m_TexturesLoaded.size(); j++) {
 				std::filesystem::path path(m_TexturesLoaded[j].texture->getPath());
-                if (!std::strcmp(path.filename().string().c_str(), str.C_Str()) ) {
-                    textures.push_back(m_TexturesLoaded[j]);
-                    skip = true;
-                    break;
-                }
-            }
-            if (skip)
-                continue;
-            
-            TextureWrapper textureWrapper;
-            textureWrapper.texture = TextureFromFile(str.C_Str(), m_Directory);
-            textureWrapper.type = typeName;
-            textures.push_back(textureWrapper);
+				if (!std::strcmp(path.filename().string().c_str(), str.C_Str())) {
+					textures.push_back(m_TexturesLoaded[j]);
+					skip = true;
+					break;
+				}
+			}
+			if (skip)
+				continue;
+
+			TextureWrapper textureWrapper;
+			textureWrapper.texture = Texture2D::create(std::string(m_Directory) + "/" + std::string(str.C_Str()));
+			textureWrapper.type = typeName;
+			textures.push_back(textureWrapper);
 			m_TexturesLoaded.push_back(textureWrapper);
-        }
+		}
 
-        return textures;
+		return textures;
 	}
-
-	Ref<Texture2D> TextureFromFile(const char* path, std::string_view directory, bool gamma) {
-		std::string filename = std::string(directory) + "/" + std::string(path);
-        return Texture2D::create(filename);
-	}
-} // namespace cabrankengine::rendering
+} // namespace cabrankengine::scene

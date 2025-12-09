@@ -1,8 +1,8 @@
 #pragma once
 
-#include <assimp/Importer.hpp>  // C++ importer interface
-#include <assimp/scene.h>       // Output data structure
-#include <assimp/postprocess.h> // Post processing flags
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 #include "Mesh.h"
 
@@ -10,21 +10,17 @@ namespace cabrankengine::scene {
 
 	class Model {
 	  public:
-		Model(std::string_view path);
+		Model(const std::string& path);
 
 		void draw(const Ref<rendering::Shader>& shader);
 
 	  private:
 		std::vector<Mesh> m_Meshes;
-		std::string_view m_Directory;
-		std::vector<TextureWrapper> m_TexturesLoaded; // stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
-		bool m_GammaCorrection;
+		std::string m_Directory;
+		std::vector<TextureWrapper> m_TexturesLoaded; // Cache of Textures so they're not loaded twice
 
-		void loadModel(std::string_view path);
 		void processNode(aiNode* node, const aiScene* scene);
 		Mesh processMesh(aiMesh* mesh, const aiScene* scene);
-		std::vector<TextureWrapper> loadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName);
+		std::vector<TextureWrapper> loadMaterialTextures(aiMaterial* mat, aiTextureType type, TextureType typeName);
 	};
-
-	Ref<rendering::Texture2D> TextureFromFile(const char* path, std::string_view directory, bool gamma = false);
-} // namespace cabrankengine::rendering
+} // namespace cabrankengine::scene

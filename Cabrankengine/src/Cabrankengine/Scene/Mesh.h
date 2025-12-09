@@ -13,24 +13,29 @@ namespace cabrankengine::scene {
         math::Vector2 texCoords;
     };
 
-    // Maybe the type should be moved to our Texture class
+    enum class TextureType {
+        None = 0,
+        Diffuse,
+        Specular,
+        Normal,
+        Height,
+        Ambient
+    };
+
+    // For now we are using a string to match the texture type with the uniform name in the shader.
+    // Think of alternatives (enum and map to string?)
     struct TextureWrapper {
         Ref<rendering::Texture2D> texture;
-        std::string type;
+        TextureType type;
     };
 
 	class Mesh {
 	  public:
-        std::vector<Vertex> vertices;
-        std::vector<uint32_t> indices;
-
         Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<TextureWrapper> textures);
         void draw(const Ref<rendering::Shader>& shader) const;
 
 	  private:
         Ref<rendering::VertexArray> m_VertexArray;
         std::vector<TextureWrapper> m_Textures;
-
-        void setupMesh();
 	};
 } // namespace cabrankengine::rendering
