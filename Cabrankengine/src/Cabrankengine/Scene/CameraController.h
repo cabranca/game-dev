@@ -4,7 +4,7 @@
 
 #include "Camera.h"
 
-namespace cabrankengine::rendering {
+namespace cabrankengine::scene {
 
     // Actually a FPS Camera Controller.
     class CameraController {

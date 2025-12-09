@@ -1,14 +1,9 @@
 #include "Renderer.h"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 #include <Cabrankengine/Debug/Instrumentator.h>
-#include <Platform/OpenGL/OpenGLShader.h>
 
-#include "Camera.h"
 #include "Renderer2D.h"
+#include "RenderCommand.h"
 #include "Shader.h"
 #include "VertexArray.h"
 
@@ -28,9 +23,9 @@ namespace cabrankengine::rendering {
 		Renderer2D::shutdown();
 	}
 
-	void Renderer::beginScene(const Camera& camera) {
-		s_SceneData->projectionMatrix = camera.getProjectionMatrix();
-		s_SceneData->viewMatrix = camera.getViewMatrix();
+	void Renderer::beginScene(const math::Mat4& projection, const math::Mat4& view) {
+		s_SceneData->projectionMatrix = projection;
+		s_SceneData->viewMatrix = view;
 	}
 
 	void Renderer::endScene() {
@@ -39,9 +34,9 @@ namespace cabrankengine::rendering {
 
 	void Renderer::submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const Mat4& transform) {
 		shader->bind();
-		std::dynamic_pointer_cast<platform::opengl::OpenGLShader>(shader)->uploadUniformMat4("projection", s_SceneData->projectionMatrix);
-		std::dynamic_pointer_cast<platform::opengl::OpenGLShader>(shader)->uploadUniformMat4("view", s_SceneData->viewMatrix);
-		std::dynamic_pointer_cast<platform::opengl::OpenGLShader>(shader)->uploadUniformMat4("model", transform);
+		shader->setMat4("projection", s_SceneData->projectionMatrix);
+		shader->setMat4("view", s_SceneData->viewMatrix);
+		shader->setMat4("model", transform);
 		vertexArray->bind();
 		RenderCommand::drawIndexed(vertexArray);
 	}

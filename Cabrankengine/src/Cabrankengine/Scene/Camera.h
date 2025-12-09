@@ -2,7 +2,7 @@
 
 #include <Cabrankengine/Math/Transform.h>
 
-namespace cabrankengine::rendering {
+namespace cabrankengine::scene {
 
 	class Camera {
 	  public:

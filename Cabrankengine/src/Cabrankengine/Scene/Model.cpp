@@ -2,7 +2,9 @@
 
 #include <filesystem>
 
-namespace cabrankengine::rendering {
+namespace cabrankengine::scene {
+
+	using namespace rendering;
 
 	Model::Model(std::string_view path) {
 		loadModel(path);

@@ -6,13 +6,13 @@
 
 #include "Mesh.h"
 
-namespace cabrankengine::rendering {
+namespace cabrankengine::scene {
 
 	class Model {
 	  public:
 		Model(std::string_view path);
 
-		void draw(const Ref<Shader>& shader);
+		void draw(const Ref<rendering::Shader>& shader);
 
 	  private:
 		std::vector<Mesh> m_Meshes;
@@ -26,5 +26,5 @@ namespace cabrankengine::rendering {
 		std::vector<TextureWrapper> loadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName);
 	};
 
-	Ref<Texture2D> TextureFromFile(const char* path, std::string_view directory, bool gamma = false);
+	Ref<rendering::Texture2D> TextureFromFile(const char* path, std::string_view directory, bool gamma = false);
 } // namespace cabrankengine::rendering

@@ -11,6 +11,7 @@
 using namespace cabrankengine;
 using namespace cabrankengine::math;
 using namespace cabrankengine::rendering;
+using namespace cabrankengine::scene;
 using namespace cabrankengine::platform::opengl;
 
 class ExampleLayer : public Layer {
@@ -28,7 +29,9 @@ class ExampleLayer : public Layer {
 
 		m_CameraController.onUpdate(delta);
 
-		Renderer::beginScene(m_CameraController.getCamera());
+		const auto& camera = m_CameraController.getCamera();
+
+		Renderer::beginScene(camera.getProjectionMatrix(), camera.getViewMatrix());
 
 
 		auto shader = m_ShaderLibrary.get("ModelTest");

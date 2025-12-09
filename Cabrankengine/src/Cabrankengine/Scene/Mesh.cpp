@@ -1,16 +1,19 @@
 #include "Mesh.h"
 
-#include "Renderer.h"
-#include "Buffer.h"
+#include <Cabrankengine/Math/MatrixFactory.h>
+#include <Cabrankengine/Renderer/Renderer.h>
+#include <Cabrankengine/Renderer/Buffer.h>
 
-namespace cabrankengine::rendering {
+namespace cabrankengine::scene {
+
+    using namespace rendering;
 
 	Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<TextureWrapper> textures)
 	    : vertices(vertices), indices(indices), m_Textures(textures) {
 		setupMesh();
 	}
 
-	void cabrankengine::rendering::Mesh::draw(const Ref<Shader>& shader) const {
+	void Mesh::draw(const Ref<Shader>& shader) const {
         // bind appropriate textures
         unsigned int diffuseNr  = 1;
         for(unsigned int i = 0; i < m_Textures.size(); i++) {
@@ -26,10 +29,10 @@ namespace cabrankengine::rendering {
 
         shader->bind();
         m_Textures[0].texture->bind();
-        Renderer::submit(shader, m_VertexArray);
+        Renderer::submit(shader, m_VertexArray, math::identityMat());
     }
 	
-    void cabrankengine::rendering::Mesh::setupMesh() {
+    void Mesh::setupMesh() {
         m_VertexArray = VertexArray::create();
 		
         auto vertexBuffer = VertexBuffer::create(vertices.data(), vertices.size() * sizeof(Vertex));

@@ -26,10 +26,10 @@
 #include <Cabrankengine/Renderer/RenderCommand.h>
 
 #include <Cabrankengine/Renderer/Buffer.h>
-#include <Cabrankengine/Renderer/CameraController.h>
-#include <Cabrankengine/Renderer/Model.h>
 #include <Cabrankengine/Renderer/Shader.h>
 #include <Cabrankengine/Renderer/Texture.h>
 #include <Cabrankengine/Renderer/VertexArray.h>
 
-#include <Cabrankengine/Renderer/OrthographicCameraController.h>
+// --- Scene ---
+#include <Cabrankengine/Scene/CameraController.h>
+#include <Cabrankengine/Scene/Model.h>

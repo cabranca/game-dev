@@ -8,6 +8,7 @@
 using namespace cabrankengine;
 using namespace cabrankengine::ecs;
 using namespace cabrankengine::rendering;
+using namespace cabrankengine::scene;
 using namespace glm;
 
 class MovementSystem : public ISystem {
@@ -90,7 +91,7 @@ void Sandbox2D::onUpdate(cabrankengine::Timestep delta) {
 
 		//Renderer2D::endScene();
 
-		Renderer2D::beginScene(m_Camera);
+		Renderer2D::beginScene(m_Camera.getViewProjectionMatrix());
 		/*for (float y = -360.f; y < 360.f; y += 36.f) {
 			for (float x = -360.f; x < 360.f; x += 36.f) {
 				glm::vec4 color = { m_SquareColor };

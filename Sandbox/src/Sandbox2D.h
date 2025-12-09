@@ -14,7 +14,7 @@ class Sandbox2D : public cabrankengine::Layer {
 		virtual void onEvent(cabrankengine::Event& e) override;
 
 	private:
-		cabrankengine::rendering::OrthographicCamera m_Camera;
+		cabrankengine::scene::OrthographicCamera m_Camera;
 
 		// Temp
 		cabrankengine::Ref<cabrankengine::rendering::VertexArray> m_SquareVA;

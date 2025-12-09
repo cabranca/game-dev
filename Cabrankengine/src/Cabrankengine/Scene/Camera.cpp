@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-namespace cabrankengine::rendering {
+namespace cabrankengine::scene {
 
 	using namespace math;
 

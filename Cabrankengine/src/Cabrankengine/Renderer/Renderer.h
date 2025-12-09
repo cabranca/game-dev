@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Cabrankengine/Math/MatrixFactory.h>
+#include <Cabrankengine/Math/Mat4.h>
 
-#include "RenderCommand.h"
+#include "RendererAPI.h"
 
 namespace cabrankengine::rendering {
 
@@ -21,13 +21,13 @@ namespace cabrankengine::rendering {
 			static void shutdown();
 
 			// Sets the necessary general data to render a scene, such as the camera, the lighting, etc.
-			static void beginScene(const Camera& camera);
+			static void beginScene(const math::Mat4& projection, const math::Mat4& view);
 
 			// Ends the current scene, finalizing rendering operations.
 			static void endScene();
 
 			// Submits a draw call to render a shader with a vertex array and an optional transformation matrix.
-			static void submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const math::Mat4& transform = math::identityMat());
+			static void submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const math::Mat4& transform);
 
 			// Sets the viewport dimensions for rendering.
 			static void onWindowResize(uint32_t width, uint32_t height);

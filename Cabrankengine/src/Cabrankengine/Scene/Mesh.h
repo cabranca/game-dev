@@ -1,12 +1,11 @@
 #pragma once
 
 #include <Cabrankengine/Math/Vector3.h>
+#include <Cabrankengine/Renderer/Shader.h>
+#include <Cabrankengine/Renderer/Texture.h>
+#include <Cabrankengine/Renderer/VertexArray.h>
 
-#include "Shader.h"
-#include "Texture.h"
-#include "VertexArray.h"
-
-namespace cabrankengine::rendering {
+namespace cabrankengine::scene {
 
     struct Vertex {
         math::Vector3 position;
@@ -16,7 +15,7 @@ namespace cabrankengine::rendering {
 
     // Maybe the type should be moved to our Texture class
     struct TextureWrapper {
-        Ref<Texture2D> texture;
+        Ref<rendering::Texture2D> texture;
         std::string type;
     };
 
@@ -26,10 +25,10 @@ namespace cabrankengine::rendering {
         std::vector<uint32_t> indices;
 
         Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<TextureWrapper> textures);
-        void draw(const Ref<Shader>& shader) const;
+        void draw(const Ref<rendering::Shader>& shader) const;
 
 	  private:
-        Ref<VertexArray> m_VertexArray;
+        Ref<rendering::VertexArray> m_VertexArray;
         std::vector<TextureWrapper> m_Textures;
 
         void setupMesh();

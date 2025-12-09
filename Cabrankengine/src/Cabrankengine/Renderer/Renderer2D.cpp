@@ -105,11 +105,11 @@ namespace cabrankengine::rendering {
 		CE_PROFILE_FUNCTION();
 	}
 
-	void Renderer2D::beginScene(const OrthographicCamera& camera) {
+	void Renderer2D::beginScene(const math::Mat4& viewProjection) {
 		CE_PROFILE_FUNCTION();
 
 		s_Data.TextureShader->bind();
-		s_Data.TextureShader->setMat4("u_ViewProjection", camera.getViewProjectionMatrix());
+		s_Data.TextureShader->setMat4("u_ViewProjection", viewProjection);
 
 		s_Data.QuadIndexCount = 0;
 		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
