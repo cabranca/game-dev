@@ -6,7 +6,8 @@
 
 namespace cabrankengine::scene {
 
-    // Actually a FPS Camera Controller.
+    // Actually a mix of FPS and free-fly Camera Controller.
+    // Can move in forward, right and up directions. Can rotate yaw holding down the wheel.
     class CameraController {
       public:
         CameraController(Camera camera);

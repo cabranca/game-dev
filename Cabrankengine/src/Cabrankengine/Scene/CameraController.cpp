@@ -9,8 +9,9 @@ namespace cabrankengine::scene {
 	CameraController::CameraController(Camera camera)
 	    : m_Camera(std::move(camera)), m_LastMouseX(), m_LastMouseY(), m_RotationSpeed(5.f), m_TranslationSpeed(10.f),
 	      m_CameraPos(m_Camera.getWorldPosition()), m_CameraRot(m_Camera.getWorldRotation() + Vector3(0.f, -90.f, 0.f)) {
-		// UNCOMMENT TO CAPTURE MOUSE
-		//Input::setInputMode(true, true);
+		auto [mouseX, mouseY] = Input::getMousePosition();
+		m_LastMouseX = mouseX;
+		m_LastMouseY = mouseY;
 	}
 
 	void CameraController::onUpdate(Timestep delta) {
@@ -42,16 +43,24 @@ namespace cabrankengine::scene {
 		// 	m_CameraRot.z += 50.f * delta;
 
 		auto [mouseX, mouseY] = Input::getMousePosition();
-		if (m_LastMouseX != 0 ) {
-			m_CameraRot.y += (m_LastMouseX - mouseX) * m_RotationSpeed * delta;
-			//m_CameraRot.x += (m_LastMouseY - mouseY) * m_RotationSpeed * delta;
+		if (Input::isMouseButtonPressed(Mouse::ButtonRight)) {
+			Input::setInputMode(true, true);
+			
+			if (m_LastMouseX != 0 ) {
+				m_CameraRot.y += (m_LastMouseX - mouseX) * m_RotationSpeed * delta;
+				//m_CameraRot.x += (m_LastMouseY - mouseY) * m_RotationSpeed * delta;
+			}
+			
+			if (m_CameraRot.x > 89.0f)
+				m_CameraRot.x = 89.0f;
+			if (m_CameraRot.x < -89.0f)
+				m_CameraRot.x = -89.0f;
 		}
+		else
+			Input::setInputMode(false, false);
+		
 		m_LastMouseX = mouseX;
 		m_LastMouseY = mouseY;
-		if (m_CameraRot.x > 89.0f)
-			m_CameraRot.x = 89.0f;
-		if (m_CameraRot.x < -89.0f)
-			m_CameraRot.x = -89.0f;
 
 		m_Camera.setWorldRotationAndPosition(m_CameraRot + Vector3(0.f, 90.f, 0.f), m_CameraPos);
 	}
