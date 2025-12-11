@@ -6,7 +6,7 @@ namespace cabrankengine::scene {
 
 	using namespace rendering;
 
-	Model::Model(const std::string& path) {
+	Model::Model(const std::string& path, const Ref<Shader>& defaultShader) : m_DefaultShader(defaultShader) {
 		Assimp::Importer importer;
 		const aiScene* scene = importer.ReadFile(path.c_str(), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs |
 		                                                          aiProcess_CalcTangentSpace);
@@ -19,9 +19,9 @@ namespace cabrankengine::scene {
 		processNode(scene->mRootNode, scene);
 	}
 
-	void Model::draw(const Ref<Shader>& shader) {
-		for (const auto& mesh: m_Meshes)
-			mesh.draw(shader);
+	void Model::draw() {
+		for (auto& mesh: m_Meshes)
+			mesh.draw();
 	}
 
 	void Model::processNode(aiNode* node, const aiScene* scene) {
@@ -37,7 +37,6 @@ namespace cabrankengine::scene {
 	Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
 		std::vector<Vertex> vertices;
 		std::vector<uint32_t> indices;
-		std::vector<TextureWrapper> textures;
 
 		for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
 			Vertex vertex;
@@ -65,32 +64,34 @@ namespace cabrankengine::scene {
 				indices.push_back(face.mIndices[j]);
 		}
 
-		// we assume a convention for sampler names in the shaders. Each diffuse texture should be named
-		// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER.
-		// Same applies to other texture as the following list summarizes:
-		// diffuse: texture_diffuseN
-		// specular: texture_specularN
-		// normal: texture_normalN
-		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+		Ref<Material> meshMaterial = Material::create(m_DefaultShader);
 
-		std::vector<TextureWrapper> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, TextureType::Diffuse);
-		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-		std::vector<TextureWrapper> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, TextureType::Specular);
-		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-		std::vector<TextureWrapper> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, TextureType::Normal);
-		textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
+		if (mesh->mMaterialIndex >= 0) {
+			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
-		return Mesh(vertices, indices, textures);
+			// Load diffuse (only support 1 for now)
+			auto diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, TextureType::Diffuse);
+			if (!diffuseMaps.empty())
+				meshMaterial->setDiffuseMap(diffuseMaps[0]);
+
+			// Load specular (only support 1 for now)
+			auto specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, TextureType::Specular);
+			if (!specularMaps.empty())
+				meshMaterial->setSpecularMap(specularMaps[0]);
+				
+		}
+
+		return Mesh(vertices, indices, meshMaterial);
 	}
 
-	std::vector<TextureWrapper> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, TextureType typeName) {
-		std::vector<TextureWrapper> textures;
+	std::vector<Ref<Texture2D>> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, TextureType typeName) {
+		std::vector<Ref<Texture2D>> textures;
 		for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
 			aiString str;
 			mat->GetTexture(type, i, &str);
 			bool skip = false;
 			for (unsigned int j = 0; j < m_TexturesLoaded.size(); j++) {
-				std::filesystem::path path(m_TexturesLoaded[j].texture->getPath());
+				std::filesystem::path path(m_TexturesLoaded[j]->getPath());
 				if (!std::strcmp(path.filename().string().c_str(), str.C_Str())) {
 					textures.push_back(m_TexturesLoaded[j]);
 					skip = true;
@@ -100,11 +101,9 @@ namespace cabrankengine::scene {
 			if (skip)
 				continue;
 
-			TextureWrapper textureWrapper;
-			textureWrapper.texture = Texture2D::create(std::string(m_Directory) + "/" + std::string(str.C_Str()));
-			textureWrapper.type = typeName;
-			textures.push_back(textureWrapper);
-			m_TexturesLoaded.push_back(textureWrapper);
+			auto texture = Texture2D::create(std::string(m_Directory) + "/" + std::string(str.C_Str()));
+			textures.push_back(texture);
+			m_TexturesLoaded.push_back(texture);
 		}
 
 		return textures;
