@@ -2,7 +2,6 @@
 
 #include <Cabrankengine/Math/Mat4.h>
 
-#include "Camera.h"
 #include "Texture.h"
 
 namespace cabrankengine::rendering {
@@ -13,7 +12,7 @@ namespace cabrankengine::rendering {
 
 			static void shutdown();
 
-			static void beginScene(const OrthographicCamera& camera);
+			static void beginScene(const math::Mat4& viewProjection);
 
 			static void endScene();
 

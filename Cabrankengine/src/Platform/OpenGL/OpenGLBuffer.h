@@ -7,7 +7,7 @@ namespace cabrankengine::platform::opengl {
 	class OpenGLVertexBuffer : public rendering::VertexBuffer {
 		public:
 			OpenGLVertexBuffer(uint32_t size);
-			OpenGLVertexBuffer(float* vertices, uint32_t size);
+			OpenGLVertexBuffer(void* vertices, uint32_t size);
 			~OpenGLVertexBuffer();
 
 			// Binds the vertex buffer so that it can be used in rendering.

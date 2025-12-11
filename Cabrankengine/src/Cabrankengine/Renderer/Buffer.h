@@ -133,7 +133,7 @@ namespace cabrankengine::rendering {
 			static Ref<VertexBuffer> create(uint32_t size);
 
 			// Returns a pointer to the raw vertex data.
-			static Ref<VertexBuffer> create(float* vertices, uint32_t size);
+			static Ref<VertexBuffer> create(void* vertices, uint32_t size);
 	};
 
 
