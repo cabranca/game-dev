@@ -1,14 +1,16 @@
 #type vertex
 #version 460 core
-layout (location = 0) in vec4 vertex; // <vec2 pos, vec2 tex>
+layout (location = 0) in vec3 pos;
+layout (location = 1) in vec2 texCoords;
+
 out vec2 TexCoords;
 
-uniform mat4 projection;
+uniform mat4 u_ViewProjection;
 
 void main()
 {
-    gl_Position = projection * vec4(vertex.xy, 0.0, 1.0);
-    TexCoords = vertex.zw;
+    gl_Position = u_ViewProjection * vec4(pos, 1.0);
+    TexCoords = texCoords;
 }
 
 #type fragment
@@ -17,10 +19,10 @@ in vec2 TexCoords;
 out vec4 color;
 
 uniform sampler2D text;
-uniform vec3 textColor;
+uniform vec4 textColor;
 
 void main()
 {
     vec4 sampled = vec4(1.0, 1.0, 1.0, texture(text, TexCoords).r);
-    color = vec4(textColor, 1.0) * sampled;
+    color = textColor * sampled;
 }
