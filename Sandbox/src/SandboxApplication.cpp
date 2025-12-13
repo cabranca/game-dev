@@ -64,6 +64,10 @@ class ExampleLayer : public Layer {
 		}
 		
 		Renderer::endScene();
+
+		TextRenderer::beginScene(camera.getViewMatrix() * camera.getProjectionMatrix());
+		TextRenderer::drawText("HOLA MUNDO!", Vector3(-0.5f, 3.f, 0.f), 0.05f, Vector4(1.f));
+		TextRenderer::endScene();
 	}
 
 	void onImGuiRender() {
