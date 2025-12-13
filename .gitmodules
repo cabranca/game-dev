@@ -18,4 +18,4 @@
 	url = https://github.com/cabranca/assimp.git
 [submodule "Cabrankengine/vendor/freetype"]
 	path = Cabrankengine/vendor/freetype
-	url = https://gitlab.freedesktop.org/freetype/freetype.git
+	url = https://github.com/cabranca/freetype.git
