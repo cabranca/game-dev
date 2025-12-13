@@ -31,11 +31,12 @@ namespace cabrankengine::platform::opengl {
 
 	void OpenGLRendererAPI::draw(const Ref<VertexArray>& vertexArray)
 	{
-		auto a = vertexArray->getVertexBuffers()[0]->getLayout().getElements().size();
+		vertexArray->bind();
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 	}
 
 	void OpenGLRendererAPI::drawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount) {
+		vertexArray->bind();
 		uint32_t count = indexCount == 0 ? vertexArray->getIndexBuffer()->getCount() : indexCount;
 		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 	}
