@@ -21,15 +21,20 @@ namespace cabrankengine::rendering {
 	  public:
 		static void init();
         static void shutdown();
+
         static void beginScene(const math::Mat4& viewProjection);
         static void endScene();
         static void flush();
-        static void drawText(const std::string& text, math::Vector3 position, float scale, math::Vector4 color);
+        
+		static void drawText(const std::string& text, math::Vector3 position, float scale, math::Vector4 color);
 
 		static void loadFont(const std::string& font, unsigned int fontSize);
 
 	  private:
 		// Holds a list of pre-compiled Characters.
 		inline static std::unordered_map<char, Character> s_Characters = {};
+
+		static void startBatch();
+		static void nextBatch();
 	};
 } // namespace cabrankengine::rendering
