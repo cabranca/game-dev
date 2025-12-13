@@ -16,3 +16,6 @@
 [submodule "Cabrankengine/vendor/assimp"]
 	path = Cabrankengine/vendor/assimp
 	url = https://github.com/cabranca/assimp.git
+[submodule "Cabrankengine/vendor/freetype"]
+	path = Cabrankengine/vendor/freetype
+	url = https://gitlab.freedesktop.org/freetype/freetype.git
