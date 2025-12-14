@@ -7,6 +7,7 @@
 #include "Renderer2D.h"
 #include "RenderCommand.h"
 #include "StorageBuffer.h"
+#include "TextRenderer.h"
 #include "VertexArray.h"
 
 
@@ -38,6 +39,7 @@ namespace cabrankengine::rendering {
 
 		RenderCommand::init();
 		Renderer2D::init();
+		TextRenderer::init();
 		s_SceneData->lightSSBO = StorageBuffer::create(sizeof(LightBufferHeader) + sizeof(PointLightGPU));
 	}
 
@@ -62,7 +64,6 @@ namespace cabrankengine::rendering {
 		shader->setMat4("projection", s_SceneData->projectionMatrix);
 		shader->setMat4("view", s_SceneData->viewMatrix);
 		shader->setMat4("model", transform);
-		vertexArray->bind();
 		RenderCommand::drawIndexed(vertexArray);
 	}
 
