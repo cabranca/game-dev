@@ -121,16 +121,16 @@ namespace cabrankengine::rendering {
 			
 			Character ch = s_Characters.at(c);
 
-			float xpos = x + ch.Bearing.x * scale;
-			float ypos = y + (s_Characters['H'].Bearing.y - ch.Bearing.y) * scale;
+			float xpos = x + ch.bearing.x * scale;
+			float ypos = y + (s_Characters['H'].bearing.y - ch.bearing.y) * scale;
 
-			float w = ch.Size.x * scale;
-			float h = ch.Size.y * scale;
+			float w = ch.size.x * scale;
+			float h = ch.size.y * scale;
 
 			float textureIndex = -1.f;
 
 			for (uint32_t i = 0; i < s_Data.textureSlotIndex; i++) {
-				if (s_Data.textureSlots[i] == ch.Texture) {
+				if (s_Data.textureSlots[i] == ch.texture) {
 					textureIndex = (float)i;
 					break;
 				}
@@ -141,7 +141,7 @@ namespace cabrankengine::rendering {
 					nextBatch();
 				
 					textureIndex = (float)s_Data.textureSlotIndex;
-					s_Data.textureSlots[s_Data.textureSlotIndex] = ch.Texture;
+					s_Data.textureSlots[s_Data.textureSlotIndex] = ch.texture;
 					s_Data.textureSlotIndex++;
 			}
 
@@ -171,7 +171,7 @@ namespace cabrankengine::rendering {
 
             s_Data.quadIndexCount += 6;
 
-            x += (ch.Advance >> 6) * scale;
+            x += (ch.advance >> 6) * scale;
 		}
 	}
 
