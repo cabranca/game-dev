@@ -1,11 +1,7 @@
 #pragma once
 
-#include <string>
-#include <unordered_map>
+#include <pch.h>
 
-#include <glm/glm.hpp>
-
-#include <Cabrankengine/Core/Core.h>
 #include <Cabrankengine/Math/Mat4.h>
 
 namespace cabrankengine::rendering {

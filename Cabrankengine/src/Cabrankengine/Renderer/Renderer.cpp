@@ -1,7 +1,5 @@
 #include "Renderer.h"
 
-#include <Cabrankengine/Debug/Instrumentator.h>
-
 #include "Lights.h"
 #include "Material.h"
 #include "Renderer2D.h"

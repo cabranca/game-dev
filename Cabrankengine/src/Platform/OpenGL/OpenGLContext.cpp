@@ -3,9 +3,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include <Cabrankengine/Core/Logger.h>
-#include <Cabrankengine/Debug/Instrumentator.h>
-
 namespace cabrankengine::platform::opengl {
 
 	OpenGLContext::OpenGLContext(GLFWwindow* windowHandle) : m_WindowHandle(windowHandle) {

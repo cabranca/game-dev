@@ -1,9 +1,6 @@
 #pragma once
 
-#include <cstdint>
-#include <string>
-
-#include <Cabrankengine/Core/Core.h>
+#include <pch.h>
 
 // Forward declaration
 struct FT_FaceRec_;

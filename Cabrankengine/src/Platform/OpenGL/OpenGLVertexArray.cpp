@@ -2,7 +2,6 @@
 
 #include <glad/glad.h>
 
-#include <Cabrankengine/Debug/Instrumentator.h>
 #include <Cabrankengine/Renderer/Buffer.h>
 
 namespace cabrankengine::platform::opengl {

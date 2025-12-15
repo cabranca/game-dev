@@ -4,10 +4,6 @@
 #include FT_FREETYPE_H
 #include <stb_image.h>
 
-#include <Cabrankengine/Core/Logger.h>
-#include <Cabrankengine/Debug/Instrumentator.h>
-
-
 namespace cabrankengine::platform::opengl {
 
 	using namespace rendering;

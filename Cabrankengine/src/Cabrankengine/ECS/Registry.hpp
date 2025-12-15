@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Cabrankengine/ECS/EntityManager.h>
-#include <Cabrankengine/ECS/ComponentManager.hpp>
-#include <Cabrankengine/ECS/SystemManager.hpp>
+#include "EntityManager.h"
+#include "ComponentManager.hpp"
+#include "SystemManager.hpp"
 
 namespace cabrankengine::ecs {
 

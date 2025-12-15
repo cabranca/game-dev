@@ -1,9 +1,6 @@
 #pragma once
 
-#include <memory>
-#include <vector>
-
-#include <Cabrankengine/Core/Core.h>
+#include <pch.h>
 
 namespace cabrankengine::rendering {
 

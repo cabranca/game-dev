@@ -1,9 +1,5 @@
 #include "AudioEngine.h"
 
-#include <Cabrankengine/Debug/Instrumentator.h>
-
-#include "Logger.h"
-
 using namespace irrklang;
 
 namespace cabrankengine {

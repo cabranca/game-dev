@@ -1,7 +1,5 @@
 #include "Renderer2D.h"
 
-#include <Cabrankengine/Core/Core.h>
-#include <Cabrankengine/Debug/Instrumentator.h>
 #include <Cabrankengine/Math/MatrixFactory.h>
 
 #include "Buffer.h"

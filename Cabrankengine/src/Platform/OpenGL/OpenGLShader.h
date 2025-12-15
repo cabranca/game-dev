@@ -1,8 +1,5 @@
 #pragma once
 
-#include <cstdint>
-#include <unordered_map>
-
 #include <Cabrankengine/Math/Mat4.h>
 #include <Cabrankengine/Renderer/Shader.h>
 
@@ -51,7 +48,6 @@ namespace cabrankengine::platform::opengl {
 			void uploadUniformFloat2(const std::string& name, const math::Vector2& values);
 			void uploadUniformFloat3(const std::string& name, const math::Vector3& values);
 			void uploadUniformFloat4(const std::string& name, const math::Vector4& values);
-			void uploadUniformMat3(const std::string& name, const glm::mat3& matrix);
 			void uploadUniformMat4(const std::string& name, const math::Mat4& matrix);
 
 		private:

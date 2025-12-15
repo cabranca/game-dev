@@ -1,5 +1,7 @@
 #pragma once
 
+#include <pch.h>
+
 namespace cabrankengine::rendering {
 
 	// GraphicsContext is an abstract class that defines the interface for a graphics context.

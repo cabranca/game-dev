@@ -1,6 +1,5 @@
 #include "Shader.h"
 
-#include <Cabrankengine/Core/Logger.h>
 #include <Platform/OpenGL/OpenGLShader.h>
 
 #include "Renderer.h"

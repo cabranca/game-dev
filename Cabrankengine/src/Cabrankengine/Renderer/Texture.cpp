@@ -1,6 +1,5 @@
 #include "Texture.h"
 
-#include <Cabrankengine/Core/Logger.h>	
 #include <Platform/OpenGL/OpenGLTexture.h>
 
 #include "Renderer.h"

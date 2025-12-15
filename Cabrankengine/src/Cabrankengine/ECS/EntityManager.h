@@ -1,9 +1,6 @@
 #pragma once
 
-#include <array>
-#include <queue>
-
-#include <Cabrankengine/ECS/Common.h>
+#include "Common.h"
 
 namespace cabrankengine::ecs {
 

@@ -2,8 +2,6 @@
 
 #include <glad/glad.h>
 
-#include <Cabrankengine/Core/Logger.h>
-
 namespace cabrankengine::platform::opengl {
 
 	using namespace rendering;

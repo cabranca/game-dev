@@ -35,16 +35,17 @@ project "Cabrankengine"
     targetdir("bin/" .. outputdir .. "/%{prj.name}")
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
+    pchheader "pch.h"
+	pchsource "src/pch.cpp"
+
     files 
     {
-        "%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp", "%{prj.name}/src/**.hpp", "%{prj.name}/vendor/glm/glm/**.hpp", "%{prj.name}/vendor/glm/glm/**.inl", 
-        "%{prj.name}/vendor/stb_image/**.cpp", "%{prj.name}/vendor/stb_image/**.cpp"
+        "%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp", "%{prj.name}/src/**.hpp", "%{prj.name}/vendor/stb_image/**.cpp"
     }
     includedirs 
     {
         "%{prj.name}/src", "%{prj.name}/vendor/spdlog/include", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}", "%{IncludeDir.ImGui}", 
-        "%{IncludeDir.glm}", "%{IncludeDir.stb_image}", "%{IncludeDir.irrKlang}", "%{IncludeDir.json}", "%{IncludeDir.assimp}",
-        "%{IncludeDir.FreeType}"
+        "%{IncludeDir.stb_image}", "%{IncludeDir.irrKlang}", "%{IncludeDir.json}", "%{IncludeDir.assimp}", "%{IncludeDir.FreeType}"
     }
     links {"GLFW", "glad", "ImGui", "IrrKlang", "Assimp", "FreeType"}
 
@@ -89,8 +90,8 @@ project "Sandbox"
     files {"%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp"}
     includedirs 
     {
-        "Cabrankengine/vendor/spdlog/include", "Cabrankengine/src", "%{IncludeDir.glm}", 
-        "%{IncludeDir.ImGui}", "%{IncludeDir.irrKlang}", "%{IncludeDir.freetype}", "%{IncludeDir.assimp}",
+        "Cabrankengine/vendor/spdlog/include", "Cabrankengine/src", "%{IncludeDir.ImGui}", "%{IncludeDir.irrKlang}", 
+        "%{IncludeDir.freetype}", "%{IncludeDir.assimp}",
     }
     links {"Cabrankengine", "Assimp", "FreeType", "GLFW", "glad", "ImGui"}
 
@@ -158,7 +159,7 @@ project "UnitTests"
     filter "system:linux"
         systemversion "latest"
         pic "on"
-        links { "pthread" } -- Catch2 a veces lo usa en Linux
+        links { "pthread" }
 
     filter "configurations:Debug"
         defines "CE_DEBUG"

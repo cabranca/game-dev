@@ -1,8 +1,6 @@
 #pragma once
 
-#include <vector>
-
-#include <glm/glm.hpp>
+#include <pch.h>
 
 #include <Cabrankengine/ECS/Components.h>
 

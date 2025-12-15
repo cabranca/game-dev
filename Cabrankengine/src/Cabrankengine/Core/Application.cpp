@@ -3,7 +3,6 @@
 #include <GLFW/glfw3.h>
 
 #include <Cabrankengine/Config/Config.h>
-#include <Cabrankengine/Debug/Instrumentator.h>
 #include <Cabrankengine/Events/ApplicationEvent.h>
 #include <Cabrankengine/ImGui/ImGuiLayer.h>
 #include <Cabrankengine/Renderer/Renderer.h>

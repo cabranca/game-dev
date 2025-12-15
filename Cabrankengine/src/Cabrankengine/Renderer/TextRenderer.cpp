@@ -4,8 +4,6 @@
 #include FT_FREETYPE_H
 #include <glad/glad.h>
 
-#include <Cabrankengine/Core/Logger.h>
-
 #include "Buffer.h"
 #include "RenderCommand.h"
 #include "Shader.h"

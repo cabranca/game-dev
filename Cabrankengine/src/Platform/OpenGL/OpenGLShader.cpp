@@ -1,13 +1,7 @@
 #include "OpenGLShader.h"
 
-#include <array>
-#include <filesystem>
-#include <fstream>
 #include <glad/glad.h>
-#include <glm/gtc/type_ptr.hpp>
 
-#include <Cabrankengine/Core/Logger.h>
-#include <Cabrankengine/Debug/Instrumentator.h>
 #include <Cabrankengine/Math/MatrixFactory.h>
 
 namespace cabrankengine::platform::opengl {
@@ -163,17 +157,6 @@ namespace cabrankengine::platform::opengl {
 			return;
 		}
 		glUniform4f(location, values.x, values.y, values.z, values.w);
-	}
-
-	void OpenGLShader::uploadUniformMat3(const std::string& name, const glm::mat3& matrix) {
-		CE_PROFILE_FUNCTION();
-
-		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
-		if (location == -1) {
-			CE_CORE_ERROR("Uniform {0} not found in shader!", name);
-			return;
-		}
-		glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
 	void OpenGLShader::uploadUniformMat4(const std::string& name, const Mat4& matrix) {

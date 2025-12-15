@@ -1,6 +1,5 @@
 #include "VertexArray.h"
 
-#include <Cabrankengine/Core/Logger.h>
 #include <Platform/OpenGL/OpenGLVertexArray.h>
 
 #include "Renderer.h"

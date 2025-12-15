@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Cabrankengine/Core/Core.h>
+#include <pch.h>
 
 namespace cabrankengine::rendering {
 

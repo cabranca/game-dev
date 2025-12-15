@@ -1,11 +1,7 @@
 #pragma once
 
-#include <memory>
-#include <unordered_map>
-#include <unordered_set>
-
 #include <Cabrankengine/Core/Logger.h>
-#include <Cabrankengine/ECS/Common.h>
+#include "Common.h"
 
 namespace cabrankengine::ecs {
 

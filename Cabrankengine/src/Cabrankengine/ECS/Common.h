@@ -1,7 +1,6 @@
 #pragma once
 
-#include <bitset>
-#include <cstdint>
+#include <pch.h>
 
 namespace cabrankengine::ecs {
 

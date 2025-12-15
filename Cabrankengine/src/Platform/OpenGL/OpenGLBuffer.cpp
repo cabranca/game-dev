@@ -2,8 +2,6 @@
 
 #include <glad/glad.h>
 
-#include <Cabrankengine/Debug/Instrumentator.h>
-
 namespace cabrankengine::platform::opengl {
 
 	// --------------------- VERTEX BUFFER --------------------- //
