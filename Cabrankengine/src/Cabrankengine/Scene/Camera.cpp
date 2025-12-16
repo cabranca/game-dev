@@ -61,6 +61,6 @@ namespace cabrankengine::scene {
 
 	void Camera::recalculateViewMatrix() {
 		m_ViewMatrix = inverseAffine(m_Transform.toMat4());
-		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
+		m_ViewProjectionMatrix = m_ViewMatrix * m_ProjectionMatrix;
 	}
 } // namespace cabrankengine
