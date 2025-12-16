@@ -10,6 +10,10 @@ namespace cabrankengine::math {
 				float x, y, z, w;
 			};
 
+			struct {
+				float r, g, b, a;
+			};
+
 			float coords[4];
 		};
 
@@ -39,6 +43,8 @@ namespace cabrankengine::math {
 
 		constexpr Vector3 toVector3() const noexcept;
 	};
+
+	typedef Vector4 Color;
 
     inline constexpr float Vector4::lengthSquared() const noexcept {
 		return x * x + y * y + z * z + w * w;
