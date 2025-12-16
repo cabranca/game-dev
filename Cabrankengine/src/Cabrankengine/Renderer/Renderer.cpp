@@ -2,6 +2,7 @@
 
 #include "Lights.h"
 #include "Material.h"
+#include "Outliner.h"
 #include "Renderer2D.h"
 #include "RenderCommand.h"
 #include "StorageBuffer.h"
@@ -38,6 +39,7 @@ namespace cabrankengine::rendering {
 		RenderCommand::init();
 		Renderer2D::init();
 		TextRenderer::init();
+		Outliner::init();
 		s_SceneData->lightSSBO = StorageBuffer::create(sizeof(LightBufferHeader) + sizeof(PointLightGPU));
 	}
 

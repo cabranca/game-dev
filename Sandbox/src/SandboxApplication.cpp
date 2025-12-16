@@ -59,14 +59,14 @@ class ExampleLayer : public Layer {
 		auto lightSourceShader = m_ShaderLibrary.get("LightSource");
 		lightSourceShader->bind();
 		for (const auto& pointLight : m_LightEnvironment.PointLights) {
-			lightSourceShader->setFloat3("debugColor", pointLight.lightComponents.diffuse);
-			Renderer::submit(lightSourceShader, m_CubeVA, translation(pointLight.position));
+			lightSourceShader->setFloat3("debugColor", Vector3(0.f, 0.5f, 0.5f));
+			Outliner::drawOutline(lightSourceShader, m_CubeVA, Vector4(1.f), translation(m_LightEnvironment.PointLights[0].position));
 		}
 		
 		Renderer::endScene();
 
-		TextRenderer::beginScene(camera.getViewMatrix() * camera.getProjectionMatrix());
-		TextRenderer::drawText("HOLA MUNDO!", Vector3(-0.5f, 3.f, 0.f), 0.05f, Vector4(1.f));
+		TextRenderer::beginScene(camera.getViewProjectionMatrix());
+		TextRenderer::drawText("HOLA MUNDO!", Vector3(-0.5f, 3.f, 0.f), 0.05f, Color(1.f, 0.f, 0.f, 1.f));
 		TextRenderer::endScene();
 	}
 
@@ -92,6 +92,51 @@ class ExampleLayer : public Layer {
 
 	void setupCube() {
 		m_CubeVA = VertexArray::create();
+
+		const std::array<float, 5 * 36> cullingCube {
+			// Back face
+			-0.5f, -0.5f, -0.5f,  0.0f, 0.0f, // Bottom-left
+			0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right
+			0.5f, -0.5f, -0.5f,  1.0f, 0.0f, // bottom-right         
+			0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right
+			-0.5f, -0.5f, -0.5f,  0.0f, 0.0f, // bottom-left
+			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f, // top-left
+			// Front face
+			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-left
+			0.5f, -0.5f,  0.5f,  1.0f, 0.0f, // bottom-right
+			0.5f,  0.5f,  0.5f,  1.0f, 1.0f, // top-right
+			0.5f,  0.5f,  0.5f,  1.0f, 1.0f, // top-right
+			-0.5f,  0.5f,  0.5f,  0.0f, 1.0f, // top-left
+			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-left
+			// Left face
+			-0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-right
+			-0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-left
+			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-left
+			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-left
+			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-right
+			-0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-right
+			// Right face
+			0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-left
+			0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-right
+			0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right         
+			0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-right
+			0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-left
+			0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-left     
+			// Bottom face
+			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // top-right
+			0.5f, -0.5f, -0.5f,  1.0f, 1.0f, // top-left
+			0.5f, -0.5f,  0.5f,  1.0f, 0.0f, // bottom-left
+			0.5f, -0.5f,  0.5f,  1.0f, 0.0f, // bottom-left
+			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-right
+			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // top-right
+			// Top face
+			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f, // top-left
+			0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // bottom-right
+			0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right     
+			0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // bottom-right
+			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f, // top-left
+			-0.5f,  0.5f,  0.5f,  0.0f, 0.0f  // bottom-left 
+		};
 
 		float lightningCubeVertices[8 * 36] = {
 			// positions          // normals           // texture coords

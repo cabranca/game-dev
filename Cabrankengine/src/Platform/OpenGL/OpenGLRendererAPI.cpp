@@ -16,6 +16,12 @@ namespace cabrankengine::platform::opengl {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LESS);
+
+		glEnable(GL_STENCIL_TEST);
+		glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+    	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+		glStencilMask(0x00);
 
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	}
@@ -25,7 +31,7 @@ namespace cabrankengine::platform::opengl {
 	}
 
 	void OpenGLRendererAPI::clear() {
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	}
 
 	void OpenGLRendererAPI::draw(const Ref<VertexArray>& vertexArray)
