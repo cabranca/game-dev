@@ -27,6 +27,7 @@
 
 #include <Cabrankengine/Renderer/Buffer.h>
 #include <Cabrankengine/Renderer/FrameBuffer.h>
+#include <Cabrankengine/Renderer/Outliner.h>
 #include <Cabrankengine/Renderer/Shader.h>
 #include <Cabrankengine/Renderer/TextRenderer.h>
 #include <Cabrankengine/Renderer/Texture.h>
