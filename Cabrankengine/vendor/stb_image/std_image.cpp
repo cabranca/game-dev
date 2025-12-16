@@ -1,3 +1,4 @@
+#include <pch.h>
 // FORCE OPTIMIZATION:
 // We force O3 optimization for this file because stb_image uses SSE2 intrinsics 
 // (like _mm_slli_si128) that require immediate arguments (compile-time constants). 

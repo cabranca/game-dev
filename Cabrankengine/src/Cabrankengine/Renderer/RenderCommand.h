@@ -1,7 +1,5 @@
 #pragma once
 
-#include <pch.h>
-
 #include "RendererAPI.h"
 
 namespace cabrankengine::rendering {

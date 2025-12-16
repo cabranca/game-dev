@@ -1,3 +1,4 @@
+#include <pch.h>
 #include "WindowsInput.h"
 
 #include <GLFW/glfw3.h>
@@ -41,5 +42,15 @@ namespace cabrankengine {
 		double xPos, yPos;
 		glfwGetCursorPos(window, &xPos, &yPos);
 		return static_cast<float>(yPos);
+	}
+
+    void WindowsInput::setInputModeImpl(bool captureMouse, bool hideMouse) {
+		auto window = static_cast<GLFWwindow*>(Application::get().getWindow().getNativeWindow());
+		int flag = GLFW_CURSOR_NORMAL;
+		if (captureMouse)
+			flag = GLFW_CURSOR_DISABLED;
+		else if (hideMouse)
+			flag = GLFW_CURSOR_HIDDEN;
+		glfwSetInputMode(window, GLFW_CURSOR, flag);
 	}
 }

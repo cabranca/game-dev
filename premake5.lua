@@ -36,15 +36,15 @@ project "Cabrankengine"
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
     pchheader "pch.h"
-	pchsource "src/pch.cpp"
+	pchsource "%{prj.name}/src/pch.cpp"
 
-    files 
+    files
     {
         "%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp", "%{prj.name}/src/**.hpp", "%{prj.name}/vendor/stb_image/**.cpp"
     }
-    includedirs 
+    includedirs
     {
-        "%{prj.name}/src", "%{prj.name}/vendor/spdlog/include", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}", "%{IncludeDir.ImGui}", 
+        "%{prj.name}/src", "%{prj.name}/vendor/spdlog/include", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}", "%{IncludeDir.ImGui}",
         "%{IncludeDir.stb_image}", "%{IncludeDir.irrKlang}", "%{IncludeDir.json}", "%{IncludeDir.assimp}", "%{IncludeDir.FreeType}"
     }
     links {"GLFW", "glad", "ImGui", "IrrKlang", "Assimp", "FreeType"}
@@ -63,15 +63,15 @@ project "Cabrankengine"
         pic "on"
 
         removefiles { "%{prj.name}/src/Platform/Windows/**.cpp", "%{prj.name}/src/Platform/Windows/**.h" }
-        
+
         libdirs {  "%{wks.location}/Cabrankengine/vendor/irrKlang/so" }
         links { "X11", "Xrandr", "Xi", "Xxf86vm", "Xcursor", "pthread", "dl", "GL" }
-    
+
     filter "configurations:Debug"
         defines "CE_DEBUG"
         runtime "Debug"
         symbols "on"
-        
+
     filter "configurations:Release"
         defines "CE_RELEASE"
         runtime "Release"
@@ -88,9 +88,9 @@ project "Sandbox"
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
     files {"%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp"}
-    includedirs 
+    includedirs
     {
-        "Cabrankengine/vendor/spdlog/include", "Cabrankengine/src", "%{IncludeDir.ImGui}", "%{IncludeDir.irrKlang}", 
+        "Cabrankengine/vendor/spdlog/include", "Cabrankengine/src", "%{IncludeDir.ImGui}", "%{IncludeDir.irrKlang}",
         "%{IncludeDir.freetype}", "%{IncludeDir.assimp}",
     }
     links {"Cabrankengine", "Assimp", "FreeType", "GLFW", "glad", "ImGui"}
@@ -99,7 +99,7 @@ project "Sandbox"
         systemversion "latest"
         buildoptions { "/utf-8" }
 
-        postbuildcommands 
+        postbuildcommands
         {
             'xcopy /Y /Q /E /I "%{wks.location}\\Cabrankengine\\vendor\\irrKlang\\dll\\*" "%{cfg.targetdir}"',
             'xcopy /Y /Q /E /I "%{prj.location}\\assets" "%{cfg.targetdir}\\assets"',
@@ -114,13 +114,13 @@ project "Sandbox"
         links { "IrrKlang" }
         links { "X11", "Xrandr", "Xi", "Xxf86vm", "Xcursor", "pthread", "dl", "GL" }
         linkoptions { "-Wl,-rpath,'$$ORIGIN'" }
-        postbuildcommands 
+        postbuildcommands
         {
             'cp -ru %{wks.location}/Cabrankengine/vendor/irrKlang/so/* %{cfg.targetdir}/',
             'cp -ru %{prj.location}/assets/ %{cfg.targetdir}/',
             'cp -u %{prj.location}/config.json %{cfg.targetdir}/config.json 2>/dev/null || true'
         }
-        
+
     filter "configurations:Debug"
         defines "CE_DEBUG"
         runtime "Debug"
