@@ -112,7 +112,7 @@ project "Sandbox"
 
         libdirs { "%{wks.location}/Cabrankengine/vendor/irrKlang/so" }
         links { "IrrKlang" }
-        links { "X11", "Xrandr", "Xi", "Xxf86vm", "Xcursor", "pthread", "dl", "GL" }
+        links { "X11", "Xrandr", "Xi", "Xxf86vm", "Xcursor", "pthread", "dl", "GL", "z" }
         linkoptions { "-Wl,-rpath,'$$ORIGIN'" }
         postbuildcommands
         {
