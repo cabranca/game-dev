@@ -1,7 +1,5 @@
 #pragma once
 
-#include <pch.h>
-
 namespace cabrankengine::rendering {
 
 	// ShaderDataType is an enum class that defines the types of data that can be used in shaders.

@@ -1,6 +1,5 @@
+#include <pch.h>
 #include "LayerStack.h"
-
-#include <algorithm>
 
 #include "Layer.h"
 

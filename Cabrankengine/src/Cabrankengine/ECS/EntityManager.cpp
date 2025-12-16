@@ -1,3 +1,4 @@
+#include <pch.h>
 #include <Cabrankengine/ECS/EntityManager.h>
 
 #include <Cabrankengine/Core/Logger.h>

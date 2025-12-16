@@ -1,9 +1,8 @@
+#include <pch.h>
 #include "WindowsWindow.h"
 
 #include <GLFW/glfw3.h>
 
-#include <Cabrankengine/Core/Logger.h>
-#include <Cabrankengine/Debug/Instrumentator.h>
 #include <Cabrankengine/Events/ApplicationEvent.h>
 #include <Cabrankengine/Events/KeyEvent.h>
 #include <Cabrankengine/Events/MouseEvent.h>
@@ -11,6 +10,9 @@
 #include <Platform/OpenGL/OpenGLContext.h>
 
 namespace cabrankengine {
+
+    using namespace rendering;
+
 	static bool s_GLFWInitialized = false;
 
 	static void GLFWErrorCallback(int error, const char* description) {
@@ -76,7 +78,7 @@ namespace cabrankengine {
 			m_Window = glfwCreateWindow(props.Width, props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		}
 
-		m_Context = new OpenGLContext(m_Window);
+		m_Context = new platform::opengl::OpenGLContext(m_Window);
 		m_Context->init();
 
 		glfwSetWindowUserPointer(m_Window, &m_Data);

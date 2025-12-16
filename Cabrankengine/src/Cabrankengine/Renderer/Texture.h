@@ -1,7 +1,5 @@
 #pragma once
 
-#include <pch.h>
-
 // Forward declaration
 struct FT_FaceRec_;
 typedef struct FT_FaceRec_* FT_Face;
