@@ -19,13 +19,17 @@ namespace cabrankengine::rendering {
 			virtual void setInt(const std::string& name, int value) = 0;
 
 			// Sets a int array in the shader program.
+			// TODO: use a std::array
 			virtual void setIntArray(const std::string& name, uint32_t count, int* values) = 0;
 
 			// Sets a float value in the shader program.
 			virtual void setFloat(const std::string& name, float value) = 0;
 
+			// Sets a float value in the shader program.
+			virtual void setFloat2(const std::string& name, math::Vector2 value) = 0;
+
 			// Sets a 3 float vector in the shader program.
-			virtual void setFloat3(const std::string& name, const math::Vector3& vector) = 0;
+			virtual void setFloat3(const std::string& name, math::Vector3 vector) = 0;
 
 			// Sets a 4 float vector in the shader program.
 			virtual void setFloat4(const std::string& name, const math::Vector4& vector) = 0;
