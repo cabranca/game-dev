@@ -89,7 +89,6 @@ namespace cabrankengine::rendering {
 			samplers[i] = i;
 
 		s_Data.TextureShader = Shader::create("assets/shaders/Texture.glsl");
-		s_Data.TextureShader->bind();
 		s_Data.TextureShader->setIntArray("u_Textures", s_Data.MaxTextureSlots, samplers);
 
 		s_Data.TextureSlots[0] = s_Data.WhiteTexture;
@@ -107,7 +106,6 @@ namespace cabrankengine::rendering {
 	void Renderer2D::beginScene(const math::Mat4& viewProjection) {
 		CE_PROFILE_FUNCTION();
 
-		s_Data.TextureShader->bind();
 		s_Data.TextureShader->setMat4("u_ViewProjection", viewProjection);
 
 		s_Data.QuadIndexCount = 0;
@@ -127,6 +125,8 @@ namespace cabrankengine::rendering {
 
 	void Renderer2D::flush() {
 		CE_PROFILE_FUNCTION();
+
+		s_Data.TextureShader->bind();
 
 		for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++) {
 			s_Data.TextureSlots[i]->bind(i);

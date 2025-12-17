@@ -73,7 +73,6 @@ namespace cabrankengine::rendering {
 		delete[] quadIndices;
 
 		s_Data.textShader = Shader::create("assets/shaders/Text.glsl");
-		s_Data.textShader->bind();
 
 		int32_t samplers[s_Data.maxTextureSlots];
 		for (uint32_t i = 0; i < s_Data.maxTextureSlots; i++)
@@ -89,7 +88,6 @@ namespace cabrankengine::rendering {
 	}
 
 	void TextRenderer::beginScene(const math::Mat4& viewProjection) {
-		s_Data.textShader->bind();
 		s_Data.textShader->setMat4("u_ViewProjection", viewProjection);
 		startBatch();
 	}
@@ -100,6 +98,8 @@ namespace cabrankengine::rendering {
 
 	void TextRenderer::flush() {
 		if (s_Data.quadIndexCount == 0) return;
+
+		s_Data.textShader->bind();
 
 		uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.textVertexBufferPtr - (uint8_t*)s_Data.textVertexBufferBase);
 		s_Data.textVertexBuffer->setData(s_Data.textVertexBufferBase, dataSize);

@@ -57,7 +57,6 @@ class ExampleLayer : public Layer {
 		m_ModelTest->draw();
 
 		auto lightSourceShader = m_ShaderLibrary.get("LightSource");
-		lightSourceShader->bind();
 		for (const auto& pointLight : m_LightEnvironment.PointLights) {
 			lightSourceShader->setFloat3("debugColor", Vector3(0.f, 0.5f, 0.5f));
 			Outliner::drawOutline(lightSourceShader, m_CubeVA, Vector4(1.f), translation(m_LightEnvironment.PointLights[0].position));

@@ -28,7 +28,7 @@ namespace cabrankengine::rendering {
 		// Esta es la función clave que llama el Renderer antes de dibujar
 		void bind() const {
 			m_Shader->bind();
-
+			
 			// 1. Configurar propiedades escalares
 			// Nota: "material.shininess" debe coincidir con tu struct en Lightning.glsl
 			m_Shader->setFloat("material.shininess", m_Shininess);
