@@ -29,8 +29,11 @@ namespace cabrankengine::platform::opengl {
 			// Sets a float value in the shader program.
 			void setFloat(const std::string& name, float value) override;
 
+			// Sets a float value in the shader program.
+			void setFloat2(const std::string& name, math::Vector2 value) override;
+
 			// Sets a 3 float vector in the shader program.
-			void setFloat3(const std::string& name, const math::Vector3& vector) override;
+			void setFloat3(const std::string& name, math::Vector3 vector) override;
 
 			// Sets a 4 float vector in the shader program.
 			void setFloat4(const std::string& name, const math::Vector4& vector) override;
@@ -40,15 +43,6 @@ namespace cabrankengine::platform::opengl {
 
 			// Returns the name of the shader program given by the user.
 			const std::string& getName() const override { return m_Name; }
-
-			// Uploads a uniform value to the shader program.
-			void uploadUniformInt(const std::string& name, int value);
-			void uploadUniformIntArray(const std::string& name, int* values, uint32_t count);
-			void uploadUniformFloat1(const std::string& name, float value);
-			void uploadUniformFloat2(const std::string& name, const math::Vector2& values);
-			void uploadUniformFloat3(const std::string& name, const math::Vector3& values);
-			void uploadUniformFloat4(const std::string& name, const math::Vector4& values);
-			void uploadUniformMat4(const std::string& name, const math::Mat4& matrix);
 
 		private:
 			// Reads the shader source code from a file.

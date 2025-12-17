@@ -61,114 +61,78 @@ namespace cabrankengine::platform::opengl {
 	void OpenGLShader::setInt(const std::string& name, int value) {
 		CE_PROFILE_FUNCTION();
 
-		uploadUniformInt(name, value);
+		GLint location = glGetUniformLocation(m_RendererId, name.data());
+		if (location == -1) {
+			CE_CORE_ERROR("Uniform '{0}' not found in shader!", name);
+			return;
+		}
+    	glProgramUniform1i(m_RendererId, location, value);
 	}
 
 	void OpenGLShader::setIntArray(const std::string& name, uint32_t count, int* values) {
 		CE_PROFILE_FUNCTION();
 
-		uploadUniformIntArray(name, values, count);
+		GLint location = glGetUniformLocation(m_RendererId, name.data());
+		if (location == -1) {
+			CE_CORE_ERROR("Uniform '{0}' not found in shader!", name);
+			return;
+		}
+		glProgramUniform1iv(m_RendererId, location, count, values);
 	}
 
 	void OpenGLShader::setFloat(const std::string& name, float value) {
 		CE_PROFILE_FUNCTION();
 
-		uploadUniformFloat1(name, value);
-	}
-
-	void OpenGLShader::setFloat3(const std::string& name, const Vector3& vector) {
-		CE_PROFILE_FUNCTION();
-
-		uploadUniformFloat3(name, vector);
-	}
-
-	void OpenGLShader::setFloat4(const std::string& name, const Vector4& vector) {
-		CE_PROFILE_FUNCTION();
-
-		uploadUniformFloat4(name, vector);
-	}
-
-	void OpenGLShader::setMat4(const std::string& name, const Mat4& value) {
-		CE_PROFILE_FUNCTION();
-
-		uploadUniformMat4(name, value);
-	}
-
-	void OpenGLShader::uploadUniformInt(const std::string& name, int value) {
-		CE_PROFILE_FUNCTION();
-
-		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
+		GLint location = glGetUniformLocation(m_RendererId, name.data());
 		if (location == -1) {
 			CE_CORE_ERROR("Uniform '{0}' not found in shader!", name);
 			return;
 		}
-		glUniform1i(location, value);
+		glProgramUniform1f(m_RendererId, location, value);
 	}
 
-	void OpenGLShader::uploadUniformIntArray(const std::string& name, int* values, uint32_t count) {
+	void OpenGLShader::setFloat2(const std::string& name, Vector2 value) {
 		CE_PROFILE_FUNCTION();
 
-		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
+		GLint location = glGetUniformLocation(m_RendererId, name.data());
 		if (location == -1) {
 			CE_CORE_ERROR("Uniform '{0}' not found in shader!", name);
 			return;
 		}
-		glUniform1iv(location, count, values);
+		glProgramUniform2f(m_RendererId, location, value.x, value.y);
 	}
 
-	void OpenGLShader::uploadUniformFloat1(const std::string& name, float value) {
+	void OpenGLShader::setFloat3(const std::string& name, Vector3 values) {
 		CE_PROFILE_FUNCTION();
 
-		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
+		GLint location = glGetUniformLocation(m_RendererId, name.data());
 		if (location == -1) {
 			CE_CORE_ERROR("Uniform '{0}' not found in shader!", name);
 			return;
 		}
-		glUniform1f(location, value);
+		glProgramUniform3f(m_RendererId, location, values.x, values.y, values.z);
 	}
 
-	void OpenGLShader::uploadUniformFloat2(const std::string& name, const Vector2& values) {
+	void OpenGLShader::setFloat4(const std::string& name, const Vector4& values) {
 		CE_PROFILE_FUNCTION();
 
-		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
+		GLint location = glGetUniformLocation(m_RendererId, name.data());
 		if (location == -1) {
 			CE_CORE_ERROR("Uniform '{0}' not found in shader!", name);
 			return;
 		}
-		glUniform2f(location, values.x, values.y);
+		glProgramUniform4f(m_RendererId, location, values.x, values.y, values.z, values.w);
 	}
 
-	void OpenGLShader::uploadUniformFloat3(const std::string& name, const Vector3& values) {
+	void OpenGLShader::setMat4(const std::string& name, const Mat4& matrix) {
 		CE_PROFILE_FUNCTION();
 
-		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
-		if (location == -1) {
-			CE_CORE_ERROR("Uniform '{0}' not found in shader!", name);
-			return;
-		}
-		glUniform3f(location, values.x, values.y, values.z);
-	}
-
-	void OpenGLShader::uploadUniformFloat4(const std::string& name, const Vector4& values) {
-		CE_PROFILE_FUNCTION();
-
-		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
-		if (location == -1) {
-			CE_CORE_ERROR("Uniform '{0}' not found in shader!", name);
-			return;
-		}
-		glUniform4f(location, values.x, values.y, values.z, values.w);
-	}
-
-	void OpenGLShader::uploadUniformMat4(const std::string& name, const Mat4& matrix) {
-		CE_PROFILE_FUNCTION();
-
-		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
+		GLint location = glGetUniformLocation(m_RendererId, name.data());
 		if (location == -1) {
 			CE_CORE_ERROR("Uniform {0} not found in shader!", name);
 			return;
 		}
-		glUniformMatrix4fv(location, 1, GL_FALSE, reinterpret_cast<const float*>(matrix.elements.data()));
+		glProgramUniformMatrix4fv(m_RendererId, location, 1, GL_FALSE, reinterpret_cast<const float*>(matrix.elements.data()));
 	}
 
 	std::string OpenGLShader::readFile(const std::string& filepath) {
