@@ -1,6 +1,8 @@
 #include <pch.h>
 #include "Renderer.h"
 
+#include <glad/glad.h>
+
 #include "Lights.h"
 #include "Material.h"
 #include "Outliner.h"
@@ -60,12 +62,15 @@ namespace cabrankengine::rendering {
 		
 	}
 
-	void Renderer::submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const Mat4& transform) {
+	void Renderer::submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const Mat4& transform, bool cubeMap) {
+		if (cubeMap)
+			glDepthFunc(GL_EQUAL);
 		shader->bind();
 		shader->setMat4("projection", s_SceneData->projectionMatrix);
 		shader->setMat4("view", s_SceneData->viewMatrix);
 		shader->setMat4("model", transform);
 		RenderCommand::drawIndexed(vertexArray);
+		glDepthFunc(GL_LESS);
 	}
 
 	void Renderer::submit(const Ref<Material>& material, const Ref<VertexArray>& vertexArray, const Mat4& transform) {

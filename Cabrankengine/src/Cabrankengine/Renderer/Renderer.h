@@ -30,7 +30,7 @@ namespace cabrankengine::rendering {
 			static void endScene();
 
 			// Submits a draw call to render a shader with a vertex array and an optional transformation matrix.
-			static void submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const math::Mat4& transform);
+			static void submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const math::Mat4& transform, bool cubeMap);
 
 			// Submits a draw call to render a shader with a vertex array and an optional transformation matrix.
 			static void submit(const Ref<Material>& material, const Ref<VertexArray>& vertexArray, const math::Mat4& transform);

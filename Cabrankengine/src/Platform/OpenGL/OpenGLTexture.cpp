@@ -114,6 +114,68 @@ namespace cabrankengine::platform::opengl {
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	}
 
+	OpenGLTexture2D::OpenGLTexture2D(const std::array<std::string, 6>& cubeMapPath) {
+		CE_PROFILE_FUNCTION();
+		
+		glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &m_RendererID);
+
+		int width, height, channels;
+		stbi_set_flip_vertically_on_load(0);
+		stbi_uc* data = stbi_load(cubeMapPath[0].data(), &width, &height, &channels, 0);
+
+		if (!data) {
+			CE_CORE_ERROR("Failed to load Cubemap face 0: {0}", cubeMapPath[0]);
+            return;
+		}
+		
+		m_Width = width;
+		m_Height = height;
+
+		if (channels == 4) {
+			m_InternalFormat = GL_RGBA8;
+			m_DataFormat = GL_RGBA;
+		}
+		else if (channels == 3) {
+			m_InternalFormat = GL_RGB8;
+			m_DataFormat = GL_RGB;
+		}
+
+		CE_CORE_ASSERT(m_InternalFormat & m_DataFormat, "Format not supported!");
+
+		glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height);
+
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+		glTextureSubImage3D(m_RendererID, 0, 0, 0, 0, m_Width, m_Height, 1, m_DataFormat, GL_UNSIGNED_BYTE, data);
+
+		stbi_image_free(data);
+
+		for (int i = 1; i < 6; i++) {
+            stbi_uc* faceData = stbi_load(cubeMapPath[i].data(), &width, &height, &channels, 0);
+			if (!faceData) {
+				CE_CORE_ERROR("Failed to load Cubemap face {0}: {1}", i, cubeMapPath[i]);
+				stbi_image_free(data);
+				continue;
+			}
+			if (width != m_Width || height != m_Height) {
+				CE_CORE_ERROR("Cubemap face dimensions mismatch! Face {0} ({1}x{2}) vs Face 0 ({3}x{4})", i, width, height, m_Width, m_Height);
+				stbi_image_free(faceData);
+				continue; 
+			}
+
+            // Upload face 'i' as layer 'i'
+			glTextureSubImage3D(m_RendererID, 0, 0, 0, i, m_Width, m_Height, 1, m_DataFormat, GL_UNSIGNED_BYTE, faceData);
+			stbi_image_free(faceData);
+        }
+
+		m_IsLoaded = true;
+	}
+
 	OpenGLTexture2D::~OpenGLTexture2D() {
 		CE_PROFILE_FUNCTION();
 

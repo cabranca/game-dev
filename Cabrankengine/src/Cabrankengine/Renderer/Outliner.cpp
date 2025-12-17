@@ -19,7 +19,7 @@ namespace cabrankengine::rendering {
 	void Outliner::drawOutline(const Ref<Shader>& originalShader, const Ref<VertexArray>& vertexArray, const Color& outlineColor, const math::Mat4& transform) {		
         glStencilFunc(GL_ALWAYS, 1, 0xFF);
         glStencilMask(0xFF);
-        Renderer::submit(originalShader, vertexArray, transform);
+        Renderer::submit(originalShader, vertexArray, transform, false);
         
         
         glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
@@ -29,7 +29,7 @@ namespace cabrankengine::rendering {
         m_Shader->bind();
         m_Shader->setFloat4("u_Color", outlineColor);
         float scale = 1.1f;
-        Renderer::submit(m_Shader, vertexArray, math::scaleUniform(scale) * transform);
+        Renderer::submit(m_Shader, vertexArray, math::scaleUniform(scale) * transform, false);
         
         glStencilMask(0xFF);
         glStencilFunc(GL_ALWAYS, 0, 0xFF);
