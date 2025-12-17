@@ -66,5 +66,7 @@ namespace cabrankengine::rendering {
 			static Ref<Texture2D> create(const std::string& path);
 
 			static Ref<Texture2D> create(const FT_Face& face);
+
+			static Ref<Texture2D> create(const std::array<std::string, 6>& cubeMapPath);
 	};
 }
