@@ -19,3 +19,6 @@
 [submodule "Cabrankengine/vendor/freetype"]
 	path = Cabrankengine/vendor/freetype
 	url = https://github.com/cabranca/freetype.git
+[submodule "Cabrankengine/vendor/metal-cpp"]
+	path = Cabrankengine/vendor/metal-cpp
+	url = https://github.com/bkaradzic/metal-cpp.git

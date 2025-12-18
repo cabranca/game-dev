@@ -16,6 +16,7 @@ IncludeDir["glad"] = "%{wks.location}/Cabrankengine/vendor/glad/include"
 IncludeDir["ImGui"] = "%{wks.location}/Cabrankengine/vendor/imgui"
 IncludeDir["irrKlang"] = "%{wks.location}/Cabrankengine/vendor/irrKlang/include"
 IncludeDir["json"] = "%{wks.location}/Cabrankengine/vendor/json/include"
+IncludeDir["Metal"] = "%{wks.location}/Cabrankengine/vendor/metal-cpp"
 IncludeDir["spdlog"] = "%{wks.location}/Cabrankengine/vendor/spdlog/include"
 IncludeDir["stb_image"] = "%{wks.location}/Cabrankengine/vendor/stb_image"
 

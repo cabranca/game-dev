@@ -20,11 +20,13 @@ project "Cabrankengine"
 
     includedirs
     {
-        "src", "vendor/spdlog/include", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}", "%{IncludeDir.ImGui}",
-        "%{IncludeDir.stb_image}", "%{IncludeDir.irrKlang}", "%{IncludeDir.json}", "%{IncludeDir.assimp}", "%{IncludeDir.FreeType}"
+        "src", "%{IncludeDir.assimp}", "%{IncludeDir.FreeType}", "%{IncludeDir.glad}", "%{IncludeDir.GLFW}", "%{IncludeDir.ImGui}",
+        "%{IncludeDir.irrKlang}", "%{IncludeDir.json}", "%{IncludeDir.Metal}", "%{IncludeDir.spdlog}", "%{IncludeDir.stb_image}", 
     }
 
     links {"GLFW", "glad", "ImGui", "IrrKlang", "Assimp", "FreeType"}
+
+    defines {"NS_PRIVATE_IMPLEMENTATION", "MTL_PRIVATE_IMPLEMENTATION", "CA_PRIVATE_IMPLEMENTATION"}
 
     filter "system:windows"
         systemversion "latest"
