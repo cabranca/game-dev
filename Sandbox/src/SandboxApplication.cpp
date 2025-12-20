@@ -22,16 +22,12 @@ class ExampleLayer : public Layer {
 		m_ModelTest = new Model("assets/models/backpack/backpack.obj", shader);
 
 		m_LightEnvironment.DirLight.direction = { 0.0f, 0.0f, 0.0f  }; 
-		m_LightEnvironment.DirLight.lightComponents.ambient = { 0.05f, 0.05f, 0.05f };   // Ambiente muy tenue
-		m_LightEnvironment.DirLight.lightComponents.diffuse = { 0.0f, 0.0f, 0.0f };     // Color "Sol" (blanco cálido)
-		m_LightEnvironment.DirLight.lightComponents.specular = { 0.0f, 0.0f, 0.0f  };
+		m_LightEnvironment.DirLight.radiance = { 0.05f, 0.05f, 0.05f };
 
 		cabrankengine::rendering::PointLight lamp;
 		lamp.position = { 1.0f, 2.0f, 2.0f }; 
 
-		lamp.lightComponents.ambient = { 0.1f, 0.1f, 0.1f };
-		lamp.lightComponents.diffuse = { 0.5f, 0.5f, 0.5f };
-		lamp.lightComponents.specular = { 0.8f, 0.8f, 0.8f };
+		lamp.radiance = { 0.5f, 0.2f, 0.1f };
 
 		lamp.constant = 1.0f;
 		lamp.linear = 0.09f;
@@ -59,7 +55,7 @@ class ExampleLayer : public Layer {
 		auto lightSourceShader = m_ShaderLibrary.get("LightSource");
 		lightSourceShader->bind();
 		for (const auto& pointLight : m_LightEnvironment.PointLights) {
-			lightSourceShader->setFloat3("debugColor", pointLight.lightComponents.diffuse);
+			lightSourceShader->setFloat3("debugColor", pointLight.radiance);
 			Renderer::submit(lightSourceShader, m_CubeVA, translation(pointLight.position));
 		}
 		
@@ -76,9 +72,7 @@ class ExampleLayer : public Layer {
 
 		auto& lightSource = m_LightEnvironment.PointLights[0];
 
-		ImGui::ColorEdit3("Light Ambient", &lightSource.lightComponents.ambient.x);
-		ImGui::ColorEdit3("Light Diffuse", &lightSource.lightComponents.diffuse.x);
-		ImGui::ColorEdit3("Light Specular", &lightSource.lightComponents.specular.x);
+		ImGui::ColorEdit3("Light Color", &lightSource.radiance.x);
 
 		ImGui::End();
 	}

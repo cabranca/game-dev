@@ -39,22 +39,14 @@ struct Material {
     float     shininess;
 };
 
-struct LightComponents {
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
-};
-
 struct DirLight {
     vec3 direction;
-  
-    LightComponents components;
+    vec3 radiance;
 };
 
 struct PointLight {    
     vec3 position;
-    
-    LightComponents components;
+    vec3 radiance;
 
     float constant;
     float linear;
@@ -103,9 +95,9 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
     vec3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     // combine results
-    vec3 ambient  = light.components.ambient  * vec3(texture(material.diffuse, TexCoords));
-    vec3 diffuse  = light.components.diffuse  * diff * vec3(texture(material.diffuse, TexCoords));
-    vec3 specular = light.components.specular * spec * vec3(texture(material.specular, TexCoords));
+    vec3 ambient  = light.radiance  * vec3(texture(material.diffuse, TexCoords));
+    vec3 diffuse  = light.radiance  * diff * vec3(texture(material.diffuse, TexCoords));
+    vec3 specular = light.radiance * spec * vec3(texture(material.specular, TexCoords));
     return (ambient + diffuse + specular);
 }
 
@@ -122,9 +114,9 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     float attenuation = 1.0 / (light.constant + light.linear * distance + 
   			     light.quadratic * (distance * distance));    
     // combine results
-    vec3 ambient  = light.components.ambient  * vec3(texture(material.diffuse, TexCoords));
-    vec3 diffuse  = light.components.diffuse  * diff * vec3(texture(material.diffuse, TexCoords));
-    vec3 specular = light.components.specular * spec * vec3(texture(material.specular, TexCoords));
+    vec3 ambient  = light.radiance * vec3(texture(material.diffuse, TexCoords));
+    vec3 diffuse  = light.radiance * diff * vec3(texture(material.diffuse, TexCoords));
+    vec3 specular = light.radiance * spec * vec3(texture(material.specular, TexCoords));
     ambient  *= attenuation;
     diffuse  *= attenuation;
     specular *= attenuation;

@@ -19,9 +19,7 @@ namespace cabrankengine::rendering {
 	// Structs align to largest member (16 bytes).
 	struct PointLightGPU {
 		float position[4];  // x, y, z, padding
-		float ambient[4];   // r, g, b, padding (o intensidad)
-		float diffuse[4];   // r, g, b, padding (o intensidad)
-		float specular[4];  // r, g, b, padding (o intensidad)
+		float radiance[4];   // r, g, b, padding (o intensidad)
 		float constant;
 		float linear;
 		float quadratic;
@@ -73,9 +71,7 @@ namespace cabrankengine::rendering {
 		shader->setMat4("view", s_SceneData->viewMatrix);
 		shader->setMat4("model", transform);
 		shader->setFloat3("dirLight.direction", s_SceneData->lightEnvironment.DirLight.direction);
-		shader->setFloat3("dirLight.components.ambient", s_SceneData->lightEnvironment.DirLight.lightComponents.ambient);
-		shader->setFloat3("dirLight.components.diffuse", s_SceneData->lightEnvironment.DirLight.lightComponents.diffuse);
-		shader->setFloat3("dirLight.components.specular", s_SceneData->lightEnvironment.DirLight.lightComponents.specular);
+		shader->setFloat3("dirLight.radiance", s_SceneData->lightEnvironment.DirLight.radiance);
 		vertexArray->bind();
 		RenderCommand::drawIndexed(vertexArray);
 	}
@@ -102,20 +98,10 @@ namespace cabrankengine::rendering {
 			currentLight->position[2] = light.position.z;
 			currentLight->position[3] = 1.f;
 			
-			currentLight->ambient[0] = light.lightComponents.ambient.x;
-			currentLight->ambient[1] = light.lightComponents.ambient.y;
-			currentLight->ambient[2] = light.lightComponents.ambient.z;
-			currentLight->ambient[3] = 0.f;
-
-			currentLight->diffuse[0] = light.lightComponents.diffuse.x;
-			currentLight->diffuse[1] = light.lightComponents.diffuse.y;
-			currentLight->diffuse[2] = light.lightComponents.diffuse.z;
-			currentLight->diffuse[3] = 0.f;
-
-			currentLight->specular[0] = light.lightComponents.specular.x;
-			currentLight->specular[1] = light.lightComponents.specular.y;
-			currentLight->specular[2] = light.lightComponents.specular.z;
-			currentLight->specular[3] = 0.f;
+			currentLight->radiance[0] = light.radiance.x;
+			currentLight->radiance[1] = light.radiance.y;
+			currentLight->radiance[2] = light.radiance.z;
+			currentLight->radiance[3] = 0.f;
 
 			currentLight->constant = light.constant;
 			currentLight->linear = light.linear;
