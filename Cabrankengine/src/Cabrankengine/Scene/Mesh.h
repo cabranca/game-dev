@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Cabrankengine/Math/Vector3.h>
+#include <Cabrankengine/Math/MatrixFactory.h>
 #include <Cabrankengine/Renderer/Material.h>
 #include <Cabrankengine/Renderer/Shader.h>
 #include <Cabrankengine/Renderer/Texture.h>
@@ -19,10 +19,20 @@ namespace cabrankengine::scene {
 	class Mesh {
 	  public:
 		Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Ref<rendering::Material> material);
-		void draw();
+		void draw(const math::Mat4& transform);
 
 	  private:
 		Ref<rendering::VertexArray> m_VertexArray;
 		Ref<rendering::Material> m_Material;
+	};
+
+	class CubeMesh {
+	  public:
+		CubeMesh(const Ref<rendering::Material>& material);
+		CubeMesh(const Ref<rendering::Shader>& shader);
+		void draw(const math::Mat4& transform = math::identityMat());
+
+	  private:
+		Mesh m_Mesh;
 	};
 } // namespace cabrankengine::scene

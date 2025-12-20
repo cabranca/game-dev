@@ -18,9 +18,9 @@ namespace cabrankengine::scene {
 		processNode(scene->mRootNode, scene);
 	}
 
-	void Model::draw() {
+	void Model::draw(const math::Mat4& transform) {
 		for (auto& mesh: m_Meshes)
-			mesh.draw();
+			mesh.draw(transform);
 	}
 
 	void Model::processNode(aiNode* node, const aiScene* scene) {

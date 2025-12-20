@@ -14,7 +14,7 @@ namespace cabrankengine::scene {
 	  public:
 		Model(const std::string& path, const Ref<rendering::Shader>& defaultShader);
 
-		void draw();
+		void draw(const math::Mat4& transform = math::identityMat());
 
 	  private:
 		std::vector<Mesh> m_Meshes;
