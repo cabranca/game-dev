@@ -7,6 +7,7 @@
 #include <Cabrankengine/Events/ApplicationEvent.h>
 #include <Cabrankengine/ImGui/ImGuiLayer.h>
 #include <Cabrankengine/Renderer/Renderer.h>
+#include <Cabrankengine/Scene/DefaultLibrary.h>
 
 #include "AudioEngine.h"
 #include "Logger.h"
@@ -16,6 +17,7 @@
 namespace cabrankengine {
 
 	using namespace rendering;
+	using namespace scene;
 
 	Application::Application() : m_Running(true), m_LastFrameTime(0.0f)
 	{
@@ -33,6 +35,7 @@ namespace cabrankengine {
 		//AudioEngine::init();
 
 		Renderer::init();
+		DefaultLibrary::init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		pushOverlay(m_ImGuiLayer);
