@@ -73,12 +73,4 @@ namespace cabrankengine::scene {
 	void Mesh::draw(const math::Mat4& transform) {
 		Renderer::submit(m_Material, m_VertexArray, transform);
 	}
-	
-	CubeMesh::CubeMesh(const Ref<Material>& material) : m_Mesh(cubeMeshVertices, cubeMeshIndices, material) { }
-
-	CubeMesh::CubeMesh(const Ref<Shader>& shader) : m_Mesh(cubeMeshVertices, cubeMeshIndices, Material::create(shader)) {}
-	
-	void CubeMesh::draw(const math::Mat4& transform) {
-		m_Mesh.draw(transform);
-	}
 } // namespace cabrankengine::scene

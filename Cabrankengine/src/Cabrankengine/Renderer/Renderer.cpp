@@ -4,7 +4,7 @@
 #include <Cabrankengine/Scene/Camera.h>
 
 #include "Lights.h"
-#include "Material.h"
+#include "Materials/Material.h"
 #include "Renderer2D.h"
 #include "RenderCommand.h"
 #include "StorageBuffer.h"
@@ -90,9 +90,7 @@ namespace cabrankengine::rendering {
 
 	void Renderer::submit(const Ref<Material>& material, const Ref<VertexArray>& vertexArray, const Mat4& transform) {
 		material->bind();
-		auto shader = material->getShader();
-		shader->setMat4("u_Model", transform);
-		vertexArray->bind();
+		material->getShader()->setMat4("u_Model", transform);
 		RenderCommand::drawIndexed(vertexArray);
 	}
 

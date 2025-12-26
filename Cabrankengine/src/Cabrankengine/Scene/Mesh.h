@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Cabrankengine/Math/MatrixFactory.h>
-#include <Cabrankengine/Renderer/Material.h>
+#include <Cabrankengine/Renderer/Materials/Material.h>
 #include <Cabrankengine/Renderer/Shader.h>
 #include <Cabrankengine/Renderer/Texture.h>
 #include <Cabrankengine/Renderer/VertexArray.h>
@@ -24,15 +24,5 @@ namespace cabrankengine::scene {
 	  private:
 		Ref<rendering::VertexArray> m_VertexArray;
 		Ref<rendering::Material> m_Material;
-	};
-
-	class CubeMesh {
-	  public:
-		CubeMesh(const Ref<rendering::Material>& material);
-		CubeMesh(const Ref<rendering::Shader>& shader);
-		void draw(const math::Mat4& transform = math::identityMat());
-
-	  private:
-		Mesh m_Mesh;
 	};
 } // namespace cabrankengine::scene
