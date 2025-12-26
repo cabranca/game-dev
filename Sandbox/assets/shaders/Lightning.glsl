@@ -1,12 +1,22 @@
 #type vertex
 #version 460 core
+
+struct DirLight {
+    vec3 direction;
+    vec3 radiance;
+};
+
+layout(std140, binding = 0) uniform SceneData {
+    mat4 u_ViewProjection;
+    DirLight u_DirLight;
+    vec3 u_CameraPosition; // Agregamos la cámara acá
+};
+
 layout (location = 0) in vec3 pos;
 layout (location = 1) in vec3 normal;
 layout (location = 2) in vec2 texCoords;
 
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
+uniform mat4 u_Model;
 
 out vec3 FragPos;
 out vec3 Normal;
@@ -14,20 +24,21 @@ out vec2 TexCoords;
 
 void main()
 {
-    FragPos = vec3(model * vec4(pos, 1.0));
+    FragPos = vec3(u_Model * vec4(pos, 1.0));
 
     // This should be done in CPU as the inverse is expensive
-    Normal = mat3(transpose(inverse(model))) * normal; 
+    Normal = mat3(transpose(inverse(u_Model))) * normal; 
 
     TexCoords = texCoords;
     
-    gl_Position = projection * view * vec4(FragPos, 1.0);
+    gl_Position = u_ViewProjection * vec4(FragPos, 1.0);
 } 
 
 #type fragment
 #version 460 core
 // Inputs and Outputs
 out vec4 FragColor;
+
 in vec3 FragPos;  
 in vec3 Normal;
 in vec2 TexCoords;
@@ -53,10 +64,16 @@ struct PointLight {
     float quadratic;  
 };
 
+// --- UBO (Datos Globales) ---
+// Reemplaza a: uniform DirLight dirLight; y uniform vec3 viewPos;
+layout(std140, binding = 0) uniform SceneData {
+    mat4 u_ViewProjection;
+    DirLight u_DirLight;    // Ahora viene del buffer
+    vec3 u_CameraPosition;  // Ahora viene del buffer
+};
+
 // Uniforms
-uniform vec3 viewPos;
 uniform Material material;
-uniform DirLight dirLight;
 
 // SSBO
 layout(std430, binding = 0) readonly buffer LightBuffer {
@@ -73,10 +90,10 @@ void main()
 {
     // properties
     vec3 norm = normalize(Normal);
-    vec3 viewDir = normalize(viewPos - FragPos);
+    vec3 viewDir = normalize(u_CameraPosition - FragPos);
 
     // phase 1: Directional lighting
-    vec3 result = CalcDirLight(dirLight, norm, viewDir);
+    vec3 result = CalcDirLight(u_DirLight, norm, viewDir);
     // phase 2: Point lights
     for(int i = 0; i < u_Lights.u_PointLightCount; i++)
         result += CalcPointLight(u_Lights.pointLights[i], norm, FragPos, viewDir);    

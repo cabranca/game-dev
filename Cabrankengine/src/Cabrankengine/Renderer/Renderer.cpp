@@ -1,18 +1,40 @@
 #include <pch.h>
 #include "Renderer.h"
 
+#include <Cabrankengine/Scene/Camera.h>
+
 #include "Lights.h"
 #include "Material.h"
 #include "Renderer2D.h"
 #include "RenderCommand.h"
 #include "StorageBuffer.h"
 #include "TextRenderer.h"
+#include "UniformBuffer.h"
 #include "VertexArray.h"
 
 
 namespace cabrankengine::rendering {
 
 	using namespace math;
+
+	// Estructura auxiliar para la luz (32 bytes total)
+	struct directionalLightData {
+		math::Vector3 direction; // 12 bytes
+		float _Pad0 = 0.0f;      // 4 bytes de relleno (Total: 16)
+
+		math::Vector3 radiance; // 12 bytes
+		float _Pad1 = 0.0f;     // 4 bytes de relleno (Total: 16)
+	};
+
+	struct AltSceneData {
+		Mat4 ViewProjectionMatrix; // 64 bytes
+		directionalLightData DirLight;   // 32 bytes (Offset 64)
+		math::Vector3 CameraPosition;    // 12 bytes (Offset 96) -> Reemplaza al uniform viewPos
+		float _Pad2 = 0.0f;              // 4 bytes (Offset 108 -> Total 112 bytes)
+	};
+
+	static Ref<UniformBuffer> s_SceneUBO;
+	static AltSceneData s_AltSceneData;
 
 	// GLSL std430 alignment rules:
 	// vec4 = 16 bytes. scalar = 4 bytes.
@@ -38,15 +60,19 @@ namespace cabrankengine::rendering {
 		Renderer2D::init();
 		TextRenderer::init();
 		s_SceneData->lightSSBO = StorageBuffer::create(sizeof(LightBufferHeader) + sizeof(PointLightGPU));
+		s_SceneUBO = UniformBuffer::create(sizeof(AltSceneData), 0);
 	}
 
 	void Renderer::shutdown() {
 		Renderer2D::shutdown();
 	}
 
-	void Renderer::beginScene(const math::Mat4& projection, const math::Mat4& view, const LightEnvironment& environment) {
-		s_SceneData->projectionMatrix = projection;
-		s_SceneData->viewMatrix = view;
+	void Renderer::beginScene(const cabrankengine::scene::Camera& camera, const LightEnvironment& environment) {
+		s_AltSceneData.ViewProjectionMatrix = camera.getViewProjectionMatrix();
+		s_AltSceneData.DirLight.direction = environment.DirLight.direction;
+		s_AltSceneData.DirLight.radiance = environment.DirLight.radiance;
+		s_AltSceneData.CameraPosition = camera.getWorldPosition();
+		s_SceneUBO->setData(&s_AltSceneData, sizeof(AltSceneData)); // TODO: if this is the same size as in the initialization, why pass it again?
 		s_SceneData->lightEnvironment = environment;
 
 		uploadLightEnvironment();
@@ -58,20 +84,14 @@ namespace cabrankengine::rendering {
 
 	void Renderer::submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const Mat4& transform) {
 		shader->bind();
-		shader->setMat4("projection", s_SceneData->projectionMatrix);
-		shader->setMat4("view", s_SceneData->viewMatrix);
-		shader->setMat4("model", transform);
+		shader->setMat4("u_Model", transform);
 		RenderCommand::drawIndexed(vertexArray);
 	}
 
 	void Renderer::submit(const Ref<Material>& material, const Ref<VertexArray>& vertexArray, const Mat4& transform) {
 		material->bind();
 		auto shader = material->getShader();
-		shader->setMat4("projection", s_SceneData->projectionMatrix);
-		shader->setMat4("view", s_SceneData->viewMatrix);
-		shader->setMat4("model", transform);
-		shader->setFloat3("dirLight.direction", s_SceneData->lightEnvironment.DirLight.direction);
-		shader->setFloat3("dirLight.radiance", s_SceneData->lightEnvironment.DirLight.radiance);
+		shader->setMat4("u_Model", transform);
 		vertexArray->bind();
 		RenderCommand::drawIndexed(vertexArray);
 	}
