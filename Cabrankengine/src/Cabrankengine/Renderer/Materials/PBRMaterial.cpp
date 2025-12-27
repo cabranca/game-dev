@@ -28,6 +28,18 @@ namespace cabrankengine::rendering {
 		m_AOMap = tex;
 	}
 
+	math::Vector3 PBRMaterial::getAlbedoColor() const {
+		return m_AlbedoColor;
+	}
+
+	float PBRMaterial::getMetalness() const {
+		return m_Metalness;
+	}
+
+	float PBRMaterial::getRoughness() const {
+		return m_Roughness;
+	}
+
 	void PBRMaterial::setAlbedoColor(math::Vector3 color) {
 		m_AlbedoColor = color;
 	}

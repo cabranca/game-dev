@@ -12,7 +12,6 @@ namespace cabrankengine::rendering {
 		virtual ~Material() = default;
 
 		virtual void bind() const = 0;
-		virtual void unbind() const {};
 
 		Ref<Shader> getShader() const {
 			return m_Shader;

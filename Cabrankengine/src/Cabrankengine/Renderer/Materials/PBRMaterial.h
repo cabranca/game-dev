@@ -13,6 +13,10 @@ namespace cabrankengine::rendering {
 		void setMetalRoughMap(const Ref<Texture2D>& tex);
 		void setAOMap(const Ref<Texture2D>& tex);
 
+		math::Vector3 getAlbedoColor() const;
+		float getMetalness() const;
+		float getRoughness() const;
+		
 		void setAlbedoColor(math::Vector3 color);
 		void setMetalness(float value);
 		void setRoughness(float value);
