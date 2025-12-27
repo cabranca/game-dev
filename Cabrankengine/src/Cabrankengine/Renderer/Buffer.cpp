@@ -1,7 +1,11 @@
 #include <pch.h>
 #include "Buffer.h"
 
-#include <Platform/OpenGL/OpenGLBuffer.h>
+#ifdef CE_RENDERER_METAL
+	#include <Platform/Metal/MetalBuffer.h>
+#elifdef CE_RENDERER_OPENGL
+	#include <Platform/OpenGL/OpenGLBuffer.h>
+#endif
 
 #include "Renderer.h"
 
@@ -15,8 +19,14 @@ namespace cabrankengine::rendering {
 			case RendererAPI::API::None: 
 				CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); 
 				return nullptr;
+#ifdef CE_RENDERER_OPENGL
 			case RendererAPI::API::OpenGL:
 				return createRef<platform::opengl::OpenGLVertexBuffer>(size);
+#endif
+#ifdef CE_RENDERER_METAL
+			case RendererAPI::API::Metal:
+				return createRef<platform::metal::MetalVertexBuffer>(size);
+#endif
 			}
 		return nullptr;
 	}
@@ -26,10 +36,15 @@ namespace cabrankengine::rendering {
 		case RendererAPI::API::None: 
 			CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); 
 			return nullptr;
-		case RendererAPI::API::OpenGL:
-			return createRef<platform::opengl::OpenGLVertexBuffer>(vertices, size);
+#ifdef CE_RENDERER_OPENGL
+			case RendererAPI::API::OpenGL:
+				return createRef<platform::opengl::OpenGLVertexBuffer>(vertices, size);
+#endif
+#ifdef CE_RENDERER_METAL
+			case RendererAPI::API::Metal:
+				return createRef<platform::metal::MetalVertexBuffer>(vertices, size);
+#endif
 		}
-
 		return nullptr;
 	}
 
@@ -38,10 +53,15 @@ namespace cabrankengine::rendering {
 		case RendererAPI::API::None:
 			CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
 			return nullptr;
-		case RendererAPI::API::OpenGL:
-			return createRef<platform::opengl::OpenGLIndexBuffer>(indices, count);
+#ifdef CE_RENDERER_OPENGL
+			case RendererAPI::API::OpenGL:
+				return createRef<platform::opengl::OpenGLIndexxBuffer>(indices, count);
+#endif
+#ifdef CE_RENDERER_METAL
+			case RendererAPI::API::Metal:
+				return createRef<platform::metal::MetalIndexBuffer>(indices, count);
+#endif
 		}
-
 		return nullptr;
 	}
 }

@@ -1,7 +1,11 @@
 #include <pch.h>
 #include "Shader.h"
 
-#include <Platform/OpenGL/OpenGLShader.h>
+#ifdef CE_RENDERER_METAL
+	#include <Platform/Metal/MetalShader.h>
+#elifdef CE_RENDERER_OPENGL
+	#include <Platform/OpenGL/OpenGLShader.h>
+#endif
 
 #include "Renderer.h"
 
@@ -13,8 +17,14 @@ namespace cabrankengine::rendering {
 			case RendererAPI::API::None:
 				CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
 				return nullptr;
+#ifdef CE_RENDERER_OPENGL
 			case RendererAPI::API::OpenGL:
 				return createRef<platform::opengl::OpenGLShader>(filepath);
+#endif
+#ifdef CE_RENDERER_METAL
+			case RendererAPI::API::Metal:
+				return createRef<platform::metal::MetalShader>(filepath);
+#endif
 		}
 		CE_CORE_ASSERT(false, "Unknown RendererAPI!");
 		return nullptr;
@@ -25,8 +35,14 @@ namespace cabrankengine::rendering {
 			case RendererAPI::API::None:
 				CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
 				return nullptr;
+#ifdef CE_RENDERER_OPENGL
 			case RendererAPI::API::OpenGL:
 				return createRef<platform::opengl::OpenGLShader>(name, vertexSrc, fragmentSrc);
+#endif
+#ifdef CE_RENDERER_METAL
+			case RendererAPI::API::Metal:
+				return createRef<platform::metal::MetalShader>(name, vertexSrc, fragmentSrc);
+#endif
 		}
 
 		CE_CORE_ASSERT(false, "Unknown RendererAPI!");

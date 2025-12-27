@@ -1,7 +1,11 @@
 #include <pch.h>
 #include "FrameBuffer.h"
 
-#include <Platform/OpenGL/OpenGLFrameBuffer.h>
+#ifdef CE_RENDERER_METAL
+	#include <Platform/Metal/MetalFrameBuffer.h>
+#elifdef CE_RENDERER_OPENGL
+	#include <Platform/OpenGL/OpenGLFrameBuffer.h>
+#endif
 
 #include "Renderer.h"
 
@@ -12,9 +16,15 @@ namespace cabrankengine::rendering {
 			case RendererAPI::API::None: 
 				CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); 
 				return nullptr;
+#ifdef CE_RENDERER_OPENGL
 			case RendererAPI::API::OpenGL:
 				return createRef<platform::opengl::OpenGLFrameBuffer>(spec);
-			}
+#endif
+#ifdef CE_RENDERER_METAL
+			case RendererAPI::API::Metal:
+				return createRef<platform::metal::MetalFrameBuffer>(spec);
+#endif
+		}
 		return nullptr;
 	}
 }

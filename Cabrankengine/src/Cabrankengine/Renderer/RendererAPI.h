@@ -11,7 +11,7 @@ namespace cabrankengine::rendering {
 	// RendererAPI is an abstract class that defines the interface for the low level rendering operations.
 	class RendererAPI {
 		public:
-			enum class API { None = 0, OpenGL = 1 }; // Enum representing the different rendering APIs supported.
+			enum class API { None = 0, OpenGL = 1, Metal = 2 }; // Enum representing the different rendering APIs supported.
 
 			virtual ~RendererAPI() = default;
 
@@ -37,6 +37,6 @@ namespace cabrankengine::rendering {
 			static API getAPI() { return s_API; }
 
 		private:
-			inline static API s_API = RendererAPI::API::OpenGL; // Static variable that holds the current rendering API being used.
+			static API s_API; // Static variable that holds the current rendering API being used.
 	};
 }
