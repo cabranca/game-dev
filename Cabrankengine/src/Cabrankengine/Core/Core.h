@@ -6,6 +6,7 @@
 #ifdef _WIN32
 	#ifdef _WIN64
 		#define CE_PLATFORM_WINDOWS
+		#define CE_RENDERER_OPENGL
 	#else
 		#error "Cabrankengine only supports 64-bit Windows!"
 	#endif
@@ -14,8 +15,23 @@
 #ifdef __linux__
 	#ifdef __x86_64__
 		#define CE_PLATFORM_LINUX
+		#define CE_RENDERER_OPENGL
 	#else
 		#error "Cabrankengine only supports 64-bit Linux!"
+	#endif
+#endif
+
+#ifdef __APPLE__
+	#include <TargetConditionals.h>
+	#if TARGET_OS_MAC
+		#if defined(__x86_64__) || defined(__arm64__)
+			#define CE_PLATFORM_MACOS
+			#define CE_RENDERER_METAL
+		#else
+			#error "Cabrankengine only supports 64-bit macOS!"
+		#endif
+	#else
+		#error "Only macOS supported for Apple devices!"
 	#endif
 #endif
 
@@ -23,7 +39,7 @@
 	#define CE_ENABLE_ASSERTS
 	#if defined(CE_PLATFORM_WINDOWS)
 		#define CE_DEBUG_BREAK __debugbreak()
-	#elif defined(CE_PLATFORM_LINUX)
+	#elif defined(CE_PLATFORM_LINUX) || defined(CE_PLATFORM_MACOS)
 		#include <signal.h>
 		#define CE_DEBUG_BREAK raise(SIGTRAP)
 	#endif
