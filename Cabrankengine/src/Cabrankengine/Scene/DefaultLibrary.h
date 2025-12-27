@@ -16,6 +16,7 @@ namespace cabrankengine::scene {
 		static Ref<rendering::Shader> getErrorShader();
 		static Ref<rendering::VertexArray> getCube();
 		static Ref<rendering::VertexArray> getQuad();
+		static Ref<rendering::VertexArray> getSphere();
 
 	  private:
 		inline static rendering::TextureSpecification s_Specs = { 1, 1, rendering::ImageFormat::RGBA8 };
@@ -27,9 +28,11 @@ namespace cabrankengine::scene {
 
 		inline static Ref<rendering::VertexArray> s_CubeVA = nullptr;
 		inline static Ref<rendering::VertexArray> s_QuadVA = nullptr;
+		inline static Ref<rendering::VertexArray> s_SphereVA = nullptr;
 
 		static void setupTexture(Ref<rendering::Texture2D>& tex, uint32_t data);
 		static void setupQuad();
 		static void setupCube();
+		static void setupSphere();
 	};
 } // namespace cabrankengine::scene

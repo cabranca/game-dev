@@ -14,6 +14,7 @@ namespace cabrankengine::scene {
 
 		setupQuad();
         setupCube();
+        setupSphere();
 
         s_ErrorShader = Shader::create("assets/shaders/Error.glsl");
 	}
@@ -41,8 +42,12 @@ namespace cabrankengine::scene {
 	Ref<rendering::VertexArray> DefaultLibrary::getQuad() {
 		return s_QuadVA;
 	}
-	
-    void DefaultLibrary::setupTexture(Ref<Texture2D>& tex, uint32_t data) {
+
+	Ref<rendering::VertexArray> DefaultLibrary::getSphere() {
+		return s_SphereVA;
+	}
+
+	void DefaultLibrary::setupTexture(Ref<Texture2D>& tex, uint32_t data) {
         tex = Texture2D::create(s_Specs);
 		tex->setData(&data, sizeof(uint32_t));
     }
@@ -128,5 +133,81 @@ namespace cabrankengine::scene {
 
 		auto cubeIB = IndexBuffer::create(cubeIndices.data(), cubeIndices.size());
 		s_CubeVA->setIndexBuffer(cubeIB);
+	}
+
+	void DefaultLibrary::setupSphere() {
+		s_SphereVA = VertexArray::create();
+
+		std::vector<float> vertices;
+		std::vector<uint32_t> indices;
+
+		constexpr unsigned int X_SEGMENTS = 64;
+		constexpr unsigned int Y_SEGMENTS = 64;
+
+		for (unsigned int x = 0; x <= X_SEGMENTS; x++) {
+			for (unsigned int y = 0; y <= Y_SEGMENTS; y++) {
+				float xSegment = (float)x / (float)X_SEGMENTS;
+				float ySegment = (float)y / (float)Y_SEGMENTS;
+
+				float xPos = cosf(xSegment * 2.f * math::PI) * sinf(ySegment * math::PI);
+				float yPos = cosf(ySegment * math::PI);
+				float zPos = sinf(xSegment * 2.f * math::PI) * sinf(ySegment * math::PI);
+
+				vertices.push_back(xPos);
+				vertices.push_back(yPos);
+				vertices.push_back(zPos);
+
+				vertices.push_back(xPos);
+				vertices.push_back(yPos);
+				vertices.push_back(zPos);
+
+				vertices.push_back(xSegment);
+				vertices.push_back(ySegment);
+			}
+		}
+
+		bool oddRow = false;
+		for (unsigned int y = 0; y < Y_SEGMENTS; ++y) {
+			if (!oddRow) // even rows: y == 0, y == 2; and so on
+			{
+				for (unsigned int x = 0; x <= X_SEGMENTS; ++x) {
+					indices.push_back(y * (X_SEGMENTS + 1) + x);
+					indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
+				}
+			} else {
+				for (int x = X_SEGMENTS; x >= 0; --x) {
+					indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
+					indices.push_back(y * (X_SEGMENTS + 1) + x);
+				}
+			}
+			oddRow = !oddRow;
+		}
+
+		// NOTA: El algoritmo de Triangle Strip de arriba es eficiente, pero para tu engine
+		// que probablemente usa GL_TRIANGLES puros en RenderCommand::DrawIndexed,
+		// necesitamos índices estándar de triángulos.
+		// Vamos a limpiar indices y generarlos como TRIANGLES estándar:
+
+		indices.clear(); // Reiniciamos para hacerlo compatible con GL_TRIANGLES genérico
+		for (unsigned int y = 0; y < Y_SEGMENTS; ++y) {
+			for (unsigned int x = 0; x < X_SEGMENTS; ++x) {
+				indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
+				indices.push_back(y * (X_SEGMENTS + 1) + x);
+				indices.push_back(y * (X_SEGMENTS + 1) + x + 1);
+
+				indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
+				indices.push_back(y * (X_SEGMENTS + 1) + x + 1);
+				indices.push_back((y + 1) * (X_SEGMENTS + 1) + x + 1);
+			}
+		}
+
+		// Subir a GPU
+		Ref<VertexBuffer> sphereVB = VertexBuffer::create(vertices.data(), vertices.size() * sizeof(float));
+		sphereVB->setLayout(
+		    { { ShaderDataType::Float3, "a_Position" }, { ShaderDataType::Float3, "a_Normal" }, { ShaderDataType::Float2, "a_TexCoord" } });
+		s_SphereVA->addVertexBuffer(sphereVB);
+
+		Ref<IndexBuffer> sphereIB = IndexBuffer::create(indices.data(), indices.size());
+		s_SphereVA->setIndexBuffer(sphereIB);
 	}
 } // namespace cabrankengine::scene
