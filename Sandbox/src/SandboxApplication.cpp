@@ -3,8 +3,6 @@
 // --- Entry Point ---
 #include "Cabrankengine/Core/EntryPoint.h"
 
-#include <Cabrankengine/Events/KeyEvent.h>
-#include <Platform/OpenGL/OpenGLShader.h>
 #include <imgui.h>
 #include "Sandbox2D.h"
 
@@ -12,22 +10,26 @@ using namespace cabrankengine;
 using namespace cabrankengine::math;
 using namespace cabrankengine::rendering;
 using namespace cabrankengine::scene;
-using namespace cabrankengine::platform::opengl;
 
 class ExampleLayer : public Layer {
   public:
 	ExampleLayer() : Layer("Example"), m_CameraController(PerspectiveCamera(PI / 4.f, 16.f / 9.f, 0.1f, 100.f)) {
 		m_CameraController.getCamera().setWorldPosition(Vector3(0.f, 0.f, 10.f));
-		auto shader = m_ShaderLibrary.load("assets/shaders/Lightning.glsl");
-		m_ModelTest = new Model("assets/models/backpack/backpack.obj", shader);
+		// auto shader = m_ShaderLibrary.load("assets/shaders/Lightning.glsl");
+		// auto phongMaterial = std::make_shared<PhongMaterial>(shader);
+		// m_ModelTest = new Model("assets/models/backpack/backpack.obj", phongMaterial);
 
-		m_LightEnvironment.DirLight.direction = { 0.0f, 0.0f, 0.0f  }; 
-		m_LightEnvironment.DirLight.radiance = { 0.05f, 0.05f, 0.05f };
+		auto pbrShader = Shader::create("assets/shaders/PBR.glsl");
+		m_PBRMaterial = std::make_shared<PBRMaterial>(pbrShader);
+		m_Sphere = DefaultLibrary::getSphere();
+
+		m_LightEnvironment.DirLight.direction = { 0.0f, -1.0f, 0.0f  }; 
+		m_LightEnvironment.DirLight.radiance = { 0.5f, 0.5f, 0.5f };
 
 		cabrankengine::rendering::PointLight lamp;
-		lamp.position = { 1.0f, 2.0f, 2.0f }; 
+		lamp.position = { 0.0f, 0.0f, 8.0f }; 
 
-		lamp.radiance = { 0.5f, 0.2f, 0.1f };
+		lamp.radiance = Vector3(1.f);
 
 		lamp.constant = 1.0f;
 		lamp.linear = 0.09f;
@@ -35,8 +37,8 @@ class ExampleLayer : public Layer {
 
 		m_LightEnvironment.PointLights.push_back(lamp);
 
-		auto lightSource = m_ShaderLibrary.load("assets/shaders/LightSource.glsl");
-		m_Cube = std::make_shared<CubeMesh>(lightSource);
+		// auto lightSource = m_ShaderLibrary.load("assets/shaders/LightSource.glsl");
+		// m_Cube = std::make_shared<CubeMesh>(lightSource);
 	}
 
 	void onUpdate(Timestep delta) override {
@@ -48,16 +50,20 @@ class ExampleLayer : public Layer {
 
 		const auto& camera = m_CameraController.getCamera();
 
-		Renderer::beginScene(camera.getProjectionMatrix(), camera.getViewMatrix(), m_LightEnvironment);
+		Renderer::beginScene(camera, m_LightEnvironment);
 
-		m_ModelTest->draw();
+		//m_ModelTest->draw();
 
-		auto lightSourceShader = m_ShaderLibrary.get("LightSource");
-		lightSourceShader->bind();
-		for (const auto& pointLight : m_LightEnvironment.PointLights) {
-			lightSourceShader->setFloat3("debugColor", pointLight.radiance);
-			m_Cube->draw(translation(pointLight.position));
-		}
+		// auto lightSourceShader = m_ShaderLibrary.get("LightSource");
+		// lightSourceShader->bind();
+		// for (const auto& pointLight : m_LightEnvironment.PointLights) {
+		// 	lightSourceShader->setFloat3("debugColor", pointLight.radiance);
+		// 	m_Cube->draw(translation(pointLight.position));
+		// }
+
+		// auto errorShader = DefaultLibrary::getErrorShader();
+		//auto cubeMesh = DefaultLibrary::getCube();
+		Renderer::submit(m_PBRMaterial, m_Sphere, scaleUniform(5.f));
 		
 		Renderer::endScene();
 
@@ -70,9 +76,17 @@ class ExampleLayer : public Layer {
 		CE_PROFILE_FUNCTION();
 		ImGui::Begin("Settings");
 
-		auto& lightSource = m_LightEnvironment.PointLights[0];
+		auto albedo = m_PBRMaterial->getAlbedoColor();
+		auto metalness = m_PBRMaterial->getMetalness();
+		auto roughness = m_PBRMaterial->getRoughness();
 
-		ImGui::ColorEdit3("Light Color", &lightSource.radiance.x);
+		ImGui::ColorEdit3("Albedo", &albedo.x);
+		ImGui::InputFloat("Metalness", &metalness);
+		ImGui::InputFloat("Roughness", &roughness);
+
+		m_PBRMaterial->setAlbedoColor(albedo);
+		m_PBRMaterial->setMetalness(metalness);
+		m_PBRMaterial->setRoughness(roughness);
 
 		ImGui::End();
 	}
@@ -82,7 +96,9 @@ class ExampleLayer : public Layer {
 	CameraController m_CameraController;
 	ShaderLibrary m_ShaderLibrary;
 	Model* m_ModelTest = nullptr;
-	Ref<CubeMesh> m_Cube = nullptr;
+	Ref<VertexArray> m_Cube = nullptr;
+	Ref<PBRMaterial> m_PBRMaterial = nullptr;
+	Ref<VertexArray> m_Sphere = nullptr;
 };
 
 class Sandbox : public Application {
