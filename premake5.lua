@@ -28,3 +28,11 @@ include "Cabrankengine/vendor/glad"
 include "Cabrankengine/vendor/imgui"
 include "Sandbox"
 include "UnitTests"
+
+filter "system:macosx"
+        systemversion "latest" -- Usa el SDK que tengas instalado (el 13 o 14)
+        
+        -- FORZAR COMPATIBILIDAD CON MONTEREY (12.0)
+        -- Esto le dice al compilador y al linker: "Aunque tengas el SDK nuevo, generá código para 12.0"
+        buildoptions { "-mmacosx-version-min=12.0" }
+        linkoptions  { "-mmacosx-version-min=12.0" }

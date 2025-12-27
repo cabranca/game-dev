@@ -9,7 +9,7 @@ project "Sandbox"
 
     files {"src/**.h", "src/**.cpp"}
 
-    includedirs
+    externalincludedirs
     {
         "%{IncludeDir.assimp}", "%{IncludeDir.ImGui}", "%{IncludeDir.irrKlang}",
         "%{IncludeDir.spdlog}", "%{wks.location}/Cabrankengine/src",
@@ -17,12 +17,14 @@ project "Sandbox"
 
     links 
     {
-        "Cabrankengine", "Assimp", "FreeType", "GLFW", "glad", "ImGui"
+        "Cabrankengine", "Assimp", "FreeType", "GLFW", "ImGui"
     }
 
     filter "system:windows"
         systemversion "latest"
         buildoptions { "/utf-8" }
+
+        links { "glad" }
 
         postbuildcommands
         {
@@ -44,6 +46,18 @@ project "Sandbox"
             'cp -ru %{wks.location}/Cabrankengine/vendor/irrKlang/so/* %{cfg.targetdir}/',
             'cp -ru %{prj.location}/assets/ %{cfg.targetdir}/',
             'cp -u %{prj.location}/config.json %{cfg.targetdir}/config.json 2>/dev/null || true'
+        }
+
+    filter "system:macosx"
+        systemversion "latest"
+        pic "On"
+
+        links { "Cocoa.framework", "IOKit.framework", "CoreFoundation.framework", "Metal.framework", "z" }
+
+        postbuildcommands 
+        {
+            'cp -R %{prj.location}/assets %{cfg.targetdir}/assets',
+            'cp -f %{prj.location}/config.json %{cfg.targetdir}/config.json || true'
         }
 
     filter "configurations:Debug"
