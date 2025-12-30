@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include <Cabrankengine/Core/Layer.h>
 
 namespace cabrankengine {
