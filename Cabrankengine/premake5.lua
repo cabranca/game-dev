@@ -13,8 +13,6 @@ project "Cabrankengine"
     {
         "src/Cabrankengine/**.h",
 		"src/Cabrankengine/**.cpp",
-        "src/Cabrankengine/Cabrankengine.h",
-        "src/Cabrankengine/pch*",
 		"vendor/stb_image/**.h",
 		"vendor/stb_image/**.cpp",
     }
@@ -43,7 +41,6 @@ project "Cabrankengine"
             "src/Platform/OpenGL/**.cpp",
         }
 
-        removefiles { "src/Platform/Linux/**.cpp", "src/Platform/Linux/**.h" }
         libdirs { "vendor/irrKlang/lib" }
         links {"opengl32.lib", "glad" }
         defines {"GLFW_INCLUDE_NONE"}
@@ -63,13 +60,11 @@ project "Cabrankengine"
             "src/Platform/OpenGL/**.cpp",
         }
 
-        removefiles { "src/Platform/Windows/**.cpp", "src/Platform/Windows/**.h" }
-
         libdirs {  "%{wks.location}/Cabrankengine/vendor/irrKlang/so" }
         links { "X11", "Xrandr", "Xi", "Xxf86vm", "Xcursor", "pthread", "dl", "GL", "glad" }
 
     filter "system:macosx"
-        systemversion "latest"
+        systemversion "12.0"
         pic "On"
         
         pchheader "src/pch.h"
@@ -77,18 +72,21 @@ project "Cabrankengine"
 
         defines { "IMGUI_IMPL_METAL_CPP" }
 
-        links { "Cocoa.framework", "Foundation.framework", "Metal.framework", "QuartzCore.framework" }
-
         files 
         { 
-            "vendor/imgui/backends/imgui_impl_metal.mm",
             "src/Platform/MacOS/**.h",
             "src/Platform/MacOS/**.cpp",
             "src/Platform/Metal/**.h",
             "src/Platform/Metal/**.cpp",
+            "src/Platform/Metal/**.mm",
+            "vendor/imgui/backends/imgui_impl_metal.mm"
         }
 
+        removefiles { "src/Cabrankengine/ImGui/ImGuiBuild.cpp" }
+
         externalincludedirs { "%{IncludeDir.Metal}" }
+
+        links { "Cocoa.framework", "Foundation.framework", "Metal.framework", "QuartzCore.framework" }
 
     filter "configurations:Debug"
         defines "CE_DEBUG"
@@ -99,3 +97,6 @@ project "Cabrankengine"
         defines "CE_RELEASE"
         runtime "Release"
         optimize "on"
+
+    filter "files:**.mm"
+        flags { "NoPCH" }

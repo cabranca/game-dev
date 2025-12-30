@@ -49,10 +49,10 @@ project "Sandbox"
         }
 
     filter "system:macosx"
-        systemversion "latest"
+        systemversion "12.0"
         pic "On"
 
-        links { "Cocoa.framework", "IOKit.framework", "CoreFoundation.framework", "Metal.framework", "z" }
+        links { "Cocoa.framework", "IOKit.framework", "Foundation.framework", "Metal.framework", "QuartzCore.framework", "z" }
 
         postbuildcommands 
         {
