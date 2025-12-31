@@ -37,9 +37,9 @@ namespace cabrankengine::rendering {
 		CE_PROFILE_FUNCTION();
 
 		RenderCommand::init();
-		Renderer2D::init();
-		TextRenderer::init();
-		s_SceneData->lightSSBO = StorageBuffer::create(sizeof(LightBufferHeader) + sizeof(PointLightGPU));
+		//Renderer2D::init();
+		//TextRenderer::init();
+		//s_SceneData->lightSSBO = StorageBuffer::create(sizeof(LightBufferHeader) + sizeof(PointLightGPU));
 	}
 
 	void Renderer::shutdown() {
@@ -55,7 +55,7 @@ namespace cabrankengine::rendering {
 	}
 
 	void Renderer::endScene() {
-		
+		RenderCommand::endFrame();
 	}
 
 	void Renderer::submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const Mat4& transform) {

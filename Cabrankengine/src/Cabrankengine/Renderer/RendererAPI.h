@@ -30,6 +30,8 @@ namespace cabrankengine::rendering {
 			// Draws the indexed vertices from the vertex array.
 			virtual void drawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0) = 0;
 
+			virtual void endFrame() = 0;
+
 			// Sets the viewport dimensions for rendering.
 			virtual void setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
 

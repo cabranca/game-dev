@@ -15,22 +15,9 @@
 #include <GLFW/glfw3.h>
 #include <GLFW/glfw3native.h>
 
-namespace cabrankengine::platform::metal {
+#include "MetalRendererAPI.h"
 
-	const char* triangleShaderSrc = R"(
-        #include <metal_stdlib>
-        using namespace metal;
-        struct VertexOut { float4 position [[position]]; float4 color; };
-        vertex VertexOut vertex_main(uint vertexID [[vertex_id]]) {
-            float2 positions[3] = { {0.0, 0.5}, {0.5, -0.5}, {-0.5, -0.5} };
-            float3 colors[3] = { {1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0} };
-            VertexOut out;
-            out.position = float4(positions[vertexID], 0.0, 1.0);
-            out.color = float4(colors[vertexID], 1.0);
-            return out;
-        }
-        fragment float4 fragment_main(VertexOut in [[stage_in]]) { return in.color; }
-    )";
+namespace cabrankengine::platform::metal {
 
 	MetalContext::MetalContext(GLFWwindow* windowHandle) : m_WindowHandle(windowHandle) {
 		CE_CORE_ASSERT(m_WindowHandle, "Window handle is null!");
@@ -39,8 +26,6 @@ namespace cabrankengine::platform::metal {
 	}
 
 	MetalContext::~MetalContext() {
-		if (m_PipelineState)
-			m_PipelineState->release();
 		if (m_Swapchain)
 			m_Swapchain->release();
 		if (m_CommandQueue)
@@ -72,60 +57,12 @@ namespace cabrankengine::platform::metal {
 		((void (*)(id, SEL, void*))objc_msgSend)((id)contentView, sel_registerName("setLayer:"), (void*)m_Swapchain);
 		((void (*)(id, SEL, BOOL))objc_msgSend)((id)contentView, sel_registerName("setWantsLayer:"), YES);
 		// ------------------------------------------------------------
-
-		// Compilar Shader
-		NS::Error* error = nullptr;
-		NS::String* src = NS::String::string(triangleShaderSrc, NS::StringEncoding::UTF8StringEncoding);
-
-		MTL::Library* library = m_Device->newLibrary(src, nullptr, &error);
-		if (!library) {
-			CE_CORE_ERROR("Error shader: {0}", error->localizedDescription()->utf8String());
-			return;
-		}
-
-		MTL::Function* vertFunc = library->newFunction(NS::String::string("vertex_main", NS::UTF8StringEncoding));
-		MTL::Function* fragFunc = library->newFunction(NS::String::string("fragment_main", NS::UTF8StringEncoding));
-
-		MTL::RenderPipelineDescriptor* desc = MTL::RenderPipelineDescriptor::alloc()->init();
-		desc->setVertexFunction(vertFunc);
-		desc->setFragmentFunction(fragFunc);
-		desc->colorAttachments()->object(0)->setPixelFormat(MTL::PixelFormatBGRA8Unorm);
-
-		m_PipelineState = m_Device->newRenderPipelineState(desc, &error);
-		if (!m_PipelineState)
-			CE_CORE_ERROR("Error pipeline: {}", error->localizedDescription()->utf8String());
-
-		desc->release();
-		vertFunc->release();
-		fragFunc->release();
-		library->release();
 	}
 
 	void MetalContext::swapBuffers() {
-		CA::MetalDrawable* drawable = m_Swapchain->nextDrawable();
-		if (!drawable)
-			return;
+	}
 
-		MTL::CommandBuffer* cmd = m_CommandQueue->commandBuffer();
-		MTL::RenderPassDescriptor* pass = MTL::RenderPassDescriptor::renderPassDescriptor();
-
-		auto colorAtt = pass->colorAttachments()->object(0);
-		colorAtt->setTexture(drawable->texture());
-		colorAtt->setLoadAction(MTL::LoadActionClear);
-		colorAtt->setClearColor(MTL::ClearColor::Make(0.1, 0.1, 0.1, 1.0));
-		colorAtt->setStoreAction(MTL::StoreActionStore);
-
-		MTL::RenderCommandEncoder* enc = cmd->renderCommandEncoder(pass);
-		if (m_PipelineState) {
-			enc->setRenderPipelineState(m_PipelineState);
-			enc->drawPrimitives(MTL::PrimitiveTypeTriangle, (NS::UInteger)0, (NS::UInteger)3);
-		}
-		enc->endEncoding();
-
-		cmd->presentDrawable(drawable);
-		cmd->commit();
-
-		// metal-cpp usa autorelease pools internamente para algunos objetos,
-		// pero aquí los objetos pass y enc son temporales.
+	CA::MetalDrawable* MetalContext::getCurrentDrawable() {
+		return m_Swapchain->nextDrawable();
 	}
 } // namespace cabrankengine::platform::metal

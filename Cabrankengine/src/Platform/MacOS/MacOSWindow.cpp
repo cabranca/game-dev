@@ -48,6 +48,10 @@ namespace cabrankengine {
 		return m_Data.VSync;
 	}
 
+	rendering::GraphicsContext* MacOSWindow::getContext() const {
+		return m_Context;
+	}
+
 	void MacOSWindow::init(const WindowProps& props) {
 		m_Data.Title = props.Title;
 		m_Data.Width = props.Width;

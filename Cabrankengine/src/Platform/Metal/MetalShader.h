@@ -3,8 +3,8 @@
 #include <Cabrankengine/Math/Mat4.h>
 #include <Cabrankengine/Renderer/Shader.h>
 
-// TODO: Remove!!
-typedef unsigned int GLenum;
+// Forward declarations de metal-cpp
+namespace MTL { class RenderPipelineState; class Function; class Library; }
 
 namespace cabrankengine::platform::metal {
 
@@ -41,26 +41,21 @@ namespace cabrankengine::platform::metal {
 			// Returns the name of the shader program given by the user.
 			const std::string& getName() const override { return m_Name; }
 
-			// Uploads a uniform value to the shader program.
-			void uploadUniformInt(const std::string& name, int value);
-			void uploadUniformIntArray(const std::string& name, int* values, uint32_t count);
-			void uploadUniformFloat1(const std::string& name, float value);
-			void uploadUniformFloat2(const std::string& name, const math::Vector2& values);
-			void uploadUniformFloat3(const std::string& name, const math::Vector3& values);
-			void uploadUniformFloat4(const std::string& name, const math::Vector4& values);
-			void uploadUniformMat4(const std::string& name, const math::Mat4& matrix);
+			// Getter para que la API pueda usar el PSO
+        	MTL::RenderPipelineState* getPipelineState() const { return m_PipelineState; }
 
 		private:
 			// Reads the shader source code from a file.
 			std::string readFile(const std::string& filepath);
-			
-			// Pre-processes the shader source code to retrieve the individual shader programs (vertex, fragment, etc.).
-			std::unordered_map<GLenum, std::string> preProcess(const std::string& source);
-			
-			// Compiles the shader source code into a shader program.
-			void compile(const std::unordered_map<GLenum, std::string>& shaderSources);
 
-			uint32_t m_RendererId; // Metal renderer ID for the shader program
-			std::string m_Name; // Name of the shader
+			// Helper para compilar y crear el PSO
+        	void createPipeline(const std::string& source);
+			
+			std::string m_Name;
+			
+			MTL::Library* m_Library = nullptr;
+			MTL::Function* m_VertexFunction = nullptr;
+			MTL::Function* m_FragmentFunction = nullptr;
+			MTL::RenderPipelineState* m_PipelineState = nullptr;
 	};
 }
