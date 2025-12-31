@@ -56,7 +56,7 @@ project "Sandbox"
 
         postbuildcommands 
         {
-            'cp -R %{prj.location}/assets %{cfg.targetdir}/assets',
+            'cp -R %{prj.location}/assets %{cfg.targetdir}/',
             'cp -f %{prj.location}/config.json %{cfg.targetdir}/config.json || true'
         }
 
