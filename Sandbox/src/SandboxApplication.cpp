@@ -16,31 +16,33 @@ using namespace cabrankengine::platform::opengl;
 
 class ExampleLayer : public Layer {
   public:
-	ExampleLayer() : Layer("Example"), m_CameraController(PerspectiveCamera(PI / 4.f, 16.f / 9.f, 0.1f, 100.f)) {
-		m_CameraController.getCamera().setWorldPosition(Vector3(0.f, 0.f, 10.f));
-		auto shader = m_ShaderLibrary.load("assets/shaders/Lightning.glsl");
-		m_ModelTest = new Model("assets/models/backpack/backpack.obj", shader);
+	ExampleLayer() : Layer("MacOSExample"), m_CameraController(PerspectiveCamera(PI / 4.f, 16.f / 9.f, 0.1f, 100.f)) {
+		auto shader = m_ShaderLibrary.load("assets/shaders/Triangle.metal");
 
-		m_LightEnvironment.DirLight.direction = { 0.0f, 0.0f, 0.0f  }; 
-		m_LightEnvironment.DirLight.lightComponents.ambient = { 0.05f, 0.05f, 0.05f };   // Ambiente muy tenue
-		m_LightEnvironment.DirLight.lightComponents.diffuse = { 0.0f, 0.0f, 0.0f };     // Color "Sol" (blanco cálido)
-		m_LightEnvironment.DirLight.lightComponents.specular = { 0.0f, 0.0f, 0.0f  };
+		// m_CameraController.getCamera().setWorldPosition(Vector3(0.f, 0.f, 10.f));
+		// auto shader = m_ShaderLibrary.load("assets/shaders/Lightning.glsl");
+		// m_ModelTest = new Model("assets/models/backpack/backpack.obj", shader);
 
-		cabrankengine::rendering::PointLight lamp;
-		lamp.position = { 1.0f, 2.0f, 2.0f }; 
+		// m_LightEnvironment.DirLight.direction = { 0.0f, 0.0f, 0.0f  }; 
+		// m_LightEnvironment.DirLight.lightComponents.ambient = { 0.05f, 0.05f, 0.05f };   // Ambiente muy tenue
+		// m_LightEnvironment.DirLight.lightComponents.diffuse = { 0.0f, 0.0f, 0.0f };     // Color "Sol" (blanco cálido)
+		// m_LightEnvironment.DirLight.lightComponents.specular = { 0.0f, 0.0f, 0.0f  };
 
-		lamp.lightComponents.ambient = { 0.1f, 0.1f, 0.1f };
-		lamp.lightComponents.diffuse = { 0.5f, 0.5f, 0.5f };
-		lamp.lightComponents.specular = { 0.8f, 0.8f, 0.8f };
+		// cabrankengine::rendering::PointLight lamp;
+		// lamp.position = { 1.0f, 2.0f, 2.0f }; 
 
-		lamp.constant = 1.0f;
-		lamp.linear = 0.09f;
-		lamp.quadratic = 0.032f;
+		// lamp.lightComponents.ambient = { 0.1f, 0.1f, 0.1f };
+		// lamp.lightComponents.diffuse = { 0.5f, 0.5f, 0.5f };
+		// lamp.lightComponents.specular = { 0.8f, 0.8f, 0.8f };
 
-		m_LightEnvironment.PointLights.push_back(lamp);
+		// lamp.constant = 1.0f;
+		// lamp.linear = 0.09f;
+		// lamp.quadratic = 0.032f;
 
-		m_ShaderLibrary.load("assets/shaders/LightSource.glsl");
-		setupCube();
+		// m_LightEnvironment.PointLights.push_back(lamp);
+
+		// m_ShaderLibrary.load("assets/shaders/LightSource.glsl");
+		// setupCube();
 	}
 
 	void onUpdate(Timestep delta) override {
@@ -48,39 +50,45 @@ class ExampleLayer : public Layer {
 		RenderCommand::setClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
 		RenderCommand::clear();
 
-		m_CameraController.onUpdate(delta);
+		auto shader = m_ShaderLibrary.get("Triangle");
+		shader->bind();
 
-		const auto& camera = m_CameraController.getCamera();
+		RenderCommand::drawIndexed(nullptr);
 
-		Renderer::beginScene(camera.getProjectionMatrix(), camera.getViewMatrix(), m_LightEnvironment);
-
-		m_ModelTest->draw();
-
-		auto lightSourceShader = m_ShaderLibrary.get("LightSource");
-		lightSourceShader->bind();
-		for (const auto& pointLight : m_LightEnvironment.PointLights) {
-			lightSourceShader->setFloat3("debugColor", pointLight.lightComponents.diffuse);
-			Renderer::submit(lightSourceShader, m_CubeVA, translation(pointLight.position));
-		}
-		
 		Renderer::endScene();
+		// m_CameraController.onUpdate(delta);
 
-		TextRenderer::beginScene(camera.getViewMatrix() * camera.getProjectionMatrix());
-		TextRenderer::drawText("HOLA MUNDO!", Vector3(-0.5f, 3.f, 0.f), 0.05f, Vector4(1.f));
-		TextRenderer::endScene();
+		// const auto& camera = m_CameraController.getCamera();
+
+		// Renderer::beginScene(camera.getProjectionMatrix(), camera.getViewMatrix(), m_LightEnvironment);
+
+		// m_ModelTest->draw();
+
+		// auto lightSourceShader = m_ShaderLibrary.get("LightSource");
+		// lightSourceShader->bind();
+		// for (const auto& pointLight : m_LightEnvironment.PointLights) {
+		// 	lightSourceShader->setFloat3("debugColor", pointLight.lightComponents.diffuse);
+		// 	Renderer::submit(lightSourceShader, m_CubeVA, translation(pointLight.position));
+		// }
+		
+		// Renderer::endScene();
+
+		// TextRenderer::beginScene(camera.getViewMatrix() * camera.getProjectionMatrix());
+		// TextRenderer::drawText("HOLA MUNDO!", Vector3(-0.5f, 3.f, 0.f), 0.05f, Vector4(1.f));
+		// TextRenderer::endScene();
 	}
 
-	void onImGuiRender() {
-		CE_PROFILE_FUNCTION();
-		ImGui::Begin("Settings");
+	void onImGuiRender() override {
+		// CE_PROFILE_FUNCTION();
+		// ImGui::Begin("Settings");
 
-		auto& lightSource = m_LightEnvironment.PointLights[0];
+		// auto& lightSource = m_LightEnvironment.PointLights[0];
 
-		ImGui::ColorEdit3("Light Ambient", &lightSource.lightComponents.ambient.x);
-		ImGui::ColorEdit3("Light Diffuse", &lightSource.lightComponents.diffuse.x);
-		ImGui::ColorEdit3("Light Specular", &lightSource.lightComponents.specular.x);
+		// ImGui::ColorEdit3("Light Ambient", &lightSource.lightComponents.ambient.x);
+		// ImGui::ColorEdit3("Light Diffuse", &lightSource.lightComponents.diffuse.x);
+		// ImGui::ColorEdit3("Light Specular", &lightSource.lightComponents.specular.x);
 
-		ImGui::End();
+		// ImGui::End();
 	}
 
   private:
@@ -89,70 +97,6 @@ class ExampleLayer : public Layer {
 	ShaderLibrary m_ShaderLibrary;
 	Model* m_ModelTest = nullptr;
 	Ref<VertexArray> m_CubeVA;
-
-	void setupCube() {
-		m_CubeVA = VertexArray::create();
-
-		float lightningCubeVertices[8 * 36] = {
-			// positions          // normals           // texture coords
-			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
-			0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
-			0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-			0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-			-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
-
-			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
-			0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
-			0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
-			0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
-			-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 1.0f,
-			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
-
-			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-			-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-			-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-
-			0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-			0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-			0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-			0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-			0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-			0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-
-			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
-			0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
-			0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-			0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-			-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
-			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
-
-			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
-			0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
-			0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-			0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-			-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
-			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
-		};
-
-		Ref<VertexBuffer> squareVB = VertexBuffer::create(lightningCubeVertices, sizeof(lightningCubeVertices));
-
-		squareVB->setLayout({ { ShaderDataType::Float3, "pos" }, { ShaderDataType::Float3, "normal" }, { ShaderDataType::Float2, "texCoords" } });
-
-		m_CubeVA->addVertexBuffer(squareVB);
-
-		uint32_t lightningCubeIndices[36];
-		for (int i = 0; i < 36; i++) {
-			lightningCubeIndices[i] = i;
-		}
-
-		Ref<IndexBuffer> squareIB = IndexBuffer::create(lightningCubeIndices, sizeof(lightningCubeIndices) / sizeof(uint32_t));
-
-		m_CubeVA->setIndexBuffer(squareIB);
-	}
 };
 
 class Sandbox : public Application {
