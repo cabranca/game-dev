@@ -60,9 +60,23 @@ namespace cabrankengine::platform::metal {
 	}
 
 	void MetalContext::swapBuffers() {
+		
+		// Liberamos el drawable del frame actual para que el próximo frame pida uno nuevo
+		if (m_CurrentDrawable) {
+			m_CurrentDrawable->release();
+			m_CurrentDrawable = nullptr;
+		}
 	}
 
 	CA::MetalDrawable* MetalContext::getCurrentDrawable() {
-		return m_Swapchain->nextDrawable();
+		// Si ya tenemos uno asignado para este frame, lo devolvemos
+        if (m_CurrentDrawable) 
+            return m_CurrentDrawable;
+
+        // Si no, pedimos uno nuevo y lo guardamos
+        m_CurrentDrawable = m_Swapchain->nextDrawable();
+        
+        // (Opcional pero recomendado) Si m_CurrentDrawable es null, podrías loguear un warning.
+        return m_CurrentDrawable;
 	}
 } // namespace cabrankengine::platform::metal

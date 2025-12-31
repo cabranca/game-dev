@@ -51,9 +51,10 @@ class ExampleLayer : public Layer {
 		RenderCommand::clear();
 
 		auto shader = m_ShaderLibrary.get("Triangle");
-		shader->bind();
 
-		RenderCommand::drawIndexed(nullptr);
+		static auto VA = VertexArray::create();
+
+		Renderer::submit(shader, VA, identityMat());
 
 		Renderer::endScene();
 		// m_CameraController.onUpdate(delta);
@@ -96,7 +97,6 @@ class ExampleLayer : public Layer {
 	CameraController m_CameraController;
 	ShaderLibrary m_ShaderLibrary;
 	Model* m_ModelTest = nullptr;
-	Ref<VertexArray> m_CubeVA;
 };
 
 class Sandbox : public Application {
