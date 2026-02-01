@@ -27,6 +27,7 @@ class ExampleLayer : public Layer {
 		static auto VA = VertexArray::create();
 
 		Renderer::submit(shader, VA, identityMat());
+		Renderer::endScene();
 	}
 
 	void onImGuiRender() override {
