@@ -57,16 +57,10 @@ namespace cabrankengine::rendering {
 		CE_PROFILE_FUNCTION();
 
 		RenderCommand::init();
-<<<<<<< HEAD
 		//Renderer2D::init();
 		//TextRenderer::init();
 		//s_SceneData->lightSSBO = StorageBuffer::create(sizeof(LightBufferHeader) + sizeof(PointLightGPU));
-=======
-		Renderer2D::init();
-		TextRenderer::init();
-		s_SceneData->lightSSBO = StorageBuffer::create(sizeof(LightBufferHeader) + sizeof(PointLightGPU));
-		s_SceneUBO = UniformBuffer::create(sizeof(AltSceneData), 0);
->>>>>>> ea89f562f3bec78a4b626c59cc723a34bd79ff2f
+		//s_SceneUBO = UniformBuffer::create(sizeof(AltSceneData), 0);
 	}
 
 	void Renderer::shutdown() {

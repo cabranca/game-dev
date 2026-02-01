@@ -16,7 +16,7 @@ namespace cabrankengine::scene {
         setupCube();
         setupSphere();
 
-        s_ErrorShader = Shader::create("assets/shaders/Error.glsl");
+        //s_ErrorShader = Shader::create("assets/shaders/Error.glsl");
 	}
 
 	Ref<rendering::Texture2D> DefaultLibrary::getWhiteTexture() {

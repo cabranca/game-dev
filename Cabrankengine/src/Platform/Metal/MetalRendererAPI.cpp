@@ -45,6 +45,27 @@ namespace cabrankengine::platform::metal {
 		// 5. Crear el Encoder (Empezamos a grabar comandos)
 		m_ActiveEncoder = m_ActiveCommandBuffer->renderCommandEncoder(pass);
 		pass->release();
+
+		// --- AGREGAR ESTO ---
+    // El viewport es volátil en Metal, hay que setearlo en cada frame
+    MTL::Viewport viewport;
+    viewport.originX = 0.0;
+    viewport.originY = 0.0;
+    viewport.width = (double)drawable->texture()->width();
+    viewport.height = (double)drawable->texture()->height();
+    viewport.znear = 0.0;
+    viewport.zfar = 1.0;
+    
+    m_ActiveEncoder->setViewport(viewport);
+    
+    // Scissor rect también es necesario a veces
+    MTL::ScissorRect scissor;
+    scissor.x = 0;
+    scissor.y = 0;
+    scissor.width = drawable->texture()->width();
+    scissor.height = drawable->texture()->height();
+    m_ActiveEncoder->setScissorRect(scissor);
+    // --------------------
 	}
 
 	void MetalRendererAPI::draw(const Ref<VertexArray>& vertexArray) {}
