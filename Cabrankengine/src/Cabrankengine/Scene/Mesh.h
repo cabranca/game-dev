@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Cabrankengine/Math/Vector3.h>
-#include <Cabrankengine/Renderer/Material.h>
+#include <Cabrankengine/Math/MatrixFactory.h>
+#include <Cabrankengine/Renderer/Materials/Material.h>
 #include <Cabrankengine/Renderer/Shader.h>
 #include <Cabrankengine/Renderer/Texture.h>
 #include <Cabrankengine/Renderer/VertexArray.h>
@@ -19,7 +19,7 @@ namespace cabrankengine::scene {
 	class Mesh {
 	  public:
 		Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Ref<rendering::Material> material);
-		void draw();
+		void draw(const math::Mat4& transform);
 
 	  private:
 		Ref<rendering::VertexArray> m_VertexArray;

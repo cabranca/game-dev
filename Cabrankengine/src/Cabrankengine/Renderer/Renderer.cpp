@@ -1,12 +1,15 @@
 #include <pch.h>
 #include "Renderer.h"
 
+#include <Cabrankengine/Scene/Camera.h>
+
 #include "Lights.h"
-#include "Material.h"
+#include "Materials/Material.h"
 #include "Renderer2D.h"
 #include "RenderCommand.h"
 #include "StorageBuffer.h"
 #include "TextRenderer.h"
+#include "UniformBuffer.h"
 #include "VertexArray.h"
 
 
@@ -14,14 +17,31 @@ namespace cabrankengine::rendering {
 
 	using namespace math;
 
+	// Estructura auxiliar para la luz (32 bytes total)
+	struct directionalLightData {
+		math::Vector3 direction; // 12 bytes
+		float _Pad0 = 0.0f;      // 4 bytes de relleno (Total: 16)
+
+		math::Vector3 radiance; // 12 bytes
+		float _Pad1 = 0.0f;     // 4 bytes de relleno (Total: 16)
+	};
+
+	struct AltSceneData {
+		Mat4 ViewProjectionMatrix; // 64 bytes
+		directionalLightData DirLight;   // 32 bytes (Offset 64)
+		math::Vector3 CameraPosition;    // 12 bytes (Offset 96) -> Reemplaza al uniform viewPos
+		float _Pad2 = 0.0f;              // 4 bytes (Offset 108 -> Total 112 bytes)
+	};
+
+	static Ref<UniformBuffer> s_SceneUBO;
+	static AltSceneData s_AltSceneData;
+
 	// GLSL std430 alignment rules:
 	// vec4 = 16 bytes. scalar = 4 bytes.
 	// Structs align to largest member (16 bytes).
 	struct PointLightGPU {
 		float position[4];  // x, y, z, padding
-		float ambient[4];   // r, g, b, padding (o intensidad)
-		float diffuse[4];   // r, g, b, padding (o intensidad)
-		float specular[4];  // r, g, b, padding (o intensidad)
+		float radiance[4];   // r, g, b, padding (o intensidad)
 		float constant;
 		float linear;
 		float quadratic;
@@ -37,18 +57,28 @@ namespace cabrankengine::rendering {
 		CE_PROFILE_FUNCTION();
 
 		RenderCommand::init();
+<<<<<<< HEAD
 		//Renderer2D::init();
 		//TextRenderer::init();
 		//s_SceneData->lightSSBO = StorageBuffer::create(sizeof(LightBufferHeader) + sizeof(PointLightGPU));
+=======
+		Renderer2D::init();
+		TextRenderer::init();
+		s_SceneData->lightSSBO = StorageBuffer::create(sizeof(LightBufferHeader) + sizeof(PointLightGPU));
+		s_SceneUBO = UniformBuffer::create(sizeof(AltSceneData), 0);
+>>>>>>> ea89f562f3bec78a4b626c59cc723a34bd79ff2f
 	}
 
 	void Renderer::shutdown() {
 		Renderer2D::shutdown();
 	}
 
-	void Renderer::beginScene(const math::Mat4& projection, const math::Mat4& view, const LightEnvironment& environment) {
-		s_SceneData->projectionMatrix = projection;
-		s_SceneData->viewMatrix = view;
+	void Renderer::beginScene(const cabrankengine::scene::Camera& camera, const LightEnvironment& environment) {
+		s_AltSceneData.ViewProjectionMatrix = camera.getViewProjectionMatrix();
+		s_AltSceneData.DirLight.direction = environment.DirLight.direction;
+		s_AltSceneData.DirLight.radiance = environment.DirLight.radiance;
+		s_AltSceneData.CameraPosition = camera.getWorldPosition();
+		s_SceneUBO->setData(&s_AltSceneData, sizeof(AltSceneData)); // TODO: if this is the same size as in the initialization, why pass it again?
 		s_SceneData->lightEnvironment = environment;
 
 		uploadLightEnvironment();
@@ -60,23 +90,13 @@ namespace cabrankengine::rendering {
 
 	void Renderer::submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const Mat4& transform) {
 		shader->bind();
-		shader->setMat4("projection", s_SceneData->projectionMatrix);
-		shader->setMat4("view", s_SceneData->viewMatrix);
-		shader->setMat4("model", transform);
+		shader->setMat4("u_Model", transform);
 		RenderCommand::drawIndexed(vertexArray);
 	}
 
 	void Renderer::submit(const Ref<Material>& material, const Ref<VertexArray>& vertexArray, const Mat4& transform) {
 		material->bind();
-		auto shader = material->getShader();
-		shader->setMat4("projection", s_SceneData->projectionMatrix);
-		shader->setMat4("view", s_SceneData->viewMatrix);
-		shader->setMat4("model", transform);
-		shader->setFloat3("dirLight.direction", s_SceneData->lightEnvironment.DirLight.direction);
-		shader->setFloat3("dirLight.components.ambient", s_SceneData->lightEnvironment.DirLight.lightComponents.ambient);
-		shader->setFloat3("dirLight.components.diffuse", s_SceneData->lightEnvironment.DirLight.lightComponents.diffuse);
-		shader->setFloat3("dirLight.components.specular", s_SceneData->lightEnvironment.DirLight.lightComponents.specular);
-		vertexArray->bind();
+		material->getShader()->setMat4("u_Model", transform);
 		RenderCommand::drawIndexed(vertexArray);
 	}
 
@@ -102,20 +122,10 @@ namespace cabrankengine::rendering {
 			currentLight->position[2] = light.position.z;
 			currentLight->position[3] = 1.f;
 			
-			currentLight->ambient[0] = light.lightComponents.ambient.x;
-			currentLight->ambient[1] = light.lightComponents.ambient.y;
-			currentLight->ambient[2] = light.lightComponents.ambient.z;
-			currentLight->ambient[3] = 0.f;
-
-			currentLight->diffuse[0] = light.lightComponents.diffuse.x;
-			currentLight->diffuse[1] = light.lightComponents.diffuse.y;
-			currentLight->diffuse[2] = light.lightComponents.diffuse.z;
-			currentLight->diffuse[3] = 0.f;
-
-			currentLight->specular[0] = light.lightComponents.specular.x;
-			currentLight->specular[1] = light.lightComponents.specular.y;
-			currentLight->specular[2] = light.lightComponents.specular.z;
-			currentLight->specular[3] = 0.f;
+			currentLight->radiance[0] = light.radiance.x;
+			currentLight->radiance[1] = light.radiance.y;
+			currentLight->radiance[2] = light.radiance.z;
+			currentLight->radiance[3] = 0.f;
 
 			currentLight->constant = light.constant;
 			currentLight->linear = light.linear;

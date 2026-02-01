@@ -5,7 +5,7 @@ namespace cabrankengine::scene {
 
 	using namespace rendering;
 
-	Model::Model(const std::string& path, const Ref<Shader>& defaultShader) : m_DefaultShader(defaultShader) {
+	Model::Model(const std::string& path, const Ref<PhongMaterial>& material) : m_Material(material) {
 		Assimp::Importer importer;
 		const aiScene* scene = importer.ReadFile(path.c_str(), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs |
 		                                                          aiProcess_CalcTangentSpace);
@@ -18,9 +18,9 @@ namespace cabrankengine::scene {
 		processNode(scene->mRootNode, scene);
 	}
 
-	void Model::draw() {
+	void Model::draw(const math::Mat4& transform) {
 		for (auto& mesh: m_Meshes)
-			mesh.draw();
+			mesh.draw(transform);
 	}
 
 	void Model::processNode(aiNode* node, const aiScene* scene) {
@@ -63,24 +63,22 @@ namespace cabrankengine::scene {
 				indices.push_back(face.mIndices[j]);
 		}
 
-		Ref<Material> meshMaterial = Material::create(m_DefaultShader);
-
 		if (mesh->mMaterialIndex >= 0) {
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
 			// Load diffuse (only support 1 for now)
 			auto diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, TextureType::Diffuse);
 			if (!diffuseMaps.empty())
-				meshMaterial->setDiffuseMap(diffuseMaps[0]);
+				m_Material->setDiffuseMap(diffuseMaps[0]);
 
 			// Load specular (only support 1 for now)
 			auto specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, TextureType::Specular);
 			if (!specularMaps.empty())
-				meshMaterial->setSpecularMap(specularMaps[0]);
+				m_Material->setSpecularMap(specularMaps[0]);
 				
 		}
 
-		return Mesh(vertices, indices, meshMaterial);
+		return Mesh(vertices, indices, m_Material);
 	}
 
 	std::vector<Ref<Texture2D>> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, TextureType typeName) {

@@ -5,10 +5,13 @@
 #include "Lights.h"
 #include "RendererAPI.h"
 
+namespace cabrankengine::scene {
+	class Camera;
+}
+
 namespace cabrankengine::rendering {
 
 	// Forward declarations
-	class Camera; // Represents a camera used for rendering scenes.
 	class Material;
 	class Shader;
 	class StorageBuffer;
@@ -24,7 +27,7 @@ namespace cabrankengine::rendering {
 			static void shutdown();
 
 			// Sets the necessary general data to render a scene, such as the camera, the lighting, etc.
-			static void beginScene(const math::Mat4& projection, const math::Mat4& view, const LightEnvironment& environment);
+			static void beginScene(const cabrankengine::scene::Camera& camera, const LightEnvironment& environment);
 
 			// Ends the current scene, finalizing rendering operations.
 			static void endScene();

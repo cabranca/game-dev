@@ -4,20 +4,14 @@
 
 namespace cabrankengine::rendering {
 
-	struct LightComponents {
-		math::Vector3 ambient{ 1.f };
-		math::Vector3 diffuse{ 1.f };
-		math::Vector3 specular{ 1.f };
-	};
-
 	struct DirectionalLight {
 		math::Vector3 direction{ 0.f, -1.f, 0.f };
-		LightComponents lightComponents;
+		math::Vector3 radiance{ 1.f };
 	};
 
 	struct PointLight {
 		math::Vector3 position;
-		LightComponents lightComponents;
+		math::Vector3 radiance{ 1.f };
 		
 		// Standard Attenuation
 		float constant{ 1.f };
