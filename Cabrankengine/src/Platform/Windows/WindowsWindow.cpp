@@ -54,6 +54,10 @@ namespace cabrankengine {
 		return m_Data.VSync;
 	}
 
+	rendering::GraphicsContext* WindowsWindow::getContext() const {
+		return m_Context;
+	}
+
 	void WindowsWindow::init(const WindowProps& props) {
 		CE_PROFILE_FUNCTION();
 

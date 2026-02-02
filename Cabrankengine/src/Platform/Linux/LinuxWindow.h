@@ -37,6 +37,8 @@ namespace cabrankengine {
 		    // TODO: I think it must be marked override
 		    virtual void* getNativeWindow() const override { return m_Window; }
 
+            rendering::GraphicsContext* getContext() const override;
+
         private:
             // Initialize the window from the given properties
             void init(const WindowProps& props);
