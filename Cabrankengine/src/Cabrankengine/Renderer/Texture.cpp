@@ -3,7 +3,9 @@
 
 #ifdef CE_RENDERER_METAL
 	#include <Platform/Metal/MetalTexture.h>
-#elifdef CE_RENDERER_OPENGL
+#endif
+
+#ifdef CE_RENDERER_OPENGL
 	#include <Platform/OpenGL/OpenGLTexture.h>
 #endif
 

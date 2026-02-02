@@ -3,7 +3,9 @@
 
 #ifdef CE_RENDERER_METAL
 	#include <Platform/Metal/MetalShader.h>
-#elifdef CE_RENDERER_OPENGL
+#endif
+
+#ifdef CE_RENDERER_OPENGL
 	#include <Platform/OpenGL/OpenGLShader.h>
 #endif
 

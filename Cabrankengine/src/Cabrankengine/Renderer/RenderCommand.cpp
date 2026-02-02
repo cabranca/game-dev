@@ -8,8 +8,9 @@ namespace cabrankengine::rendering {
 
 	RendererAPI* RenderCommand::s_RendererAPI = new platform::opengl::OpenGLRendererAPI;
 }
+#endif
 
-#elifdef CE_RENDERER_METAL
+#ifdef CE_RENDERER_METAL
 #include <Platform/Metal/MetalRendererAPI.h>
 
 namespace cabrankengine::rendering {

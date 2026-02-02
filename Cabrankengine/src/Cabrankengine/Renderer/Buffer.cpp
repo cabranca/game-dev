@@ -3,7 +3,9 @@
 
 #ifdef CE_RENDERER_METAL
 	#include <Platform/Metal/MetalBuffer.h>
-#elifdef CE_RENDERER_OPENGL
+#endif
+
+#ifdef CE_RENDERER_OPENGL
 	#include <Platform/OpenGL/OpenGLBuffer.h>
 #endif
 
@@ -55,7 +57,7 @@ namespace cabrankengine::rendering {
 			return nullptr;
 #ifdef CE_RENDERER_OPENGL
 			case RendererAPI::API::OpenGL:
-				return createRef<platform::opengl::OpenGLIndexxBuffer>(indices, count);
+				return createRef<platform::opengl::OpenGLIndexBuffer>(indices, count);
 #endif
 #ifdef CE_RENDERER_METAL
 			case RendererAPI::API::Metal:
