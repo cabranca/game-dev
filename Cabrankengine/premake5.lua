@@ -60,6 +60,7 @@ project "Cabrankengine"
             "src/Platform/OpenGL/**.cpp",
         }
 
+        includedirs { "src" }
         libdirs {  "%{wks.location}/Cabrankengine/vendor/irrKlang/so" }
         links { "X11", "Xrandr", "Xi", "Xxf86vm", "Xcursor", "pthread", "dl", "GL", "glad" }
 
