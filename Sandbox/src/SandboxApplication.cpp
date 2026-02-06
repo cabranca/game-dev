@@ -47,7 +47,7 @@ class ExampleLayer : public Layer {
 	ExampleLayer() : Layer("Example"), m_CameraController(PerspectiveCamera(PI / 4.f, 16.f / 9.f, 0.1f, 100.f)) {
 		m_CameraController.getCamera().setWorldPosition(Vector3(0.f, 0.f, 10.f));
 
-		auto pbrShader = Shader::create("assets/shaders/PBR.glsl");
+		auto pbrShader = Shader::create("assets/shaders/PBR");
 		m_PBRMaterial = std::make_shared<PBRMaterial>(pbrShader);
 		m_Sphere = DefaultLibrary::getSphere();
 
