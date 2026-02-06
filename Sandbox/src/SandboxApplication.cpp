@@ -16,7 +16,7 @@ using namespace cabrankengine::scene;
 class ExampleLayer : public Layer {
   public:
 	ExampleLayer() : Layer("Example"), m_CameraController(PerspectiveCamera(PI / 4.f, 16.f / 9.f, 0.1f, 100.f)) {
-		auto shader = m_ShaderLibrary.load("assets/shaders/Triangle.metal");
+		auto shader = m_ShaderLibrary.load("assets/shaders/Triangle");
 	}
 
 	void onUpdate(Timestep delta) override {
