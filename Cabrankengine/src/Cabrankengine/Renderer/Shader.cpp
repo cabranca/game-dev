@@ -9,47 +9,28 @@
 	#include <Platform/OpenGL/OpenGLShader.h>
 #endif
 
-#include "Renderer.h"
-
-
 namespace cabrankengine::rendering {
 
 	Ref<Shader> Shader::create(const std::string& filepath) {
-		switch (Renderer::getAPI()) {
-			case RendererAPI::API::None:
-				CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
-				return nullptr;
 #ifdef CE_RENDERER_OPENGL
-			case RendererAPI::API::OpenGL:
-				return createRef<platform::opengl::OpenGLShader>(filepath);
-#endif
-#ifdef CE_RENDERER_METAL
-			case RendererAPI::API::Metal:
-				return createRef<platform::metal::MetalShader>(filepath);
-#endif
-		}
-		CE_CORE_ASSERT(false, "Unknown RendererAPI!");
+		return createRef<platform::opengl::OpenGLShader>(filepath);
+#elif defined(CE_RENDERER_METAL)
+		return createRef<platform::metal::MetalShader>(filepath);
+#else
+		CE_CORE_ASSERT(false, "No renderer API defined!");
 		return nullptr;
+#endif
 	}
 
 	Ref<Shader> Shader::create(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc) {
-		switch (Renderer::getAPI()) {
-			case RendererAPI::API::None:
-				CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
-				return nullptr;
 #ifdef CE_RENDERER_OPENGL
-			case RendererAPI::API::OpenGL:
-				return createRef<platform::opengl::OpenGLShader>(name, vertexSrc, fragmentSrc);
-#endif
-#ifdef CE_RENDERER_METAL
-			case RendererAPI::API::Metal:
-				return createRef<platform::metal::MetalShader>(name, vertexSrc, fragmentSrc);
-#endif
-		}
-
-		CE_CORE_ASSERT(false, "Unknown RendererAPI!");
-
+		return createRef<platform::opengl::OpenGLShader>(name, vertexSrc, fragmentSrc);
+#elif defined(CE_RENDERER_METAL)
+		return createRef<platform::metal::MetalShader>(name, vertexSrc, fragmentSrc);
+#else
+		CE_CORE_ASSERT(false, "No renderer API defined!");
 		return nullptr;
+#endif
 	}
 
 	void ShaderLibrary::add(const std::string& name, const Ref<Shader>& shader) {

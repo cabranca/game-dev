@@ -88,7 +88,7 @@ namespace cabrankengine::rendering {
 		for (uint32_t i = 0; i < s_Data.MaxTextureSlots; i++)
 			samplers[i] = i;
 
-		s_Data.TextureShader = Shader::create("assets/shaders/Texture.glsl");
+		s_Data.TextureShader = Shader::create("assets/shaders/Texture");
 		s_Data.TextureShader->bind();
 		s_Data.TextureShader->setIntArray("u_Textures", s_Data.MaxTextureSlots, samplers);
 

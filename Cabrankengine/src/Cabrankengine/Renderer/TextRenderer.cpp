@@ -71,7 +71,7 @@ namespace cabrankengine::rendering {
 		s_Data.textVertexArray->setIndexBuffer(textIndexBuffer);
 		delete[] quadIndices;
 
-		s_Data.textShader = Shader::create("assets/shaders/Text.glsl");
+		s_Data.textShader = Shader::create("assets/shaders/Text");
 		s_Data.textShader->bind();
 
 		int32_t samplers[s_Data.maxTextureSlots];
