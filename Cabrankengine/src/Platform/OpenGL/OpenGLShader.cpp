@@ -25,7 +25,7 @@ namespace cabrankengine::platform::opengl {
 		std::filesystem::path path(filepath);
 		m_Name = path.stem().string();
 
-		std::string shaderSource = readFile(filepath);
+		std::string shaderSource = readFile(filepath + ".glsl");
 		auto shaderSources = preProcess(shaderSource);
 		compile(shaderSources);
 	}

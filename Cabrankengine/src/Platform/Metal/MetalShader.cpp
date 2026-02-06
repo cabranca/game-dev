@@ -21,7 +21,7 @@ namespace cabrankengine::platform::metal {
 		std::filesystem::path path(filepath);
 		m_Name = path.stem().string();
 
-		std::string source = readFile(filepath);
+		std::string source = readFile(filepath + ".metal");
 		createPipeline(source);
 	}
 
