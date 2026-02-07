@@ -2,6 +2,10 @@
 
 #include <Cabrankengine/Renderer/Texture.h>
 
+namespace MTL {
+	class Texture;
+}
+
 namespace cabrankengine::platform::metal {
 
 	class MetalTexture2D : public rendering::Texture2D {
@@ -40,13 +44,17 @@ namespace cabrankengine::platform::metal {
 				return m_RendererID == other.getRendererID();
 			}
 		private:
-			rendering::TextureSpecification m_Specification; // Specification of the texture, including width, height, format, and mip generation status
+			void createTexture(uint32_t width, uint32_t height, rendering::ImageFormat format);
 
-			std::string m_Path; // Path to the texture file, used for loading the texture from disk
-			bool m_IsLoaded = false; // Flag indicating whether the texture has been loaded successfully
-			uint32_t m_Width, m_Height; // Width and height of the texture, used for rendering and mip generation
-			uint32_t m_RendererID; // Renderer ID of the texture, used by the graphics API to identify the texture
-			unsigned int m_InternalFormat, m_DataFormat; // Internal format and data format of the texture, used by the graphics API for texture creation and binding
+			rendering::TextureSpecification m_Specification;
+
+			std::string m_Path;
+			bool m_IsLoaded = false;
+			uint32_t m_Width = 0, m_Height = 0;
+			uint32_t m_RendererID = 0; // Kept for interface compatibility (operator==)
+			uint32_t m_BytesPerPixel = 4;
+
+			MTL::Texture* m_Texture = nullptr;
 	};
 
 }

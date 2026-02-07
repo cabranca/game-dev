@@ -2,6 +2,10 @@
 
 #include <Cabrankengine/Renderer/VertexArray.h>
 
+namespace MTL {
+	class VertexDescriptor;
+}
+
 namespace cabrankengine::platform::metal {
 
 	class MetalVertexArray : public rendering::VertexArray {
@@ -27,10 +31,13 @@ namespace cabrankengine::platform::metal {
 			// Returns the index buffer in the vertex array.
 			virtual const Ref<rendering::IndexBuffer>& getIndexBuffer() const override { return m_IndexBuffer; }
 
+			// Returns the vertex descriptor for the vertex array.
+			MTL::VertexDescriptor* getVertexDescriptor() const { return m_VertexDescriptor; }
+
 		private:
 			std::vector<Ref<rendering::VertexBuffer>> m_VertexBuffers; // Vector of vertex buffers in the vertex array
 			Ref<rendering::IndexBuffer> m_IndexBuffer; // Index buffer in the vertex array
-
-			uint32_t m_RendererId; // Renderer ID for the Metal vertex array, used to identify it in the Metal context
+			MTL::VertexDescriptor* m_VertexDescriptor; // Vertex descriptor for the vertex array
+			uint32_t m_VertexAttributeIndex; // Index of the vertex attribute in the vertex descriptor
 	};
 }

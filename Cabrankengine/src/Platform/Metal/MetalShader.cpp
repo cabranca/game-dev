@@ -22,7 +22,7 @@ namespace cabrankengine::platform::metal {
 		m_Name = path.stem().string();
 
 		std::string source = readFile(filepath + ".metal");
-		createPipeline(source);
+		compileLibrary(source);
 	}
 
 	MetalShader::MetalShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc) : m_Name(name) {
@@ -31,7 +31,7 @@ namespace cabrankengine::platform::metal {
 		// En Metal solemos tener todo en un solo string/archivo,
 		// así que concatenamos o asumimos que 'vertexSrc' tiene todo si es un string raw.
 		std::string source = vertexSrc + "\n" + fragmentSrc;
-		createPipeline(source);
+		compileLibrary(source);
 	}
 
 	MetalShader::~MetalShader() {
@@ -49,34 +49,81 @@ namespace cabrankengine::platform::metal {
 
 	void MetalShader::bind() const {
 		CE_PROFILE_FUNCTION();
-		// ACÁ está el truco: Le decimos a la API estática que use este PSO
-		MetalRendererAPI::SetCurrentPipelineState(m_PipelineState);
+		// Tell the API to use this shader — PSO creation is deferred until drawIndexed()
+		// where the vertex descriptor is available from the VertexArray.
+		MetalRendererAPI::SetCurrentShader(const_cast<MetalShader*>(this));
 	}
 
 	void MetalShader::unbind() const {}
 
+	// ---- Uniform name → Metal buffer index mapping ----
+	// Metal doesn't have named uniforms like OpenGL. Instead, data is set on
+	// numbered buffer indices ([[buffer(N)]]). This map bridges the two worlds.
+	// TODO: Replace with Metal shader reflection for automatic discovery.
+	uint32_t MetalShader::getBufferIndex(const std::string& name) const {
+		static const std::unordered_map<std::string, uint32_t> s_NameToIndex = {
+			{ "u_ViewProjection", 30 },
+			{ "u_Model",          31 },
+		};
+
+		auto it = s_NameToIndex.find(name);
+		if (it != s_NameToIndex.end())
+			return it->second;
+
+		CE_CORE_WARN("MetalShader: Unknown uniform name '{}', defaulting to buffer index 30", name);
+		return 30;
+	}
+
 	void MetalShader::setInt(const std::string& name, int value) {
 		CE_PROFILE_FUNCTION();
+		uint32_t idx = getBufferIndex(name);
+		auto& buf = m_PendingVertexBytes[idx];
+		buf.resize(sizeof(int));
+		memcpy(buf.data(), &value, sizeof(int));
 	}
 
 	void MetalShader::setIntArray(const std::string& name, uint32_t count, int* values) {
 		CE_PROFILE_FUNCTION();
+		// In Metal, sampler indices are not needed — textures are bound directly by slot.
+		// This is intentionally a no-op for the "u_Textures" pattern from OpenGL.
 	}
 
 	void MetalShader::setFloat(const std::string& name, float value) {
 		CE_PROFILE_FUNCTION();
+		uint32_t idx = getBufferIndex(name);
+		auto& buf = m_PendingVertexBytes[idx];
+		buf.resize(sizeof(float));
+		memcpy(buf.data(), &value, sizeof(float));
 	}
 
 	void MetalShader::setFloat3(const std::string& name, const Vector3& vector) {
 		CE_PROFILE_FUNCTION();
+		uint32_t idx = getBufferIndex(name);
+		auto& buf = m_PendingVertexBytes[idx];
+		// Metal expects float3 to be 16-byte aligned (same as float4)
+		buf.resize(sizeof(float) * 4, 0);
+		memcpy(buf.data(), &vector, sizeof(float) * 3);
 	}
 
 	void MetalShader::setFloat4(const std::string& name, const Vector4& vector) {
 		CE_PROFILE_FUNCTION();
+		uint32_t idx = getBufferIndex(name);
+		auto& buf = m_PendingVertexBytes[idx];
+		buf.resize(sizeof(float) * 4);
+		memcpy(buf.data(), &vector, sizeof(float) * 4);
 	}
 
 	void MetalShader::setMat4(const std::string& name, const Mat4& value) {
 		CE_PROFILE_FUNCTION();
+		uint32_t idx = getBufferIndex(name);
+		auto& buf = m_PendingVertexBytes[idx];
+		buf.resize(sizeof(float) * 16);
+
+		// Our Mat4 is row-major with mat[row][col] layout. Metal's float4x4 is
+		// column-major with mat[col][row]. When we memcpy the raw floats, Metal
+		// reads each row as a column — the same trick that works with OpenGL.
+		// No transpose needed.
+		memcpy(buf.data(), &value, sizeof(float) * 16);
 	}
 
 	std::string MetalShader::readFile(const std::string& filepath) {
@@ -96,7 +143,7 @@ namespace cabrankengine::platform::metal {
 		return result;
 	}
 
-	void MetalShader::createPipeline(const std::string& source) {
+	void MetalShader::compileLibrary(const std::string& source) {
 		// 1. Obtener Device
 		const auto& window = Application::get().getWindow();
 		MetalContext* context = static_cast<MetalContext*>(window.getContext());
@@ -123,51 +170,27 @@ namespace cabrankengine::platform::metal {
 			return;
 		}
 
-		// 4. Configurar Vertex Descriptor (IMPORTANTE: Esto debe coincidir con tu VertexBuffer)
-		// Asumimos layout estándar: Buffer 0, Stride dinámico, Atributos float3, float2, etc.
-		MTL::VertexDescriptor* vertexDesc = MTL::VertexDescriptor::alloc()->init();
+		nsSource->release();
+	}
 
-		// Atributo 0: Posición (Float3) - Offset 0
-		vertexDesc->attributes()->object(0)->setFormat(MTL::VertexFormatFloat3);
-		vertexDesc->attributes()->object(0)->setOffset(0);
-		vertexDesc->attributes()->object(0)->setBufferIndex(0);
+	void MetalShader::ensurePipelineState(MTL::VertexDescriptor* vertexDescriptor) {
+		if (m_PipelineState) return; // already created (simplistic, improve later)
 
-		// Atributo 1: Color/TexCoord (Float4/Float2) - Offset 12 (3 floats * 4 bytes)
-		// Por ahora hardcodeamos para el Hello Triangle que usa Float4 color
-		vertexDesc->attributes()->object(1)->setFormat(MTL::VertexFormatFloat4);
-		vertexDesc->attributes()->object(1)->setOffset(12);
-		vertexDesc->attributes()->object(1)->setBufferIndex(0);
+		auto* context = static_cast<MetalContext*>(Application::get().getWindow().getContext());
+		MTL::Device* device = context->getDevice();
 
-		// Layout Buffer 0
-		vertexDesc->layouts()->object(0)->setStride(12 + 16); // 3 floats + 4 floats
-		vertexDesc->layouts()->object(0)->setStepRate(1);
-		vertexDesc->layouts()->object(0)->setStepFunction(MTL::VertexStepFunctionPerVertex);
+		MTL::RenderPipelineDescriptor* desc = MTL::RenderPipelineDescriptor::alloc()->init();
+		desc->setVertexFunction(m_VertexFunction);
+		desc->setFragmentFunction(m_FragmentFunction);
+		desc->setVertexDescriptor(vertexDescriptor);  // <-- from the vertex array!
+		desc->colorAttachments()->object(0)->setPixelFormat(MTL::PixelFormatBGRA8Unorm);
 
-		// 5. Configurar Pipeline Descriptor
-		MTL::RenderPipelineDescriptor* pipelineDesc = MTL::RenderPipelineDescriptor::alloc()->init();
-		pipelineDesc->setVertexFunction(m_VertexFunction);
-		pipelineDesc->setFragmentFunction(m_FragmentFunction);
-		// pipelineDesc->setVertexDescriptor(vertexDesc); // Comentado hasta que usemos VertexBuffers reales
-
-		// Formato de Color (Debe coincidir con Swapchain)
-		pipelineDesc->colorAttachments()->object(0)->setPixelFormat(MTL::PixelFormatBGRA8Unorm);
-
-		// Configurar Blending (Alpha Blend por defecto)
-		// auto colorAttachment = pipelineDesc->colorAttachments()->object(0);
-		// colorAttachment->setBlendingEnabled(true);
-		// colorAttachment->setRgbBlendOperation(MTL::BlendOperationAdd);
-		// colorAttachment->setAlphaBlendOperation(MTL::BlendOperationAdd);
-		// colorAttachment->setSourceRGBBlendFactor(MTL::BlendFactorSourceAlpha);
-		// colorAttachment->setDestinationRGBBlendFactor(MTL::BlendFactorOneMinusSourceAlpha);
-
-		// 6. Crear Estado
-		m_PipelineState = device->newRenderPipelineState(pipelineDesc, &error);
-
+		NS::Error* error = nullptr;
+		m_PipelineState = device->newRenderPipelineState(desc, &error);
+		
 		if (!m_PipelineState)
 			CE_CORE_ERROR("Error pipeline: {}", error->localizedDescription()->utf8String());
 
-		vertexDesc->release();
-		pipelineDesc->release();
-		nsSource->release();
+		desc->release();
 	}
 } // namespace cabrankengine::platform::metal

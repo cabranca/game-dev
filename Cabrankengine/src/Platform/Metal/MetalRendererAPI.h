@@ -5,10 +5,11 @@
 namespace MTL {
 	class RenderCommandEncoder;
 	class CommandBuffer;
-	class RenderPipelineState;
 } // namespace MTL
 
 namespace cabrankengine::platform::metal {
+
+	class MetalShader; // Forward declaration
 
 	class MetalRendererAPI : public rendering::RendererAPI {
 	  public:
@@ -35,17 +36,20 @@ namespace cabrankengine::platform::metal {
 			return API::Metal;
 		}
 
-		static void SetCurrentPipelineState(MTL::RenderPipelineState* pipelineState);
+		// Sets the currently active Metal shader for the next draw call.
+		static void SetCurrentShader(MetalShader* shader);
+
+		// Returns the active render command encoder (used by textures to bind themselves).
+		static MTL::RenderCommandEncoder* GetActiveEncoder() { return s_ActiveEncoder; }
 
 		void endFrame() override;
 
 	  private:
 		math::Vector4 m_ClearColor = { 0.f, 0.f, 0.f, 1.f };
 
-		// Estado global del frame actual
-        // Podrían ser miembros estáticos o singleton interno si RendererAPI es único
+		// Per-frame state (static so other Metal subsystems can access them)
         MTL::CommandBuffer* m_ActiveCommandBuffer = nullptr;
-        MTL::RenderCommandEncoder* m_ActiveEncoder = nullptr;
-		inline static MTL::RenderPipelineState* s_CurrentPipelineState = nullptr;
+        inline static MTL::RenderCommandEncoder* s_ActiveEncoder = nullptr;
+		inline static MetalShader* s_CurrentShader = nullptr;
 	};
 } // namespace cabrankengine::platform::metal

@@ -2,6 +2,10 @@
 
 #include <Cabrankengine/Renderer/Buffer.h>
 
+namespace MTL {
+	class Buffer;
+}
+
 namespace cabrankengine::platform::metal {
 
 	class MetalVertexBuffer : public rendering::VertexBuffer {
@@ -24,8 +28,12 @@ namespace cabrankengine::platform::metal {
 
 			virtual void setData(const void* data, uint32_t size) override;
 
+			// Returns the Metal buffer for the vertex buffer.
+			MTL::Buffer* getBuffer() const { return m_Buffer; }
+
 		private:
-			uint32_t m_RendererId; // Metal renderer ID for the vertex buffer
+			MTL::Buffer* m_Buffer; // Metal buffer for the vertex buffer
+			uint32_t m_Size; // Size of the vertex buffer
 			rendering::BufferLayout m_Layout; // Layout of the vertex buffer, defining how the vertex attributes are organized
 	};
 
@@ -43,8 +51,11 @@ namespace cabrankengine::platform::metal {
 			// Returns the number of indices in the index buffer.
 			virtual uint32_t getCount() const override { return m_Count; }
 
+			// Returns the Metal buffer for the index buffer.
+			MTL::Buffer* getBuffer() const { return m_Buffer; }
+
 		private:
-			uint32_t m_RendererId; // Metal renderer ID for the index buffer
+			MTL::Buffer* m_Buffer; // Metal buffer for the index buffer
 			uint32_t m_Count; // Number of indices in the index buffer
 	};
 }
