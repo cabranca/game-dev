@@ -1,19 +1,22 @@
 #include <metal_stdlib>
 using namespace metal;
 
+// Must match the BufferLayout in the application:
+// { Float3 "a_Position", Float4 "a_Color" }
+struct VertexIn {
+    float3 position [[attribute(0)]];
+    float4 color    [[attribute(1)]];
+};
+
 struct VertexOut {
     float4 position [[position]];
     float4 color;
 };
 
-// Shader simple con datos hardcoded para probar el pipeline
-vertex VertexOut vertex_main(uint vertexID [[vertex_id]]) {
-    float2 positions[3] = { {0.0, 0.5}, {0.5, -0.5}, {-0.5, -0.5} };
-    float3 colors[3] = { {1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0} };
-
+vertex VertexOut vertex_main(VertexIn in [[stage_in]]) {
     VertexOut out;
-    out.position = float4(positions[vertexID], 0.0, 1.0);
-    out.color = float4(colors[vertexID], 1.0);
+    out.position = float4(in.position, 1.0);
+    out.color = in.color;
     return out;
 }
 
