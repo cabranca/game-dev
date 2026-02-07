@@ -7,6 +7,7 @@
 #include <Cabrankengine/Events/ApplicationEvent.h>
 #include <Cabrankengine/ImGui/ImGuiLayer.h>
 #include <Cabrankengine/Renderer/Renderer.h>
+#include <Cabrankengine/Renderer/RenderCommand.h>
 #include <Cabrankengine/Scene/DefaultLibrary.h>
 
 #include "AudioEngine.h"
@@ -71,6 +72,11 @@ namespace cabrankengine {
 					layer->onImGuiRender();
 			}
 			m_ImGuiLayer->end();
+
+			// Finalize the frame's GPU commands (commit command buffer, present drawable).
+			// This is a no-op on OpenGL. On Metal it must happen exactly once per frame,
+			// after all rendering (Renderer, Renderer2D, TextRenderer, ImGui) is complete.
+			RenderCommand::endFrame();
 
 			m_Window->onUpdate();
 		}

@@ -58,7 +58,7 @@ namespace cabrankengine::rendering {
 
 		RenderCommand::init();
 		Renderer2D::init();
-		TextRenderer::init();
+		//TextRenderer::init();
 		s_SceneData->lightSSBO = StorageBuffer::create(sizeof(LightBufferHeader) + sizeof(PointLightGPU));
 		s_SceneUBO = UniformBuffer::create(sizeof(AltSceneData), 0);
 	}
@@ -79,7 +79,8 @@ namespace cabrankengine::rendering {
 	}
 
 	void Renderer::endScene() {
-		RenderCommand::endFrame();
+		// endFrame() is now called once per frame in the application loop,
+		// after all rendering subsystems (Renderer, Renderer2D, etc.) are done.
 	}
 
 	void Renderer::submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const Mat4& transform) {
