@@ -79,9 +79,9 @@ void Sandbox2D::onUpdate(cabrankengine::Timestep delta) {
 	    Renderer2D::drawQuad(transform->Position, { 100.0f, 100.0f }, m_SquareColor);
 		Renderer2D::endScene();
 
-		TextRenderer::beginScene(m_Camera.getViewProjectionMatrix());
-		TextRenderer::drawText("HOLA MUNDO!", Vector3(0.f, 0.f, 0.1f), 1.f, Vector4(1.f));
-		TextRenderer::endScene();
+		// TextRenderer::beginScene(m_Camera.getViewProjectionMatrix());
+		// TextRenderer::drawText("HOLA MUNDO!", Vector3(0.f, 0.f, 0.1f), 1.f, Vector4(1.f));
+		// TextRenderer::endScene();
 	}
 }
 
