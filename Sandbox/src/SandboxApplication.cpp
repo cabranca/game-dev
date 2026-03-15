@@ -11,15 +11,61 @@ using namespace cabrankengine::math;
 using namespace cabrankengine::rendering;
 using namespace cabrankengine::scene;
 
+#ifdef CE_RENDERER_METAL
+
+class ExampleLayer : public Layer {
+  public:
+	ExampleLayer() : Layer("Example"), m_CameraController(PerspectiveCamera(PI / 4.f, 16.f / 9.f, 0.1f, 100.f)) {
+		m_ShaderLibrary.load("assets/shaders/Triangle");
+
+		// --- Vertex data: position (Float3) + color (Float4) ---
+		float vertices[] = {
+			// x      y      z       r     g     b     a
+			-0.5f, -0.5f,  0.0f,   1.0f, 0.0f, 0.0f, 1.0f,  // bottom-left  (red)
+			 0.5f, -0.5f,  0.0f,   0.0f, 1.0f, 0.0f, 1.0f,  // bottom-right (green)
+			 0.0f,  0.5f,  0.0f,   0.0f, 0.0f, 1.0f, 1.0f,  // top-center   (blue)
+		};
+
+		auto vb = VertexBuffer::create(vertices, sizeof(vertices));
+		vb->setLayout({
+			{ ShaderDataType::Float3, "a_Position" },
+			{ ShaderDataType::Float4, "a_Color" }
+		});
+
+		uint32_t indices[] = { 0, 1, 2 };
+		auto ib = IndexBuffer::create(indices, 3);
+
+		m_VertexArray = VertexArray::create();
+		m_VertexArray->addVertexBuffer(vb);
+		m_VertexArray->setIndexBuffer(ib);
+	}
+
+	void onUpdate(Timestep delta) override {
+		RenderCommand::setClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
+		RenderCommand::clear();
+
+		auto shader = m_ShaderLibrary.get("Triangle");
+		Renderer::submit(shader, m_VertexArray, identityMat());
+		Renderer::endScene();
+	}
+
+	void onImGuiRender() override {
+	}
+
+  private:
+	CameraController m_CameraController;
+	ShaderLibrary m_ShaderLibrary;
+	Ref<VertexArray> m_VertexArray;
+};
+#endif
+
+#ifdef CE_RENDERER_OPENGL
 class ExampleLayer : public Layer {
   public:
 	ExampleLayer() : Layer("Example"), m_CameraController(PerspectiveCamera(PI / 4.f, 16.f / 9.f, 0.1f, 100.f)) {
 		m_CameraController.getCamera().setWorldPosition(Vector3(0.f, 0.f, 10.f));
-		// auto shader = m_ShaderLibrary.load("assets/shaders/Lightning.glsl");
-		// auto phongMaterial = std::make_shared<PhongMaterial>(shader);
-		// m_ModelTest = new Model("assets/models/backpack/backpack.obj", phongMaterial);
 
-		auto pbrShader = Shader::create("assets/shaders/PBR.glsl");
+		auto pbrShader = Shader::create("assets/shaders/PBR");
 		m_PBRMaterial = std::make_shared<PBRMaterial>(pbrShader);
 		m_Sphere = DefaultLibrary::getSphere();
 
@@ -36,9 +82,6 @@ class ExampleLayer : public Layer {
 		lamp.quadratic = 0.032f;
 
 		m_LightEnvironment.PointLights.push_back(lamp);
-
-		// auto lightSource = m_ShaderLibrary.load("assets/shaders/LightSource.glsl");
-		// m_Cube = std::make_shared<CubeMesh>(lightSource);
 	}
 
 	void onUpdate(Timestep delta) override {
@@ -52,17 +95,6 @@ class ExampleLayer : public Layer {
 
 		Renderer::beginScene(camera, m_LightEnvironment);
 
-		//m_ModelTest->draw();
-
-		// auto lightSourceShader = m_ShaderLibrary.get("LightSource");
-		// lightSourceShader->bind();
-		// for (const auto& pointLight : m_LightEnvironment.PointLights) {
-		// 	lightSourceShader->setFloat3("debugColor", pointLight.radiance);
-		// 	m_Cube->draw(translation(pointLight.position));
-		// }
-
-		// auto errorShader = DefaultLibrary::getErrorShader();
-		//auto cubeMesh = DefaultLibrary::getCube();
 		Renderer::submit(m_PBRMaterial, m_Sphere, scaleUniform(5.f));
 		
 		Renderer::endScene();
@@ -95,17 +127,16 @@ class ExampleLayer : public Layer {
 	LightEnvironment m_LightEnvironment;
 	CameraController m_CameraController;
 	ShaderLibrary m_ShaderLibrary;
-	Model* m_ModelTest = nullptr;
-	Ref<VertexArray> m_Cube = nullptr;
 	Ref<PBRMaterial> m_PBRMaterial = nullptr;
 	Ref<VertexArray> m_Sphere = nullptr;
 };
+#endif
 
 class Sandbox : public Application {
   public:
 	Sandbox() {
-		pushLayer(new ExampleLayer());
-		//pushLayer(new Sandbox2D());
+		//pushLayer(new ExampleLayer());
+		pushLayer(new Sandbox2D());
 	}
 	~Sandbox() {}
 };

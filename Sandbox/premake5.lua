@@ -9,7 +9,7 @@ project "Sandbox"
 
     files {"src/**.h", "src/**.cpp"}
 
-    includedirs
+    externalincludedirs
     {
         "%{IncludeDir.assimp}", "%{IncludeDir.ImGui}", "%{IncludeDir.irrKlang}",
         "%{IncludeDir.spdlog}", "%{wks.location}/Cabrankengine/src",
@@ -17,12 +17,14 @@ project "Sandbox"
 
     links 
     {
-        "Cabrankengine", "Assimp", "FreeType", "GLFW", "glad", "ImGui"
+        "Cabrankengine", "Assimp", "FreeType", "GLFW", "ImGui"
     }
 
     filter "system:windows"
         systemversion "latest"
         buildoptions { "/utf-8" }
+
+        links { "glad" }
 
         postbuildcommands
         {
@@ -37,13 +39,25 @@ project "Sandbox"
 
         libdirs { "%{wks.location}/Cabrankengine/vendor/irrKlang/so" }
         links { "IrrKlang" }
-        links { "X11", "Xrandr", "Xi", "Xxf86vm", "Xcursor", "pthread", "dl", "GL", "z" }
+        links { "X11", "Xrandr", "Xi", "Xxf86vm", "Xcursor", "pthread", "dl", "GL", "z", "glad" }
         linkoptions { "-Wl,-rpath,'$$ORIGIN'" }
         postbuildcommands
         {
             'cp -ru %{wks.location}/Cabrankengine/vendor/irrKlang/so/* %{cfg.targetdir}/',
             'cp -ru %{prj.location}/assets/ %{cfg.targetdir}/',
             'cp -u %{prj.location}/config.json %{cfg.targetdir}/config.json 2>/dev/null || true'
+        }
+
+    filter "system:macosx"
+        systemversion "12.0"
+        pic "On"
+
+        links { "Cocoa.framework", "IOKit.framework", "Foundation.framework", "Metal.framework", "QuartzCore.framework", "z" }
+
+        postbuildcommands 
+        {
+            'cp -R %{prj.location}/assets %{cfg.targetdir}/',
+            'cp -f %{prj.location}/config.json %{cfg.targetdir}/config.json || true'
         }
 
     filter "configurations:Debug"

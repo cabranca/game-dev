@@ -19,6 +19,9 @@ namespace cabrankengine::rendering {
 			case ShaderDataType::Int3:    return 4 * 3;
 			case ShaderDataType::Int4:    return 4 * 4;
 			case ShaderDataType::Bool:    return 1;
+			default:
+				CE_CORE_ASSERT(false, "Unknown Shader Type!");
+				return 0;
 		}
 		CE_CORE_ASSERT(false, "Unknown Shader Type!");
 		return 0;
@@ -51,6 +54,9 @@ namespace cabrankengine::rendering {
 				case ShaderDataType::Int3:    return 3;
 				case ShaderDataType::Int4:    return 4;
 				case ShaderDataType::Bool:    return 1;
+				default:
+					CE_CORE_ASSERT(false, "Unknown Shader Type!");
+					return 0;
 			}
 
 			CE_CORE_ASSERT(false, "Unknown Shader Type!");

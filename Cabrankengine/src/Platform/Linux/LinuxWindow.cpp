@@ -43,8 +43,12 @@ namespace cabrankengine {
         return m_Data.VSync;
     }
 
-    void LinuxWindow::init(const WindowProps& props) {
-        m_Data.Title = props.Title;
+	rendering::GraphicsContext* LinuxWindow::getContext() const {
+		return m_Context;
+	}
+
+	void LinuxWindow::init(const WindowProps& props) {
+		m_Data.Title = props.Title;
         m_Data.Width = props.Width;
         m_Data.Height = props.Height;
 
@@ -136,9 +140,9 @@ namespace cabrankengine {
 			MouseMovedEvent event(static_cast<float>(xPos), static_cast<float>(yPos));
 			data.EventCallback(event);
 		});
-    }
+	}
 
-    void LinuxWindow::shutdown() {
+	void LinuxWindow::shutdown() {
         glfwDestroyWindow(m_Window);
     }
 

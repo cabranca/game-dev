@@ -1,40 +1,46 @@
 #include <pch.h>
 #include "Texture.h"
 
-#include <Platform/OpenGL/OpenGLTexture.h>
+#ifdef CE_RENDERER_METAL
+	#include <Platform/Metal/MetalTexture.h>
+#endif
 
-#include "Renderer.h"
-
+#ifdef CE_RENDERER_OPENGL
+	#include <Platform/OpenGL/OpenGLTexture.h>
+#endif
 
 namespace cabrankengine::rendering {
-	
-	Ref<Texture2D> Texture2D::create(const TextureSpecification& specification) {
-		switch (Renderer::getAPI()) {
-		case RendererAPI::API::None:    CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
-		case RendererAPI::API::OpenGL:  return createRef<platform::opengl::OpenGLTexture2D>(specification);
-		}
 
-		CE_CORE_ASSERT(false, "Unknown RendererAPI!");
+	Ref<Texture2D> Texture2D::create(const TextureSpecification& specification) {
+#ifdef CE_RENDERER_OPENGL
+		return createRef<platform::opengl::OpenGLTexture2D>(specification);
+#elif defined(CE_RENDERER_METAL)
+		return createRef<platform::metal::MetalTexture2D>(specification);
+#else
+		CE_CORE_ASSERT(false, "No renderer API defined!");
 		return nullptr;
+#endif
 	}
 
 	Ref<Texture2D> Texture2D::create(const std::string& path) {
-		switch (Renderer::getAPI()) {
-		case RendererAPI::API::None:    CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
-		case RendererAPI::API::OpenGL:  return  createRef<platform::opengl::OpenGLTexture2D>(path);
-		}
-
-		CE_CORE_ASSERT(false, "Unknown RendererAPI!");
+#ifdef CE_RENDERER_OPENGL
+		return createRef<platform::opengl::OpenGLTexture2D>(path);
+#elif defined(CE_RENDERER_METAL)
+		return createRef<platform::metal::MetalTexture2D>(path);
+#else
+		CE_CORE_ASSERT(false, "No renderer API defined!");
 		return nullptr;
+#endif
 	}
 
 	Ref<Texture2D> Texture2D::create(const FT_Face& face) {
-		switch (Renderer::getAPI()) {
-		case RendererAPI::API::None:    CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
-		case RendererAPI::API::OpenGL:  return  createRef<platform::opengl::OpenGLTexture2D>(face);
-		}
-
-		CE_CORE_ASSERT(false, "Unknown RendererAPI!");
+#ifdef CE_RENDERER_OPENGL
+		return createRef<platform::opengl::OpenGLTexture2D>(face);
+#elif defined(CE_RENDERER_METAL)
+		return createRef<platform::metal::MetalTexture2D>(face);
+#else
+		CE_CORE_ASSERT(false, "No renderer API defined!");
 		return nullptr;
+#endif
 	}
 } // namespace cabrankengine::rendering

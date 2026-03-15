@@ -1,20 +1,24 @@
 #include <pch.h>
 #include "StorageBuffer.h"
 
-#include <Platform/OpenGL/OpenGLStorageBuffer.h>
+#ifdef CE_RENDERER_METAL
+	#include <Platform/Metal/MetalStorageBuffer.h>
+#endif
 
-#include "Renderer.h"
+#ifdef CE_RENDERER_OPENGL
+	#include <Platform/OpenGL/OpenGLStorageBuffer.h>
+#endif
 
 namespace cabrankengine::rendering {
 
 	Ref<StorageBuffer> StorageBuffer::create(uint32_t size) {
-		switch (Renderer::getAPI()) {
-		case RendererAPI::API::OpenGL:
-			return std::make_shared<platform::opengl::OpenGLStorageBuffer>(size);
-		case RendererAPI::API::None:
-			CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
-			return nullptr;
-		}
+#ifdef CE_RENDERER_OPENGL
+		return createRef<platform::opengl::OpenGLStorageBuffer>(size);
+#elif defined(CE_RENDERER_METAL)
+		return createRef<platform::metal::MetalStorageBuffer>(size);
+#else
+		CE_CORE_ASSERT(false, "No renderer API defined!");
 		return nullptr;
+#endif
 	}
 } // namespace cabrankengine::rendering

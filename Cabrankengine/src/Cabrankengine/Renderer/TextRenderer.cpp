@@ -3,7 +3,6 @@
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
-#include <glad/glad.h>
 
 #include "Buffer.h"
 #include "RenderCommand.h"
@@ -72,7 +71,7 @@ namespace cabrankengine::rendering {
 		s_Data.textVertexArray->setIndexBuffer(textIndexBuffer);
 		delete[] quadIndices;
 
-		s_Data.textShader = Shader::create("assets/shaders/Text.glsl");
+		s_Data.textShader = Shader::create("assets/shaders/Text");
 		s_Data.textShader->bind();
 
 		int32_t samplers[s_Data.maxTextureSlots];
@@ -187,9 +186,7 @@ namespace cabrankengine::rendering {
 
 		FT_Set_Pixel_Sizes(face, 0, fontSize);
 
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // TODO: Abstract away
-
-		for (GLubyte c = 0; c < 128; c++) {
+		for (unsigned char c = 0; c < 128; c++) {
 			if (FT_Load_Char(face, c, FT_LOAD_RENDER)) {
 				CE_CORE_ERROR("ERROR::FREETYTPE: Failed to load Glyph");
 				continue;

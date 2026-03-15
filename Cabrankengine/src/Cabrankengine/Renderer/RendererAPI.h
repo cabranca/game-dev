@@ -11,7 +11,7 @@ namespace cabrankengine::rendering {
 	// RendererAPI is an abstract class that defines the interface for the low level rendering operations.
 	class RendererAPI {
 		public:
-			enum class API { None = 0, OpenGL = 1 }; // Enum representing the different rendering APIs supported.
+			enum class API { None = 0, OpenGL = 1, Metal = 2 }; // Enum representing the different rendering APIs supported.
 
 			virtual ~RendererAPI() = default;
 
@@ -30,6 +30,8 @@ namespace cabrankengine::rendering {
 			// Draws the indexed vertices from the vertex array.
 			virtual void drawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0) = 0;
 
+			virtual void endFrame() = 0;
+
 			// Sets the viewport dimensions for rendering.
 			virtual void setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
 
@@ -37,6 +39,6 @@ namespace cabrankengine::rendering {
 			static API getAPI() { return s_API; }
 
 		private:
-			inline static API s_API = RendererAPI::API::OpenGL; // Static variable that holds the current rendering API being used.
+			static API s_API; // Static variable that holds the current rendering API being used.
 	};
 }

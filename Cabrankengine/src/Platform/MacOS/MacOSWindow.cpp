@@ -1,18 +1,18 @@
 #include <pch.h>
-#include "WindowsWindow.h"
+#include "MacOSWindow.h"
 
+#define GLFW_INCLUDE_NONE
+#define GLFW_EXPOSE_NATIVE_COCOA
 #include <GLFW/glfw3.h>
+#include <GLFW/glfw3native.h>
 
+#include <Cabrankengine/Events/MouseEvent.h>
 #include <Cabrankengine/Events/ApplicationEvent.h>
 #include <Cabrankengine/Events/KeyEvent.h>
-#include <Cabrankengine/Events/MouseEvent.h>
 
-#include <Platform/OpenGL/OpenGLContext.h>
+#include <Platform/Metal/MetalContext.h>
 
 namespace cabrankengine {
-
-    using namespace rendering;
-
 	static bool s_GLFWInitialized = false;
 
 	static void GLFWErrorCallback(int error, const char* description) {
@@ -20,47 +20,39 @@ namespace cabrankengine {
 	}
 
 	Window* Window::create(const WindowProps& props) {
-		return new WindowsWindow(props);
+		return new MacOSWindow(props);
 	}
-	
-	WindowsWindow::WindowsWindow(const WindowProps& props) {
-		CE_PROFILE_FUNCTION();
 
+	MacOSWindow::MacOSWindow(const WindowProps& props) {
 		init(props);
 	}
 
-	WindowsWindow::~WindowsWindow() {
-		CE_PROFILE_FUNCTION();
-
+	MacOSWindow::~MacOSWindow() {
 		shutdown();
 	}
 
-	void WindowsWindow::onUpdate() {
+	void MacOSWindow::onUpdate() {
 		glfwPollEvents();
 		m_Context->swapBuffers();
 	}
 
-	void WindowsWindow::setVSync(bool enabled) {
-		CE_PROFILE_FUNCTION();
-
-		if (enabled)
-			glfwSwapInterval(1);
-		else
-			glfwSwapInterval(0);
+	void MacOSWindow::setVSync(bool enabled) {
+		// if (enabled)
+		//     glfwSwapInterval(1);
+		// else
+		//     glfwSwapInterval(0);
 		m_Data.VSync = enabled;
 	}
 
-	bool WindowsWindow::isVSync() const {
+	bool MacOSWindow::isVSync() const {
 		return m_Data.VSync;
 	}
 
-	rendering::GraphicsContext* WindowsWindow::getContext() const {
+	rendering::GraphicsContext* MacOSWindow::getContext() const {
 		return m_Context;
 	}
 
-	void WindowsWindow::init(const WindowProps& props) {
-		CE_PROFILE_FUNCTION();
-
+	void MacOSWindow::init(const WindowProps& props) {
 		m_Data.Title = props.Title;
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
@@ -68,27 +60,22 @@ namespace cabrankengine {
 		CE_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
 		if (!s_GLFWInitialized) {
-			CE_PROFILE_FUNCTION();
-
 			int success = glfwInit();
 			CE_CORE_ASSERT(success, "Could not initialize GLFW!");
 			glfwSetErrorCallback(GLFWErrorCallback);
+			glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 			s_GLFWInitialized = true;
 		}
 
-		{
-			CE_PROFILE_FUNCTION();
+		m_Window = glfwCreateWindow(props.Width, props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 
-			m_Window = glfwCreateWindow(props.Width, props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		}
-
-		m_Context = new platform::opengl::OpenGLContext(m_Window);
+		m_Context = new platform::metal::MetalContext(m_Window);
 		m_Context->init();
 
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		setVSync(true);
 
-		// Set GLFW callbacks: https://www.glfw.org/docs/3.3/input_guide.html
+		// Set GLFW callbacks
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 			WindowResizeEvent event(width, height);
@@ -107,21 +94,21 @@ namespace cabrankengine {
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
 			switch (action) {
-				case GLFW_PRESS: {
-					KeyPressedEvent event(key, 0);
-					data.EventCallback(event);
-					break;
-				}
-				case GLFW_RELEASE: {
-					KeyReleasedEvent event(key);
-					data.EventCallback(event);
-					break;
-				}
-				case GLFW_REPEAT: {
-					KeyPressedEvent event(key, 1);
-					data.EventCallback(event);
-					break;
-				}
+			case GLFW_PRESS: {
+				KeyPressedEvent event(key, 0);
+				data.EventCallback(event);
+				break;
+			}
+			case GLFW_RELEASE: {
+				KeyReleasedEvent event(key);
+				data.EventCallback(event);
+				break;
+			}
+			case GLFW_REPEAT: {
+				KeyPressedEvent event(key, 1);
+				data.EventCallback(event);
+				break;
+			}
 			}
 		});
 
@@ -131,22 +118,23 @@ namespace cabrankengine {
 			data.EventCallback(event);
 		});
 
-		glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods) { // TODO: find out the use of action and mods.
-			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-			
-			switch (action) {
-				case GLFW_PRESS: {
-					MouseButtonPressedEvent event(button);
-					data.EventCallback(event);
-					break;
-				}
-				case GLFW_RELEASE: {
-					MouseButtonReleasedEvent event(button);
-					data.EventCallback(event);
-					break;
-				}
-			}
-		});
+		glfwSetMouseButtonCallback(m_Window,
+		                           [](GLFWwindow* window, int button, int action, int mods) { // TODO: find out the use of action and mods.
+			                           WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+			                           switch (action) {
+			                           case GLFW_PRESS: {
+				                           MouseButtonPressedEvent event(button);
+				                           data.EventCallback(event);
+				                           break;
+			                           }
+			                           case GLFW_RELEASE: {
+				                           MouseButtonReleasedEvent event(button);
+				                           data.EventCallback(event);
+				                           break;
+			                           }
+			                           }
+		                           });
 
 		glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double xOffset, double yOffset) {
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
@@ -161,9 +149,9 @@ namespace cabrankengine {
 		});
 	}
 
-	void WindowsWindow::shutdown() {
-		CE_PROFILE_FUNCTION();
-
+	void MacOSWindow::shutdown() {
 		glfwDestroyWindow(m_Window);
+		glfwTerminate();
 	}
-}
+
+} // namespace cabrankengine

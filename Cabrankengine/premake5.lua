@@ -7,42 +7,87 @@ project "Cabrankengine"
     targetdir("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
     objdir("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
-    pchheader "pch.h"
-	pchsource "src/pch.cpp"
+    
 
     files
     {
-        "src/**.h",
-		"src/**.cpp",
+        "src/Cabrankengine/**.h",
+		"src/Cabrankengine/**.cpp",
 		"vendor/stb_image/**.h",
 		"vendor/stb_image/**.cpp",
     }
-
-    includedirs
+    
+    externalincludedirs
     {
-        "src", "vendor/spdlog/include", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}", "%{IncludeDir.ImGui}",
-        "%{IncludeDir.stb_image}", "%{IncludeDir.irrKlang}", "%{IncludeDir.json}", "%{IncludeDir.assimp}", "%{IncludeDir.FreeType}"
+        "src",
+        "vendor/spdlog/include", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}", "%{IncludeDir.ImGui}", "%{IncludeDir.stb_image}", 
+        "%{IncludeDir.irrKlang}", "%{IncludeDir.json}", "%{IncludeDir.assimp}", "%{IncludeDir.FreeType}"
     }
 
-    links {"GLFW", "glad", "ImGui", "IrrKlang", "Assimp", "FreeType"}
+    links {"GLFW", "ImGui", "IrrKlang", "Assimp", "FreeType"}
 
     filter "system:windows"
         systemversion "latest"
         buildoptions { "/utf-8" }
 
-        removefiles { "src/Platform/Linux/**.cpp", "src/Platform/Linux/**.h" }
+        pchheader "pch.h"
+	    pchsource "src/pch.cpp"
+
+        files 
+        { 
+            "src/Platform/Windows/**.h",
+            "src/Platform/Windows/**.cpp",
+            "src/Platform/OpenGL/**.h",
+            "src/Platform/OpenGL/**.cpp",
+        }
+
         libdirs { "vendor/irrKlang/lib" }
-        links {"opengl32.lib"}
+        links {"opengl32.lib", "glad" }
         defines {"GLFW_INCLUDE_NONE"}
 
     filter "system:linux"
         systemversion "latest"
         pic "on"
 
-        removefiles { "src/Platform/Windows/**.cpp", "src/Platform/Windows/**.h" }
+        pchheader "pch.h"
+	    pchsource "src/pch.cpp"
 
+        files 
+        { 
+            "src/Platform/Linux/**.h",
+            "src/Platform/Linux/**.cpp",
+            "src/Platform/OpenGL/**.h",
+            "src/Platform/OpenGL/**.cpp",
+        }
+
+        includedirs { "src" }
         libdirs {  "%{wks.location}/Cabrankengine/vendor/irrKlang/so" }
-        links { "X11", "Xrandr", "Xi", "Xxf86vm", "Xcursor", "pthread", "dl", "GL" }
+        links { "X11", "Xrandr", "Xi", "Xxf86vm", "Xcursor", "pthread", "dl", "GL", "glad" }
+
+    filter "system:macosx"
+        systemversion "12.0"
+        pic "On"
+        
+        pchheader "src/pch.h"
+	    pchsource "src/pch.cpp"
+
+        defines { "IMGUI_IMPL_METAL_CPP" }
+
+        files 
+        { 
+            "src/Platform/MacOS/**.h",
+            "src/Platform/MacOS/**.cpp",
+            "src/Platform/Metal/**.h",
+            "src/Platform/Metal/**.cpp",
+            "src/Platform/Metal/**.mm",
+            "vendor/imgui/backends/imgui_impl_metal.mm"
+        }
+
+        removefiles { "src/Cabrankengine/ImGui/ImGuiBuild.cpp" }
+
+        externalincludedirs { "%{IncludeDir.Metal}" }
+
+        links { "Cocoa.framework", "Foundation.framework", "Metal.framework", "QuartzCore.framework" }
 
     filter "configurations:Debug"
         defines "CE_DEBUG"
@@ -53,3 +98,6 @@ project "Cabrankengine"
         defines "CE_RELEASE"
         runtime "Release"
         optimize "on"
+
+    filter "files:**.mm"
+        flags { "NoPCH" }

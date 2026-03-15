@@ -33,6 +33,8 @@ namespace cabrankengine {
 			// Returns the Windows specific window.
 			void* getNativeWindow() const override { return m_Window; }
 
+			rendering::GraphicsContext* getContext() const override;
+
 		private:
 			// Initialize the window from the given properties
 			void init(const WindowProps& props);

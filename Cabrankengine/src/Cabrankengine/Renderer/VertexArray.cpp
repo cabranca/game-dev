@@ -1,22 +1,24 @@
 #include <pch.h>
 #include "VertexArray.h"
 
-#include <Platform/OpenGL/OpenGLVertexArray.h>
+#ifdef CE_RENDERER_METAL
+	#include <Platform/Metal/MetalVertexArray.h>
+#endif
 
-#include "Renderer.h"
-
+#ifdef CE_RENDERER_OPENGL
+	#include <Platform/OpenGL/OpenGLVertexArray.h>
+#endif
 
 namespace cabrankengine::rendering {
 
 	Ref<VertexArray> VertexArray::create() {
-		switch (Renderer::getAPI()) {
-			case RendererAPI::API::None:
-				CE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
-				return nullptr;
-			case RendererAPI::API::OpenGL:
-				return createRef<platform::opengl::OpenGLVertexArray>();
-		}
-
+#ifdef CE_RENDERER_OPENGL
+		return createRef<platform::opengl::OpenGLVertexArray>();
+#elif defined(CE_RENDERER_METAL)
+		return createRef<platform::metal::MetalVertexArray>();
+#else
+		CE_CORE_ASSERT(false, "No renderer API defined!");
 		return nullptr;
+#endif
 	}
 }

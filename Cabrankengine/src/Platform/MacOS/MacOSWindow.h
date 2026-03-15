@@ -10,10 +10,10 @@ namespace cabrankengine {
         class GraphicsContext; // Forward declaration of the GraphicsContext class
     }
 
-    class LinuxWindow : public Window {
+    class MacOSWindow : public Window {
         public:
-            LinuxWindow(const WindowProps& props);
-            virtual ~LinuxWindow();
+            MacOSWindow(const WindowProps& props);
+            virtual ~MacOSWindow();
 
             // Callback for the window update
             virtual void onUpdate() override;
@@ -58,7 +58,7 @@ namespace cabrankengine {
                 EventCallbackFn EventCallback;
             };
 
-            WindowData m_Data; // Current window data
+            WindowData m_Data; // Current window datas
     };
 
 }
