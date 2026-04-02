@@ -1,5 +1,6 @@
 #include "Sandbox2D.h"
 
+#include <Cabrankengine/Renderer/Texture.h>
 #include <chrono>
 #include <imgui.h>
 
@@ -46,6 +47,8 @@ void Sandbox2D::onAttach() {
 
 	m_Player = m_Registry->createEntity();
 	m_Registry->addComponent<CTransform>(m_Player, { {0,0,0}, {0,0,0}, {1,1,1} });
+
+	m_ConvertedTexture = Texture2D::create("assets/textures/converted_container.cbkt");
 }
 
 void Sandbox2D::onDetach() {
@@ -76,7 +79,8 @@ void Sandbox2D::onUpdate(cabrankengine::Timestep delta) {
 		Renderer2D::beginScene(m_Camera.getViewProjectionMatrix());
 
 		auto transform = m_Registry->getComponent<CTransform>(m_Player).value();
-	    Renderer2D::drawQuad(transform->Position, { 100.0f, 100.0f }, m_SquareColor);
+	    //Renderer2D::drawQuad(transform->Position, { 100.0f, 100.0f }, m_SquareColor);
+		Renderer2D::drawQuad(transform->Position, { 100.0f, 100.0f }, m_ConvertedTexture);
 		Renderer2D::endScene();
 
 		// TextRenderer::beginScene(m_Camera.getViewProjectionMatrix());

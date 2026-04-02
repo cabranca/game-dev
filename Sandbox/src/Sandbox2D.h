@@ -20,6 +20,7 @@ class Sandbox2D : public cabrankengine::Layer {
 		cabrankengine::Ref<cabrankengine::rendering::VertexArray> m_SquareVA;
 
 		cabrankengine::Ref<cabrankengine::rendering::Texture2D> m_CheckerboardTexture;
+		cabrankengine::Ref<cabrankengine::rendering::Texture2D> m_ConvertedTexture;
 
 		cabrankengine::math::Vector4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
 		cabrankengine::math::Vector4 m_SquareColorVariant = { 0.8f, 0.3f, 0.2f, 1.0f };
