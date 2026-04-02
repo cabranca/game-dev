@@ -1,3 +1,4 @@
+#include <Cabrankengine/Core/Logger.h>
 #include <pch.h>
 #include "OpenGLTexture.h"
 
@@ -13,8 +14,10 @@ namespace cabrankengine::platform::opengl {
 
 		static GLenum cabrankengineImageFormatToGLDataFormat(ImageFormat format) {
 			switch (format) {
-				case ImageFormat::RGB8:  return GL_RGB;
-				case ImageFormat::RGBA8: return GL_RGBA;
+			case ImageFormat::RGB8:
+				return GL_RGB;
+			case ImageFormat::RGBA8:
+				return GL_RGBA;
 			}
 
 			CE_CORE_ASSERT(false, "Invalid image format!");
@@ -23,18 +26,20 @@ namespace cabrankengine::platform::opengl {
 
 		static GLenum cabrankengineImageFormatToGLInternalFormat(ImageFormat format) {
 			switch (format) {
-				case ImageFormat::RGB8:  return GL_RGB8;
-				case ImageFormat::RGBA8: return GL_RGBA8;
+			case ImageFormat::RGB8:
+				return GL_RGB8;
+			case ImageFormat::RGBA8:
+				return GL_RGBA8;
 			}
 
 			CE_CORE_ASSERT(false, "Invalid image format!");
 			return 0;
 		}
 
-	}
+	} // namespace utils
 
 	OpenGLTexture2D::OpenGLTexture2D(const TextureSpecification& specification)
-		: m_Specification(specification), m_Width(m_Specification.Width), m_Height(m_Specification.Height) {
+	    : m_Specification(specification), m_Width(m_Specification.Width), m_Height(m_Specification.Height) {
 		CE_PROFILE_FUNCTION();
 
 		m_DataFormat = utils::cabrankengineImageFormatToGLDataFormat(m_Specification.Format);
@@ -53,30 +58,36 @@ namespace cabrankengine::platform::opengl {
 	OpenGLTexture2D::OpenGLTexture2D(const std::string& path) : m_Path(path) {
 		CE_PROFILE_FUNCTION();
 
-		int width, height, channels;
-		stbi_set_flip_vertically_on_load(1);
-		stbi_uc* data = nullptr;
+		std::error_code errorCode;
+		if (!std::filesystem::exists(path, errorCode))
+			CE_CORE_ERROR("Cannot find the path {0} - Error: {1}", path, errorCode.message());
 
-		{
-			CE_PROFILE_FUNCTION();
-			data = stbi_load(path.c_str(), &width, &height, &channels, 0);
-		}
+		const auto size = std::filesystem::file_size(path, errorCode);
+		if (errorCode)
+			CE_CORE_ERROR("Size check failure for file {0} - Error: {1}", path, errorCode.message());
 
-		if (data)
-		{
-			m_IsLoaded = true;
+		std::ifstream file(path, std::ios::binary);
+		if (!file)
+			CE_CORE_ERROR("Cannot open file {0}", path);
 
-			m_Width = width;
-			m_Height = height;
+		TextureHeader header;
+		if (!file.read(reinterpret_cast<char*>(&header), sizeof(TextureHeader)))
+			CE_CORE_ERROR("Cannot read the file {0}", path);
+		if (header.magic != 0x43424B54) // "CBKT"
+			CE_CORE_ERROR("Wrong extension of file {0} - .cbk expected!", path);
+
+		std::vector<uint8_t> buffer(header.dataSize);
+		if (!file.read(reinterpret_cast<char*>(buffer.data()), buffer.size()))
+			CE_CORE_ERROR("Cannot read the file {0}", path);
+		else {
+			m_Width = header.width;
+			m_Height = header.height;
 
 			GLenum internalFormat = 0, dataFormat = 0;
-			if (channels == 4)
-			{
+			if (header.channels == 4) {
 				internalFormat = GL_RGBA8;
 				dataFormat = GL_RGBA;
-			}
-			else if (channels == 3)
-			{
+			} else if (header.channels == 3) {
 				internalFormat = GL_RGB8;
 				dataFormat = GL_RGB;
 			}
@@ -95,9 +106,9 @@ namespace cabrankengine::platform::opengl {
 			glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
 			glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-			glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, data);
+			glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, buffer.data());
 
-			stbi_image_free(data);
+			m_IsLoaded = true;
 		}
 	}
 
@@ -105,7 +116,8 @@ namespace cabrankengine::platform::opengl {
 		// generate texture
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
 		glTextureStorage2D(m_RendererID, 1, GL_R8, face->glyph->bitmap.width, face->glyph->bitmap.rows);
-		glTextureSubImage2D(m_RendererID, 0, 0, 0, face->glyph->bitmap.width, face->glyph->bitmap.rows, GL_RED, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
+		glTextureSubImage2D(m_RendererID, 0, 0, 0, face->glyph->bitmap.width, face->glyph->bitmap.rows, GL_RED, GL_UNSIGNED_BYTE,
+		                    face->glyph->bitmap.buffer);
 
 		// set texture options
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -133,4 +145,4 @@ namespace cabrankengine::platform::opengl {
 
 		glBindTextureUnit(slot, m_RendererID);
 	}
-}
+} // namespace cabrankengine::platform::opengl

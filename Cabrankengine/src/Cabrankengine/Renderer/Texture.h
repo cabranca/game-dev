@@ -23,6 +23,13 @@ namespace cabrankengine::rendering {
 		bool GenerateMips = true;
 	};
 
+	struct TextureHeader {
+		uint32_t magic = 0x43424B54; // "CBKT" (Cabrankengine Texture)
+		uint32_t version = 1;
+		uint32_t width, height, channels;
+		uint32_t dataSize;
+	};
+
 	// Interface base class representing a texture in the rendering system.
 	class Texture {
 		public:
