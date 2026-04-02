@@ -58,7 +58,7 @@ namespace cabrankengine::rendering {
 
 		RenderCommand::init();
 		Renderer2D::init();
-		//TextRenderer::init();
+		TextRenderer::init();
 		s_SceneData->lightSSBO = StorageBuffer::create(sizeof(LightBufferHeader) + sizeof(PointLightGPU));
 		s_SceneUBO = UniformBuffer::create(sizeof(AltSceneData), 0);
 	}
