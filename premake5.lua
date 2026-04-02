@@ -20,6 +20,7 @@ IncludeDir["Metal"] = "%{wks.location}/Cabrankengine/vendor/metal-cpp"
 IncludeDir["spdlog"] = "%{wks.location}/Cabrankengine/vendor/spdlog/include"
 IncludeDir["stb_image"] = "%{wks.location}/Cabrankengine/vendor/stb_image"
 
+include "CBKAssetConverter"
 include "Cabrankengine"
 include "Cabrankengine/vendor/assimp"
 include "Cabrankengine/vendor/freetype"
@@ -30,9 +31,9 @@ include "Sandbox"
 include "UnitTests"
 
 filter "system:macosx"
-        systemversion "latest" -- Usa el SDK que tengas instalado (el 13 o 14)
-        
-        -- FORZAR COMPATIBILIDAD CON MONTEREY (12.0)
-        -- Esto le dice al compilador y al linker: "Aunque tengas el SDK nuevo, generá código para 12.0"
-        buildoptions { "-mmacosx-version-min=12.0" }
-        linkoptions  { "-mmacosx-version-min=12.0" }
+    systemversion "latest" -- Usa el SDK que tengas instalado (el 13 o 14)
+    
+    -- FORZAR COMPATIBILIDAD CON MONTEREY (12.0)
+    -- Esto le dice al compilador y al linker: "Aunque tengas el SDK nuevo, generá código para 12.0"
+    buildoptions { "-mmacosx-version-min=12.0" }
+    linkoptions  { "-mmacosx-version-min=12.0" }
