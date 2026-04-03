@@ -3,6 +3,9 @@
 // --- Entry Point ---
 #include "Cabrankengine/Core/EntryPoint.h"
 
+#include <Cabrankengine/Core/Core.h>
+#include <Cabrankengine/Renderer/Materials/PBRMaterial.h>
+#include <Cabrankengine/Renderer/Shader.h>
 #include <imgui.h>
 #include "Sandbox2D.h"
 
@@ -65,9 +68,9 @@ class ExampleLayer : public Layer {
 	ExampleLayer() : Layer("Example"), m_CameraController(PerspectiveCamera(PI / 4.f, 16.f / 9.f, 0.1f, 100.f)) {
 		m_CameraController.getCamera().setWorldPosition(Vector3(0.f, 0.f, 10.f));
 
-		auto pbrShader = Shader::create("assets/shaders/PBR");
-		m_PBRMaterial = std::make_shared<PBRMaterial>(pbrShader);
-		m_Sphere = DefaultLibrary::getSphere();
+		auto phongShader = cabrankengine::rendering::Shader::create("assets/shaders/Lightning");
+		auto phongMaterial = cabrankengine::createRef<cabrankengine::rendering::PhongMaterial>(phongShader);
+		m_PhongModel = new cabrankengine::scene::Model("assets/models/backpack/backpack.cbkm", phongMaterial);
 
 		m_LightEnvironment.DirLight.direction = { 0.0f, -1.0f, 0.0f  }; 
 		m_LightEnvironment.DirLight.radiance = { 0.5f, 0.5f, 0.5f };
@@ -95,7 +98,8 @@ class ExampleLayer : public Layer {
 
 		Renderer::beginScene(camera, m_LightEnvironment);
 
-		Renderer::submit(m_PBRMaterial, m_Sphere, scaleUniform(5.f));
+		m_PhongModel->draw();
+		//Renderer::submit(m_PBRMaterial, m_Sphere, scaleUniform(5.f));
 		
 		Renderer::endScene();
 
@@ -104,23 +108,23 @@ class ExampleLayer : public Layer {
 		TextRenderer::endScene();
 	}
 
-	void onImGuiRender() {
+	void onImGuiRender() override {
 		CE_PROFILE_FUNCTION();
-		ImGui::Begin("Settings");
+		// ImGui::Begin("Settings");
 
-		auto albedo = m_PBRMaterial->getAlbedoColor();
-		auto metalness = m_PBRMaterial->getMetalness();
-		auto roughness = m_PBRMaterial->getRoughness();
+		// auto albedo = m_PBRMaterial->getAlbedoColor();
+		// auto metalness = m_PBRMaterial->getMetalness();
+		// auto roughness = m_PBRMaterial->getRoughness();
 
-		ImGui::ColorEdit3("Albedo", &albedo.x);
-		ImGui::InputFloat("Metalness", &metalness);
-		ImGui::InputFloat("Roughness", &roughness);
+		// ImGui::ColorEdit3("Albedo", &albedo.x);
+		// ImGui::InputFloat("Metalness", &metalness);
+		// ImGui::InputFloat("Roughness", &roughness);
 
-		m_PBRMaterial->setAlbedoColor(albedo);
-		m_PBRMaterial->setMetalness(metalness);
-		m_PBRMaterial->setRoughness(roughness);
+		// m_PBRMaterial->setAlbedoColor(albedo);
+		// m_PBRMaterial->setMetalness(metalness);
+		// m_PBRMaterial->setRoughness(roughness);
 
-		ImGui::End();
+		// ImGui::End();
 	}
 
   private:
@@ -129,14 +133,15 @@ class ExampleLayer : public Layer {
 	ShaderLibrary m_ShaderLibrary;
 	Ref<PBRMaterial> m_PBRMaterial = nullptr;
 	Ref<VertexArray> m_Sphere = nullptr;
+	Model* m_PhongModel;
 };
 #endif
 
 class Sandbox : public Application {
   public:
 	Sandbox() {
-		//pushLayer(new ExampleLayer());
-		pushLayer(new Sandbox2D());
+		pushLayer(new ExampleLayer());
+		//pushLayer(new Sandbox2D());
 	}
 	~Sandbox() {}
 };
