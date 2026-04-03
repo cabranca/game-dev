@@ -13,9 +13,6 @@
 [submodule "Cabrankengine/vendor/json"]
 	path = Cabrankengine/vendor/json
 	url = https://github.com/nlohmann/json
-[submodule "Cabrankengine/vendor/assimp"]
-	path = Cabrankengine/vendor/assimp
-	url = https://github.com/cabranca/assimp.git
 [submodule "Cabrankengine/vendor/freetype"]
 	path = Cabrankengine/vendor/freetype
 	url = https://github.com/cabranca/freetype.git
