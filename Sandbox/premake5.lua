@@ -11,13 +11,13 @@ project "Sandbox"
 
     externalincludedirs
     {
-        "%{IncludeDir.assimp}", "%{IncludeDir.ImGui}", "%{IncludeDir.irrKlang}",
+        "%{IncludeDir.ImGui}", "%{IncludeDir.irrKlang}",
         "%{IncludeDir.spdlog}", "%{wks.location}/Cabrankengine/src",
     }
 
     links 
     {
-        "Cabrankengine", "Assimp", "FreeType", "GLFW", "ImGui"
+        "Cabrankengine", "FreeType", "GLFW", "ImGui"
     }
 
     filter "system:windows"
