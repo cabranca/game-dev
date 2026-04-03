@@ -27,3 +27,6 @@ premake5.exe
 # XCode
 *.xcworkspace
 *.xcodeproj
+
+# Assets
+*.cbk*
