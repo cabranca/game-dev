@@ -22,3 +22,6 @@
 [submodule "Cabrankengine/vendor/metal-cpp"]
 	path = Cabrankengine/vendor/metal-cpp
 	url = https://github.com/bkaradzic/metal-cpp.git
+[submodule "assimp_for_converter"]
+	path = CBKAssetConverter/vendor/assimp
+	url = https://github.com/cabranca/assimp.git
