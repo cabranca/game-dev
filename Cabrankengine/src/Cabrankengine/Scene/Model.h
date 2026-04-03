@@ -1,14 +1,33 @@
 #pragma once
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-
 #include <Cabrankengine/Renderer/Materials/PhongMaterial.h>
 
 #include "Mesh.h"
 
 namespace cabrankengine::scene {
+
+	struct ModelHeader {
+		uint32_t magic = 0x43424B4D; // "CBKM" (Cabrankengine Model)
+		uint32_t version = 1;
+		uint32_t numMeshes;
+		uint32_t numTextures;
+	};
+
+	struct ModelTextureEntry {
+		uint32_t type;       // 1 = Diffuse, 2 = Specular
+		uint32_t pathLength;
+	};
+
+	struct ModelVertex {
+		float px, py, pz;
+		float nx, ny, nz;
+		float tx, ty;
+	};
+
+	struct ModelMeshHeader {
+		uint32_t numVertices;
+		uint32_t numIndices;
+	};
 
 	class Model {
 	  public:
@@ -18,12 +37,6 @@ namespace cabrankengine::scene {
 
 	  private:
 		std::vector<Mesh> m_Meshes;
-		std::string m_Directory;
 		Ref<rendering::PhongMaterial> m_Material;
-		std::vector<Ref<rendering::Texture2D>> m_TexturesLoaded;
-
-		void processNode(aiNode* node, const aiScene* scene);
-		Mesh processMesh(aiMesh* mesh, const aiScene* scene);
-		std::vector<Ref<rendering::Texture2D>> loadMaterialTextures(aiMaterial* mat, aiTextureType type, TextureType typeName);
 	};
 } // namespace cabrankengine::scene
