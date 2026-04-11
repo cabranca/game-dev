@@ -4,8 +4,12 @@
 #include "Cabrankengine/Core/EntryPoint.h"
 
 #include <Cabrankengine/Core/Core.h>
+#include <Cabrankengine/Math/MatrixFactory.h>
+#include <Cabrankengine/Math/Transform.h>
 #include <Cabrankengine/Renderer/Materials/PBRMaterial.h>
+#include <Cabrankengine/Renderer/Materials/PhongMaterial.h>
 #include <Cabrankengine/Renderer/Shader.h>
+#include <Cabrankengine/Scene/Model.h>
 #include <imgui.h>
 #include "Sandbox2D.h"
 
@@ -68,9 +72,13 @@ class ExampleLayer : public Layer {
 	ExampleLayer() : Layer("Example"), m_CameraController(PerspectiveCamera(PI / 4.f, 16.f / 9.f, 0.1f, 100.f)) {
 		m_CameraController.getCamera().setWorldPosition(Vector3(0.f, 0.f, 10.f));
 
-		auto phongShader = cabrankengine::rendering::Shader::create("assets/shaders/Lightning");
+		auto pbrShader = cabrankengine::rendering::Shader::create("assets/shaders/PBR");
+		auto pbrMaterial = cabrankengine::createRef<cabrankengine::rendering::PBRMaterial>(pbrShader);
+		m_GunModel = new cabrankengine::scene::Model<cabrankengine::rendering::PBRMaterial>("assets/models/gun/Cerberus_LP.cbkm", pbrMaterial);
+
+		auto phongShader = cabrankengine::rendering::Shader::create("assets/shaders/Phong");
 		auto phongMaterial = cabrankengine::createRef<cabrankengine::rendering::PhongMaterial>(phongShader);
-		m_PhongModel = new cabrankengine::scene::Model("assets/models/backpack/backpack.cbkm", phongMaterial);
+		m_PhongModel = new cabrankengine::scene::Model<cabrankengine::rendering::PhongMaterial>("assets/models/backpack/backpack.cbkm", phongMaterial);
 
 		m_LightEnvironment.DirLight.direction = { 0.0f, -1.0f, 0.0f  }; 
 		m_LightEnvironment.DirLight.radiance = { 0.5f, 0.5f, 0.5f };
@@ -99,6 +107,7 @@ class ExampleLayer : public Layer {
 		Renderer::beginScene(camera, m_LightEnvironment);
 
 		m_PhongModel->draw();
+		m_GunModel->draw(scaleUniform(0.05f) * rotateX(-90.f) * translation({2.f, 2.f, 2.f}));
 		//Renderer::submit(m_PBRMaterial, m_Sphere, scaleUniform(5.f));
 		
 		Renderer::endScene();
@@ -131,9 +140,9 @@ class ExampleLayer : public Layer {
 	LightEnvironment m_LightEnvironment;
 	CameraController m_CameraController;
 	ShaderLibrary m_ShaderLibrary;
-	Ref<PBRMaterial> m_PBRMaterial = nullptr;
 	Ref<VertexArray> m_Sphere = nullptr;
-	Model* m_PhongModel;
+	Model<PhongMaterial>* m_PhongModel;
+	Model<PBRMaterial>* m_GunModel;
 };
 #endif
 
