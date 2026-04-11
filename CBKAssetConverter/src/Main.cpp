@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <filesystem>
 #include <print>
 #include <string>
@@ -13,6 +14,7 @@ int main(int argc, char** argv) {
 	}
 
 	std::string ext = std::filesystem::path(argv[1]).extension().string();
+	std::ranges::transform(ext, ext.begin(), ::tolower);
 
 	if (ext == ".obj" || ext == ".fbx" || ext == ".gltf" || ext == ".dae")
 		cbk::ac::ModelConverter::convert(argv[1]);
