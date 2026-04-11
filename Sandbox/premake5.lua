@@ -17,7 +17,7 @@ project "Sandbox"
 
     links 
     {
-        "Cabrankengine", "FreeType", "GLFW", "ImGui"
+        "Cabrankengine", "Common", "FreeType", "GLFW", "ImGui"
     }
 
     filter "system:windows"
