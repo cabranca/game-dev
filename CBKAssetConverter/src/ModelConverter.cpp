@@ -1,6 +1,7 @@
 #include "ModelConverter.h"
 #include "TextureConverter.h"
 
+#include <algorithm>
 #include <filesystem>
 #include <fstream>
 #include <print>
@@ -19,8 +20,13 @@ namespace cbk::ac {
 	};
 
 	struct TextureRef {
-		uint32_t type; // 1 = Diffuse, 2 = Specular
+		uint32_t type;
 		std::string relativePath; // relative to model directory, with .cbkt extension
+	};
+
+	struct PropertyRef {
+		uint32_t key;
+		float value;
 	};
 
 	static void collectMeshes(aiNode* node, const aiScene* scene, std::vector<CollectedMesh>& meshes) {
@@ -45,6 +51,12 @@ namespace cbk::ac {
 					vert.ty = aiM->mTextureCoords[0][v].y;
 				}
 
+				if (aiM->HasTangentsAndBitangents()) {
+					vert.tanx = aiM->mTangents[v].x;
+					vert.tany = aiM->mTangents[v].y;
+					vert.tanz = aiM->mTangents[v].z;
+				}
+
 				cm.vertices.push_back(vert);
 			}
 
@@ -63,7 +75,6 @@ namespace cbk::ac {
 
 	static void collectTextures(const aiScene* scene, const std::string& modelDir,
 	                             std::vector<TextureRef>& textures) {
-		// Track which filenames we've already seen to avoid duplicates
 		std::vector<std::string> seen;
 
 		auto tryAdd = [&](aiMaterial* mat, aiTextureType aiType, uint32_t cbkType) {
@@ -71,6 +82,9 @@ namespace cbk::ac {
 				aiString str;
 				mat->GetTexture(aiType, i, &str);
 				std::string filename(str.C_Str());
+
+				// Normalize Windows backslashes
+				std::ranges::replace(filename, '\\', '/');
 
 				bool already = false;
 				for (const auto& s : seen) {
@@ -80,11 +94,9 @@ namespace cbk::ac {
 
 				seen.push_back(filename);
 
-				// Convert the source texture to .cbkt
 				std::string srcPath = modelDir + "/" + filename;
 				TextureConverter::convert(srcPath);
 
-				// Store relative path with .cbkt extension
 				std::filesystem::path rel(filename);
 				rel.replace_extension(".cbkt");
 
@@ -92,11 +104,116 @@ namespace cbk::ac {
 			}
 		};
 
-		// Walk all materials in the scene. Last-found wins at load time (matches engine behavior).
+		bool hasNormal = false, hasMetalRough = false, hasAO = false;
+
 		for (unsigned int m = 0; m < scene->mNumMaterials; m++) {
 			aiMaterial* mat = scene->mMaterials[m];
+
+			// Phong texture types
 			tryAdd(mat, aiTextureType_DIFFUSE, 1);
 			tryAdd(mat, aiTextureType_SPECULAR, 2);
+
+			// PBR texture types
+			tryAdd(mat, aiTextureType_BASE_COLOR, 1);
+			tryAdd(mat, aiTextureType_NORMALS, 3);
+			tryAdd(mat, aiTextureType_METALNESS, 4);
+			tryAdd(mat, aiTextureType_AMBIENT_OCCLUSION, 5);
+
+			if (mat->GetTextureCount(aiTextureType_NORMALS) > 0) hasNormal = true;
+			if (mat->GetTextureCount(aiTextureType_METALNESS) > 0) hasMetalRough = true;
+			if (mat->GetTextureCount(aiTextureType_AMBIENT_OCCLUSION) > 0) hasAO = true;
+		}
+
+		// PBR discovery heuristic: if we found a Diffuse/Albedo but no PBR textures,
+		// try to find companion textures by naming convention (_N, _M, _R, _AO)
+		if (!textures.empty() && !hasNormal && !hasMetalRough && !hasAO) {
+			// Find the diffuse/albedo entry
+			std::string diffuseRel;
+			for (const auto& tex : textures) {
+				if (tex.type == 1) { diffuseRel = tex.relativePath; break; }
+			}
+
+			if (!diffuseRel.empty()) {
+				// Convert .cbkt back to original extension to find the base
+				std::filesystem::path diffPath(diffuseRel);
+				diffPath.replace_extension(""); // remove .cbkt
+				std::string stem = diffPath.string();
+
+				// Strip the _A suffix to get the base prefix
+				std::string basePrefix;
+				if (stem.size() >= 2 && stem.substr(stem.size() - 2) == "_A")
+					basePrefix = stem.substr(0, stem.size() - 2);
+
+				if (!basePrefix.empty()) {
+					// Look for each PBR companion with common extensions
+					auto findTexture = [&](const std::string& suffix) -> std::string {
+						for (const char* ext : { ".tga", ".png", ".jpg", ".jpeg", ".TGA", ".PNG", ".JPG" }) {
+							std::string candidate = modelDir + "/" + basePrefix + suffix + ext;
+							if (std::filesystem::exists(candidate))
+								return candidate;
+						}
+						return "";
+					};
+
+					// Normal map
+					std::string normalPath = findTexture("_N");
+					if (!normalPath.empty()) {
+						TextureConverter::convert(normalPath);
+						std::filesystem::path rel(basePrefix + "_N");
+						rel.replace_extension(".cbkt");
+						textures.push_back({ 3, rel.string() });
+						std::println("Discovered Normal: {}", normalPath);
+					}
+
+					// Metalness + Roughness -> pack into combined MetalRough
+					std::string metalPath = findTexture("_M");
+					std::string roughPath = findTexture("_R");
+					if (!metalPath.empty() && !roughPath.empty()) {
+						std::filesystem::path outRel(basePrefix + "_MR");
+						outRel.replace_extension(".cbkt");
+						std::string outPath = modelDir + "/" + outRel.string();
+						TextureConverter::packMetalRough(metalPath, roughPath, outPath);
+						textures.push_back({ 4, outRel.string() });
+						std::println("Discovered Metal+Rough: {} + {}", metalPath, roughPath);
+					}
+
+					// AO
+					std::string aoPath = findTexture("_AO");
+					if (!aoPath.empty()) {
+						TextureConverter::convert(aoPath);
+						std::filesystem::path rel(basePrefix + "_AO");
+						rel.replace_extension(".cbkt");
+						textures.push_back({ 5, rel.string() });
+						std::println("Discovered AO: {}", aoPath);
+					}
+				}
+			}
+		}
+	}
+
+	static void collectProperties(const aiScene* scene, std::vector<PropertyRef>& properties) {
+		if (scene->mNumMaterials == 0) return;
+
+		// Extract from first material (shared material model)
+		aiMaterial* mat = scene->mMaterials[0];
+
+		float shininess;
+		if (mat->Get(AI_MATKEY_SHININESS, shininess) == aiReturn_SUCCESS)
+			properties.push_back({ 1, shininess });
+
+		float metallic;
+		if (mat->Get(AI_MATKEY_METALLIC_FACTOR, metallic) == aiReturn_SUCCESS)
+			properties.push_back({ 2, metallic });
+
+		float roughness;
+		if (mat->Get(AI_MATKEY_ROUGHNESS_FACTOR, roughness) == aiReturn_SUCCESS)
+			properties.push_back({ 3, roughness });
+
+		aiColor4D baseColor;
+		if (mat->Get(AI_MATKEY_BASE_COLOR, baseColor) == aiReturn_SUCCESS) {
+			properties.push_back({ 4, baseColor.r });
+			properties.push_back({ 5, baseColor.g });
+			properties.push_back({ 6, baseColor.b });
 		}
 	}
 
@@ -114,15 +231,15 @@ namespace cbk::ac {
 
 		std::string modelDir(path.substr(0, path.find_last_of('/')));
 
-		// Collect meshes
 		std::vector<CollectedMesh> meshes;
 		collectMeshes(scene->mRootNode, scene, meshes);
 
-		// Collect & convert textures
 		std::vector<TextureRef> textures;
 		collectTextures(scene, modelDir, textures);
 
-		// Write .cbkm
+		std::vector<PropertyRef> properties;
+		collectProperties(scene, properties);
+
 		std::filesystem::path outputPath(path);
 		outputPath.replace_extension(".cbkm");
 
@@ -135,7 +252,8 @@ namespace cbk::ac {
 		// Header
 		ModelHeader header {
 			.numMeshes = static_cast<uint32_t>(meshes.size()),
-			.numTextures = static_cast<uint32_t>(textures.size())
+			.numTextures = static_cast<uint32_t>(textures.size()),
+			.numProperties = static_cast<uint32_t>(properties.size())
 		};
 		out.write(reinterpret_cast<const char*>(&header), sizeof(header));
 
@@ -147,6 +265,15 @@ namespace cbk::ac {
 			};
 			out.write(reinterpret_cast<const char*>(&entry), sizeof(entry));
 			out.write(tex.relativePath.data(), entry.pathLength);
+		}
+
+		// Property table
+		for (const auto& prop : properties) {
+			PropertyEntry entry{
+				.key = prop.key,
+				.value = prop.value
+			};
+			out.write(reinterpret_cast<const char*>(&entry), sizeof(entry));
 		}
 
 		// Mesh data
@@ -162,7 +289,7 @@ namespace cbk::ac {
 			          mesh.indices.size() * sizeof(uint32_t));
 		}
 
-		std::println("Converted model: {} -> {} ({} meshes, {} textures)",
-		             path, outputPath.string(), meshes.size(), textures.size());
+		std::println("Converted model: {} -> {} ({} meshes, {} textures, {} properties)",
+		             path, outputPath.string(), meshes.size(), textures.size(), properties.size());
 	}
 } // namespace cbk::ac
