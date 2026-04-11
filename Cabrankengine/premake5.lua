@@ -21,10 +21,10 @@ project "Cabrankengine"
     {
         "src",
         "vendor/spdlog/include", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}", "%{IncludeDir.ImGui}", "%{IncludeDir.stb_image}", 
-        "%{IncludeDir.irrKlang}", "%{IncludeDir.json}", "%{IncludeDir.FreeType}"
+        "%{IncludeDir.irrKlang}", "%{IncludeDir.json}", "%{IncludeDir.FreeType}", "%{IncludeDir.lz4}"
     }
 
-    links {"GLFW", "ImGui", "IrrKlang", "FreeType"}
+    links { "Common", "GLFW", "ImGui", "IrrKlang", "FreeType" }
 
     filter "system:windows"
         systemversion "latest"

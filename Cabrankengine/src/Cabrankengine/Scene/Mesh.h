@@ -12,6 +12,7 @@ namespace cabrankengine::scene {
 		math::Vector3 position;
 		math::Vector3 normal;
 		math::Vector2 texCoords;
+		math::Vector3 tangent;
 	};
 
 	enum class TextureType { None = 0, Diffuse, Specular, Normal, Height, Ambient };

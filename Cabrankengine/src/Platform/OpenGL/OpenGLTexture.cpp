@@ -1,9 +1,9 @@
-#include <Cabrankengine/Core/Logger.h>
 #include <pch.h>
 #include "OpenGLTexture.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#include <lz4.h>
 #include <stb_image.h>
 
 namespace cabrankengine::platform::opengl {
@@ -76,10 +76,19 @@ namespace cabrankengine::platform::opengl {
 		if (header.magic != 0x43424B54) // "CBKT"
 			CE_CORE_ERROR("Wrong extension of file {0} - .cbk expected!", path);
 
-		std::vector<uint8_t> buffer(header.dataSize);
-		if (!file.read(reinterpret_cast<char*>(buffer.data()), buffer.size()))
+		std::vector<uint8_t> compressedBuffer(header.compressedSize);
+		if (!file.read(reinterpret_cast<char*>(compressedBuffer.data()), compressedBuffer.size()))
 			CE_CORE_ERROR("Cannot read the file {0}", path);
 		else {
+			std::vector<uint8_t> uncompressedBuffer(header.uncompressedSize);
+			int result =
+			    LZ4_decompress_safe(reinterpret_cast<const char*>(compressedBuffer.data()),
+			                        reinterpret_cast<char*>(uncompressedBuffer.data()), header.compressedSize, header.uncompressedSize);
+			if (result < 0) {
+				CE_CORE_ERROR("LZ4 decompression failed for {0}", path);
+				return;
+			}
+
 			m_Width = header.width;
 			m_Height = header.height;
 
@@ -106,7 +115,7 @@ namespace cabrankengine::platform::opengl {
 			glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
 			glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-			glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, buffer.data());
+			glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, uncompressedBuffer.data());
 
 			m_IsLoaded = true;
 		}

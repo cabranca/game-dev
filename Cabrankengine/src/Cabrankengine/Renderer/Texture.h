@@ -27,7 +27,8 @@ namespace cabrankengine::rendering {
 		uint32_t magic = 0x43424B54; // "CBKT" (Cabrankengine Texture)
 		uint32_t version = 1;
 		uint32_t width, height, channels;
-		uint32_t dataSize;
+		uint32_t compressedSize;
+		uint32_t uncompressedSize;
 	};
 
 	// Interface base class representing a texture in the rendering system.

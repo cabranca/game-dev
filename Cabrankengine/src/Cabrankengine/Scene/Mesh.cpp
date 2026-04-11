@@ -15,7 +15,7 @@ namespace cabrankengine::scene {
 
 		auto vertexBuffer = VertexBuffer::create(vertices.data(), vertices.size() * sizeof(Vertex));
 		vertexBuffer->setLayout(
-		    { { ShaderDataType::Float3, "pos" }, { ShaderDataType::Float3, "normal" }, { ShaderDataType::Float2, "texCoords" } });
+		    { { ShaderDataType::Float3, "pos" }, { ShaderDataType::Float3, "normal" }, { ShaderDataType::Float2, "texCoords" }, { ShaderDataType::Float3, "tangent" } });
 		m_VertexArray->addVertexBuffer(vertexBuffer);
 
 		auto indexBuffer = IndexBuffer::create(indices.data(), indices.size());
