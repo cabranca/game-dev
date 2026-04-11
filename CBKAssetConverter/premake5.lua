@@ -8,8 +8,8 @@ project "CBKAssetConverter"
     objdir("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
     files { "src/**.cpp", "vendor/stb_image/stb_image.cpp", }
-    externalincludedirs { "%{IncludeDir.stb_image}", "%{IncludeDir.assimp}" }
-    links { "Assimp" }
+    externalincludedirs { "%{IncludeDir.assimp}", "%{IncludeDir.lz4}", "%{IncludeDir.stb_image}" }
+    links { "Assimp", "Common" }
 
     filter "system:linux"
         systemversion "latest"
