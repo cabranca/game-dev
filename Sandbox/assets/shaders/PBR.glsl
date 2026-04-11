@@ -4,6 +4,7 @@
 layout(location = 0) in vec3 a_Position;
 layout(location = 1) in vec3 a_Normal;
 layout(location = 2) in vec2 a_TexCoord;
+layout(location = 3) in vec3 a_Tangent;
 
 // --- UBO: Datos de Escena (Fase 1) ---
 struct DirLight {
@@ -25,6 +26,7 @@ uniform mat4 u_Model;
 out vec3 v_WorldPos;
 out vec3 v_Normal;
 out vec2 v_TexCoord;
+out mat3 v_TBN;
 
 void main()
 {
@@ -35,8 +37,16 @@ void main()
     v_WorldPos = worldPos.xyz;
 
     // Transformar normales (inversa transpuesta para corregir escalas no uniformes)
-    // Nota: Calcular esto en CPU es mejor, pero para empezar está bien acá.
-    v_Normal = mat3(transpose(inverse(u_Model))) * a_Normal;
+    mat3 normalMatrix = mat3(transpose(inverse(u_Model)));
+    v_Normal = normalMatrix * a_Normal;
+
+    // Construir TBN matrix desde tangent attribute
+    vec3 T = normalize(normalMatrix * a_Tangent);
+    vec3 N = normalize(v_Normal);
+    // Re-ortogonalizar T respecto a N (Gram-Schmidt)
+    T = normalize(T - dot(T, N) * N);
+    vec3 B = cross(N, T);
+    v_TBN = mat3(T, B, N);
 
     gl_Position = u_ViewProjection * worldPos;
 }
@@ -49,6 +59,7 @@ layout(location = 0) out vec4 o_Color;
 in vec3 v_WorldPos;
 in vec3 v_Normal;
 in vec2 v_TexCoord;
+in mat3 v_TBN;
 
 // --- ESTRUCTURAS DE LUCES ---
 struct DirLight {
@@ -145,23 +156,11 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0)
 
 // --- UTILIDADES ---
 
-// Calcula la normal perturbada por el mapa de normales SIN tangentes pre-calculadas
-// Usa las derivadas de la posición y coordenadas de textura (Cotangent Frame)
+// Calcula la normal perturbada usando la TBN matrix del vertex shader
 vec3 getNormalFromMap()
 {
     vec3 tangentNormal = texture(u_NormalMap, v_TexCoord).xyz * 2.0 - 1.0;
-
-    vec3 Q1  = dFdx(v_WorldPos);
-    vec3 Q2  = dFdy(v_WorldPos);
-    vec2 st1 = dFdx(v_TexCoord);
-    vec2 st2 = dFdy(v_TexCoord);
-
-    vec3 N   = normalize(v_Normal);
-    vec3 T  = normalize(Q1*st2.t - Q2*st1.t);
-    vec3 B  = -normalize(cross(N, T));
-    mat3 TBN = mat3(T, B, N);
-
-    return normalize(TBN * tangentNormal);
+    return normalize(v_TBN * tangentNormal);
 }
 
 // --- MAIN ---
