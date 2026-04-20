@@ -4,7 +4,7 @@
 
 struct GLFWwindow; // Forward declaration of the GLFWwindow struct
 
-namespace cabrankengine {
+namespace cbk {
 
     namespace rendering {
         class GraphicsContext; // Forward declaration of the GraphicsContext class

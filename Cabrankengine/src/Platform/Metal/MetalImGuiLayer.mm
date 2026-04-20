@@ -9,7 +9,7 @@
 
 #include "Cabrankengine/Core/Application.h"
 
-namespace cabrankengine {
+namespace cbk {
 
     ImGuiLayer::ImGuiLayer() : Layer("ImGuiLayer") {}
 

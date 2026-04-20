@@ -1,6 +1,6 @@
 #pragma once
 
-namespace cabrankengine::rendering {
+namespace cbk::rendering {
 
 	// Forward declarations
 	class VertexBuffer; // VertexBuffer is a class that represents a buffer containing vertex data.

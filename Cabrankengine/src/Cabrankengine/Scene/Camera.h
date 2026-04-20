@@ -2,7 +2,7 @@
 
 #include <Cabrankengine/Math/Transform.h>
 
-namespace cabrankengine::scene {
+namespace cbk::scene {
 
 	class Camera {
 	  public:
@@ -53,4 +53,4 @@ namespace cabrankengine::scene {
 				m_ViewProjectionMatrix = m_ViewMatrix * m_ProjectionMatrix;
 			}
 	};
-} // namespace cabrankengine
+} // namespace cbk

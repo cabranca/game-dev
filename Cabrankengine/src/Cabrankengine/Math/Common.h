@@ -2,7 +2,7 @@
 
 #include <numbers>
 
-namespace cabrankengine::math {
+namespace cbk::math {
 
 	inline constexpr float PI = std::numbers::pi_v<float>;
 	inline constexpr float HALF_PI = std::numbers::pi_v<float> / 2.0f;
@@ -12,4 +12,4 @@ namespace cabrankengine::math {
 	inline float radians(float degrees) {
 		return degrees * PI /180.f;
 	}
-} // namespace cabrankengine::math
+} // namespace cbk::math

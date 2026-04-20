@@ -5,7 +5,7 @@
 #include <Cabrankengine/Math/Vector3.h>
 #include <Cabrankengine/Math/VecTraits.h>
 
-namespace cabrankengine::ecs {
+namespace cbk::ecs {
 
 	struct CTransform {
 		math::Vector3 Position{ 0.0f };

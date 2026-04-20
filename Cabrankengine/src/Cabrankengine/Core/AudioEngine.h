@@ -2,7 +2,7 @@
 
 #include <irrKlang.h>
 
-namespace cabrankengine {
+namespace cbk {
 
 	// Custom deleter for IrrKlang as we must destroy the instance with drop()
 	struct IrrKlangDeleter {

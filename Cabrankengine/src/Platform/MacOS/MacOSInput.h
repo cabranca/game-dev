@@ -2,7 +2,7 @@
 
 #include <Cabrankengine/Core/Input.h>
 
-namespace cabrankengine {
+namespace cbk {
 
 	class MacOSInput : public Input {
 		protected:

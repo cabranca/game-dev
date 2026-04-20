@@ -7,7 +7,7 @@ namespace MTL {
 	class CommandBuffer;
 } // namespace MTL
 
-namespace cabrankengine::platform::metal {
+namespace cbk::platform::metal {
 
 	class MetalShader; // Forward declaration
 
@@ -52,4 +52,4 @@ namespace cabrankengine::platform::metal {
         inline static MTL::RenderCommandEncoder* s_ActiveEncoder = nullptr;
 		inline static MetalShader* s_CurrentShader = nullptr;
 	};
-} // namespace cabrankengine::platform::metal
+} // namespace cbk::platform::metal

@@ -13,12 +13,12 @@
 #include <imgui.h>
 #include "Sandbox2D.h"
 
-using namespace cabrankengine;
-using namespace cabrankengine::math;
-using namespace cabrankengine::rendering;
-using namespace cabrankengine::scene;
+using namespace cbk;
+using namespace cbk::math;
+using namespace cbk::rendering;
+using namespace cbk::scene;
 
-#ifdef CE_RENDERER_METAL
+#ifdef CBK_RENDERER_METAL
 
 class ExampleLayer : public Layer {
   public:
@@ -66,24 +66,24 @@ class ExampleLayer : public Layer {
 };
 #endif
 
-#ifdef CE_RENDERER_OPENGL
+#ifdef CBK_RENDERER_OPENGL
 class ExampleLayer : public Layer {
   public:
 	ExampleLayer() : Layer("Example"), m_CameraController(PerspectiveCamera(PI / 4.f, 16.f / 9.f, 0.1f, 100.f)) {
 		m_CameraController.getCamera().setWorldPosition(Vector3(0.f, 0.f, 10.f));
 
-		auto pbrShader = cabrankengine::rendering::Shader::create("assets/shaders/PBR");
-		auto pbrMaterial = cabrankengine::createRef<cabrankengine::rendering::PBRMaterial>(pbrShader);
-		m_GunModel = new cabrankengine::scene::Model<cabrankengine::rendering::PBRMaterial>("assets/models/gun/Cerberus_LP.cbkm", pbrMaterial);
+		auto pbrShader = cbk::rendering::Shader::create("assets/shaders/PBR");
+		auto pbrMaterial = cbk::createRef<cbk::rendering::PBRMaterial>(pbrShader);
+		m_GunModel = new cbk::scene::Model<cbk::rendering::PBRMaterial>("assets/models/gun/Cerberus_LP.cbkm", pbrMaterial);
 
-		auto phongShader = cabrankengine::rendering::Shader::create("assets/shaders/Phong");
-		auto phongMaterial = cabrankengine::createRef<cabrankengine::rendering::PhongMaterial>(phongShader);
-		m_PhongModel = new cabrankengine::scene::Model<cabrankengine::rendering::PhongMaterial>("assets/models/backpack/backpack.cbkm", phongMaterial);
+		auto phongShader = cbk::rendering::Shader::create("assets/shaders/Phong");
+		auto phongMaterial = cbk::createRef<cbk::rendering::PhongMaterial>(phongShader);
+		m_PhongModel = new cbk::scene::Model<cbk::rendering::PhongMaterial>("assets/models/backpack/backpack.cbkm", phongMaterial);
 
 		m_LightEnvironment.DirLight.direction = { 0.0f, -1.0f, 0.0f  }; 
 		m_LightEnvironment.DirLight.radiance = { 0.5f, 0.5f, 0.5f };
 
-		cabrankengine::rendering::PointLight lamp;
+		cbk::rendering::PointLight lamp;
 		lamp.position = { 0.0f, 0.0f, 8.0f }; 
 
 		lamp.radiance = Vector3(1.f);
@@ -118,7 +118,7 @@ class ExampleLayer : public Layer {
 	}
 
 	void onImGuiRender() override {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 		// ImGui::Begin("Settings");
 
 		// auto albedo = m_PBRMaterial->getAlbedoColor();
@@ -155,6 +155,6 @@ class Sandbox : public Application {
 	~Sandbox() {}
 };
 
-Application* cabrankengine::createApplication() {
+Application* cbk::createApplication() {
 	return new Sandbox();
 }

@@ -7,7 +7,7 @@
 
 #include "Common.h"
 
-namespace cabrankengine::math {
+namespace cbk::math {
 
     // This Vector implementation uses row convention: The vector is a 1x3 matrix
 	struct Vector2 {
@@ -132,12 +132,12 @@ namespace cabrankengine::math {
 	}
 
 	inline constexpr float& Vector2::operator[](int index) noexcept {
-		CE_ASSERT(index == 0 || index == 1, "Trying to acces a Vector with invalid index!")
+		CBK_ASSERT(index == 0 || index == 1, "Trying to acces a Vector with invalid index!")
 		return coords[index];
 	}
 
     inline constexpr const float& Vector2::operator[](int index) const noexcept {
-		CE_ASSERT(index == 0 || index == 1, "Trying to acces a Vector with invalid index!")
+		CBK_ASSERT(index == 0 || index == 1, "Trying to acces a Vector with invalid index!")
 		return coords[index];
 	}
 
@@ -158,4 +158,4 @@ namespace cabrankengine::math {
 		return std::acos(cosTheta);
 	}
 
-} // namespace cabrankengine::math
+} // namespace cbk::math

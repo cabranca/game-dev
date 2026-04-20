@@ -4,7 +4,7 @@
 
 #include <Cabrankengine/Math/Vector4.h>
 
-namespace cabrankengine::rendering {
+namespace cbk::rendering {
 
 	class VertexArray; // Forward declaration of VertexArray class.
 

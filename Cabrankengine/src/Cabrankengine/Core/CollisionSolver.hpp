@@ -9,7 +9,7 @@
 #include <Cabrankengine/Math/Common.h>
 #include <Cabrankengine/Math/VecTraits.h>
 
-namespace cabrankengine {
+namespace cbk {
 
     namespace collision_solver {
 
@@ -718,4 +718,4 @@ namespace cabrankengine {
 
     } // namespace collision_solver
 
-} // namespace cabrankengine
+} // namespace cbk

@@ -3,7 +3,7 @@
 #include <Cabrankengine/Core/Logger.h>
 #include "Common.h"
 
-namespace cabrankengine::ecs {
+namespace cbk::ecs {
 
 	class Registry;
 
@@ -41,7 +41,7 @@ namespace cabrankengine::ecs {
 			std::shared_ptr<T> RegisterSystem() {
 				const char* typeName = typeid(T).name();
 
-				CE_CORE_ASSERT(!m_Systems.contains(typeName), "System already registered!");
+				CBK_CORE_ASSERT(!m_Systems.contains(typeName), "System already registered!");
 
 				auto system = std::make_shared<T>();
 				m_Systems.emplace(typeName, system);
@@ -53,7 +53,7 @@ namespace cabrankengine::ecs {
 			void SetSignature(Signature signature) {
 				const char* typeName = typeid(T).name();
 
-				CE_CORE_ASSERT(m_Systems.contains(typeName), "System not registered!");
+				CBK_CORE_ASSERT(m_Systems.contains(typeName), "System not registered!");
 
 				m_Signatures.emplace(typeName, signature);
 			}

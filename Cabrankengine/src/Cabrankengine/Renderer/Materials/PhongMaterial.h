@@ -2,7 +2,7 @@
 
 #include "Material.h"
 
-namespace cabrankengine::rendering {
+namespace cbk::rendering {
 
 	class PhongMaterial : public Material {
 	  public:
@@ -19,4 +19,4 @@ namespace cabrankengine::rendering {
 		Ref<Texture2D> m_SpecularMap;
 		float m_Shininess = 32.0f; // Valor por defecto
 	};
-} // namespace cabrankengine::rendering
+} // namespace cbk::rendering

@@ -2,7 +2,7 @@
 
 #include <Cabrankengine/Renderer/FrameBuffer.h>
 
-namespace cabrankengine::platform::metal {
+namespace cbk::platform::metal {
 
 	class MetalFrameBuffer : public rendering::FrameBuffer {
 	  public:
@@ -23,4 +23,4 @@ namespace cabrankengine::platform::metal {
         uint32_t m_ColorAttachment, m_DepthAttachment;
         rendering::FrameBufferSpecification m_Specs;
 	};
-} // namespace cabrankengine::platform::metal
+} // namespace cbk::platform::metal

@@ -2,7 +2,7 @@
 
 #include <Cabrankengine/Math/Mat4.h>
 
-namespace cabrankengine::rendering {
+namespace cbk::rendering {
 
 	// A Shader is a program that runs on the GPU and is used to render graphics.
 	class Shader {

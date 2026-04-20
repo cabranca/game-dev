@@ -9,13 +9,13 @@
 #include <Cabrankengine/Core/Window.h>
 #include <Cabrankengine/Debug/Instrumentator.h>
 
-namespace cabrankengine {
+namespace cbk {
 
 	ImGuiLayer::ImGuiLayer() : Layer("ImGuiLayer") {}
 
 	void ImGuiLayer::onAttach()
 	{
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -42,7 +42,7 @@ namespace cabrankengine {
 
 	void ImGuiLayer::onDetach()
 	{
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
@@ -50,7 +50,7 @@ namespace cabrankengine {
 	}
 
 	void ImGuiLayer::begin() {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		ImGui_ImplGlfw_NewFrame();
 		ImGui_ImplOpenGL3_NewFrame();
@@ -58,7 +58,7 @@ namespace cabrankengine {
 	}
 
 	void ImGuiLayer::end() {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		ImGuiIO& io = ImGui::GetIO();
 		Application& app = Application::get();

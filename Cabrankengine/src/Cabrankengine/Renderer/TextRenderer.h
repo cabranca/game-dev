@@ -2,7 +2,7 @@
 
 #include <Cabrankengine/Math/Mat4.h>
 
-namespace cabrankengine::rendering {
+namespace cbk::rendering {
 
 	class Texture2D;
 
@@ -37,4 +37,4 @@ namespace cabrankengine::rendering {
 		static void startBatch();
 		static void nextBatch();
 	};
-} // namespace cabrankengine::rendering
+} // namespace cbk::rendering

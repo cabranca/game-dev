@@ -5,8 +5,8 @@
 
 #ifdef _WIN32
 	#ifdef _WIN64
-		#define CE_PLATFORM_WINDOWS
-		#define CE_RENDERER_OPENGL
+		#define CBK_PLATFORM_WINDOWS
+		#define CBK_RENDERER_OPENGL
 	#else
 		#error "Cabrankengine only supports 64-bit Windows!"
 	#endif
@@ -14,8 +14,8 @@
 
 #ifdef __linux__
 	#ifdef __x86_64__
-		#define CE_PLATFORM_LINUX
-		#define CE_RENDERER_OPENGL
+		#define CBK_PLATFORM_LINUX
+		#define CBK_RENDERER_OPENGL
 	#else
 		#error "Cabrankengine only supports 64-bit Linux!"
 	#endif
@@ -25,8 +25,8 @@
 	#include <TargetConditionals.h>
 	#if TARGET_OS_MAC
 		#if defined(__x86_64__) || defined(__arm64__)
-			#define CE_PLATFORM_MACOS
-			#define CE_RENDERER_METAL
+			#define CBK_PLATFORM_MACOS
+			#define CBK_RENDERER_METAL
 		#else
 			#error "Cabrankengine only supports 64-bit macOS!"
 		#endif
@@ -55,7 +55,7 @@ auto BIND_EVENT_FN(T&& func, U* instance) {
 
 // This usings are useless now but when we want to make our own smart pointers,
 // we can just change them here and they will be used everywhere.
-namespace cabrankengine {
+namespace cbk {
 
 	template<typename T, typename Deleter = std::default_delete<T>>
 	using Scope = std::unique_ptr<T, Deleter>;

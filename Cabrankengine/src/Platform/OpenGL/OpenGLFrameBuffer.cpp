@@ -3,7 +3,7 @@
 
 #include <glad/glad.h>
 
-namespace cabrankengine::platform::opengl {
+namespace cbk::platform::opengl {
 
 	using namespace rendering;
 
@@ -56,6 +56,6 @@ namespace cabrankengine::platform::opengl {
 		glNamedFramebufferTexture(m_RendererID, GL_DEPTH_STENCIL_ATTACHMENT, m_DepthAttachment, 0);
 
 		auto status = glCheckNamedFramebufferStatus(m_RendererID, GL_FRAMEBUFFER);
-		CE_CORE_ASSERT(status == GL_FRAMEBUFFER_COMPLETE, "FrameBuffer is incomplete!");
+		CBK_CORE_ASSERT(status == GL_FRAMEBUFFER_COMPLETE, "FrameBuffer is incomplete!");
 	}
-} // namespace cabrankengine::platform::opengl
+} // namespace cbk::platform::opengl

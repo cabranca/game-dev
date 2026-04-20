@@ -4,7 +4,7 @@
 
 #include "Texture.h"
 
-namespace cabrankengine::rendering {
+namespace cbk::rendering {
 
 	class Renderer2D {
 		public:

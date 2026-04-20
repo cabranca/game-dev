@@ -2,7 +2,7 @@
 
 #include <pch.h>
 
-namespace cabrankengine::ecs {
+namespace cbk::ecs {
 
 	using Entity = uint32_t;
 

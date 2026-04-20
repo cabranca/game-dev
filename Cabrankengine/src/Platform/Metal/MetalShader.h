@@ -9,7 +9,7 @@
 // Forward declarations de metal-cpp
 namespace MTL { class RenderPipelineState; class Function; class Library; class VertexDescriptor; }
 
-namespace cabrankengine::platform::metal {
+namespace cbk::platform::metal {
 
 	class MetalShader : public rendering::Shader {
 		public:

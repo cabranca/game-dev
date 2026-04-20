@@ -2,7 +2,7 @@
 
 #include <pch.h>
 
-namespace cabrankengine
+namespace cbk
 {
 	using KeyCode = uint16_t;
 

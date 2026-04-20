@@ -6,11 +6,11 @@
 
 #include <Platform/OpenGL/OpenGLShader.h>
 
-using namespace cabrankengine;
-using namespace cabrankengine::ecs;
-using namespace cabrankengine::math;
-using namespace cabrankengine::rendering;
-using namespace cabrankengine::scene;
+using namespace cbk;
+using namespace cbk::ecs;
+using namespace cbk::math;
+using namespace cbk::rendering;
+using namespace cbk::scene;
 
 class MovementSystem : public ISystem {
 public:
@@ -30,7 +30,7 @@ std::shared_ptr<MovementSystem> movSystem = nullptr;
 Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_Camera(-800.f, 800.f, -450.f, 450.f), m_Registry(nullptr), m_Player() {}
 
 void Sandbox2D::onAttach() {
-	CE_PROFILE_FUNCTION();
+	CBK_PROFILE_FUNCTION();
 
 	//m_CheckerboardTexture = Texture2D::create("assets/textures/Checkerboard.png");
 
@@ -52,12 +52,12 @@ void Sandbox2D::onAttach() {
 }
 
 void Sandbox2D::onDetach() {
-	CE_PROFILE_FUNCTION();
+	CBK_PROFILE_FUNCTION();
 	delete m_Registry;
 }
 
-void Sandbox2D::onUpdate(cabrankengine::Timestep delta) {
-	CE_PROFILE_FUNCTION();
+void Sandbox2D::onUpdate(cbk::Timestep delta) {
+	CBK_PROFILE_FUNCTION();
 
 	// Update
 	movSystem->update(*m_Registry, delta);
@@ -65,7 +65,7 @@ void Sandbox2D::onUpdate(cabrankengine::Timestep delta) {
 	// Render
 	Renderer2D::resetStats();
 	{
-		CE_PROFILE_SCOPE("Renderer Prep");
+		CBK_PROFILE_SCOPE("Renderer Prep");
 		RenderCommand::setClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		RenderCommand::clear();
 	}
@@ -74,7 +74,7 @@ void Sandbox2D::onUpdate(cabrankengine::Timestep delta) {
 		static float rotation = 0.f;
 		rotation += delta * 90.f;
 
-		CE_PROFILE_SCOPE("Renderer Draw");
+		CBK_PROFILE_SCOPE("Renderer Draw");
 
 		Renderer2D::beginScene(m_Camera.getViewProjectionMatrix());
 
@@ -90,9 +90,9 @@ void Sandbox2D::onUpdate(cabrankengine::Timestep delta) {
 }
 
 void Sandbox2D::onImGuiRender() {
-	CE_PROFILE_FUNCTION();
+	CBK_PROFILE_FUNCTION();
 }
 
-void Sandbox2D::onEvent(cabrankengine::Event& e) {
+void Sandbox2D::onEvent(cbk::Event& e) {
 	//m_Camera.onEvent(e);
 }

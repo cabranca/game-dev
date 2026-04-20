@@ -3,7 +3,7 @@
 
 #include "Layer.h"
 
-namespace cabrankengine {
+namespace cbk {
 
 	LayerStack::LayerStack() : m_LayerInsertIndex(0)
 	{

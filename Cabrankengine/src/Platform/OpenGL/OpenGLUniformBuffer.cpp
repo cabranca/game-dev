@@ -3,7 +3,7 @@
 
 #include <glad/glad.h>
 
-namespace cabrankengine::platform::opengl {
+namespace cbk::platform::opengl {
 
 	OpenGLUniformBuffer::OpenGLUniformBuffer(uint32_t size, uint32_t binding) : m_RendererID() {
 		glCreateBuffers(1, &m_RendererID);
@@ -18,4 +18,4 @@ namespace cabrankengine::platform::opengl {
 	void OpenGLUniformBuffer::setData(const void* data, uint32_t size, uint32_t offset) {
 		glNamedBufferSubData(m_RendererID, offset, size, data);
 	}
-} // namespace cabrankengine::platform::opengl
+} // namespace cbk::platform::opengl

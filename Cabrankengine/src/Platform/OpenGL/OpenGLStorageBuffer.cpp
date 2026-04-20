@@ -3,7 +3,7 @@
 
 #include <glad/glad.h>
 
-namespace cabrankengine::platform::opengl {
+namespace cbk::platform::opengl {
 
     OpenGLStorageBuffer::OpenGLStorageBuffer(uint32_t size) {
         glCreateBuffers(1, &m_RendererID);  
@@ -21,4 +21,4 @@ namespace cabrankengine::platform::opengl {
     void OpenGLStorageBuffer::bind(uint32_t bindingPoint) const {
         glBindBufferBase(GL_SHADER_STORAGE_BUFFER, bindingPoint, m_RendererID);
     }
-} // namespace cabrankengine::platform::opengl
+} // namespace cbk::platform::opengl

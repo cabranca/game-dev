@@ -4,7 +4,7 @@
 
 #include <nlohmann/json.hpp>
 
-namespace cabrankengine {
+namespace cbk {
 
 	class Config {
 		public:
@@ -23,10 +23,10 @@ namespace cabrankengine {
 					if (out.is_open()) {
 						out << defaults.dump(4);
 						out.close();
-						CE_CORE_WARN("[Config] File not found, creating new one in {0}", path);
+						CBK_CORE_WARN("[Config] File not found, creating new one in {0}", path);
 					}
 					else {
-						CE_CORE_ERROR("[Config] File not found, failed to create a new on in {0}", path);
+						CBK_CORE_ERROR("[Config] File not found, failed to create a new on in {0}", path);
 					}
 
 					return defaults;
@@ -37,7 +37,7 @@ namespace cabrankengine {
 					file >> j;
 				}
 				catch (std::exception& e) {
-					CE_CORE_ERROR("[Config] Failed reading {0} - Error message: {1}", path, e.what());
+					CBK_CORE_ERROR("[Config] Failed reading {0} - Error message: {1}", path, e.what());
 					return {
 						{"window", {{"title", "Cabrankengine"}, {"width", 1600}, {"height", 900}}}
 					};

@@ -6,7 +6,7 @@
 
 #include "MetalVertexArray.h"
 
-namespace cabrankengine::platform::metal {
+namespace cbk::platform::metal {
 
 	using namespace rendering;
 
@@ -26,12 +26,12 @@ namespace cabrankengine::platform::metal {
 	}
 
 	MetalVertexArray::MetalVertexArray() : m_VertexAttributeIndex(0) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 	}
 
 	MetalVertexArray::~MetalVertexArray() {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		if (m_VertexDescriptor)
 			m_VertexDescriptor->release();
@@ -42,9 +42,9 @@ namespace cabrankengine::platform::metal {
 	void MetalVertexArray::unbind() const { }
 
 	void MetalVertexArray::addVertexBuffer(const Ref<VertexBuffer>& vertexBuffer) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
-		CE_CORE_ASSERT(vertexBuffer->getLayout().getElements().size(), "Vertex Buffer has no layout!");
+		CBK_CORE_ASSERT(vertexBuffer->getLayout().getElements().size(), "Vertex Buffer has no layout!");
 
 		if (!m_VertexDescriptor)
 			m_VertexDescriptor = MTL::VertexDescriptor::vertexDescriptor();
@@ -68,7 +68,7 @@ namespace cabrankengine::platform::metal {
 	}
 
 	void MetalVertexArray::setIndexBuffer(const Ref<IndexBuffer>& indexBuffer) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 		m_IndexBuffer = indexBuffer;
 	}
 }

@@ -6,7 +6,7 @@ namespace MTL {
 	class Buffer;
 }
 
-namespace cabrankengine::platform::metal {
+namespace cbk::platform::metal {
 
 	class MetalVertexBuffer : public rendering::VertexBuffer {
 		public:

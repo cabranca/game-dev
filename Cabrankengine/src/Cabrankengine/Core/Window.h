@@ -4,7 +4,7 @@
 
 #include <Cabrankengine/Renderer/GraphicsContext.h>
 
-namespace cabrankengine {
+namespace cbk {
 
 	class Event; // Forward declaration of the Event class
 

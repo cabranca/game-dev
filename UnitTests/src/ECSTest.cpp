@@ -2,7 +2,7 @@
 
 #include <Cabrankengine/ECS/ECS.h>
 
-using namespace cabrankengine;
+using namespace cbk;
 
 // --------------------------
 // Dummy components

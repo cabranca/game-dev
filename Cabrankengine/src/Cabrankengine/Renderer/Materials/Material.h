@@ -4,7 +4,7 @@
 #include <Cabrankengine/Renderer/Texture.h>
 #include <Cabrankengine/Scene/DefaultLibrary.h>
 
-namespace cabrankengine::rendering {
+namespace cbk::rendering {
 
 	class Material {
 	  public:
@@ -21,4 +21,4 @@ namespace cabrankengine::rendering {
 		Ref<Shader> m_Shader;
 	};
 
-} // namespace cabrankengine::rendering
+} // namespace cbk::rendering

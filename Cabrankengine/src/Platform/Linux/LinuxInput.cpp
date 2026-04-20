@@ -3,7 +3,7 @@
 #include <Cabrankengine/Core/Window.h>
 #include <GLFW/glfw3.h>
 
-namespace cabrankengine {
+namespace cbk {
 
 	Input* Input::s_Instance = new LinuxInput(); //TODO: who destroys this???
 

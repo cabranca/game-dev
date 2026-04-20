@@ -1,7 +1,7 @@
 #include <pch.h>
 #include "PBRMaterial.h"
 
-namespace cabrankengine::rendering {
+namespace cbk::rendering {
 
     using namespace scene;
 
@@ -76,4 +76,4 @@ namespace cabrankengine::rendering {
 		m_AOMap->bind(3);
 		m_Shader->setInt("u_AOMap", 3);
 	}
-} // namespace cabrankengine::rendering
+} // namespace cbk::rendering

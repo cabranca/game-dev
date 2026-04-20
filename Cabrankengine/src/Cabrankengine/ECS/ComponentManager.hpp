@@ -3,7 +3,7 @@
 #include <Cabrankengine/Core/Logger.h>
 #include "Common.h"
 
-namespace cabrankengine::ecs {
+namespace cbk::ecs {
 
 	/// <summary>
 	/// This interface is needed because the ComponentManager has a collection of templated component arrays.
@@ -25,7 +25,7 @@ namespace cabrankengine::ecs {
 		public:
 			// Associates the given component and entity
 			void insert(Entity e, T component) {
-				CE_CORE_ASSERT(!m_EntityToIndex.contains(e), "The component has already been added!");
+				CBK_CORE_ASSERT(!m_EntityToIndex.contains(e), "The component has already been added!");
 				size_t index = m_Size;
 				m_EntityToIndex[e] = index;
 				m_IndexToEntity[index] = e;
@@ -35,7 +35,7 @@ namespace cabrankengine::ecs {
 
 			// Removes the component related to the given entity and any record of it
 			void remove(Entity e) {
-				CE_CORE_ASSERT(m_EntityToIndex.contains(e), "The component to remove does not exist!");
+				CBK_CORE_ASSERT(m_EntityToIndex.contains(e), "The component to remove does not exist!");
 				size_t index = m_EntityToIndex[e];
 				size_t lastIndex = m_Size - 1;
 				m_Components[index] = m_Components[lastIndex];
@@ -49,7 +49,7 @@ namespace cabrankengine::ecs {
 
 			// Returns the component for the given entity
 			std::optional<T*> get(Entity e) {
-				CE_CORE_ASSERT(m_EntityToIndex.contains(e), "The component was not found!");
+				CBK_CORE_ASSERT(m_EntityToIndex.contains(e), "The component was not found!");
 				if (m_EntityToIndex.contains(e))
 					return &m_Components[m_EntityToIndex[e]];
 				else
@@ -78,7 +78,7 @@ namespace cabrankengine::ecs {
 			template<typename T>
 			void registerComponent() {
 				const char* typeName = typeid(T).name();
-				CE_CORE_ASSERT(!m_ComponentTypes.contains(typeName), "Component added twice!");
+				CBK_CORE_ASSERT(!m_ComponentTypes.contains(typeName), "Component added twice!");
 				m_ComponentTypes[typeName] = m_NextComponentType++;
 				m_ComponentArrays[typeName] = std::make_shared<ComponentArray<T>>();
 			}
@@ -87,7 +87,7 @@ namespace cabrankengine::ecs {
 			template<typename T>
 			uint8_t getComponentType() {
 				const char* typeName = typeid(T).name();
-				CE_CORE_ASSERT(m_ComponentTypes.contains(typeName), "Component not registered!");
+				CBK_CORE_ASSERT(m_ComponentTypes.contains(typeName), "Component not registered!");
 				return m_ComponentTypes[typeName];
 			}
 
@@ -124,7 +124,7 @@ namespace cabrankengine::ecs {
 			template<typename T>
 			std::shared_ptr<ComponentArray<T>> getComponentArray() {
 				const char* typeName = typeid(T).name();
-				CE_CORE_ASSERT(m_ComponentTypes.contains(typeName), "Component not registered!");
+				CBK_CORE_ASSERT(m_ComponentTypes.contains(typeName), "Component not registered!");
 				return std::static_pointer_cast<ComponentArray<T>>(m_ComponentArrays[typeName]);
 			}
 	};

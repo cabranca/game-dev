@@ -4,7 +4,7 @@
 #include "ComponentManager.hpp"
 #include "SystemManager.hpp"
 
-namespace cabrankengine::ecs {
+namespace cbk::ecs {
 
     /// <summary>
     /// Manages entities and their components in an entity-component-system (ECS) architecture.

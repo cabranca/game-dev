@@ -1,7 +1,7 @@
 #include <pch.h>
 #include "MetalStorageBuffer.h"
 
-namespace cabrankengine::platform::metal {
+namespace cbk::platform::metal {
 
     MetalStorageBuffer::MetalStorageBuffer(uint32_t size) {
     }
@@ -14,4 +14,4 @@ namespace cabrankengine::platform::metal {
 	
     void MetalStorageBuffer::bind(uint32_t bindingPoint) const {
     }
-} // namespace cabrankengine::platform::metal
+} // namespace cbk::platform::metal

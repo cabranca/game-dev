@@ -2,7 +2,7 @@
 
 #include <Cabrankengine/Renderer/VertexArray.h>
 
-namespace cabrankengine::platform::opengl {
+namespace cbk::platform::opengl {
 
 	class OpenGLVertexArray : public rendering::VertexArray {
 		public:

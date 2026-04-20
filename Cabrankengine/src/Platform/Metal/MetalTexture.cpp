@@ -12,7 +12,7 @@
 #include "MetalContext.h"
 #include "MetalRendererAPI.h"
 
-namespace cabrankengine::platform::metal {
+namespace cbk::platform::metal {
 
 	using namespace rendering;
 
@@ -22,7 +22,7 @@ namespace cabrankengine::platform::metal {
 			case ImageFormat::RGB8:  return MTL::PixelFormatRGBA8Unorm; // Metal has no RGB8; we use RGBA8 and pad
 			case ImageFormat::R8:    return MTL::PixelFormatR8Unorm;
 			default:
-				CE_CORE_ASSERT(false, "Unsupported image format for Metal!");
+				CBK_CORE_ASSERT(false, "Unsupported image format for Metal!");
 				return MTL::PixelFormatRGBA8Unorm;
 		}
 	}
@@ -54,7 +54,7 @@ namespace cabrankengine::platform::metal {
 
 	MetalTexture2D::MetalTexture2D(const TextureSpecification& specification)
 		: m_Specification(specification), m_Width(specification.Width), m_Height(specification.Height) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		m_BytesPerPixel = bytesPerPixelForFormat(specification.Format);
 		createTexture(m_Width, m_Height, specification.Format);
@@ -62,14 +62,14 @@ namespace cabrankengine::platform::metal {
 	}
 
 	MetalTexture2D::MetalTexture2D(const std::string& path) : m_Path(path) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		int width, height, channels;
 		stbi_set_flip_vertically_on_load(1);
 		stbi_uc* data = nullptr;
 
 		{
-			CE_PROFILE_FUNCTION();
+			CBK_PROFILE_FUNCTION();
 			data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 		}
 
@@ -103,7 +103,7 @@ namespace cabrankengine::platform::metal {
 	}
 
 	MetalTexture2D::MetalTexture2D(const FT_Face& face) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		m_Width = face->glyph->bitmap.width;
 		m_Height = face->glyph->bitmap.rows;
@@ -118,16 +118,16 @@ namespace cabrankengine::platform::metal {
 	}
 
 	MetalTexture2D::~MetalTexture2D() {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		if (m_Texture)
 			m_Texture->release();
 	}
 
 	void MetalTexture2D::setData(void* data, uint32_t size) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
-		CE_CORE_ASSERT(size == m_Width * m_Height * m_BytesPerPixel, "Data must be entire texture!");
+		CBK_CORE_ASSERT(size == m_Width * m_Height * m_BytesPerPixel, "Data must be entire texture!");
 
 		if (m_Texture) {
 			MTL::Region region = MTL::Region::Make2D(0, 0, m_Width, m_Height);
@@ -136,7 +136,7 @@ namespace cabrankengine::platform::metal {
 	}
 
 	void MetalTexture2D::bind(uint32_t slot) const {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		auto* encoder = MetalRendererAPI::GetActiveEncoder();
 		if (encoder && m_Texture)

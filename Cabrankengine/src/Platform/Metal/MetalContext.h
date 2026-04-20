@@ -13,7 +13,7 @@ namespace CA {
 }
 struct GLFWwindow;
 
-namespace cabrankengine::platform::metal {
+namespace cbk::platform::metal {
 
 	class MetalContext : public rendering::GraphicsContext {
 	  public:
@@ -40,4 +40,4 @@ namespace cabrankengine::platform::metal {
 		CA::MetalLayer* m_Swapchain;
 		CA::MetalDrawable* m_CurrentDrawable = nullptr;
 	};
-} // namespace cabrankengine::platform::metal
+} // namespace cbk::platform::metal

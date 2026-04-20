@@ -9,14 +9,14 @@
 
 #include <Platform/OpenGL/OpenGLContext.h>
 
-namespace cabrankengine {
+namespace cbk {
 
     using namespace rendering;
 
 	static bool s_GLFWInitialized = false;
 
 	static void GLFWErrorCallback(int error, const char* description) {
-		CE_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
+		CBK_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
 	}
 
 	Window* Window::create(const WindowProps& props) {
@@ -24,13 +24,13 @@ namespace cabrankengine {
 	}
 	
 	WindowsWindow::WindowsWindow(const WindowProps& props) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		init(props);
 	}
 
 	WindowsWindow::~WindowsWindow() {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		shutdown();
 	}
@@ -41,7 +41,7 @@ namespace cabrankengine {
 	}
 
 	void WindowsWindow::setVSync(bool enabled) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		if (enabled)
 			glfwSwapInterval(1);
@@ -59,25 +59,25 @@ namespace cabrankengine {
 	}
 
 	void WindowsWindow::init(const WindowProps& props) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		m_Data.Title = props.Title;
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
 
-		CE_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
+		CBK_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
 		if (!s_GLFWInitialized) {
-			CE_PROFILE_FUNCTION();
+			CBK_PROFILE_FUNCTION();
 
 			int success = glfwInit();
-			CE_CORE_ASSERT(success, "Could not initialize GLFW!");
+			CBK_CORE_ASSERT(success, "Could not initialize GLFW!");
 			glfwSetErrorCallback(GLFWErrorCallback);
 			s_GLFWInitialized = true;
 		}
 
 		{
-			CE_PROFILE_FUNCTION();
+			CBK_PROFILE_FUNCTION();
 
 			m_Window = glfwCreateWindow(props.Width, props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		}
@@ -162,7 +162,7 @@ namespace cabrankengine {
 	}
 
 	void WindowsWindow::shutdown() {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		glfwDestroyWindow(m_Window);
 	}

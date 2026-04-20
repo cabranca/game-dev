@@ -1,6 +1,6 @@
 #pragma once
 
-namespace cabrankengine::rendering {
+namespace cbk::rendering {
 
 	class StorageBuffer {
 	  public:
@@ -11,4 +11,4 @@ namespace cabrankengine::rendering {
 
 		static Ref<StorageBuffer> create(uint32_t size);
 	};
-} // namespace cabrankengine::rendering
+} // namespace cbk::rendering

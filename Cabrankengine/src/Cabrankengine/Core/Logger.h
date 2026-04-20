@@ -4,7 +4,7 @@
 
 #include "Core.h"
 
-// Backwards-compatible alias so existing engine code using cabrankengine::Logger keeps working
-namespace cabrankengine {
+// Backwards-compatible alias so existing engine code using cbk::Logger keeps working
+namespace cbk {
 	using Logger = ::cbk::common::Logger;
 }

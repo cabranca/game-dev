@@ -2,7 +2,7 @@
 
 #include <Cabrankengine/Renderer/UniformBuffer.h>
 
-namespace cabrankengine::platform::opengl {
+namespace cbk::platform::opengl {
 
 	class OpenGLUniformBuffer : public rendering::UniformBuffer {
 	  public:
@@ -14,4 +14,4 @@ namespace cabrankengine::platform::opengl {
 	  private:
 		uint32_t m_RendererID;
 	};
-} // namespace cabrankengine::platform::opengl
+} // namespace cbk::platform::opengl

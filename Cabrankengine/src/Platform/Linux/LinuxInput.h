@@ -2,7 +2,7 @@
 
 #include <Cabrankengine/Core/Input.h>
 
-namespace cabrankengine {
+namespace cbk {
 
 	class LinuxInput : public Input {
 		protected:

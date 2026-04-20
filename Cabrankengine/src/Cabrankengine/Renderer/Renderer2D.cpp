@@ -8,7 +8,7 @@
 #include "Shader.h"
 #include "VertexArray.h"
 
-namespace cabrankengine::rendering {
+namespace cbk::rendering {
 
 	using namespace math;
 
@@ -46,7 +46,7 @@ namespace cabrankengine::rendering {
 	static Renderer2DData s_Data;	
 
 	void Renderer2D::init() {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		s_Data.QuadVertexArray = VertexArray::create();
 
@@ -101,11 +101,11 @@ namespace cabrankengine::rendering {
 	}
 
 	void Renderer2D::shutdown() {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 	}
 
 	void Renderer2D::beginScene(const math::Mat4& viewProjection) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		s_Data.TextureShader->bind();
 		s_Data.TextureShader->setMat4("u_ViewProjection", viewProjection);
@@ -117,7 +117,7 @@ namespace cabrankengine::rendering {
 	}
 
 	void Renderer2D::endScene() {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		uint32_t dataSize = static_cast<uint32_t>(reinterpret_cast<uint8_t*>(s_Data.QuadVertexBufferPtr) - reinterpret_cast<uint8_t*>(s_Data.QuadVertexBufferBase));
 		s_Data.QuadVertexBuffer->setData(s_Data.QuadVertexBufferBase, dataSize);
@@ -126,7 +126,7 @@ namespace cabrankengine::rendering {
 	}
 
 	void Renderer2D::flush() {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++) {
 			s_Data.TextureSlots[i]->bind(i);
@@ -149,7 +149,7 @@ namespace cabrankengine::rendering {
 	}
 
 	void Renderer2D::drawQuad(const Vector3& position, const Vector2& size, const Vector4& color) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
 			flushAndReset();
@@ -197,7 +197,7 @@ namespace cabrankengine::rendering {
 	}
 
 	void Renderer2D::drawQuad(const Vector3& position, const Vector2& size, const Ref<Texture2D>& texture, float tilingFactor, const Vector4& tintColor) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
 			flushAndReset();
@@ -258,7 +258,7 @@ namespace cabrankengine::rendering {
 	}
 
 	void Renderer2D::drawRotatedQuad(const Vector3& position, const Vector2& size, float rotation, const Vector4& color) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
 			flushAndReset();
@@ -306,7 +306,7 @@ namespace cabrankengine::rendering {
 	}
 
 	void Renderer2D::drawRotatedQuad(const Vector3& position, const Vector2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor, const Vector4& tintColor) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
 			flushAndReset();

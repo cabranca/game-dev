@@ -7,7 +7,7 @@
 #include <string>
 #include <thread>
 
-namespace cabrankengine {
+namespace cbk {
 
 	struct ProfileResult
 	{
@@ -133,19 +133,19 @@ namespace cabrankengine {
 	};
 }
 
-#define CE_PROFILE 1
-#if CE_PROFILE
-	#define CE_PROFILE_BEGIN_SESSION(name, filepath) ::cabrankengine::Instrumentor::Get().BeginSession(name, filepath)
-	#define CE_PROFILE_END_SESSION() ::cabrankengine::Instrumentor::Get().EndSession()
-	#define CE_PROFILE_SCOPE(name) ::cabrankengine::InstrumentationTimer timer##__LINE__(name);
+#define CBK_PROFILE 1
+#if CBK_PROFILE
+	#define CBK_PROFILE_BEGIN_SESSION(name, filepath) ::cbk::Instrumentor::Get().BeginSession(name, filepath)
+	#define CBK_PROFILE_END_SESSION() ::cbk::Instrumentor::Get().EndSession()
+	#define CBK_PROFILE_SCOPE(name) ::cbk::InstrumentationTimer timer##__LINE__(name);
 	#if defined(__GNUC__)
-		#define CE_PROFILE_FUNCTION() CE_PROFILE_SCOPE(__PRETTY_FUNCTION__)
+		#define CBK_PROFILE_FUNCTION() CBK_PROFILE_SCOPE(__PRETTY_FUNCTION__)
 	#elif (defined(__FUNCSIG__) || (_MSC_VER))
-		#define CE_PROFILE_FUNCTION() CE_PROFILE_SCOPE(__FUNCSIG__)
+		#define CBK_PROFILE_FUNCTION() CBK_PROFILE_SCOPE(__FUNCSIG__)
 	#endif
 #else
-	#define CE_PROFILE_BEGIN_SESSION(name, filepath)
-	#define CE_PROFILE_END_SESSION()
-	#define CE_PROFILE_SCOPE(name)
-	#define CE_PROFILE_FUNCTION()
+	#define CBK_PROFILE_BEGIN_SESSION(name, filepath)
+	#define CBK_PROFILE_END_SESSION()
+	#define CBK_PROFILE_SCOPE(name)
+	#define CBK_PROFILE_FUNCTION()
 #endif

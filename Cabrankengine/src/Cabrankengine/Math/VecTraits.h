@@ -4,7 +4,7 @@
 #include "Vector3.h"
 #include "Quaternion.h"
 
-namespace cabrankengine::math {
+namespace cbk::math {
 
 	// Primary template — intentionally undefined; only specializations below are valid
 	template<typename VecType>
@@ -22,4 +22,4 @@ namespace cabrankengine::math {
 		using OrientationType = Quaternion;
 	};
 
-} // namespace cabrankengine::math
+} // namespace cbk::math

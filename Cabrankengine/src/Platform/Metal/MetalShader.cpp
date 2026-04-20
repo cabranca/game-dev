@@ -10,13 +10,13 @@
 #include <Platform/Metal/MetalContext.h>
 #include <Platform/Metal/MetalRendererAPI.h>
 
-namespace cabrankengine::platform::metal {
+namespace cbk::platform::metal {
 
 	using namespace math;
 	using namespace rendering;
 
 	MetalShader::MetalShader(const std::string& filepath) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		std::filesystem::path path(filepath);
 		m_Name = path.stem().string();
@@ -26,7 +26,7 @@ namespace cabrankengine::platform::metal {
 	}
 
 	MetalShader::MetalShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc) : m_Name(name) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		// En Metal solemos tener todo en un solo string/archivo,
 		// así que concatenamos o asumimos que 'vertexSrc' tiene todo si es un string raw.
@@ -35,7 +35,7 @@ namespace cabrankengine::platform::metal {
 	}
 
 	MetalShader::~MetalShader() {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		if (m_PipelineState)
 			m_PipelineState->release();
@@ -48,7 +48,7 @@ namespace cabrankengine::platform::metal {
 	}
 
 	void MetalShader::bind() const {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 		// Tell the API to use this shader — PSO creation is deferred until drawIndexed()
 		// where the vertex descriptor is available from the VertexArray.
 		MetalRendererAPI::SetCurrentShader(const_cast<MetalShader*>(this));
@@ -70,12 +70,12 @@ namespace cabrankengine::platform::metal {
 		if (it != s_NameToIndex.end())
 			return it->second;
 
-		CE_CORE_WARN("MetalShader: Unknown uniform name '{}', defaulting to buffer index 30", name);
+		CBK_CORE_WARN("MetalShader: Unknown uniform name '{}', defaulting to buffer index 30", name);
 		return 30;
 	}
 
 	void MetalShader::setInt(const std::string& name, int value) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 		uint32_t idx = getBufferIndex(name);
 		auto& buf = m_PendingVertexBytes[idx];
 		buf.resize(sizeof(int));
@@ -83,13 +83,13 @@ namespace cabrankengine::platform::metal {
 	}
 
 	void MetalShader::setIntArray(const std::string& name, uint32_t count, int* values) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 		// In Metal, sampler indices are not needed — textures are bound directly by slot.
 		// This is intentionally a no-op for the "u_Textures" pattern from OpenGL.
 	}
 
 	void MetalShader::setFloat(const std::string& name, float value) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 		uint32_t idx = getBufferIndex(name);
 		auto& buf = m_PendingVertexBytes[idx];
 		buf.resize(sizeof(float));
@@ -97,7 +97,7 @@ namespace cabrankengine::platform::metal {
 	}
 
 	void MetalShader::setFloat3(const std::string& name, const Vector3& vector) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 		uint32_t idx = getBufferIndex(name);
 		auto& buf = m_PendingVertexBytes[idx];
 		// Metal expects float3 to be 16-byte aligned (same as float4)
@@ -106,7 +106,7 @@ namespace cabrankengine::platform::metal {
 	}
 
 	void MetalShader::setFloat4(const std::string& name, const Vector4& vector) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 		uint32_t idx = getBufferIndex(name);
 		auto& buf = m_PendingVertexBytes[idx];
 		buf.resize(sizeof(float) * 4);
@@ -114,7 +114,7 @@ namespace cabrankengine::platform::metal {
 	}
 
 	void MetalShader::setMat4(const std::string& name, const Mat4& value) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 		uint32_t idx = getBufferIndex(name);
 		auto& buf = m_PendingVertexBytes[idx];
 		buf.resize(sizeof(float) * 16);
@@ -127,7 +127,7 @@ namespace cabrankengine::platform::metal {
 	}
 
 	std::string MetalShader::readFile(const std::string& filepath) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		std::string result;
 		std::ifstream in(filepath, std::ios::in | std::ios::binary);
@@ -138,7 +138,7 @@ namespace cabrankengine::platform::metal {
 			in.read(&result[0], result.size());
 			in.close();
 		} else {
-			CE_CORE_ERROR("Could not open shader file: {0}", filepath);
+			CBK_CORE_ERROR("Could not open shader file: {0}", filepath);
 		}
 		return result;
 	}
@@ -156,7 +156,7 @@ namespace cabrankengine::platform::metal {
 		m_Library = device->newLibrary(nsSource, nullptr, &error);
 
 		if (!m_Library) {
-			CE_CORE_ERROR("Error shader: {0}", error->localizedDescription()->utf8String());
+			CBK_CORE_ERROR("Error shader: {0}", error->localizedDescription()->utf8String());
 			return;
 		}
 
@@ -166,7 +166,7 @@ namespace cabrankengine::platform::metal {
 		m_FragmentFunction = m_Library->newFunction(NS::String::string("fragment_main", NS::UTF8StringEncoding));
 
 		if (!m_VertexFunction || !m_FragmentFunction) {
-			CE_CORE_ERROR("Error: Could not find 'vertex_main' or 'fragment_main' in shader.");
+			CBK_CORE_ERROR("Error: Could not find 'vertex_main' or 'fragment_main' in shader.");
 			return;
 		}
 
@@ -189,8 +189,8 @@ namespace cabrankengine::platform::metal {
 		m_PipelineState = device->newRenderPipelineState(desc, &error);
 		
 		if (!m_PipelineState)
-			CE_CORE_ERROR("Error pipeline: {}", error->localizedDescription()->utf8String());
+			CBK_CORE_ERROR("Error pipeline: {}", error->localizedDescription()->utf8String());
 
 		desc->release();
 	}
-} // namespace cabrankengine::platform::metal
+} // namespace cbk::platform::metal

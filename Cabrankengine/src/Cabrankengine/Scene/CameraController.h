@@ -4,7 +4,7 @@
 
 #include "Camera.h"
 
-namespace cabrankengine::scene {
+namespace cbk::scene {
 
     // Actually a mix of FPS and free-fly Camera Controller.
     // Can move in forward, right and up directions. Can rotate yaw holding down the wheel.

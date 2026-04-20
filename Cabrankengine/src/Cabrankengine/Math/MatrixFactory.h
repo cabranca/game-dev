@@ -2,7 +2,7 @@
 
 #include "Mat4.h"
 
-namespace cabrankengine::math {
+namespace cbk::math {
 
     constexpr Mat4 zeroMat() noexcept;
 	constexpr Mat4 identityMat() noexcept;
@@ -134,4 +134,4 @@ namespace cabrankengine::math {
 
 		return inv;
 	}
-} // namespace cabrankengine::math
+} // namespace cbk::math

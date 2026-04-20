@@ -15,7 +15,7 @@
 #include "MetalBuffer.h"
 #include "MetalShader.h"
 
-namespace cabrankengine::platform::metal {
+namespace cbk::platform::metal {
 
 	using namespace rendering;
 
@@ -130,4 +130,4 @@ namespace cabrankengine::platform::metal {
 			m_ActiveCommandBuffer = nullptr;
 		}
 	}
-} // namespace cabrankengine::platform::metal
+} // namespace cbk::platform::metal

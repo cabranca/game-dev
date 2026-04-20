@@ -4,7 +4,7 @@
 
 #include <Cabrankengine/Core/Core.h>
 
-namespace cabrankengine {
+namespace cbk {
 
 	// Every type of event used must be declared here
 	enum class EventType {

@@ -7,7 +7,7 @@
 #include <Cabrankengine/Core/Window.h>
 
 
-namespace cabrankengine {
+namespace cbk {
 
 	Input* Input::s_Instance = new WindowsInput(); //TODO: who destroys this???
 

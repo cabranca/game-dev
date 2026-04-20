@@ -2,7 +2,7 @@
 
 #include <Cabrankengine/Renderer/StorageBuffer.h>
 
-namespace cabrankengine::platform::metal {
+namespace cbk::platform::metal {
 
 	class MetalStorageBuffer : public rendering::StorageBuffer {
 	  public:
@@ -14,4 +14,4 @@ namespace cabrankengine::platform::metal {
 	  private:
 		uint32_t m_RendererID;
 	};
-} // namespace cabrankengine::platform::metal
+} // namespace cbk::platform::metal

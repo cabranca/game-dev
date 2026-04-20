@@ -3,12 +3,12 @@
 
 #include <glad/glad.h>
 
-namespace cabrankengine::platform::opengl {
+namespace cbk::platform::opengl {
 
 	// --------------------- VERTEX BUFFER --------------------- //
 
 	OpenGLVertexBuffer::OpenGLVertexBuffer(uint32_t size) : m_RendererId() {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		glCreateBuffers(1, &m_RendererId);
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererId);
@@ -16,7 +16,7 @@ namespace cabrankengine::platform::opengl {
 	}
 
 	OpenGLVertexBuffer::OpenGLVertexBuffer(void* vertices, uint32_t size) : m_RendererId() {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		glCreateBuffers(1, &m_RendererId); // TODO: research this functions. Cherno thought that "create" elminiated the need of "bind" but it does not.
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererId);
@@ -24,25 +24,25 @@ namespace cabrankengine::platform::opengl {
 	}
 
 	OpenGLVertexBuffer::~OpenGLVertexBuffer() {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		glDeleteBuffers(1, &m_RendererId);
 	}
 
 	void OpenGLVertexBuffer::bind() const {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererId);
 	}
 
 	void OpenGLVertexBuffer::unbind() const {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
 	void OpenGLVertexBuffer::setData(const void* data, uint32_t size) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererId);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
@@ -51,7 +51,7 @@ namespace cabrankengine::platform::opengl {
 	// --------------------- INDEX BUFFER --------------------- //
 
 	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indices, uint32_t count) : m_RendererId(), m_Count(count) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		glCreateBuffers(1, &m_RendererId);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererId);
@@ -59,19 +59,19 @@ namespace cabrankengine::platform::opengl {
 	}
 
 	OpenGLIndexBuffer::~OpenGLIndexBuffer() {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		glDeleteBuffers(1, &m_RendererId);
 	}
 
 	void OpenGLIndexBuffer::bind() const {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererId);
 	}
 
 	void OpenGLIndexBuffer::unbind() const {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}

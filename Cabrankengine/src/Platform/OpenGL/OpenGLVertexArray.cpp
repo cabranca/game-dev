@@ -5,7 +5,7 @@
 
 #include <Cabrankengine/Renderer/Buffer.h>
 
-namespace cabrankengine::platform::opengl {
+namespace cbk::platform::opengl {
 
 	using namespace rendering;
 
@@ -24,38 +24,38 @@ namespace cabrankengine::platform::opengl {
 			case ShaderDataType::Bool:    return GL_BOOL;
 		}
 
-		CE_CORE_ASSERT(false, "Unknown Shader Type!");
+		CBK_CORE_ASSERT(false, "Unknown Shader Type!");
 		return 0;
 	}
 
 	OpenGLVertexArray::OpenGLVertexArray() : m_RendererId() {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		glCreateVertexArrays(1, &m_RendererId);
 	}
 
 	OpenGLVertexArray::~OpenGLVertexArray() {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		glDeleteVertexArrays(1, &m_RendererId);
 	}
 
 	void OpenGLVertexArray::bind() const {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		glBindVertexArray(m_RendererId);
 	}
 
 	void OpenGLVertexArray::unbind() const {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		glBindVertexArray(0);
 	}
 
 	void OpenGLVertexArray::addVertexBuffer(const Ref<VertexBuffer>& vertexBuffer) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
-		CE_CORE_ASSERT(vertexBuffer->getLayout().getElements().size(), "Vertex Buffer has no layout!");
+		CBK_CORE_ASSERT(vertexBuffer->getLayout().getElements().size(), "Vertex Buffer has no layout!");
 
 		glBindVertexArray(m_RendererId);
 		vertexBuffer->bind();
@@ -77,7 +77,7 @@ namespace cabrankengine::platform::opengl {
 	}
 
 	void OpenGLVertexArray::setIndexBuffer(const Ref<IndexBuffer>& indexBuffer) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		glBindVertexArray(m_RendererId);
 		indexBuffer->bind();

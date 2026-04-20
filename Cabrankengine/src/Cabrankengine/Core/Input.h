@@ -6,7 +6,7 @@
 #include "KeyCodes.h"
 #include "MouseCodes.h"
 
-namespace cabrankengine {
+namespace cbk {
 
 	// This class is used to perform input polling.
 	// On one hand, the class is abstract so it can be implemented for different platforms (e.g., Windows, Linux, etc.) such as the renderer related classes.

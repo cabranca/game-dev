@@ -13,7 +13,7 @@
 #include "VertexArray.h"
 
 
-namespace cabrankengine::rendering {
+namespace cbk::rendering {
 
 	using namespace math;
 
@@ -54,7 +54,7 @@ namespace cabrankengine::rendering {
 	};
 
 	void Renderer::init() {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		RenderCommand::init();
 		Renderer2D::init();
@@ -67,7 +67,7 @@ namespace cabrankengine::rendering {
 		Renderer2D::shutdown();
 	}
 
-	void Renderer::beginScene(const cabrankengine::scene::Camera& camera, const LightEnvironment& environment) {
+	void Renderer::beginScene(const cbk::scene::Camera& camera, const LightEnvironment& environment) {
 		s_AltSceneData.ViewProjectionMatrix = camera.getViewProjectionMatrix();
 		s_AltSceneData.DirLight.direction = environment.DirLight.direction;
 		s_AltSceneData.DirLight.radiance = environment.DirLight.radiance;
@@ -132,4 +132,4 @@ namespace cabrankengine::rendering {
 		s_SceneData->lightSSBO->setData(bufferData.data(), bufferData.size());
 		s_SceneData->lightSSBO->bind(0);
 	}
-} // namespace cabrankengine::rendering
+} // namespace cbk::rendering

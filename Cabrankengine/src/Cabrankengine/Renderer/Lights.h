@@ -2,7 +2,7 @@
 
 #include <Cabrankengine/Math/Vector3.h>
 
-namespace cabrankengine::rendering {
+namespace cbk::rendering {
 
 	struct DirectionalLight {
 		math::Vector3 direction{ 0.f, -1.f, 0.f };
@@ -23,4 +23,4 @@ namespace cabrankengine::rendering {
 		DirectionalLight DirLight;
 		std::vector<PointLight> PointLights;
 	};
-} // namespace cabrankengine::rendering
+} // namespace cbk::rendering

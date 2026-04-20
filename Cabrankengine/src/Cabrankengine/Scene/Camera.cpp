@@ -1,7 +1,7 @@
 #include <pch.h>
 #include "Camera.h"
 
-namespace cabrankengine::scene {
+namespace cbk::scene {
 
 	using namespace math;
 
@@ -64,4 +64,4 @@ namespace cabrankengine::scene {
 		m_ViewMatrix = inverseAffine(m_Transform.toMat4());
 		m_ViewProjectionMatrix = m_ViewMatrix * m_ProjectionMatrix;
 	}
-} // namespace cabrankengine
+} // namespace cbk

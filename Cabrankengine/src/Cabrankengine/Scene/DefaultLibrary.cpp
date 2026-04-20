@@ -3,7 +3,7 @@
 
 #include <Cabrankengine/Renderer/Buffer.h>
 
-namespace cabrankengine::scene {
+namespace cbk::scene {
 
 	using namespace rendering;
 
@@ -210,4 +210,4 @@ namespace cabrankengine::scene {
 		Ref<IndexBuffer> sphereIB = IndexBuffer::create(indices.data(), indices.size());
 		s_SphereVA->setIndexBuffer(sphereIB);
 	}
-} // namespace cabrankengine::scene
+} // namespace cbk::scene

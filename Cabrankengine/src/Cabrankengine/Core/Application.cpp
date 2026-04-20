@@ -15,15 +15,15 @@
 #include "Timestep.h"
 #include "Window.h"
 
-namespace cabrankengine {
+namespace cbk {
 
 	using namespace rendering;
 	using namespace scene;
 
 	Application::Application() : m_Running(true), m_LastFrameTime(0.0f)
 	{
-		CE_PROFILE_FUNCTION();
-		CE_CORE_ASSERT(!s_Instance, "Application already exists!");
+		CBK_PROFILE_FUNCTION();
+		CBK_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
 		nlohmann::json configJson = Config::load("config.json");
@@ -43,23 +43,23 @@ namespace cabrankengine {
 	}
 
 	Application::~Application() {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 		Renderer::shutdown();
 	}
 
 	void Application::Run()
 	{
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		while (m_Running) {
-			CE_PROFILE_SCOPE("RunLoop");
+			CBK_PROFILE_SCOPE("RunLoop");
 
 			float time = static_cast<float>(glfwGetTime()); // This should be in Platform::getTime() or similar
 			Timestep timestep = time - m_LastFrameTime; // Calculate the time since the last frame
 			m_LastFrameTime = time;
 
 			if (!m_Minimized) {
-				CE_PROFILE_SCOPE("LayerStack OnUpdate");
+				CBK_PROFILE_SCOPE("LayerStack OnUpdate");
 
 				for (Layer* layer : m_LayerStack)
 					layer->onUpdate(timestep);
@@ -67,7 +67,7 @@ namespace cabrankengine {
 			 
 			m_ImGuiLayer->begin();
 			{
-				CE_PROFILE_SCOPE("LayerStack OnImGuiRender");
+				CBK_PROFILE_SCOPE("LayerStack OnImGuiRender");
 				for (Layer* layer : m_LayerStack)
 					layer->onImGuiRender();
 			}
@@ -95,13 +95,13 @@ namespace cabrankengine {
 	}
 
 	void Application::pushLayer(Layer* layer) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 		m_LayerStack.pushLayer(layer);
 		layer->onAttach();
 	}
 
 	void Application::pushOverlay(Layer* layer) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 		m_LayerStack.pushOverlay(layer);
 		layer->onAttach();
 	}
@@ -122,7 +122,7 @@ namespace cabrankengine {
 
 	bool Application::onWindowResize(WindowResizeEvent& e)
 	{
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 		if (e.getWidth() == 0 || e.getHeight() == 0) {
 			m_Minimized = true;
 			return false;

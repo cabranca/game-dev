@@ -6,7 +6,7 @@
 // TODO: Remove!!
 typedef unsigned int GLenum;
 
-namespace cabrankengine::platform::opengl {
+namespace cbk::platform::opengl {
 
 	class OpenGLShader : public rendering::Shader {
 		public:

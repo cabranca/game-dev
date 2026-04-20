@@ -2,7 +2,7 @@
 
 #include "LayerStack.h"
 
-namespace cabrankengine {
+namespace cbk {
 
 	// Forward declarations
 	class Event; // Base class for all events

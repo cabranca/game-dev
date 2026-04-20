@@ -5,7 +5,7 @@
 
 struct GLFWwindow; // Forward declaration of the GLFWwindow struct
 
-namespace cabrankengine {
+namespace cbk {
 
 	class WindowsWindow : public Window {
 		public:

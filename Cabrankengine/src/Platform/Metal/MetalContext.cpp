@@ -17,10 +17,10 @@
 
 #include "MetalRendererAPI.h"
 
-namespace cabrankengine::platform::metal {
+namespace cbk::platform::metal {
 
 	MetalContext::MetalContext(GLFWwindow* windowHandle) : m_WindowHandle(windowHandle) {
-		CE_CORE_ASSERT(m_WindowHandle, "Window handle is null!");
+		CBK_CORE_ASSERT(m_WindowHandle, "Window handle is null!");
 
 		m_Device = MTL::CreateSystemDefaultDevice();
 	}
@@ -35,8 +35,8 @@ namespace cabrankengine::platform::metal {
 	}
 
 	void MetalContext::init() {
-		CE_PROFILE_FUNCTION();
-		CE_CORE_INFO("Metal Context (C++) - GPU: {0}", m_Device->name()->utf8String());
+		CBK_PROFILE_FUNCTION();
+		CBK_CORE_INFO("Metal Context (C++) - GPU: {0}", m_Device->name()->utf8String());
 
 		m_CommandQueue = m_Device->newCommandQueue();
 
@@ -79,4 +79,4 @@ namespace cabrankengine::platform::metal {
         // (Opcional pero recomendado) Si m_CurrentDrawable es null, podrías loguear un warning.
         return m_CurrentDrawable;
 	}
-} // namespace cabrankengine::platform::metal
+} // namespace cbk::platform::metal

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace cabrankengine::rendering {
+namespace cbk::rendering {
 
 	// ShaderDataType is an enum class that defines the types of data that can be used in shaders.
 	enum class ShaderDataType { None = 0, Float, Float2, Float3, Float4, Mat3, Mat4, Int, Int2, Int3, Int4, Bool };
@@ -20,10 +20,10 @@ namespace cabrankengine::rendering {
 			case ShaderDataType::Int4:    return 4 * 4;
 			case ShaderDataType::Bool:    return 1;
 			default:
-				CE_CORE_ASSERT(false, "Unknown Shader Type!");
+				CBK_CORE_ASSERT(false, "Unknown Shader Type!");
 				return 0;
 		}
-		CE_CORE_ASSERT(false, "Unknown Shader Type!");
+		CBK_CORE_ASSERT(false, "Unknown Shader Type!");
 		return 0;
 	}
 
@@ -55,11 +55,11 @@ namespace cabrankengine::rendering {
 				case ShaderDataType::Int4:    return 4;
 				case ShaderDataType::Bool:    return 1;
 				default:
-					CE_CORE_ASSERT(false, "Unknown Shader Type!");
+					CBK_CORE_ASSERT(false, "Unknown Shader Type!");
 					return 0;
 			}
 
-			CE_CORE_ASSERT(false, "Unknown Shader Type!");
+			CBK_CORE_ASSERT(false, "Unknown Shader Type!");
 			return 0;
 		}
 	};

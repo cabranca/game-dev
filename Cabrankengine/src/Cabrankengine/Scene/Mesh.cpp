@@ -5,7 +5,7 @@
 #include <Cabrankengine/Renderer/Renderer.h>
 #include <Cabrankengine/Renderer/Buffer.h>
 
-namespace cabrankengine::scene {
+namespace cbk::scene {
 
 	using namespace math;
 	using namespace rendering;
@@ -25,4 +25,4 @@ namespace cabrankengine::scene {
 	void Mesh::draw(const math::Mat4& transform) {
 		Renderer::submit(m_Material, m_VertexArray, transform);
 	}
-} // namespace cabrankengine::scene
+} // namespace cbk::scene

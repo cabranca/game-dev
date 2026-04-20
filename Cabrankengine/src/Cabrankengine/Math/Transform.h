@@ -2,7 +2,7 @@
 
 #include "MatrixFactory.h"
 
-namespace cabrankengine::math {
+namespace cbk::math {
 
     struct Transform {
         Vector3 position;

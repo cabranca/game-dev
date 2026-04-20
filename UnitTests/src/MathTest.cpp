@@ -1,7 +1,7 @@
 #include <catch.hpp>
 #include <Cabrankengine/Math/MatrixFactory.h>
 
-using namespace cabrankengine::math;
+using namespace cbk::math;
 
 // ====================================================
 // Vector3fS

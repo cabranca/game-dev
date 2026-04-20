@@ -2,7 +2,7 @@
 
 #include "Event.h"
 
-namespace cabrankengine {
+namespace cbk {
 
 	class WindowResizeEvent : public Event {
 		public:

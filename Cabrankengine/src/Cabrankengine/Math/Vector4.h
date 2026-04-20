@@ -2,7 +2,7 @@
 
 #include "Vector3.h"
 
-namespace cabrankengine::math {
+namespace cbk::math {
 
     struct Vector4 {
 		union {
@@ -113,12 +113,12 @@ namespace cabrankengine::math {
 	}
 
 	inline constexpr Vector4 Vector4::operator/(float scale) const noexcept {
-		CE_ASSERT(scale != 0, "Trying to divide by zero!");
+		CBK_ASSERT(scale != 0, "Trying to divide by zero!");
 		return { x / scale, y / scale, z / scale, w / scale };
 	}
 
 	inline constexpr Vector4& Vector4::operator/=(float scale) noexcept {
-		CE_ASSERT(scale != 0, "Trying to divide by zero!");
+		CBK_ASSERT(scale != 0, "Trying to divide by zero!");
 
 		x /= scale;
 		y /= scale;
@@ -128,12 +128,12 @@ namespace cabrankengine::math {
 	}
 
 	inline constexpr float& Vector4::operator[](int index) noexcept {
-		CE_ASSERT(index >= 0 || index < 4, "Trying to acces a Vector with invalid index!");
+		CBK_ASSERT(index >= 0 || index < 4, "Trying to acces a Vector with invalid index!");
 		return coords[index];
 	}
 
 	inline constexpr const float& Vector4::operator[](int index) const noexcept {
-		CE_ASSERT(index >= 0 || index < 4, "Trying to acces a Vector with invalid index!");
+		CBK_ASSERT(index >= 0 || index < 4, "Trying to acces a Vector with invalid index!");
 		return coords[index];
 	}
 

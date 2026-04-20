@@ -2,7 +2,7 @@
 
 #include "Material.h"
 
-namespace cabrankengine::rendering {
+namespace cbk::rendering {
 
 	class PBRMaterial : public Material {
 	  public:
@@ -33,4 +33,4 @@ namespace cabrankengine::rendering {
 		float m_Metalness;
 		float m_Roughness;
 	};
-} // namespace cabrankengine::rendering
+} // namespace cbk::rendering

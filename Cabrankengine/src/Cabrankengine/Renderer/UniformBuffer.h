@@ -1,6 +1,6 @@
 #pragma once
 
-namespace cabrankengine::rendering {
+namespace cbk::rendering {
 
 	class UniformBuffer {
 	  public:
@@ -10,4 +10,4 @@ namespace cabrankengine::rendering {
 
 		static Ref<UniformBuffer> create(uint32_t size, uint32_t binding);
 	};
-} // namespace cabrankengine::rendering
+} // namespace cbk::rendering

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace cabrankengine::rendering {
+namespace cbk::rendering {
 
     struct FrameBufferSpecification {
         uint32_t width, height;
@@ -20,4 +20,4 @@ namespace cabrankengine::rendering {
 
         static Ref<FrameBuffer> create(const FrameBufferSpecification& spec);
 	};
-} // namespace cabrankengine::rendering
+} // namespace cbk::rendering

@@ -4,7 +4,7 @@
 
 #include "Vector4.h"
 
-namespace cabrankengine::math {
+namespace cbk::math {
 
 	// Our 4x4 Matrix representation is row-major and it stores values as Mat4[row][col]
 	// TODO: add inversion.
@@ -41,12 +41,12 @@ namespace cabrankengine::math {
 	};
 
 	constexpr const Vector4& Mat4::operator[](int index) const noexcept {
-		CE_ASSERT(index >= 0 || index < 4, "Trying to acces a Vector with invalid index!");
+		CBK_ASSERT(index >= 0 || index < 4, "Trying to acces a Vector with invalid index!");
 		return elements[index];
 	}
 
 	constexpr Vector4& Mat4::operator[](int index) noexcept {
-		CE_ASSERT(index >= 0 || index < 4, "Trying to acces a Vector with invalid index!");
+		CBK_ASSERT(index >= 0 || index < 4, "Trying to acces a Vector with invalid index!");
 		return elements[index];
 	}
 
@@ -107,4 +107,4 @@ namespace cabrankengine::math {
 		const auto result = aux * m;
 		return Vector3{ result.x, result.y, result.z };
 	}
-} // namespace cabrankengine::math
+} // namespace cbk::math

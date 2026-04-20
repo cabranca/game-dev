@@ -2,7 +2,7 @@
 
 #include <Cabrankengine/Renderer/RendererAPI.h>
 
-namespace cabrankengine::platform::opengl {
+namespace cbk::platform::opengl {
 
 	class OpenGLRendererAPI : public rendering::RendererAPI {
 		public:

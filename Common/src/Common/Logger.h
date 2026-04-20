@@ -31,18 +31,18 @@ namespace cbk::common {
 } // namespace cbk::common
 
 // Core log macros
-#define CE_CORE_TRACE(...) ::cbk::common::Logger::getCoreLogger()->trace(__VA_ARGS__)
-#define CE_CORE_INFO(...)  ::cbk::common::Logger::getCoreLogger()->info(__VA_ARGS__)
-#define CE_CORE_WARN(...)  ::cbk::common::Logger::getCoreLogger()->warn(__VA_ARGS__)
-#define CE_CORE_ERROR(...) ::cbk::common::Logger::getCoreLogger()->error(__VA_ARGS__)
-#define CE_CORE_FATAL(...) ::cbk::common::Logger::getCoreLogger()->fatal(__VA_ARGS__)
+#define CBK_CORE_TRACE(...) ::cbk::common::Logger::getCoreLogger()->trace(__VA_ARGS__)
+#define CBK_CORE_INFO(...)  ::cbk::common::Logger::getCoreLogger()->info(__VA_ARGS__)
+#define CBK_CORE_WARN(...)  ::cbk::common::Logger::getCoreLogger()->warn(__VA_ARGS__)
+#define CBK_CORE_ERROR(...) ::cbk::common::Logger::getCoreLogger()->error(__VA_ARGS__)
+#define CBK_CORE_FATAL(...) ::cbk::common::Logger::getCoreLogger()->fatal(__VA_ARGS__)
 
 // Client log macros
-#define CE_TRACE(...) ::cbk::common::Logger::getClientLogger()->trace(__VA_ARGS__)
-#define CE_INFO(...)  ::cbk::common::Logger::getClientLogger()->info(__VA_ARGS__)
-#define CE_WARN(...)  ::cbk::common::Logger::getClientLogger()->warn(__VA_ARGS__)
-#define CE_ERROR(...) ::cbk::common::Logger::getClientLogger()->error(__VA_ARGS__)
-#define CE_FATAL(...) ::cbk::common::Logger::getClientLogger()->fatal(__VA_ARGS__)
+#define CBK_TRACE(...) ::cbk::common::Logger::getClientLogger()->trace(__VA_ARGS__)
+#define CBK_INFO(...)  ::cbk::common::Logger::getClientLogger()->info(__VA_ARGS__)
+#define CBK_WARN(...)  ::cbk::common::Logger::getClientLogger()->warn(__VA_ARGS__)
+#define CBK_ERROR(...) ::cbk::common::Logger::getClientLogger()->error(__VA_ARGS__)
+#define CBK_FATAL(...) ::cbk::common::Logger::getClientLogger()->fatal(__VA_ARGS__)
 
 // Asset Converter log macros
 #define CBK_AC_TRACE(...) ::cbk::common::Logger::getAssetConverterLogger()->trace(__VA_ARGS__)

@@ -6,7 +6,7 @@
 #include <Cabrankengine/Renderer/Texture.h>
 #include <Cabrankengine/Renderer/VertexArray.h>
 
-namespace cabrankengine::scene {
+namespace cbk::scene {
 
 	struct Vertex {
 		math::Vector3 position;
@@ -26,4 +26,4 @@ namespace cabrankengine::scene {
 		Ref<rendering::VertexArray> m_VertexArray;
 		Ref<rendering::Material> m_Material;
 	};
-} // namespace cabrankengine::scene
+} // namespace cbk::scene

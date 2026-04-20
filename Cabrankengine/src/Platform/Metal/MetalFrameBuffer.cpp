@@ -1,7 +1,7 @@
 #include <pch.h>
 #include "MetalFrameBuffer.h"
 
-namespace cabrankengine::platform::metal {
+namespace cbk::platform::metal {
 
 	using namespace rendering;
 
@@ -31,4 +31,4 @@ namespace cabrankengine::platform::metal {
 		}
 
 	}
-} // namespace cabrankengine::platform::metal
+} // namespace cbk::platform::metal

@@ -2,7 +2,7 @@
 
 #include "PhongMaterial.h"
 
-namespace cabrankengine::rendering {
+namespace cbk::rendering {
 
 	PhongMaterial::PhongMaterial(const Ref<Shader>& shader) : Material(shader) {}
 
@@ -39,4 +39,4 @@ namespace cabrankengine::rendering {
 			m_Shader->setInt("material.specular", 1);
 		}
 	}
-} // namespace cabrankengine::rendering
+} // namespace cbk::rendering

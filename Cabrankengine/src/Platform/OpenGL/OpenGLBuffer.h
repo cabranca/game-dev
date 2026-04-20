@@ -2,7 +2,7 @@
 
 #include <Cabrankengine/Renderer/Buffer.h>
 
-namespace cabrankengine::platform::opengl {
+namespace cbk::platform::opengl {
 
 	class OpenGLVertexBuffer : public rendering::VertexBuffer {
 		public:

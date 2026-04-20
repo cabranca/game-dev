@@ -4,7 +4,7 @@
 
 #include "Event.h"
 
-namespace cabrankengine {
+namespace cbk {
 
 	class MouseMovedEvent : public Event {
 		public:

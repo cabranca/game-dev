@@ -1,6 +1,6 @@
 #pragma once
 
-namespace cabrankengine {
+namespace cbk {
 
 	// Timestep is a class that represents the time elapsed between two frames.
 	class Timestep {

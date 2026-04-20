@@ -10,7 +10,7 @@
 #include "Texture.h"
 #include "VertexArray.h"
 
-namespace cabrankengine::rendering {
+namespace cbk::rendering {
 
 	using namespace math;
 
@@ -178,17 +178,17 @@ namespace cabrankengine::rendering {
 
 		FT_Library ft;
 		if (FT_Init_FreeType(&ft))
-			CE_CORE_ERROR("ERROR::FREETYPE: Could not init FreeType Library");
+			CBK_CORE_ERROR("ERROR::FREETYPE: Could not init FreeType Library");
 
 		FT_Face face;
 		if (FT_New_Face(ft, font.c_str(), 0, &face))
-			CE_CORE_ERROR("ERROR::FREETYPE: Failed to load font");
+			CBK_CORE_ERROR("ERROR::FREETYPE: Failed to load font");
 
 		FT_Set_Pixel_Sizes(face, 0, fontSize);
 
 		for (unsigned char c = 0; c < 128; c++) {
 			if (FT_Load_Char(face, c, FT_LOAD_RENDER)) {
-				CE_CORE_ERROR("ERROR::FREETYTPE: Failed to load Glyph");
+				CBK_CORE_ERROR("ERROR::FREETYTPE: Failed to load Glyph");
 				continue;
 			}
 
@@ -215,4 +215,4 @@ namespace cabrankengine::rendering {
 		flush();
 		startBatch();
 	}
-} // namespace cabrankengine::rendering
+} // namespace cbk::rendering

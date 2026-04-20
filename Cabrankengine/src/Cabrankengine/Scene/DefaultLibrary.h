@@ -4,7 +4,7 @@
 #include <Cabrankengine/Renderer/Shader.h>
 #include <Cabrankengine/Renderer/VertexArray.h>
 
-namespace cabrankengine::scene {
+namespace cbk::scene {
 
 	class DefaultLibrary {
 	  public:
@@ -35,4 +35,4 @@ namespace cabrankengine::scene {
 		static void setupCube();
 		static void setupSphere();
 	};
-} // namespace cabrankengine::scene
+} // namespace cbk::scene

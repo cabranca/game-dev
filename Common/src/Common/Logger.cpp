@@ -11,7 +11,7 @@ namespace cbk::common {
 	void Logger::init() {
 		spdlog::set_pattern("´%^[%T] %n: %v%$");
 
-		m_CoreLogger = spdlog::stdout_color_mt("CABRANKENGINE");
+		m_CoreLogger = spdlog::stdout_color_mt("CBK");
 		m_CoreLogger->set_level(spdlog::level::trace);
 
 		m_ClientLogger = spdlog::stdout_color_mt("APP");

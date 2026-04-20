@@ -4,7 +4,7 @@
 
 #include <Cabrankengine/Renderer/Texture.h>
 
-namespace cabrankengine::platform::opengl {
+namespace cbk::platform::opengl {
 
 	class OpenGLTexture2D : public rendering::Texture2D {
 		public:

@@ -2,9 +2,9 @@
 
 #include <Cabrankengine/Core/CollisionSolver.hpp>
 
-using namespace cabrankengine;
-using namespace cabrankengine::math;
-using namespace cabrankengine::collision_solver;
+using namespace cbk;
+using namespace cbk::math;
+using namespace cbk::collision_solver;
 
 // ====================================================
 // AABB vs AABB

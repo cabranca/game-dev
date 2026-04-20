@@ -6,7 +6,7 @@ namespace MTL {
 	class Texture;
 }
 
-namespace cabrankengine::platform::metal {
+namespace cbk::platform::metal {
 
 	class MetalTexture2D : public rendering::Texture2D {
 		public:

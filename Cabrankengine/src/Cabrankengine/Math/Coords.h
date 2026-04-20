@@ -4,9 +4,9 @@
 
 // #include "Vector2.h"
 
-// namespace cabrankengine::math {
+// namespace cbk::math {
 
 // 	Vector2 viewportToNormalized(float x, float y);
 // 	Vector2 viewportToWorld(float x, float y, const rendering::OrthographicCameraController& cameraController);
 // 	Vector2 worldToViewport(const Vector3& pos, const rendering::OrthographicCameraController& cameraController);
-// } // namespace cabrankengine::math
+// } // namespace cbk::math

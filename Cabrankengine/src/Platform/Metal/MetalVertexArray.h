@@ -6,7 +6,7 @@ namespace MTL {
 	class VertexDescriptor;
 }
 
-namespace cabrankengine::platform::metal {
+namespace cbk::platform::metal {
 
 	class MetalVertexArray : public rendering::VertexArray {
 		public:

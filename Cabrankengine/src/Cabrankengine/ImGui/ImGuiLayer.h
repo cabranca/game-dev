@@ -4,7 +4,7 @@
 
 #include <Cabrankengine/Core/Layer.h>
 
-namespace cabrankengine {
+namespace cbk {
 	
 	// ImGuiLayer is a layer that integrates ImGui into the Cabrankengine framework.
 	// Mainly used for debugging and UI purposes.

@@ -9,26 +9,26 @@
 #include "Metal/MTLResource.hpp"
 #include "MetalContext.h"
 
-namespace cabrankengine::platform::metal {
+namespace cbk::platform::metal {
 
 	// --------------------- VERTEX BUFFER --------------------- //
 
 	MetalVertexBuffer::MetalVertexBuffer(uint32_t size) : m_Size(size) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		MetalContext* context = static_cast<MetalContext*>(Application::get().getWindow().getContext());
 		m_Buffer = context->getDevice()->newBuffer(size, MTL::ResourceStorageModeShared);
 	}
 
 	MetalVertexBuffer::MetalVertexBuffer(void* vertices, uint32_t size) : m_Size(size) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		auto* context = static_cast<MetalContext*>(Application::get().getWindow().getContext());
 		m_Buffer = context->getDevice()->newBuffer(vertices, size, MTL::ResourceStorageModeShared);
 	}
 
 	MetalVertexBuffer::~MetalVertexBuffer() {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		if (m_Buffer)
 			m_Buffer->release();
@@ -39,7 +39,7 @@ namespace cabrankengine::platform::metal {
 	void MetalVertexBuffer::unbind() const {}
 
 	void MetalVertexBuffer::setData(const void* data, uint32_t size) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		memcpy(m_Buffer->contents(), data, size);
 	}
@@ -47,14 +47,14 @@ namespace cabrankengine::platform::metal {
 	// --------------------- INDEX BUFFER --------------------- //
 
 	MetalIndexBuffer::MetalIndexBuffer(uint32_t* indices, uint32_t count) : m_Count(count) {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		MetalContext* context = static_cast<MetalContext*>(Application::get().getWindow().getContext());
 		m_Buffer = context->getDevice()->newBuffer(indices, count * sizeof(uint32_t), MTL::ResourceStorageModeShared);
 	}
 
 	MetalIndexBuffer::~MetalIndexBuffer() {
-		CE_PROFILE_FUNCTION();
+		CBK_PROFILE_FUNCTION();
 
 		if (m_Buffer)
 			m_Buffer->release();
@@ -63,4 +63,4 @@ namespace cabrankengine::platform::metal {
 	void MetalIndexBuffer::bind() const {}
 
 	void MetalIndexBuffer::unbind() const {}
-} // namespace cabrankengine::platform::metal
+} // namespace cbk::platform::metal

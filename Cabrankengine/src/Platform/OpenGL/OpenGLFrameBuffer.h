@@ -2,7 +2,7 @@
 
 #include <Cabrankengine/Renderer/FrameBuffer.h>
 
-namespace cabrankengine::platform::opengl {
+namespace cbk::platform::opengl {
 
 	class OpenGLFrameBuffer : public rendering::FrameBuffer {
 	  public:
@@ -23,4 +23,4 @@ namespace cabrankengine::platform::opengl {
         uint32_t m_ColorAttachment, m_DepthAttachment;
         rendering::FrameBufferSpecification m_Specs;
 	};
-} // namespace cabrankengine::platform::opengl
+} // namespace cbk::platform::opengl

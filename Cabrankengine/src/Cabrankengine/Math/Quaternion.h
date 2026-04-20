@@ -6,7 +6,7 @@
 #include "Common.h"
 #include "Vector3.h"
 
-namespace cabrankengine::math {
+namespace cbk::math {
 
 	struct Quaternion {
 		float w, x, y, z;
@@ -90,4 +90,4 @@ namespace cabrankengine::math {
 		}
 	};
 
-} // namespace cabrankengine::math
+} // namespace cbk::math

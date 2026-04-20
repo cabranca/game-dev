@@ -2,7 +2,7 @@
 
 #include <pch.h>
 
-namespace cabrankengine {
+namespace cbk {
 
 	using MouseCode = uint8_t;
 

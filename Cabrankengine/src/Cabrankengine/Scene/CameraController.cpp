@@ -3,7 +3,7 @@
 
 #include <Cabrankengine/Core/Input.h>
 
-namespace cabrankengine::scene {
+namespace cbk::scene {
 
 	using namespace math;
 
@@ -73,4 +73,4 @@ namespace cabrankengine::scene {
 	Camera& CameraController::getCamera() noexcept {
 		return m_Camera;
 	}
-} // namespace cabrankengine::rendering
+} // namespace cbk::rendering

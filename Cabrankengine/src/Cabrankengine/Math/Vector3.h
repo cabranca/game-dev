@@ -2,7 +2,7 @@
 
 #include "Vector2.h"
 
-namespace cabrankengine::math {
+namespace cbk::math {
 
     // This Vector implementation uses row convention: The vector is a 1x3 matrix
 	struct Vector3 {
@@ -135,12 +135,12 @@ namespace cabrankengine::math {
 	}
 
 	inline constexpr Vector3 Vector3::operator/(float scale) const noexcept {
-		CE_ASSERT(scale != 0, "Trying to divide by zero!");
+		CBK_ASSERT(scale != 0, "Trying to divide by zero!");
 		return { x / scale, y / scale, z / scale };
 	}
 
 	inline constexpr Vector3& Vector3::operator/=(float scale) noexcept {
-		CE_ASSERT(scale != 0, "Trying to divide by zero!");
+		CBK_ASSERT(scale != 0, "Trying to divide by zero!");
 		x /= scale;
 		y /= scale;
 		z /= scale;
@@ -148,12 +148,12 @@ namespace cabrankengine::math {
 	}
 
 	inline constexpr float& Vector3::operator[](int index) noexcept {
-        CE_ASSERT(index >= 0 || index < 3, "Trying to acces a Vector with invalid index!")
+        CBK_ASSERT(index >= 0 || index < 3, "Trying to acces a Vector with invalid index!")
 		return coords[index];
 	}
 
     inline constexpr const float& Vector3::operator[](int index) const noexcept {
-		CE_ASSERT(index >= 0 || index < 3, "Trying to acces a Vector with invalid index!")
+		CBK_ASSERT(index >= 0 || index < 3, "Trying to acces a Vector with invalid index!")
 		return coords[index];
 	}
 
@@ -182,4 +182,4 @@ namespace cabrankengine::math {
 		return std::acos(cosTheta);
 	}
 
-} // namespace cabrankengine::math
+} // namespace cbk::math

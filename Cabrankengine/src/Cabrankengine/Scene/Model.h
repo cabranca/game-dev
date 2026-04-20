@@ -8,7 +8,7 @@
 #include <Common/BinaryFormats.h>
 #include <type_traits>
 
-namespace cabrankengine::scene {
+namespace cbk::scene {
 
 	using cbk::common::ModelHeader;
 	using cbk::common::TextureEntry;
@@ -21,23 +21,23 @@ namespace cabrankengine::scene {
 		Model(const std::string& path, const Ref<TMaterial>& material) : m_Material(material) {
 			std::error_code ec;
 			if (!std::filesystem::exists(path, ec)) {
-				CE_CORE_ERROR("Cannot find model file {0} - Error: {1}", path, ec.message());
+				CBK_CORE_ERROR("Cannot find model file {0} - Error: {1}", path, ec.message());
 				return;
 			}
 
 			std::ifstream file(path, std::ios::binary);
 			if (!file) {
-				CE_CORE_ERROR("Cannot open model file {0}", path);
+				CBK_CORE_ERROR("Cannot open model file {0}", path);
 				return;
 			}
 
 			cbk::common::ModelHeader header;
 			if (!file.read(reinterpret_cast<char*>(&header), sizeof(cbk::common::ModelHeader))) {
-				CE_CORE_ERROR("Cannot read model header from {0}", path);
+				CBK_CORE_ERROR("Cannot read model header from {0}", path);
 				return;
 			}
 			if (header.magic != 0x43424B4D) {
-				CE_CORE_ERROR("Invalid model file {0} - .cbkm expected!", path);
+				CBK_CORE_ERROR("Invalid model file {0} - .cbkm expected!", path);
 				return;
 			}
 
@@ -47,13 +47,13 @@ namespace cabrankengine::scene {
 			for (uint32_t i = 0; i < header.numTextures; i++) {
 				TextureEntry entry;
 				if (!file.read(reinterpret_cast<char*>(&entry), sizeof(TextureEntry))) {
-					CE_CORE_ERROR("Failed to read texture entry {0} from {1}", i, path);
+					CBK_CORE_ERROR("Failed to read texture entry {0} from {1}", i, path);
 					return;
 				}
 
 				std::string texPath(entry.pathLength, '\0');
 				if (!file.read(texPath.data(), entry.pathLength)) {
-					CE_CORE_ERROR("Failed to read texture path {0} from {1}", i, path);
+					CBK_CORE_ERROR("Failed to read texture path {0} from {1}", i, path);
 					return;
 				}
 
@@ -67,7 +67,7 @@ namespace cabrankengine::scene {
 			for (uint32_t i = 0; i < header.numProperties; i++) {
 				PropertyEntry prop;
 				if (!file.read(reinterpret_cast<char*>(&prop), sizeof(PropertyEntry))) {
-					CE_CORE_ERROR("Failed to read property entry {0} from {1}", i, path);
+					CBK_CORE_ERROR("Failed to read property entry {0} from {1}", i, path);
 					return;
 				}
 
@@ -78,19 +78,19 @@ namespace cabrankengine::scene {
 			for (uint32_t i = 0; i < header.numMeshes; i++) {
 				MeshHeader mh;
 				if (!file.read(reinterpret_cast<char*>(&mh), sizeof(MeshHeader))) {
-					CE_CORE_ERROR("Failed to read mesh header {0} from {1}", i, path);
+					CBK_CORE_ERROR("Failed to read mesh header {0} from {1}", i, path);
 					return;
 				}
 
 				std::vector<cbk::common::Vertex> rawVertices(mh.numVertices);
 				if (!file.read(reinterpret_cast<char*>(rawVertices.data()), mh.numVertices * sizeof(cbk::common::Vertex))) {
-					CE_CORE_ERROR("Failed to read mesh vertices {0} from {1}", i, path);
+					CBK_CORE_ERROR("Failed to read mesh vertices {0} from {1}", i, path);
 					return;
 				}
 
 				std::vector<uint32_t> indices(mh.numIndices);
 				if (!file.read(reinterpret_cast<char*>(indices.data()), mh.numIndices * sizeof(uint32_t))) {
-					CE_CORE_ERROR("Failed to read mesh indices {0} from {1}", i, path);
+					CBK_CORE_ERROR("Failed to read mesh indices {0} from {1}", i, path);
 					return;
 				}
 
@@ -146,4 +146,4 @@ namespace cabrankengine::scene {
 		float m_BaseColorR = 1.f;
 		float m_BaseColorG = 1.f;
 	};
-} // namespace cabrankengine::scene
+} // namespace cbk::scene

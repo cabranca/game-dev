@@ -17,11 +17,11 @@ project "CBKAssetConverter"
         links { "z" }
 
     filter "configurations:Debug"
-        defines "CE_DEBUG"
+        defines "CBK_DEBUG"
         runtime "Debug"
         symbols "on"
 
     filter "configurations:Release"
-        defines "CE_RELEASE"
+        defines "CBK_RELEASE"
         runtime "Release"
         optimize "on"

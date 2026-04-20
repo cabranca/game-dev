@@ -6,7 +6,7 @@
 
 // #include "Vector3.h"
 
-// namespace cabrankengine::math {
+// namespace cbk::math {
 
 // 	using namespace rendering;
 
@@ -45,4 +45,4 @@
 
 // 		return { viewportX, viewportY };
 // 	}
-// } // namespace cabrankengine::math
+// } // namespace cbk::math
