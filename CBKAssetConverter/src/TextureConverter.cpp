@@ -82,17 +82,16 @@ namespace cbk::ac {
 		}
 
 		uint32_t pixelCount = static_cast<uint32_t>(width) * height;
-		uint32_t channels = 4;
+		uint32_t channels = 3;
 		uint32_t dataSize = pixelCount * channels;
 		std::vector<uint8_t> packed(dataSize);
 
 		for (uint32_t i = 0; i < pixelCount; i++) {
 			uint8_t metal = metalData[i];
 			uint8_t rough = (i < static_cast<uint32_t>(rw * rh)) ? roughData[i] : 0;
-			packed[i * 4 + 0] = 0;       // R = unused
-			packed[i * 4 + 1] = rough;   // G = roughness
-			packed[i * 4 + 2] = metal;   // B = metalness
-			packed[i * 4 + 3] = 255;     // A = 1
+			packed[i * 3 + 0] = 0;       // R = unused
+			packed[i * 3 + 1] = rough;   // G = roughness
+			packed[i * 3 + 2] = metal;   // B = metalness
 		}
 
 		stbi_image_free(metalData);

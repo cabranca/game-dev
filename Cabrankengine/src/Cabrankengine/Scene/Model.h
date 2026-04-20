@@ -17,8 +17,16 @@ namespace cabrankengine::scene {
 		uint32_t numProperties;
 	};
 
+	enum class ModelTextureType : uint32_t {
+		Diffuse = 1,
+		Specular = 2,
+		Normal = 3,
+		MetalRoughness = 4,
+		AO = 5
+	};
+
 	struct ModelTextureEntry {
-		uint32_t type;
+		ModelTextureType type;
 		uint32_t pathLength;
 	};
 
@@ -139,15 +147,15 @@ namespace cabrankengine::scene {
 		}
 
 	  private:
-		void applyTexture(uint32_t type, const Ref<rendering::Texture2D>& texture) {
+		void applyTexture(ModelTextureType type, const Ref<rendering::Texture2D>& texture) {
 			if constexpr (std::is_same_v<TMaterial, rendering::PhongMaterial>) {
-				if (type == 1) m_Material->setDiffuseMap(texture);
-				else if (type == 2) m_Material->setSpecularMap(texture);
+				if (type == ModelTextureType::Diffuse) m_Material->setDiffuseMap(texture);
+				else if (type == ModelTextureType::Specular) m_Material->setSpecularMap(texture);
 			} else if constexpr (std::is_same_v<TMaterial, rendering::PBRMaterial>) {
-				if (type == 1) m_Material->setAlbedoMap(texture);
-				else if (type == 3) m_Material->setNormalMap(texture);
-				else if (type == 4) m_Material->setMetalRoughMap(texture);
-				else if (type == 5) m_Material->setAOMap(texture);
+				if (type == ModelTextureType::Diffuse) m_Material->setAlbedoMap(texture);
+				else if (type == ModelTextureType::Normal) m_Material->setNormalMap(texture);
+				else if (type == ModelTextureType::MetalRoughness) m_Material->setMetalRoughMap(texture);
+				else if (type == ModelTextureType::AO) m_Material->setAOMap(texture);
 			}
 		}
 

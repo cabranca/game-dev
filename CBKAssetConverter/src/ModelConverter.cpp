@@ -20,7 +20,7 @@ namespace cbk::ac {
 	};
 
 	struct TextureRef {
-		uint32_t type;
+		ModelConverter::TextureType type;
 		std::string relativePath; // relative to model directory, with .cbkt extension
 	};
 
@@ -77,7 +77,7 @@ namespace cbk::ac {
 	                             std::vector<TextureRef>& textures) {
 		std::vector<std::string> seen;
 
-		auto tryAdd = [&](aiMaterial* mat, aiTextureType aiType, uint32_t cbkType) {
+		auto tryAdd = [&](aiMaterial* mat, aiTextureType aiType, ModelConverter::TextureType cbkType) {
 			for (unsigned int i = 0; i < mat->GetTextureCount(aiType); i++) {
 				aiString str;
 				mat->GetTexture(aiType, i, &str);
@@ -110,14 +110,15 @@ namespace cbk::ac {
 			aiMaterial* mat = scene->mMaterials[m];
 
 			// Phong texture types
-			tryAdd(mat, aiTextureType_DIFFUSE, 1);
-			tryAdd(mat, aiTextureType_SPECULAR, 2);
+			using TT = ModelConverter::TextureType;
+			tryAdd(mat, aiTextureType_DIFFUSE, TT::Diffuse);
+			tryAdd(mat, aiTextureType_SPECULAR, TT::Specular);
 
 			// PBR texture types
-			tryAdd(mat, aiTextureType_BASE_COLOR, 1);
-			tryAdd(mat, aiTextureType_NORMALS, 3);
-			tryAdd(mat, aiTextureType_METALNESS, 4);
-			tryAdd(mat, aiTextureType_AMBIENT_OCCLUSION, 5);
+			tryAdd(mat, aiTextureType_BASE_COLOR, TT::Diffuse);
+			tryAdd(mat, aiTextureType_NORMALS, TT::Normal);
+			tryAdd(mat, aiTextureType_METALNESS, TT::MetalRoughness);
+			tryAdd(mat, aiTextureType_AMBIENT_OCCLUSION, TT::AO);
 
 			if (mat->GetTextureCount(aiTextureType_NORMALS) > 0) hasNormal = true;
 			if (mat->GetTextureCount(aiTextureType_METALNESS) > 0) hasMetalRough = true;
@@ -130,7 +131,7 @@ namespace cbk::ac {
 			// Find the diffuse/albedo entry
 			std::string diffuseRel;
 			for (const auto& tex : textures) {
-				if (tex.type == 1) { diffuseRel = tex.relativePath; break; }
+				if (tex.type == ModelConverter::TextureType::Diffuse) { diffuseRel = tex.relativePath; break; }
 			}
 
 			if (!diffuseRel.empty()) {
@@ -161,7 +162,7 @@ namespace cbk::ac {
 						TextureConverter::convert(normalPath);
 						std::filesystem::path rel(basePrefix + "_N");
 						rel.replace_extension(".cbkt");
-						textures.push_back({ 3, rel.string() });
+						textures.push_back({ ModelConverter::TextureType::Normal, rel.string() });
 						std::println("Discovered Normal: {}", normalPath);
 					}
 
@@ -173,7 +174,7 @@ namespace cbk::ac {
 						outRel.replace_extension(".cbkt");
 						std::string outPath = modelDir + "/" + outRel.string();
 						TextureConverter::packMetalRough(metalPath, roughPath, outPath);
-						textures.push_back({ 4, outRel.string() });
+						textures.push_back({ ModelConverter::TextureType::MetalRoughness, outRel.string() });
 						std::println("Discovered Metal+Rough: {} + {}", metalPath, roughPath);
 					}
 
@@ -183,7 +184,7 @@ namespace cbk::ac {
 						TextureConverter::convert(aoPath);
 						std::filesystem::path rel(basePrefix + "_AO");
 						rel.replace_extension(".cbkt");
-						textures.push_back({ 5, rel.string() });
+						textures.push_back({ ModelConverter::TextureType::AO, rel.string() });
 						std::println("Discovered AO: {}", aoPath);
 					}
 				}

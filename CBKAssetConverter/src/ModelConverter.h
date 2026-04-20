@@ -25,14 +25,16 @@ namespace cbk::ac {
 			uint32_t numProperties;
 		};
 
-		// Texture types:
-		// 1 = Diffuse / Albedo (BaseColor)
-		// 2 = Specular
-		// 3 = Normal
-		// 4 = MetalRoughness (packed: B=metal, G=roughness)
-		// 5 = AO (Ambient Occlusion)
+		enum class TextureType : uint32_t {
+			Diffuse = 1,        // Diffuse / Albedo (BaseColor)
+			Specular = 2,
+			Normal = 3,
+			MetalRoughness = 4, // packed: B=metal, G=roughness
+			AO = 5              // Ambient Occlusion
+		};
+
 		struct TextureEntry {
-			uint32_t type;
+			TextureType type;
 			uint32_t pathLength;
 			// followed by char[pathLength]
 		};

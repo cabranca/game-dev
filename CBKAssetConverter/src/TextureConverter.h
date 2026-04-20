@@ -9,6 +9,7 @@ namespace cbk::ac {
 	class TextureConverter {
 	  public:
 		static void convert(std::string_view path);
+		
 		// Pack separate metalness and roughness textures into a combined MetalRough .cbkt
 		// Output: R=0, G=roughness, B=metalness, A=255
 		static void packMetalRough(std::string_view metalPath, std::string_view roughPath,
