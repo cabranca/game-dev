@@ -18,8 +18,10 @@ int main(int argc, char** argv) {
 
 	if (ext == ".obj" || ext == ".fbx" || ext == ".gltf" || ext == ".dae")
 		cbk::ac::ModelConverter::convert(argv[1]);
-	else
+	else if (ext == ".png" || ext == ".jpg" || ext == ".jpeg" || ext == ".tga" || ext == ".bmp" || ext == ".hdr")
 		cbk::ac::TextureConverter::convert(argv[1]);
+	else
+		std::println("Unsupported file format: {}", ext);
 
 	return 0;
 }
