@@ -7,8 +7,12 @@ project "Common"
     targetdir("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
     objdir("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
-    files { "vendor/lz4/lz4.c", }
-    externalincludedirs { "%{IncludeDir.lz4}" }
+    files {
+        "vendor/lz4/lz4.c",
+        "src/Common/**.h",
+        "src/Common/**.cpp",
+    }
+    externalincludedirs { "src", "vendor/spdlog/include", "%{IncludeDir.lz4}" }
 
     filter "system:linux"
         systemversion "latest"
