@@ -12,15 +12,13 @@ project "Cabrankengine"
     files
     {
         "src/Cabrankengine/**.h",
-		"src/Cabrankengine/**.cpp",
-		"vendor/stb_image/**.h",
-		"vendor/stb_image/**.cpp",
+		"src/Cabrankengine/**.cpp"
     }
     
     externalincludedirs
     {
         "src",
-        "vendor/spdlog/include", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}", "%{IncludeDir.ImGui}", "%{IncludeDir.stb_image}", 
+        "vendor/spdlog/include", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}", "%{IncludeDir.ImGui}",
         "%{IncludeDir.irrKlang}", "%{IncludeDir.json}", "%{IncludeDir.FreeType}", "%{IncludeDir.lz4}"
     }
 
