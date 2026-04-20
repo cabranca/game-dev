@@ -5,47 +5,15 @@
 
 #include "Mesh.h"
 
+#include <Common/BinaryFormats.h>
 #include <type_traits>
 
 namespace cabrankengine::scene {
 
-	struct ModelHeader {
-		uint32_t magic = 0x43424B4D; // "CBKM" (Cabrankengine Model)
-		uint32_t version = 2;
-		uint32_t numMeshes;
-		uint32_t numTextures;
-		uint32_t numProperties;
-	};
-
-	enum class ModelTextureType : uint32_t {
-		Diffuse = 1,
-		Specular = 2,
-		Normal = 3,
-		MetalRoughness = 4,
-		AO = 5
-	};
-
-	struct ModelTextureEntry {
-		ModelTextureType type;
-		uint32_t pathLength;
-	};
-
-	struct ModelPropertyEntry {
-		uint32_t key;
-		float value;
-	};
-
-	struct ModelVertex {
-		float px, py, pz;
-		float nx, ny, nz;
-		float tx, ty;
-		float tanx, tany, tanz;
-	};
-
-	struct ModelMeshHeader {
-		uint32_t numVertices;
-		uint32_t numIndices;
-	};
+	using cbk::common::ModelHeader;
+	using cbk::common::TextureEntry;
+	using cbk::common::PropertyEntry;
+	using cbk::common::MeshHeader;
 
 	template<typename TMaterial>
 	class Model {
@@ -63,8 +31,8 @@ namespace cabrankengine::scene {
 				return;
 			}
 
-			ModelHeader header;
-			if (!file.read(reinterpret_cast<char*>(&header), sizeof(ModelHeader))) {
+			cbk::common::ModelHeader header;
+			if (!file.read(reinterpret_cast<char*>(&header), sizeof(cbk::common::ModelHeader))) {
 				CE_CORE_ERROR("Cannot read model header from {0}", path);
 				return;
 			}
@@ -77,8 +45,8 @@ namespace cabrankengine::scene {
 
 			// Read texture table
 			for (uint32_t i = 0; i < header.numTextures; i++) {
-				ModelTextureEntry entry;
-				if (!file.read(reinterpret_cast<char*>(&entry), sizeof(ModelTextureEntry))) {
+				TextureEntry entry;
+				if (!file.read(reinterpret_cast<char*>(&entry), sizeof(TextureEntry))) {
 					CE_CORE_ERROR("Failed to read texture entry {0} from {1}", i, path);
 					return;
 				}
@@ -97,8 +65,8 @@ namespace cabrankengine::scene {
 
 			// Read property table
 			for (uint32_t i = 0; i < header.numProperties; i++) {
-				ModelPropertyEntry prop;
-				if (!file.read(reinterpret_cast<char*>(&prop), sizeof(ModelPropertyEntry))) {
+				PropertyEntry prop;
+				if (!file.read(reinterpret_cast<char*>(&prop), sizeof(PropertyEntry))) {
 					CE_CORE_ERROR("Failed to read property entry {0} from {1}", i, path);
 					return;
 				}
@@ -108,14 +76,14 @@ namespace cabrankengine::scene {
 
 			// Read meshes
 			for (uint32_t i = 0; i < header.numMeshes; i++) {
-				ModelMeshHeader mh;
-				if (!file.read(reinterpret_cast<char*>(&mh), sizeof(ModelMeshHeader))) {
+				MeshHeader mh;
+				if (!file.read(reinterpret_cast<char*>(&mh), sizeof(MeshHeader))) {
 					CE_CORE_ERROR("Failed to read mesh header {0} from {1}", i, path);
 					return;
 				}
 
-				std::vector<ModelVertex> rawVertices(mh.numVertices);
-				if (!file.read(reinterpret_cast<char*>(rawVertices.data()), mh.numVertices * sizeof(ModelVertex))) {
+				std::vector<cbk::common::Vertex> rawVertices(mh.numVertices);
+				if (!file.read(reinterpret_cast<char*>(rawVertices.data()), mh.numVertices * sizeof(cbk::common::Vertex))) {
 					CE_CORE_ERROR("Failed to read mesh vertices {0} from {1}", i, path);
 					return;
 				}
@@ -147,15 +115,15 @@ namespace cabrankengine::scene {
 		}
 
 	  private:
-		void applyTexture(ModelTextureType type, const Ref<rendering::Texture2D>& texture) {
+		void applyTexture(cbk::common::TextureType type, const Ref<rendering::Texture2D>& texture) {
 			if constexpr (std::is_same_v<TMaterial, rendering::PhongMaterial>) {
-				if (type == ModelTextureType::Diffuse) m_Material->setDiffuseMap(texture);
-				else if (type == ModelTextureType::Specular) m_Material->setSpecularMap(texture);
+				if (type == cbk::common::TextureType::Diffuse) m_Material->setDiffuseMap(texture);
+				else if (type == cbk::common::TextureType::Specular) m_Material->setSpecularMap(texture);
 			} else if constexpr (std::is_same_v<TMaterial, rendering::PBRMaterial>) {
-				if (type == ModelTextureType::Diffuse) m_Material->setAlbedoMap(texture);
-				else if (type == ModelTextureType::Normal) m_Material->setNormalMap(texture);
-				else if (type == ModelTextureType::MetalRoughness) m_Material->setMetalRoughMap(texture);
-				else if (type == ModelTextureType::AO) m_Material->setAOMap(texture);
+				if (type == cbk::common::TextureType::Diffuse) m_Material->setAlbedoMap(texture);
+				else if (type == cbk::common::TextureType::Normal) m_Material->setNormalMap(texture);
+				else if (type == cbk::common::TextureType::MetalRoughness) m_Material->setMetalRoughMap(texture);
+				else if (type == cbk::common::TextureType::AO) m_Material->setAOMap(texture);
 			}
 		}
 

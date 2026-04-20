@@ -1,15 +1,17 @@
 #include <algorithm>
 #include <filesystem>
-#include <print>
 #include <string>
+
+#include <Common/Logger.h>
 
 #include "ModelConverter.h"
 #include "TextureConverter.h"
 
 int main(int argc, char** argv) {
+	cbk::common::Logger::init();
 
 	if (argc < 2) {
-		std::println("Usage: CBKAssetConverter <file>");
+		CBK_AC_ERROR("Usage: CBKAssetConverter <file>");
 		return -1;
 	}
 
@@ -21,7 +23,7 @@ int main(int argc, char** argv) {
 	else if (ext == ".png" || ext == ".jpg" || ext == ".jpeg" || ext == ".tga" || ext == ".bmp" || ext == ".hdr")
 		cbk::ac::TextureConverter::convert(argv[1]);
 	else
-		std::println("Unsupported file format: {}", ext);
+		CBK_AC_ERROR("Unsupported file format: {}", ext);
 
 	return 0;
 }

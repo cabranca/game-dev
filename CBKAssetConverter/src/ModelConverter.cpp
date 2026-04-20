@@ -4,10 +4,10 @@
 #include <algorithm>
 #include <filesystem>
 #include <fstream>
-#include <print>
 #include <string>
 #include <vector>
 
+#include <Common/Logger.h>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -163,7 +163,7 @@ namespace cbk::ac {
 						std::filesystem::path rel(basePrefix + "_N");
 						rel.replace_extension(".cbkt");
 						textures.push_back({ ModelConverter::TextureType::Normal, rel.string() });
-						std::println("Discovered Normal: {}", normalPath);
+						CBK_AC_INFO("Discovered Normal: {}", normalPath);
 					}
 
 					// Metalness + Roughness -> pack into combined MetalRough
@@ -175,7 +175,7 @@ namespace cbk::ac {
 						std::string outPath = modelDir + "/" + outRel.string();
 						TextureConverter::packMetalRough(metalPath, roughPath, outPath);
 						textures.push_back({ ModelConverter::TextureType::MetalRoughness, outRel.string() });
-						std::println("Discovered Metal+Rough: {} + {}", metalPath, roughPath);
+						CBK_AC_INFO("Discovered Metal+Rough: {} + {}", metalPath, roughPath);
 					}
 
 					// AO
@@ -185,7 +185,7 @@ namespace cbk::ac {
 						std::filesystem::path rel(basePrefix + "_AO");
 						rel.replace_extension(".cbkt");
 						textures.push_back({ ModelConverter::TextureType::AO, rel.string() });
-						std::println("Discovered AO: {}", aoPath);
+						CBK_AC_INFO("Discovered AO: {}", aoPath);
 					}
 				}
 			}
@@ -226,7 +226,7 @@ namespace cbk::ac {
 			aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 
 		if (!scene || (scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) || !scene->mRootNode) {
-			std::println("Failed to load model: {} - {}", path, importer.GetErrorString());
+			CBK_AC_ERROR("Failed to load model: {} - {}", path, importer.GetErrorString());
 			return;
 		}
 
@@ -246,7 +246,7 @@ namespace cbk::ac {
 
 		std::ofstream out(outputPath, std::ios::binary);
 		if (!out) {
-			std::println("Failed to create output file: {}", outputPath.string());
+			CBK_AC_ERROR("Failed to create output file: {}", outputPath.string());
 			return;
 		}
 
@@ -290,7 +290,7 @@ namespace cbk::ac {
 			          mesh.indices.size() * sizeof(uint32_t));
 		}
 
-		std::println("Converted model: {} -> {} ({} meshes, {} textures, {} properties)",
+		CBK_AC_INFO("Converted model: {} -> {} ({} meshes, {} textures, {} properties)",
 		             path, outputPath.string(), meshes.size(), textures.size(), properties.size());
 	}
 } // namespace cbk::ac

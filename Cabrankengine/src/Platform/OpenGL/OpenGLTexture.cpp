@@ -4,7 +4,6 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include <lz4.h>
-#include <stb_image.h>
 
 namespace cabrankengine::platform::opengl {
 

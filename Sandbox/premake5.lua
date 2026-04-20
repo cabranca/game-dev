@@ -12,7 +12,8 @@ project "Sandbox"
     externalincludedirs
     {
         "%{IncludeDir.ImGui}", "%{IncludeDir.irrKlang}",
-        "%{IncludeDir.spdlog}", "%{wks.location}/Cabrankengine/src",
+        "%{IncludeDir.spdlog}", "%{IncludeDir.Common}",
+        "%{wks.location}/Cabrankengine/src",
     }
 
     links 

@@ -35,25 +35,7 @@
 	#endif
 #endif
 
-#ifdef CE_DEBUG
-	#define CE_ENABLE_ASSERTS
-	#if defined(CE_PLATFORM_WINDOWS)
-		#define CE_DEBUG_BREAK __debugbreak()
-	#elif defined(CE_PLATFORM_LINUX) || defined(CE_PLATFORM_MACOS)
-		#include <signal.h>
-		#define CE_DEBUG_BREAK raise(SIGTRAP)
-	#endif
-#endif
-
-
-// Will need to update to support Linux since __debugbreak doesn't exist there
-#ifdef CE_ENABLE_ASSERTS
-	#define CE_ASSERT(x, ...) { if(!(x)) { CE_ERROR("Assertion failed: {0}", __VA_ARGS__); CE_DEBUG_BREAK; } }
-	#define CE_CORE_ASSERT(x, ...) { if(!(x)) { CE_CORE_ERROR("Assertion failed: {0}", __VA_ARGS__); CE_DEBUG_BREAK; } }
-#else
-	#define CE_ASSERT(x, ...)
-	#define CE_CORE_ASSERT(x, ...)
-#endif
+#include <Common/Assertion.h>
 
 
 // Shifts a bit to the left. Replaced the macro with this to enforce type checking (and to practice)

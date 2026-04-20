@@ -18,7 +18,7 @@ project "Cabrankengine"
     externalincludedirs
     {
         "src",
-        "vendor/spdlog/include", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}", "%{IncludeDir.ImGui}",
+        "%{IncludeDir.spdlog}", "%{IncludeDir.Common}", "%{IncludeDir.GLFW}", "%{IncludeDir.glad}", "%{IncludeDir.ImGui}",
         "%{IncludeDir.irrKlang}", "%{IncludeDir.json}", "%{IncludeDir.FreeType}", "%{IncludeDir.lz4}"
     }
 

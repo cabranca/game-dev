@@ -9,7 +9,7 @@ project "UnitTests"
 
     files {"src/**.h", "src/**.cpp"}
 
-    includedirs { "%{wks.location}/Cabrankengine/vendor/spdlog/include", "%{wks.location}/Cabrankengine/src", "%{IncludeDir.Catch2}" }
+    includedirs { "%{IncludeDir.spdlog}", "%{IncludeDir.Common}", "%{wks.location}/Cabrankengine/src", "%{IncludeDir.Catch2}" }
 
     links { "Cabrankengine" }
 

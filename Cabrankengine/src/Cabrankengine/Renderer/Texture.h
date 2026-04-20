@@ -1,10 +1,14 @@
 #pragma once
 
+#include <Common/BinaryFormats.h>
+
 // Forward declaration
 struct FT_FaceRec_;
 typedef struct FT_FaceRec_* FT_Face;
 
 namespace cabrankengine::rendering {
+
+	using cbk::common::TextureHeader;
 
 	// Enum class representing different image formats for textures.
 	enum class ImageFormat {
@@ -21,14 +25,6 @@ namespace cabrankengine::rendering {
 		uint32_t Height = 1;
 		ImageFormat Format = ImageFormat::RGBA8;
 		bool GenerateMips = true;
-	};
-
-	struct TextureHeader {
-		uint32_t magic = 0x43424B54; // "CBKT" (Cabrankengine Texture)
-		uint32_t version = 1;
-		uint32_t width, height, channels;
-		uint32_t compressedSize;
-		uint32_t uncompressedSize;
 	};
 
 	// Interface base class representing a texture in the rendering system.

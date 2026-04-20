@@ -1,8 +1,8 @@
 #pragma once
 
-#include <cstdint>
-
 #include <string_view>
+
+#include <Common/BinaryFormats.h>
 
 namespace cbk::ac {
 
@@ -16,12 +16,6 @@ namespace cbk::ac {
 		                           std::string_view outputPath);
 
 	  private:
-		struct TextureHader {
-			uint32_t magic = 0x43424B54; // "CBKT" (Cabrankengine Texture)
-			uint32_t version = 1;
-			uint32_t width, height, channels;
-			uint32_t compressedSize;
-			uint32_t uncompressedSize;
-		};
+		using TextureHeader = cbk::common::TextureHeader;
 	};
 } // namespace cbk::ac
