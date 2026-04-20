@@ -44,6 +44,8 @@ namespace cabrankengine::math {
 		constexpr Vector2 operator-() noexcept;
 		constexpr Vector2 operator*(float scale) const noexcept;
 		constexpr Vector2& operator*=(float scale) noexcept;
+		constexpr Vector2 operator/(float scale) const noexcept;
+		constexpr Vector2& operator/=(float scale) noexcept;
 		constexpr float& operator[](int index) noexcept;
 		constexpr const float& operator[](int index) const noexcept;
 	};
@@ -116,6 +118,16 @@ namespace cabrankengine::math {
 	inline constexpr Vector2& Vector2::operator*=(float scale) noexcept {
 		x *= scale;
 		y *= scale;
+		return *this;
+	}
+
+	inline constexpr Vector2 Vector2::operator/(float scale) const noexcept {
+		return { x / scale, y / scale };
+	}
+
+	inline constexpr Vector2& Vector2::operator/=(float scale) noexcept {
+		x /= scale;
+		y /= scale;
 		return *this;
 	}
 
