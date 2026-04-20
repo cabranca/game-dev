@@ -1,0 +1,24 @@
+[submodule "Cabrankengine/vendor/spdlog"]
+	path = Cabrankengine/vendor/spdlog
+	url = https://github.com/gabime/spdlog
+[submodule "Cabrankengine/vendor/glfw"]
+	path = Cabrankengine/vendor/GLFW
+	url = https://github.com/franpintar/glfw
+[submodule "Cabrankengine/vendor/imgui"]
+	path = Cabrankengine/vendor/imgui
+	url = https://github.com/cabranca/imgui
+[submodule "Cabrankengine/vendor/glm"]
+	path = Cabrankengine/vendor/glm
+	url = https://github.com/g-truc/glm
+[submodule "Cabrankengine/vendor/json"]
+	path = Cabrankengine/vendor/json
+	url = https://github.com/nlohmann/json
+[submodule "Cabrankengine/vendor/freetype"]
+	path = Cabrankengine/vendor/freetype
+	url = https://github.com/cabranca/freetype.git
+[submodule "Cabrankengine/vendor/metal-cpp"]
+	path = Cabrankengine/vendor/metal-cpp
+	url = https://github.com/bkaradzic/metal-cpp.git
+[submodule "assimp_for_converter"]
+	path = CBKAssetConverter/vendor/assimp
+	url = https://github.com/cabranca/assimp.git

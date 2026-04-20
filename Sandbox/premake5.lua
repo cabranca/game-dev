@@ -1,0 +1,71 @@
+project "Sandbox"
+    kind "ConsoleApp"
+    language "C++"
+    cppdialect "C++20"
+    staticruntime "on"
+
+    targetdir("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
+    objdir("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
+
+    files {"src/**.h", "src/**.cpp"}
+
+    externalincludedirs
+    {
+        "%{IncludeDir.ImGui}", "%{IncludeDir.irrKlang}",
+        "%{IncludeDir.spdlog}", "%{wks.location}/Cabrankengine/src",
+    }
+
+    links 
+    {
+        "Cabrankengine", "Common", "FreeType", "GLFW", "ImGui"
+    }
+
+    filter "system:windows"
+        systemversion "latest"
+        buildoptions { "/utf-8" }
+
+        links { "glad" }
+
+        postbuildcommands
+        {
+            'xcopy /Y /Q /E /I "%{wks.location}\\Cabrankengine\\vendor\\irrKlang\\dll\\*" "%{cfg.targetdir}"',
+            'xcopy /Y /Q /E /I "%{prj.location}\\assets" "%{cfg.targetdir}\\assets"',
+            'if exist "%{prj.location}\\config.json" copy /Y "%{prj.location}\\config.json" "%{cfg.targetdir}\\config.json"'
+        }
+
+    filter "system:linux"
+        systemversion "latest"
+        pic "on"
+
+        libdirs { "%{wks.location}/Cabrankengine/vendor/irrKlang/so" }
+        links { "IrrKlang" }
+        links { "X11", "Xrandr", "Xi", "Xxf86vm", "Xcursor", "pthread", "dl", "GL", "z", "glad" }
+        linkoptions { "-Wl,-rpath,'$$ORIGIN'" }
+        postbuildcommands
+        {
+            'cp -ru %{wks.location}/Cabrankengine/vendor/irrKlang/so/* %{cfg.targetdir}/',
+            'cp -ru %{prj.location}/assets/ %{cfg.targetdir}/',
+            'cp -u %{prj.location}/config.json %{cfg.targetdir}/config.json 2>/dev/null || true'
+        }
+
+    filter "system:macosx"
+        systemversion "12.0"
+        pic "On"
+
+        links { "Cocoa.framework", "IOKit.framework", "Foundation.framework", "Metal.framework", "QuartzCore.framework", "z" }
+
+        postbuildcommands 
+        {
+            'cp -R %{prj.location}/assets %{cfg.targetdir}/',
+            'cp -f %{prj.location}/config.json %{cfg.targetdir}/config.json || true'
+        }
+
+    filter "configurations:Debug"
+        defines "CE_DEBUG"
+        runtime "Debug"
+        symbols "on"
+
+    filter "configurations:Release"
+        defines "CE_RELEASE"
+        runtime "Release"
+        optimize "on"

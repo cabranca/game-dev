@@ -1,36 +1,32 @@
-# Prerequisites
-*.d
+# Binaries
+**/bin/
+bin-int/
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# Visual Studio files and folder
+.vs*/
+*.sln
+*.vcxproj*
 
-# Precompiled Headers
-*.gch
-*.pch
+# Make files
+Makefile
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
+# Profiling files
+profiling/
 
-# Fortran module files
-*.mod
-*.smod
+# Configuration files
+config.json
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
+# Other files
+GenerateFiles.bat
+imgui.ini
+compile_commands.json
+/.cache
+premake5
+premake5.exe
 
-# Executables
-*.exe
-*.out
-*.app
+# XCode
+*.xcworkspace
+*.xcodeproj
 
-# VS files
-.vs/
-
-# Bins
-x64/
+# Assets
+*.cbk*
