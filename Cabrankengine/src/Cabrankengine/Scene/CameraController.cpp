@@ -8,62 +8,79 @@ namespace cbk::scene {
 	using namespace math;
 
 	CameraController::CameraController(Camera camera)
-	    : m_Camera(std::move(camera)), m_LastMouseX(), m_LastMouseY(), m_RotationSpeed(5.f), m_TranslationSpeed(10.f),
-	      m_CameraPos(m_Camera.getWorldPosition()), m_CameraRot(m_Camera.getWorldRotation() + Vector3(0.f, -90.f, 0.f)) {
+	    : m_Camera(std::move(camera)), m_CameraPos(m_Camera.getWorldPosition()), m_CameraRot(m_Camera.getWorldRotation()), m_LastMouseX(), m_LastMouseY(),
+	      m_MouseSensitivity(0.15f), m_TranslationSpeed(10.f), m_Yaw(m_Camera.getWorldRotation().y), m_Pitch(m_Camera.getWorldRotation().x), m_MouseCaptured(false) {
 		auto [mouseX, mouseY] = Input::getMousePosition();
 		m_LastMouseX = mouseX;
 		m_LastMouseY = mouseY;
 	}
 
 	void CameraController::onUpdate(Timestep delta) {
-
-		Vector3 forward{};
-		forward.x = - cosf(radians(m_CameraRot.y)) * cosf(radians(m_CameraRot.x));
-		forward.y = - sinf(radians(m_CameraRot.x));
-		forward.z = sinf(radians(m_CameraRot.y)) * cosf(radians(m_CameraRot.x));
-		forward.normalized();
-		Vector3 right = cross(Vector3::Up, forward).normalize();
-		Vector3 up = cross(forward, right).normalize();
-		
-		if (Input::isKeyPressed(Key::A))
-			m_CameraPos += right * m_TranslationSpeed * delta;
-		else if (Input::isKeyPressed(Key::D))
-			m_CameraPos -= right * m_TranslationSpeed * delta;
-		if (Input::isKeyPressed(Key::W))
-			m_CameraPos += forward * m_TranslationSpeed * delta;
-		else if (Input::isKeyPressed(Key::S))
-			m_CameraPos -= forward * m_TranslationSpeed * delta;
-		if (Input::isKeyPressed(Key::E))
-			m_CameraPos += up * m_TranslationSpeed * delta;
-		else if (Input::isKeyPressed(Key::Q))
-			m_CameraPos -= up * m_TranslationSpeed * delta;
-
-		// if (Input::isKeyPressed(Key::E))
-		// 	m_CameraRot.z -= 50.f * delta;
-		// else if (Input::isKeyPressed(Key::Q))
-		// 	m_CameraRot.z += 50.f * delta;
-
+		const float deltaSeconds = delta;
 		auto [mouseX, mouseY] = Input::getMousePosition();
-		if (Input::isMouseButtonPressed(Mouse::ButtonRight)) {
+		const bool captureMouse = Input::isMouseButtonPressed(Mouse::ButtonRight);
+
+		if (captureMouse) {
 			Input::setInputMode(true, true);
-			
-			if (m_LastMouseX != 0 ) {
-				m_CameraRot.y += (m_LastMouseX - mouseX) * m_RotationSpeed * delta;
-				//m_CameraRot.x += (m_LastMouseY - mouseY) * m_RotationSpeed * delta;
+
+			if (m_MouseCaptured) {
+				const float deltaX = mouseX - m_LastMouseX;
+				const float deltaY = mouseY - m_LastMouseY;
+
+				m_Yaw -= deltaX * m_MouseSensitivity;
+				m_Pitch -= deltaY * m_MouseSensitivity;
+				m_Pitch = std::clamp(m_Pitch, -89.0f, 89.0f);
 			}
-			
-			if (m_CameraRot.x > 89.0f)
-				m_CameraRot.x = 89.0f;
-			if (m_CameraRot.x < -89.0f)
-				m_CameraRot.x = -89.0f;
-		}
-		else
+
+			m_MouseCaptured = true;
+		} else {
 			Input::setInputMode(false, false);
-		
+			m_MouseCaptured = false;
+		}
+
 		m_LastMouseX = mouseX;
 		m_LastMouseY = mouseY;
 
-		m_Camera.setWorldRotationAndPosition(m_CameraRot + Vector3(0.f, 90.f, 0.f), m_CameraPos);
+		const float yawRadians = radians(m_Yaw);
+		const float pitchRadians = radians(m_Pitch);
+
+		Vector3 forward{
+			-std::sin(yawRadians) * std::cos(pitchRadians),
+			std::sin(pitchRadians),
+			-std::cos(yawRadians) * std::cos(pitchRadians)
+		};
+		forward.normalized();
+
+		Vector3 flatForward{ forward.x, 0.f, forward.z };
+		flatForward.normalized();
+
+		if (flatForward.lengthSquared() == 0.f)
+			flatForward = Vector3::Forward;
+
+		const Vector3 flatRight = cross(flatForward, Vector3::Up).normalize();
+
+		Vector3 movement{};
+
+		if (Input::isKeyPressed(Key::W))
+			movement += flatForward;
+		if (Input::isKeyPressed(Key::S))
+			movement -= flatForward;
+		if (Input::isKeyPressed(Key::A))
+			movement -= flatRight;
+		if (Input::isKeyPressed(Key::D))
+			movement += flatRight;
+		if (Input::isKeyPressed(Key::Space))
+			movement += Vector3::Up;
+		if (Input::isKeyPressed(Key::LeftShift))
+			movement += Vector3::Down;
+
+		if (movement.lengthSquared() > 0.f) {
+			movement.normalized();
+			m_CameraPos += movement * m_TranslationSpeed * deltaSeconds;
+		}
+
+		m_CameraRot = { m_Pitch, m_Yaw, 0.f };
+		m_Camera.setWorldRotationAndPosition(m_CameraRot, m_CameraPos);
 	}
 
 	const Camera& CameraController::getCamera() const noexcept {
