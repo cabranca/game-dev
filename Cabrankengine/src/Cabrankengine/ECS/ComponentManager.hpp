@@ -49,11 +49,10 @@ namespace cbk::ecs {
 
 			// Returns the component for the given entity
 			std::optional<T*> get(Entity e) {
-				CBK_CORE_ASSERT(m_EntityToIndex.contains(e), "The component was not found!");
-				if (m_EntityToIndex.contains(e))
-					return &m_Components[m_EntityToIndex[e]];
-				else
+				if (!m_EntityToIndex.contains(e))
 					return std::nullopt;
+
+				return &m_Components[m_EntityToIndex[e]];
 			}
 
 			// This must be called after a call to EntityManager::destroyEntity()
@@ -103,7 +102,7 @@ namespace cbk::ecs {
 				getComponentArray<T>()->remove(e);
 			}
 
-			// Returns a reference to the component of type T associated with the given entity
+			// Returns the component of type T associated with the given entity, if present
 			template<typename T>
 			std::optional<T*> getComponent(Entity e) {
 				return getComponentArray<T>()->get(e);

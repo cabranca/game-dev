@@ -73,6 +73,14 @@ TEST_CASE("ComponentManager - add, get, remove") {
 	REQUIRE_FALSE(removedComponent.has_value());
 }
 
+TEST_CASE("ComponentManager - get missing component returns empty optional") {
+	ComponentManager cm;
+	cm.registerComponent<Position>();
+
+	auto missingComponent = cm.getComponent<Position>(0);
+	REQUIRE_FALSE(missingComponent.has_value());
+}
+
 // ============================================================
 // SystemManager tests
 // ============================================================
