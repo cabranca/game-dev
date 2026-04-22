@@ -11,7 +11,7 @@ project "UnitTests"
 
     includedirs { "%{IncludeDir.spdlog}", "%{IncludeDir.Common}", "%{wks.location}/Cabrankengine/src", "%{IncludeDir.Catch2}" }
 
-    links { "Cabrankengine" }
+    links { "Cabrankengine", "Common" }
 
     filter "system:windows"
         systemversion "latest"
