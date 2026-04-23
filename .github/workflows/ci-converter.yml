@@ -3,7 +3,7 @@ name: CI - CBKAssetConverter
 on:
   push:
     branches:
-      - develop
+      - main
     paths:
       - 'CBKAssetConverter/**'
       - 'Common/**'

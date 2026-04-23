@@ -3,7 +3,7 @@ name: CI - Cabrankengine
 on:
   push:
     branches:
-      - develop
+      - main
     paths:
       - 'Cabrankengine/**'
       - 'Common/**'
