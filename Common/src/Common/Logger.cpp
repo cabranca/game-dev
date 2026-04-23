@@ -8,6 +8,7 @@ namespace cbk::common {
 	std::shared_ptr<spdlog::logger> Logger::m_ClientLogger;
 	std::shared_ptr<spdlog::logger> Logger::m_AssetConverterLogger;
 
+	
 	void Logger::init() {
 		spdlog::set_pattern("´%^[%T] %n: %v%$");
 
