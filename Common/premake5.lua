@@ -14,6 +14,9 @@ project "Common"
     }
     externalincludedirs { "src", "vendor/spdlog/include", "%{IncludeDir.lz4}" }
 
+    filter "system:windows"
+        buildoptions { "/utf-8" }
+
     filter "system:linux"
         systemversion "latest"
         pic "on"
