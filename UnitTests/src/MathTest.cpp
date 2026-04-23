@@ -218,7 +218,7 @@ TEST_CASE("Vector3 Normalization Check") {
 
 	SECTION("Normalized after normalize()") {
 		Vector3 v{ 123456, 6547849, 0 };
-		v.normalize();
+		v.normalized();
 		REQUIRE(v.isNormalized());
 	}
 }
