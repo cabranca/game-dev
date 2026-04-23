@@ -30,6 +30,7 @@ project "Cabrankengine"
 
         pchheader "pch.h"
 	    pchsource "src/pch.cpp"
+        forceincludes { "pch.h" }
 
         files 
         { 
