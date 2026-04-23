@@ -1,0 +1,138 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  # -----------------------------------------------------------------------
+  # Detect which projects have changed so we only build what's affected
+  # -----------------------------------------------------------------------
+  changes:
+    name: Detect changes
+    runs-on: ubuntu-latest
+    outputs:
+      engine:    ${{ steps.filter.outputs.engine }}
+      sandbox:   ${{ steps.filter.outputs.sandbox }}
+      converter: ${{ steps.filter.outputs.converter }}
+      tests:     ${{ steps.filter.outputs.tests }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            engine:
+              - 'Cabrankengine/**'
+              - 'Common/**'
+            sandbox:
+              - 'Sandbox/**'
+              - 'Cabrankengine/**'
+              - 'Common/**'
+            converter:
+              - 'CBKAssetConverter/**'
+              - 'Common/**'
+            tests:
+              - 'UnitTests/**'
+              - 'Cabrankengine/**'
+              - 'Common/**'
+
+  # -----------------------------------------------------------------------
+  # Cabrankengine (static library)
+  # -----------------------------------------------------------------------
+  build-cabrankengine:
+    name: Build Cabrankengine (Release)
+    needs: changes
+    if: needs.changes.outputs.engine == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y \
+            libx11-dev libxrandr-dev libxi-dev libxxf86vm-dev \
+            libxcursor-dev libgl1-mesa-dev
+
+      - name: Make premake5 executable
+        run: chmod +x ./premake5
+
+      - name: Build
+        run: ./premake5 gmake && make Cabrankengine config=release -j$(nproc)
+
+  # -----------------------------------------------------------------------
+  # Sandbox
+  # -----------------------------------------------------------------------
+  build-sandbox:
+    name: Build Sandbox (Release)
+    needs: changes
+    if: needs.changes.outputs.sandbox == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y \
+            libx11-dev libxrandr-dev libxi-dev libxxf86vm-dev \
+            libxcursor-dev libgl1-mesa-dev
+
+      - name: Make premake5 executable
+        run: chmod +x ./premake5
+
+      - name: Build
+        run: ./premake5 gmake && make Sandbox config=release -j$(nproc)
+
+  # -----------------------------------------------------------------------
+  # CBKAssetConverter
+  # -----------------------------------------------------------------------
+  build-asset-converter:
+    name: Build CBKAssetConverter (Release)
+    needs: changes
+    if: needs.changes.outputs.converter == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y zlib1g-dev
+
+      - name: Make premake5 executable
+        run: chmod +x ./premake5
+
+      - name: Build
+        run: ./premake5 gmake && make CBKAssetConverter config=release -j$(nproc)
+
+  # -----------------------------------------------------------------------
+  # UnitTests — build and run
+  # -----------------------------------------------------------------------
+  build-and-test:
+    name: Build & Run UnitTests (Release)
+    needs: changes
+    if: needs.changes.outputs.tests == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y \
+            libx11-dev libxrandr-dev libxi-dev libxxf86vm-dev \
+            libxcursor-dev libgl1-mesa-dev
+
+      - name: Make premake5 executable
+        run: chmod +x ./premake5
+
+      - name: Build
+        run: ./premake5 gmake && make UnitTests config=release -j$(nproc)
+
+      - name: Run tests
+        run: |
+          export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:./Cabrankengine/vendor/irrKlang/so"
+          ./bin/Release-linux-x86_64/UnitTests/UnitTests
