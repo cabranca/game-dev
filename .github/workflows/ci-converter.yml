@@ -1,0 +1,27 @@
+name: CI - CBKAssetConverter
+
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - 'CBKAssetConverter/**'
+      - 'Common/**'
+
+jobs:
+  build:
+    name: Build CBKAssetConverter (Release)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y zlib1g-dev
+
+      - name: Make premake5 executable
+        run: chmod +x ./premake5
+
+      - name: Build
+        run: ./premake5 gmake && make CBKAssetConverter config=release -j$(nproc)

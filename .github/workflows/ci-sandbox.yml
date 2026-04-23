@@ -1,0 +1,30 @@
+name: CI - Sandbox
+
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - 'Sandbox/**'
+      - 'Cabrankengine/**'
+      - 'Common/**'
+
+jobs:
+  build:
+    name: Build Sandbox (Release)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y \
+            libx11-dev libxrandr-dev libxi-dev libxxf86vm-dev \
+            libxcursor-dev libgl1-mesa-dev
+
+      - name: Make premake5 executable
+        run: chmod +x ./premake5
+
+      - name: Build
+        run: ./premake5 gmake && make Sandbox config=release -j$(nproc)
