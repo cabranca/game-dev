@@ -16,6 +16,9 @@ project "CBKAssetConverter"
         pic "on"
         links { "z" }
 
+    filter "system:windows"
+        buildoptions { "/utf-8" }
+
     filter "configurations:Debug"
         defines "CBK_DEBUG"
         runtime "Debug"
