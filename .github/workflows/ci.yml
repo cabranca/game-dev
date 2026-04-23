@@ -1,0 +1,171 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Cabrankengine/**'
+      - 'Common/**'
+      - 'Sandbox/**'
+      - 'UnitTests/**'
+      - 'CBKAssetConverter/**'
+      - '.github/workflows/ci.yml'
+
+jobs:
+  # -----------------------------------------------------------------------
+  # Detect which projects have changed
+  # -----------------------------------------------------------------------
+  changes:
+    name: Detect changes
+    runs-on: ubuntu-latest
+    outputs:
+      engine:    ${{ steps.filter.outputs.engine }}
+      sandbox:   ${{ steps.filter.outputs.sandbox }}
+      converter: ${{ steps.filter.outputs.converter }}
+      tests:     ${{ steps.filter.outputs.tests }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            engine:
+              - 'Cabrankengine/**'
+              - 'Common/**'
+              - '.github/workflows/ci.yml'
+            sandbox:
+              - 'Sandbox/**'
+              - 'Cabrankengine/**'
+              - 'Common/**'
+              - '.github/workflows/ci.yml'
+            converter:
+              - 'CBKAssetConverter/**'
+              - 'Common/**'
+              - '.github/workflows/ci.yml'
+            tests:
+              - 'UnitTests/**'
+              - 'Cabrankengine/**'
+              - 'Common/**'
+              - '.github/workflows/ci.yml'
+
+  # -----------------------------------------------------------------------
+  # Cabrankengine — builds first; sandbox and tests depend on this
+  # -----------------------------------------------------------------------
+  build-cabrankengine:
+    name: Build Cabrankengine (Release)
+    needs: changes
+    if: needs.changes.outputs.engine == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y \
+            libx11-dev libxrandr-dev libxi-dev libxxf86vm-dev \
+            libxcursor-dev libxinerama-dev libgl1-mesa-dev
+
+      - name: Download premake5
+        run: |
+          curl -sSL https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-linux.tar.gz | tar -xz -C .
+          chmod +x ./premake5
+
+      - name: Build
+        run: ./premake5 gmake && make Cabrankengine config=release -j$(nproc)
+
+  # -----------------------------------------------------------------------
+  # Sandbox — waits for engine; skipped engine is treated as success
+  # -----------------------------------------------------------------------
+  build-sandbox:
+    name: Build Sandbox (Release)
+    needs: [changes, build-cabrankengine]
+    if: |
+      needs.changes.outputs.sandbox == 'true' &&
+      (needs.build-cabrankengine.result == 'success' || needs.build-cabrankengine.result == 'skipped')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y \
+            libx11-dev libxrandr-dev libxi-dev libxxf86vm-dev \
+            libxcursor-dev libxinerama-dev libgl1-mesa-dev
+
+      - name: Download premake5
+        run: |
+          curl -sSL https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-linux.tar.gz | tar -xz -C .
+          chmod +x ./premake5
+
+      - name: Build
+        run: ./premake5 gmake && make Sandbox config=release -j$(nproc)
+
+  # -----------------------------------------------------------------------
+  # CBKAssetConverter — independent, no engine dependency
+  # -----------------------------------------------------------------------
+  build-asset-converter:
+    name: Build CBKAssetConverter (Release)
+    needs: changes
+    if: needs.changes.outputs.converter == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y zlib1g-dev
+
+      - name: Download premake5
+        run: |
+          curl -sSL https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-linux.tar.gz | tar -xz -C .
+          chmod +x ./premake5
+
+      - name: Build
+        run: ./premake5 gmake && make CBKAssetConverter config=release -j$(nproc)
+
+  # -----------------------------------------------------------------------
+  # UnitTests — waits for engine; skipped engine is treated as success
+  # -----------------------------------------------------------------------
+  build-and-test:
+    name: Build & Run UnitTests (Release)
+    needs: [changes, build-cabrankengine]
+    if: |
+      needs.changes.outputs.tests == 'true' &&
+      (needs.build-cabrankengine.result == 'success' || needs.build-cabrankengine.result == 'skipped')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y \
+            libx11-dev libxrandr-dev libxi-dev libxxf86vm-dev \
+            libxcursor-dev libxinerama-dev libgl1-mesa-dev
+
+      - name: Download premake5
+        run: |
+          curl -sSL https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-linux.tar.gz | tar -xz -C .
+          chmod +x ./premake5
+
+      - name: Build
+        run: ./premake5 gmake && make UnitTests config=release -j$(nproc)
+
+      - name: Run tests
+        run: |
+          export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:./Cabrankengine/vendor/irrKlang/so"
+          ./bin/Release-linux-x86_64/UnitTests/UnitTests
