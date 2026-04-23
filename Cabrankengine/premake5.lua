@@ -33,6 +33,8 @@ project "Cabrankengine"
 
         files 
         { 
+            "src/pch.h",
+            "src/pch.cpp",
             "src/Platform/Windows/**.h",
             "src/Platform/Windows/**.cpp",
             "src/Platform/OpenGL/**.h",
