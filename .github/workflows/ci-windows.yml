@@ -1,0 +1,235 @@
+name: CI - Windows
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Cabrankengine/**'
+      - 'Common/**'
+      - 'Sandbox/**'
+      - 'UnitTests/**'
+      - 'CBKAssetConverter/**'
+      - '.github/workflows/ci-windows.yml'
+
+jobs:
+  # -----------------------------------------------------------------------
+  # Detect which projects have changed
+  # -----------------------------------------------------------------------
+  changes:
+    name: Detect changes
+    runs-on: ubuntu-latest
+    outputs:
+      engine:    ${{ steps.filter.outputs.engine }}
+      sandbox:   ${{ steps.filter.outputs.sandbox }}
+      converter: ${{ steps.filter.outputs.converter }}
+      tests:     ${{ steps.filter.outputs.tests }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            engine:
+              - 'Cabrankengine/**'
+              - 'Common/**'
+              - '.github/workflows/ci-windows.yml'
+            sandbox:
+              - 'Sandbox/**'
+              - 'Cabrankengine/**'
+              - 'Common/**'
+              - '.github/workflows/ci-windows.yml'
+            converter:
+              - 'CBKAssetConverter/**'
+              - 'Common/**'
+              - '.github/workflows/ci-windows.yml'
+            tests:
+              - 'UnitTests/**'
+              - 'Cabrankengine/**'
+              - 'Common/**'
+              - '.github/workflows/ci-windows.yml'
+
+  # -----------------------------------------------------------------------
+  # Cabrankengine
+  # -----------------------------------------------------------------------
+  build-cabrankengine:
+    name: Build Cabrankengine (Release)
+    needs: changes
+    if: needs.changes.outputs.engine == 'true'
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: microsoft/setup-msbuild@v2
+
+      - name: Download premake5
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-windows.zip" -OutFile premake5.zip
+          Expand-Archive premake5.zip -DestinationPath .
+
+      - name: Cache engine build outputs
+        id: engine-cache
+        uses: actions/cache@v4
+        with:
+          key: engine-release-windows-${{ hashFiles('Cabrankengine/**', 'Common/**') }}
+          path: |
+            bin/Release-windows-x86_64/Cabrankengine
+            bin/Release-windows-x86_64/Common
+            bin/Release-windows-x86_64/GLFW
+            bin/Release-windows-x86_64/glad
+            bin/Release-windows-x86_64/ImGui
+            bin/Release-windows-x86_64/FreeType
+            bin-int/Release-windows-x86_64/Cabrankengine
+            bin-int/Release-windows-x86_64/Common
+            bin-int/Release-windows-x86_64/GLFW
+            bin-int/Release-windows-x86_64/glad
+            bin-int/Release-windows-x86_64/ImGui
+            bin-int/Release-windows-x86_64/FreeType
+
+      - name: Build
+        if: steps.engine-cache.outputs.cache-hit != 'true'
+        run: |
+          ./premake5 vs2022
+          msbuild Cabrankengine.sln /t:Cabrankengine /p:Configuration=Release /p:Platform=x64 /m
+
+  # -----------------------------------------------------------------------
+  # Sandbox — waits for engine; skipped engine is treated as success
+  # -----------------------------------------------------------------------
+  build-sandbox:
+    name: Build Sandbox (Release)
+    needs: [changes, build-cabrankengine]
+    if: |
+      needs.changes.outputs.sandbox == 'true' &&
+      (needs.build-cabrankengine.result == 'success' || needs.build-cabrankengine.result == 'skipped')
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: microsoft/setup-msbuild@v2
+
+      - name: Download premake5
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-windows.zip" -OutFile premake5.zip
+          Expand-Archive premake5.zip -DestinationPath .
+
+      - name: Restore engine build outputs
+        id: engine-cache
+        uses: actions/cache/restore@v4
+        with:
+          key: engine-release-windows-${{ hashFiles('Cabrankengine/**', 'Common/**') }}
+          path: |
+            bin/Release-windows-x86_64/Cabrankengine
+            bin/Release-windows-x86_64/Common
+            bin/Release-windows-x86_64/GLFW
+            bin/Release-windows-x86_64/glad
+            bin/Release-windows-x86_64/ImGui
+            bin/Release-windows-x86_64/FreeType
+            bin-int/Release-windows-x86_64/Cabrankengine
+            bin-int/Release-windows-x86_64/Common
+            bin-int/Release-windows-x86_64/GLFW
+            bin-int/Release-windows-x86_64/glad
+            bin-int/Release-windows-x86_64/ImGui
+            bin-int/Release-windows-x86_64/FreeType
+
+      - name: Mark engine artifacts as up-to-date
+        if: steps.engine-cache.outputs.cache-hit == 'true'
+        shell: pwsh
+        run: Get-ChildItem -Path bin,bin-int -Recurse -File | ForEach-Object { $_.LastWriteTime = Get-Date }
+
+      - name: Build
+        run: |
+          ./premake5 vs2022
+          msbuild Cabrankengine.sln /t:Sandbox /p:Configuration=Release /p:Platform=x64 /m
+
+  # -----------------------------------------------------------------------
+  # CBKAssetConverter — independent, no engine dependency
+  # -----------------------------------------------------------------------
+  build-asset-converter:
+    name: Build CBKAssetConverter (Release)
+    needs: changes
+    if: needs.changes.outputs.converter == 'true'
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: microsoft/setup-msbuild@v2
+
+      - name: Download premake5
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-windows.zip" -OutFile premake5.zip
+          Expand-Archive premake5.zip -DestinationPath .
+
+      - name: Build
+        run: |
+          ./premake5 vs2022
+          msbuild Cabrankengine.sln /t:CBKAssetConverter /p:Configuration=Release /p:Platform=x64 /m
+
+  # -----------------------------------------------------------------------
+  # UnitTests — waits for engine; skipped engine is treated as success
+  # -----------------------------------------------------------------------
+  build-and-test:
+    name: Build & Run UnitTests (Release)
+    needs: [changes, build-cabrankengine]
+    if: |
+      needs.changes.outputs.tests == 'true' &&
+      (needs.build-cabrankengine.result == 'success' || needs.build-cabrankengine.result == 'skipped')
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: microsoft/setup-msbuild@v2
+
+      - name: Download premake5
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-windows.zip" -OutFile premake5.zip
+          Expand-Archive premake5.zip -DestinationPath .
+
+      - name: Restore engine build outputs
+        id: engine-cache
+        uses: actions/cache/restore@v4
+        with:
+          key: engine-release-windows-${{ hashFiles('Cabrankengine/**', 'Common/**') }}
+          path: |
+            bin/Release-windows-x86_64/Cabrankengine
+            bin/Release-windows-x86_64/Common
+            bin/Release-windows-x86_64/GLFW
+            bin/Release-windows-x86_64/glad
+            bin/Release-windows-x86_64/ImGui
+            bin/Release-windows-x86_64/FreeType
+            bin-int/Release-windows-x86_64/Cabrankengine
+            bin-int/Release-windows-x86_64/Common
+            bin-int/Release-windows-x86_64/GLFW
+            bin-int/Release-windows-x86_64/glad
+            bin-int/Release-windows-x86_64/ImGui
+            bin-int/Release-windows-x86_64/FreeType
+
+      - name: Mark engine artifacts as up-to-date
+        if: steps.engine-cache.outputs.cache-hit == 'true'
+        shell: pwsh
+        run: Get-ChildItem -Path bin,bin-int -Recurse -File | ForEach-Object { $_.LastWriteTime = Get-Date }
+
+      - name: Build
+        run: |
+          ./premake5 vs2022
+          msbuild Cabrankengine.sln /t:UnitTests /p:Configuration=Release /p:Platform=x64 /m
+
+      - name: Copy irrKlang DLL
+        shell: pwsh
+        run: Copy-Item "Cabrankengine\vendor\irrKlang\dll\irrKlang.dll" "bin\Release-windows-x86_64\UnitTests\"
+
+      - name: Run tests
+        run: bin\Release-windows-x86_64\UnitTests\UnitTests.exe

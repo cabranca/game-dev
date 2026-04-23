@@ -1,4 +1,4 @@
-name: CI
+name: CI - Linux
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
       - 'Sandbox/**'
       - 'UnitTests/**'
       - 'CBKAssetConverter/**'
-      - '.github/workflows/ci.yml'
+      - '.github/workflows/ci-linux.yml'
 
 jobs:
   # -----------------------------------------------------------------------
@@ -35,24 +35,24 @@ jobs:
             engine:
               - 'Cabrankengine/**'
               - 'Common/**'
-              - '.github/workflows/ci.yml'
+              - '.github/workflows/ci-linux.yml'
             sandbox:
               - 'Sandbox/**'
               - 'Cabrankengine/**'
               - 'Common/**'
-              - '.github/workflows/ci.yml'
+              - '.github/workflows/ci-linux.yml'
             converter:
               - 'CBKAssetConverter/**'
               - 'Common/**'
-              - '.github/workflows/ci.yml'
+              - '.github/workflows/ci-linux.yml'
             tests:
               - 'UnitTests/**'
               - 'Cabrankengine/**'
               - 'Common/**'
-              - '.github/workflows/ci.yml'
+              - '.github/workflows/ci-linux.yml'
 
   # -----------------------------------------------------------------------
-  # Cabrankengine — builds first; sandbox and tests depend on this
+  # Cabrankengine
   # -----------------------------------------------------------------------
   build-cabrankengine:
     name: Build Cabrankengine (Release)
@@ -80,7 +80,7 @@ jobs:
         id: engine-cache
         uses: actions/cache@v4
         with:
-          key: engine-release-${{ hashFiles('Cabrankengine/**', 'Common/**') }}
+          key: engine-release-linux-${{ hashFiles('Cabrankengine/**', 'Common/**') }}
           path: |
             bin/Release-linux-x86_64/Cabrankengine
             bin/Release-linux-x86_64/Common
@@ -130,7 +130,7 @@ jobs:
         id: engine-cache
         uses: actions/cache/restore@v4
         with:
-          key: engine-release-${{ hashFiles('Cabrankengine/**', 'Common/**') }}
+          key: engine-release-linux-${{ hashFiles('Cabrankengine/**', 'Common/**') }}
           path: |
             bin/Release-linux-x86_64/Cabrankengine
             bin/Release-linux-x86_64/Common
@@ -209,7 +209,7 @@ jobs:
         id: engine-cache
         uses: actions/cache/restore@v4
         with:
-          key: engine-release-${{ hashFiles('Cabrankengine/**', 'Common/**') }}
+          key: engine-release-linux-${{ hashFiles('Cabrankengine/**', 'Common/**') }}
           path: |
             bin/Release-linux-x86_64/Cabrankengine
             bin/Release-linux-x86_64/Common
