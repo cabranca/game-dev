@@ -7,6 +7,7 @@ on:
     paths:
       - 'CBKAssetConverter/**'
       - 'Common/**'
+      - '.github/workflows/ci-converter.yml'
 
 jobs:
   build:
