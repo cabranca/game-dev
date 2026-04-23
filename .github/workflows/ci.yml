@@ -76,7 +76,27 @@ jobs:
           curl -sSL https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-linux.tar.gz | tar -xz -C .
           chmod +x ./premake5
 
+      - name: Cache engine build outputs
+        id: engine-cache
+        uses: actions/cache@v4
+        with:
+          key: engine-release-${{ hashFiles('Cabrankengine/**', 'Common/**') }}
+          path: |
+            bin/Release-linux-x86_64/Cabrankengine
+            bin/Release-linux-x86_64/Common
+            bin/Release-linux-x86_64/GLFW
+            bin/Release-linux-x86_64/glad
+            bin/Release-linux-x86_64/ImGui
+            bin/Release-linux-x86_64/FreeType
+            bin-int/Release-linux-x86_64/Cabrankengine
+            bin-int/Release-linux-x86_64/Common
+            bin-int/Release-linux-x86_64/GLFW
+            bin-int/Release-linux-x86_64/glad
+            bin-int/Release-linux-x86_64/ImGui
+            bin-int/Release-linux-x86_64/FreeType
+
       - name: Build
+        if: steps.engine-cache.outputs.cache-hit != 'true'
         run: ./premake5 gmake && make Cabrankengine config=release -j$(nproc)
 
   # -----------------------------------------------------------------------
@@ -105,6 +125,29 @@ jobs:
         run: |
           curl -sSL https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-linux.tar.gz | tar -xz -C .
           chmod +x ./premake5
+
+      - name: Restore engine build outputs
+        id: engine-cache
+        uses: actions/cache/restore@v4
+        with:
+          key: engine-release-${{ hashFiles('Cabrankengine/**', 'Common/**') }}
+          path: |
+            bin/Release-linux-x86_64/Cabrankengine
+            bin/Release-linux-x86_64/Common
+            bin/Release-linux-x86_64/GLFW
+            bin/Release-linux-x86_64/glad
+            bin/Release-linux-x86_64/ImGui
+            bin/Release-linux-x86_64/FreeType
+            bin-int/Release-linux-x86_64/Cabrankengine
+            bin-int/Release-linux-x86_64/Common
+            bin-int/Release-linux-x86_64/GLFW
+            bin-int/Release-linux-x86_64/glad
+            bin-int/Release-linux-x86_64/ImGui
+            bin-int/Release-linux-x86_64/FreeType
+
+      - name: Mark engine artifacts as up-to-date
+        if: steps.engine-cache.outputs.cache-hit == 'true'
+        run: find bin/ bin-int/ -type f | xargs touch
 
       - name: Build
         run: ./premake5 gmake && make Sandbox config=release -j$(nproc)
@@ -161,6 +204,29 @@ jobs:
         run: |
           curl -sSL https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-linux.tar.gz | tar -xz -C .
           chmod +x ./premake5
+
+      - name: Restore engine build outputs
+        id: engine-cache
+        uses: actions/cache/restore@v4
+        with:
+          key: engine-release-${{ hashFiles('Cabrankengine/**', 'Common/**') }}
+          path: |
+            bin/Release-linux-x86_64/Cabrankengine
+            bin/Release-linux-x86_64/Common
+            bin/Release-linux-x86_64/GLFW
+            bin/Release-linux-x86_64/glad
+            bin/Release-linux-x86_64/ImGui
+            bin/Release-linux-x86_64/FreeType
+            bin-int/Release-linux-x86_64/Cabrankengine
+            bin-int/Release-linux-x86_64/Common
+            bin-int/Release-linux-x86_64/GLFW
+            bin-int/Release-linux-x86_64/glad
+            bin-int/Release-linux-x86_64/ImGui
+            bin-int/Release-linux-x86_64/FreeType
+
+      - name: Mark engine artifacts as up-to-date
+        if: steps.engine-cache.outputs.cache-hit == 'true'
+        run: find bin/ bin-int/ -type f | xargs touch
 
       - name: Build
         run: ./premake5 gmake && make UnitTests config=release -j$(nproc)
