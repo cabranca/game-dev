@@ -1,9 +1,14 @@
 #pragma once
 
+#include <Cabrankengine/Renderer/Materials/PBRMaterial.h>
+#include <Cabrankengine/Renderer/Materials/PhongMaterial.h>
 #include <cstdint>
+
 
 #include <Cabrankengine/Math/Vector3.h>
 #include <Cabrankengine/Math/VecTraits.h>
+#include <Cabrankengine/Renderer/Texture.h>
+#include <Cabrankengine/Scene/Camera.h>
 
 namespace cbk::ecs {
 
@@ -11,6 +16,25 @@ namespace cbk::ecs {
 		math::Vector3 Position{ 0.0f };
 		math::Vector3 Rotation{ 0.0f };
 		math::Vector3 Scale{ 1.0f };
+	};
+
+	struct CCamera {
+		Ref<scene::Camera> Camera;
+		bool IsActive{ false };
+	};
+
+	struct CSprite {
+		Ref<rendering::Texture2D> Texture;
+		math::Vector4 Tint;
+		math::Vector2 TilingFactor;
+	};
+
+	struct CPhongModel {
+		Ref<scene::Model<rendering::PhongMaterial>> Model;
+	};
+
+	struct CPBRModel {
+		Ref<scene::Model<rendering::PBRMaterial>> Model;
 	};
 
 	// Bitmask-based collision filter: category says what I am, mask says what I collide with
