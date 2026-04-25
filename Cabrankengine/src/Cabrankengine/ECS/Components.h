@@ -9,6 +9,7 @@
 #include <Cabrankengine/Math/VecTraits.h>
 #include <Cabrankengine/Renderer/Texture.h>
 #include <Cabrankengine/Scene/Camera.h>
+#include <Cabrankengine/Scene/Model.h>
 
 namespace cbk::ecs {
 
