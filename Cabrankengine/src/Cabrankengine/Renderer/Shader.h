@@ -47,21 +47,21 @@ namespace cbk::rendering {
 	class ShaderLibrary {
 		public:
 			// Adds a shader to the library with a specified name.
-			void add(const std::string& name, const Ref<Shader>& shader);
+			static void add(const std::string& name, const Ref<Shader>& shader);
 
 			// Adds a shader to the library without a specified name.
-			void add(const Ref<Shader>& shader);
+			static void add(const Ref<Shader>& shader);
 
 			// Loads a shader from a file path and adds it to the library with the name derived from the file path .
-			Ref<Shader> load(const std::string& filepath);
+			static Ref<Shader> load(const std::string& filepath);
 
 			// Loads a shader from a file path and adds it to the library with a specified name.
-			Ref<Shader> load(const std::string& name, const std::string& filepath);
+			static Ref<Shader> load(const std::string& name, const std::string& filepath);
 
 			// Retrieves a shader from the library by its name.
-			Ref<Shader> get(const std::string& name);
+			static Ref<Shader> get(const std::string& name);
 
 		private:
-			std::unordered_map<std::string, Ref<Shader>> m_Shaders; // A map from the shader names to the shader references.
+			static inline std::unordered_map<std::string, Ref<Shader>> s_Shaders; // A map from the shader names to the shader references.
 	};
 }

@@ -34,14 +34,14 @@ namespace cbk::rendering {
 	}
 
 	void ShaderLibrary::add(const std::string& name, const Ref<Shader>& shader) {
-		CBK_CORE_ASSERT(!m_Shaders.contains(name), "Shader already exists!");
-		m_Shaders[name] = shader;
+		CBK_CORE_ASSERT(!s_Shaders.contains(name), "Shader already exists!");
+		s_Shaders[name] = shader;
 	}
 
 	void ShaderLibrary::add(const Ref<Shader>& shader) {
 		const auto& name = shader->getName();
-		CBK_CORE_ASSERT(!m_Shaders.contains(name), "Shader already exists!");
-		m_Shaders[name] = shader;
+		CBK_CORE_ASSERT(!s_Shaders.contains(name), "Shader already exists!");
+		s_Shaders[name] = shader;
 	}
 
 	Ref<Shader> ShaderLibrary::load(const std::string& filepath) {
@@ -57,8 +57,8 @@ namespace cbk::rendering {
 	}
 
 	Ref<Shader> ShaderLibrary::get(const std::string& name) {
-		CBK_CORE_ASSERT(m_Shaders.contains(name), "Shader not found!");
-		return m_Shaders[name];
+		CBK_CORE_ASSERT(s_Shaders.contains(name), "Shader not found!");
+		return s_Shaders[name];
 	}
 }
 
