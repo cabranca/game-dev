@@ -4,7 +4,7 @@
 
 namespace cbk::rendering {
 
-	PhongMaterial::PhongMaterial(const Ref<Shader>& shader) : Material(shader) {}
+	PhongMaterial::PhongMaterial() : Material(ShaderLibrary::get("Phong")) {}
 
 	void PhongMaterial::setDiffuseMap(const Ref<Texture2D>& texture) {
 		m_DiffuseMap = texture;

@@ -5,7 +5,7 @@ namespace cbk::rendering {
 
     using namespace scene;
 
-	PBRMaterial::PBRMaterial(const Ref<Shader>& shader) : Material(shader), m_AlbedoColor(1.f), m_Metalness(0.f), m_Roughness(0.5f) {
+	PBRMaterial::PBRMaterial() : Material(ShaderLibrary::get("PBR")), m_AlbedoColor(1.f), m_Metalness(0.f), m_Roughness(0.5f) {
         m_AlbedoMap = DefaultLibrary::getWhiteTexture();
         m_NormalMap = DefaultLibrary::getFlatNormalTexture();
         m_MetalRoughMap = DefaultLibrary::getWhiteTexture();

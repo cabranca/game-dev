@@ -30,6 +30,7 @@ namespace cbk::scene {
 		inline static Ref<rendering::VertexArray> s_QuadVA = nullptr;
 		inline static Ref<rendering::VertexArray> s_SphereVA = nullptr;
 
+		static void setupBasicShaders();
 		static void setupTexture(Ref<rendering::Texture2D>& tex, uint32_t data);
 		static void setupQuad();
 		static void setupCube();

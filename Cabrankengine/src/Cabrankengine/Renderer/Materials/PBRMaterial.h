@@ -6,7 +6,7 @@ namespace cbk::rendering {
 
 	class PBRMaterial : public Material {
 	  public:
-		PBRMaterial(const Ref<Shader>& shader);
+		PBRMaterial();
 
 		void setAlbedoMap(const Ref<Texture2D>& tex);
 		void setNormalMap(const Ref<Texture2D>& tex);

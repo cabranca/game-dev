@@ -6,7 +6,7 @@ namespace cbk::rendering {
 
 	class PhongMaterial : public Material {
 	  public:
-		PhongMaterial(const Ref<Shader>& shader);
+		PhongMaterial();
 
 		void setDiffuseMap(const Ref<Texture2D>& texture);
 		void setSpecularMap(const Ref<Texture2D>& texture);

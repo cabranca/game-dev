@@ -1,3 +1,4 @@
+#include <Cabrankengine/Renderer/Shader.h>
 #include <pch.h>
 #include "DefaultLibrary.h"
 
@@ -16,7 +17,7 @@ namespace cbk::scene {
         setupCube();
         setupSphere();
 
-        //s_ErrorShader = Shader::create("assets/shaders/Error.glsl");
+        setupBasicShaders();
 	}
 
 	Ref<rendering::Texture2D> DefaultLibrary::getWhiteTexture() {
@@ -45,6 +46,12 @@ namespace cbk::scene {
 
 	Ref<rendering::VertexArray> DefaultLibrary::getSphere() {
 		return s_SphereVA;
+	}
+
+	void DefaultLibrary::setupBasicShaders() {
+		s_ErrorShader = ShaderLibrary::load("assets/shaders/Error");
+		ShaderLibrary::load("assets/shaders/Phong");
+		ShaderLibrary::load("assets/shaders/PBR");
 	}
 
 	void DefaultLibrary::setupTexture(Ref<Texture2D>& tex, uint32_t data) {
