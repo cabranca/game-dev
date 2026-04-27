@@ -17,8 +17,9 @@
 
 namespace cbk {
 
-	using namespace rendering;
+	using namespace ecs;
 	using namespace scene;
+	using namespace rendering;
 
 	Application::Application() : m_Running(true), m_LastFrameTime(0.0f)
 	{
@@ -37,6 +38,11 @@ namespace cbk {
 
 		Renderer::init();
 		DefaultLibrary::init();
+		m_Registry = createRef<Registry>();
+
+		m_RenderLayer = new RenderLayer();
+		RenderLayer::setRegistry(m_Registry);
+		pushLayer(m_RenderLayer);
 
 		m_ImGuiLayer = new ImGuiLayer();
 		pushOverlay(m_ImGuiLayer);

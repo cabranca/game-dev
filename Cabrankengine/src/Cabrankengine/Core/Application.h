@@ -1,5 +1,8 @@
 #pragma once
 
+#include <Cabrankengine/ECS/Registry.hpp>
+#include <Cabrankengine/Renderer/RenderLayer.h>
+
 #include "LayerStack.h"
 
 namespace cbk {
@@ -41,6 +44,9 @@ namespace cbk {
 			// Returns a reference to the app (Singleton-ish pattern)
 			static Application& get() { return *s_Instance; }
 
+		protected:
+			Ref<ecs::Registry> m_Registry;
+
 		private:
 			// Callback for the WindowClose Event
 			bool onWindowClose(WindowCloseEvent& e);
@@ -50,6 +56,7 @@ namespace cbk {
 
 			std::unique_ptr<Window> m_Window; // Ptr to the app window
 			ImGuiLayer* m_ImGuiLayer; // ImGui layer for rendering the UI
+			rendering::RenderLayer* m_RenderLayer;
 			bool m_Running; // Whether the app must stop or not
 			LayerStack m_LayerStack; // Stack of layers to forward the events to
 			float m_LastFrameTime; // Time of the last frame
