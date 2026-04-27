@@ -4,19 +4,17 @@
 #include "Cabrankengine/Core/EntryPoint.h"
 
 #include <Cabrankengine/Core/Core.h>
-#include <Cabrankengine/Math/MatrixFactory.h>
+#include <Cabrankengine/ECS/Components.h>
 #include <Cabrankengine/Math/Transform.h>
-#include <Cabrankengine/Renderer/Materials/PBRMaterial.h>
-#include <Cabrankengine/Renderer/Materials/PhongMaterial.h>
-#include <Cabrankengine/Renderer/Shader.h>
-#include <Cabrankengine/Scene/Model.h>
+#include <Cabrankengine/Math/Vector3.h>
 #include <imgui.h>
 #include "Sandbox2D.h"
 
 using namespace cbk;
+using namespace cbk::ecs;
 using namespace cbk::math;
-using namespace cbk::rendering;
 using namespace cbk::scene;
+using namespace cbk::rendering;
 
 #ifdef CBK_RENDERER_METAL
 
@@ -28,16 +26,13 @@ class ExampleLayer : public Layer {
 		// --- Vertex data: position (Float3) + color (Float4) ---
 		float vertices[] = {
 			// x      y      z       r     g     b     a
-			-0.5f, -0.5f,  0.0f,   1.0f, 0.0f, 0.0f, 1.0f,  // bottom-left  (red)
-			 0.5f, -0.5f,  0.0f,   0.0f, 1.0f, 0.0f, 1.0f,  // bottom-right (green)
-			 0.0f,  0.5f,  0.0f,   0.0f, 0.0f, 1.0f, 1.0f,  // top-center   (blue)
+			-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // bottom-left  (red)
+			0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, // bottom-right (green)
+			0.0f,  0.5f,  0.0f, 0.0f, 0.0f, 1.0f, 1.0f, // top-center   (blue)
 		};
 
 		auto vb = VertexBuffer::create(vertices, sizeof(vertices));
-		vb->setLayout({
-			{ ShaderDataType::Float3, "a_Position" },
-			{ ShaderDataType::Float4, "a_Color" }
-		});
+		vb->setLayout({ { ShaderDataType::Float3, "a_Position" }, { ShaderDataType::Float4, "a_Color" } });
 
 		uint32_t indices[] = { 0, 1, 2 };
 		auto ib = IndexBuffer::create(indices, 3);
@@ -56,8 +51,7 @@ class ExampleLayer : public Layer {
 		Renderer::endScene();
 	}
 
-	void onImGuiRender() override {
-	}
+	void onImGuiRender() override {}
 
   private:
 	CameraController m_CameraController;
@@ -69,52 +63,50 @@ class ExampleLayer : public Layer {
 #ifdef CBK_RENDERER_OPENGL
 class ExampleLayer : public Layer {
   public:
-	ExampleLayer() : Layer("Example"), m_CameraController(PerspectiveCamera(PI / 4.f, 16.f / 9.f, 0.1f, 100.f)) {
-		m_CameraController.getCamera().setWorldPosition(Vector3(0.f, 0.f, 10.f));
+	ExampleLayer(const Ref<Registry>& reg) : Layer("Example"), m_CameraController(PerspectiveCamera(PI / 4.f, 16.f / 9.f, 0.1f, 100.f)) {
+		m_CameraController.getCamera()->setWorldPosition(Vector3(0.f, 0.f, 10.f));
+		m_Registry = reg;
 
-		auto pbrShader = cbk::rendering::Shader::create("assets/shaders/PBR");
-		auto pbrMaterial = cbk::createRef<cbk::rendering::PBRMaterial>(pbrShader);
-		m_GunModel = new cbk::scene::Model<cbk::rendering::PBRMaterial>("assets/models/gun/Cerberus_LP.cbkm", pbrMaterial);
+		Entity camera = m_Registry->createEntity();
+		m_Registry->addComponent(camera, CCamera{ .Camera = m_CameraController.getCamera() });
 
-		auto phongShader = cbk::rendering::Shader::create("assets/shaders/Phong");
-		auto phongMaterial = cbk::createRef<cbk::rendering::PhongMaterial>(phongShader);
-		m_PhongModel = new cbk::scene::Model<cbk::rendering::PhongMaterial>("assets/models/backpack/backpack.cbkm", phongMaterial);
+		Entity gun = m_Registry->createEntity();
+		auto pbrMaterial = cbk::createRef<cbk::rendering::PBRMaterial>();
+		Transform gunTransform{ Vector3{2.f, -2.f, 2.f}, Vector3{-90.f, 0.f, 0.f}, Vector3{0.1f} };
+		m_Registry->addComponent(gun, CTransform(gunTransform));
+		m_Registry->addComponent(gun,
+		                         CPBRModel{ .Model = createRef<Model<PBRMaterial>>("assets/models/gun/Cerberus_LP.cbkm", pbrMaterial) });
 
-		m_LightEnvironment.DirLight.direction = { 0.0f, -1.0f, 0.0f  }; 
-		m_LightEnvironment.DirLight.radiance = { 0.5f, 0.5f, 0.5f };
+		Entity backpack = m_Registry->createEntity();
+		auto phongMaterial = cbk::createRef<cbk::rendering::PhongMaterial>();
+		m_Registry->addComponent(backpack, CTransform());
+		m_Registry->addComponent(
+		    backpack, CPhongModel{ .Model = createRef<Model<PhongMaterial>>("assets/models/backpack/backpack.cbkm", phongMaterial) });
 
-		cbk::rendering::PointLight lamp;
-		lamp.position = { 0.0f, 0.0f, 8.0f }; 
+		Entity text = m_Registry->createEntity();
+		Transform textTransform;
+		textTransform.Position = {5.f, 0.f, 0.f};
+		m_Registry->addComponent(text, CTransform{.Transform = textTransform});
+		m_Registry->addComponent(text, CText{.Text = "PUTO EL QUE LEE <3"});
 
-		lamp.radiance = Vector3(1.f);
+		LightEnvironment env;
+		env.DirLight.direction = { 0.0f, -1.0f, 0.0f };
+		env.DirLight.radiance = { 0.5f, 0.5f, 0.5f };
 
-		lamp.constant = 1.0f;
-		lamp.linear = 0.09f;
-		lamp.quadratic = 0.032f;
+		cbk::rendering::PointLight lamp{
+			.position = { 0.0f, 0.0f, 8.0f },
+			.radiance = Vector3(1.f),
+			.constant = 1.0f,
+			.linear = 0.09f,
+			.quadratic = 0.032f,
+		};
 
-		m_LightEnvironment.PointLights.push_back(lamp);
+		env.PointLights.push_back(lamp);
+		RenderLayer::setLightEnvironment(env);
 	}
 
 	void onUpdate(Timestep delta) override {
-
-		RenderCommand::setClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
-		RenderCommand::clear();
-
 		m_CameraController.onUpdate(delta);
-
-		const auto& camera = m_CameraController.getCamera();
-
-		Renderer::beginScene(camera, m_LightEnvironment);
-
-		m_PhongModel->draw();
-		m_GunModel->draw(scaleUniform(0.05f) * rotateX(-90.f) * translation({2.f, 2.f, 2.f}));
-		//Renderer::submit(m_PBRMaterial, m_Sphere, scaleUniform(5.f));
-		
-		Renderer::endScene();
-
-		TextRenderer::beginScene(camera.getViewMatrix() * camera.getProjectionMatrix());
-		TextRenderer::drawText("HOLA MUNDO!", Vector3(-0.5f, 3.f, 0.f), 0.05f, Vector4(1.f));
-		TextRenderer::endScene();
 	}
 
 	void onImGuiRender() override {
@@ -137,20 +129,16 @@ class ExampleLayer : public Layer {
 	}
 
   private:
-	LightEnvironment m_LightEnvironment;
 	CameraController m_CameraController;
-	ShaderLibrary m_ShaderLibrary;
-	Ref<VertexArray> m_Sphere = nullptr;
-	Model<PhongMaterial>* m_PhongModel;
-	Model<PBRMaterial>* m_GunModel;
+	Ref<Registry> m_Registry;
 };
 #endif
 
 class Sandbox : public Application {
   public:
 	Sandbox() {
-		pushLayer(new ExampleLayer());
-		//pushLayer(new Sandbox2D());
+		pushLayer(new ExampleLayer(m_Registry));
+		//pushLayer(new Sandbox2D(m_Registry));
 	}
 	~Sandbox() {}
 };
