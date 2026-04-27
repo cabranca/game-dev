@@ -8,8 +8,8 @@ namespace cbk::scene {
 	using namespace math;
 
 	CameraController::CameraController(Camera camera)
-	    : m_Camera(std::move(camera)), m_CameraPos(m_Camera.getWorldPosition()), m_CameraRot(m_Camera.getWorldRotation()), m_LastMouseX(), m_LastMouseY(),
-	      m_MouseSensitivity(0.15f), m_TranslationSpeed(10.f), m_Yaw(m_Camera.getWorldRotation().y), m_Pitch(m_Camera.getWorldRotation().x), m_MouseCaptured(false) {
+	    : m_Camera(createRef<Camera>(std::move(camera))), m_CameraPos(m_Camera->getWorldPosition()), m_CameraRot(m_Camera->getWorldRotation()), m_LastMouseX(), m_LastMouseY(),
+	      m_MouseSensitivity(0.15f), m_TranslationSpeed(10.f), m_Yaw(m_Camera->getWorldRotation().y), m_Pitch(m_Camera->getWorldRotation().x), m_MouseCaptured(false) {
 		auto [mouseX, mouseY] = Input::getMousePosition();
 		m_LastMouseX = mouseX;
 		m_LastMouseY = mouseY;
@@ -80,14 +80,14 @@ namespace cbk::scene {
 		}
 
 		m_CameraRot = { m_Pitch, m_Yaw, 0.f };
-		m_Camera.setWorldRotationAndPosition(m_CameraRot, m_CameraPos);
+		m_Camera->setWorldRotationAndPosition(m_CameraRot, m_CameraPos);
 	}
 
-	const Camera& CameraController::getCamera() const noexcept {
+	const Ref<Camera>& CameraController::getCamera() const noexcept {
 		return m_Camera;
 	}
 
-	Camera& CameraController::getCamera() noexcept {
+	Ref<Camera>& CameraController::getCamera() noexcept {
 		return m_Camera;
 	}
 } // namespace cbk::rendering

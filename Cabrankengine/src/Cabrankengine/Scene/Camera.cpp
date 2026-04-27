@@ -25,26 +25,26 @@ namespace cbk::scene {
 	}
 
 	math::Vector3 Camera::getWorldPosition() const {
-		return m_Transform.position;
+		return m_Transform.Position;
 	}
 
 	void Camera::setWorldPosition(const math::Vector3& newPos) {
-		m_Transform.position = newPos;
+		m_Transform.Position = newPos;
 		recalculateViewMatrix();
 	}
 
 	math::Vector3 Camera::getWorldRotation() const {
-		return m_Transform.rotation;
+		return m_Transform.Rotation;
 	}
 
 	void Camera::setWorldRotation(const math::Vector3& newRotation) {
-		m_Transform.rotation = newRotation;
+		m_Transform.Rotation = newRotation;
 		recalculateViewMatrix();
 	}
 
 	void Camera::setWorldRotationAndPosition(const math::Vector3& newRotation, const math::Vector3& newPos) {
-		m_Transform.rotation = newRotation;
-		m_Transform.position = newPos;
+		m_Transform.Rotation = newRotation;
+		m_Transform.Position = newPos;
 		recalculateViewMatrix();
 	}
 

@@ -12,11 +12,11 @@ namespace cbk::scene {
 		CameraController(Camera camera);
 		void onUpdate(Timestep delta);
 
-		const Camera& getCamera() const noexcept;
-		Camera& getCamera() noexcept;
+		const Ref<Camera>& getCamera() const noexcept;
+		Ref<Camera>& getCamera() noexcept;
 
 	  private:
-		Camera m_Camera;
+		Ref<Camera> m_Camera;
 		math::Vector3 m_CameraPos;
 		math::Vector3 m_CameraRot;
 		float m_LastMouseX, m_LastMouseY;
