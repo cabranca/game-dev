@@ -38,12 +38,12 @@ namespace cbk::ecs {
 		public:
 			// Registers a system of type T and returns a shared pointer to it
 			template<typename T>
-			std::shared_ptr<T> RegisterSystem() {
+			std::shared_ptr<T> RegisterSystem(Registry& reg) {
 				const char* typeName = typeid(T).name();
 
 				CBK_CORE_ASSERT(!m_Systems.contains(typeName), "System already registered!");
 
-				auto system = std::make_shared<T>();
+				auto system = std::make_shared<T>(reg);
 				m_Systems.emplace(typeName, system);
 				return system;
 			}

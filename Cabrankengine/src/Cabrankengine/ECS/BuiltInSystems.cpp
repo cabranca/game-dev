@@ -11,6 +11,12 @@ namespace cbk::ecs {
 	using namespace rendering;
 	using namespace scene;
 
+	CameraSystem::CameraSystem(Registry& reg) {
+		Signature sig;
+		sig.set(reg.getComponentType<CCamera>());
+		reg.setSystemSignature<CameraSystem>(sig);
+	}
+
 	void CameraSystem::update(Registry& reg, float dt) {
 		for (auto& e: m_Entities) {
 			auto camera = reg.getComponent<CCamera>(e);
@@ -21,6 +27,13 @@ namespace cbk::ecs {
 
 	const Ref<Camera>& CameraSystem::getActiveCamera() const {
 		return m_ActiveCamera;
+	}
+
+	SpriteRenderSystem::SpriteRenderSystem(Registry& reg) {
+		Signature sig;
+		sig.set(reg.getComponentType<CTransform>());
+		sig.set(reg.getComponentType<CSprite>());
+		reg.setSystemSignature<SpriteRenderSystem>(sig);
 	}
 
 	void SpriteRenderSystem::update(Registry& reg, float dt) {
@@ -35,6 +48,13 @@ namespace cbk::ecs {
 		}
 	}
 
+	PhongRenderSystem::PhongRenderSystem(Registry& reg) {
+		Signature sig;
+		sig.set(reg.getComponentType<CTransform>());
+		sig.set(reg.getComponentType<CPhongModel>());
+		reg.setSystemSignature<PhongRenderSystem>(sig);
+	}
+
 	void PhongRenderSystem::update(Registry& reg, float dt) {
 		for (auto& e: m_Entities) {
 			auto transform = reg.getComponent<CTransform>(e);
@@ -43,12 +63,26 @@ namespace cbk::ecs {
 		}
 	}
 
+	PBRRenderSystem::PBRRenderSystem(Registry& reg) {
+		Signature sig;
+		sig.set(reg.getComponentType<CTransform>());
+		sig.set(reg.getComponentType<CPBRModel>());
+		reg.setSystemSignature<PBRRenderSystem>(sig);
+	}
+
 	void PBRRenderSystem::update(Registry& reg, float dt) {
 		for (auto& e: m_Entities) {
 			auto transform = reg.getComponent<CTransform>(e);
 			auto model = reg.getComponent<CPBRModel>(e);
 			model.value()->Model->draw(transform.value()->Transform.toMat4());
 		}
+	}
+
+	TextRenderSystem::TextRenderSystem(Registry& reg) {
+		Signature sig;
+		sig.set(reg.getComponentType<CTransform>());
+		sig.set(reg.getComponentType<CText>());
+		reg.setSystemSignature<TextRenderSystem>(sig);
 	}
 
 	void TextRenderSystem::update(Registry& reg, float dt) {

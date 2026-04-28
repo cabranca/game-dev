@@ -64,29 +64,5 @@ namespace cbk::rendering {
 		m_PhongRenderSystem = m_Registry->registerSystem<PhongRenderSystem>();
 		m_PBRRenderSystem = m_Registry->registerSystem<PBRRenderSystem>();
 		m_TextRenderSystem = m_Registry->registerSystem<TextRenderSystem>();
-
-		Signature sig;
-		sig.set(m_Registry->getComponentType<CCamera>());
-		m_Registry->setSystemSignature<CameraSystem>(sig);
-
-		sig.reset();
-		sig.set(m_Registry->getComponentType<CTransform>());
-		sig.set(m_Registry->getComponentType<CSprite>());
-		m_Registry->setSystemSignature<SpriteRenderSystem>(sig);
-
-		sig.reset();
-		sig.set(m_Registry->getComponentType<CTransform>());
-		sig.set(m_Registry->getComponentType<CPhongModel>());
-		m_Registry->setSystemSignature<PhongRenderSystem>(sig);
-
-		sig.reset();
-		sig.set(m_Registry->getComponentType<CTransform>());
-		sig.set(m_Registry->getComponentType<CPBRModel>());
-		m_Registry->setSystemSignature<PBRRenderSystem>(sig);
-
-		sig.reset();
-		sig.set(m_Registry->getComponentType<CTransform>());
-		sig.set(m_Registry->getComponentType<CText>());
-		m_Registry->setSystemSignature<TextRenderSystem>(sig);
 	}
 } // namespace cbk::rendering
