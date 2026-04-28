@@ -18,7 +18,7 @@ namespace cbk::scene {
 	template<typename TMaterial>
 	class Model {
 	  public:
-		Model(const std::string& path, const Ref<TMaterial>& material) : m_Material(material) {
+		Model(const std::string& path, const Ref<TMaterial>& material = cbk::createRef<TMaterial>()) : m_Material(material) {
 			std::error_code ec;
 			if (!std::filesystem::exists(path, ec)) {
 				CBK_CORE_ERROR("Cannot find model file {0} - Error: {1}", path, ec.message());
@@ -112,6 +112,10 @@ namespace cbk::scene {
 		void draw(const math::Mat4& transform = math::identityMat()) {
 			for (auto& mesh : m_Meshes)
 				mesh.draw(transform);
+		}
+
+		static Ref<Model<TMaterial>> create(const std::string& path, const Ref<TMaterial>& material = cbk::createRef<TMaterial>()) {
+			return createRef<Model<TMaterial>>(path, material);
 		}
 
 	  private:
