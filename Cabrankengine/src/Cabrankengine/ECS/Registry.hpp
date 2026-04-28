@@ -90,7 +90,7 @@ namespace cbk::ecs {
 			// Registers a new system of type T
 			template<typename T>
 			std::shared_ptr<T> registerSystem() {
-				return m_SystemManager->RegisterSystem<T>(*this);
+				return m_SystemManager->RegisterSystem<T>();
 			}
 
 			// Sets the required component signature for a given system type T
