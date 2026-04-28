@@ -1,20 +1,19 @@
+#include <imgui.h>
+
 #include <Cabrankengine.h>
 
 // --- Entry Point ---
 #include "Cabrankengine/Core/EntryPoint.h"
 
-#include <Cabrankengine/Core/Core.h>
-#include <Cabrankengine/ECS/Components.h>
-#include <Cabrankengine/Math/Transform.h>
-#include <Cabrankengine/Math/Vector3.h>
-#include <imgui.h>
+
 #include "Sandbox2D.h"
 
 using namespace cbk;
 using namespace cbk::ecs;
 using namespace cbk::math;
-using namespace cbk::scene;
 using namespace cbk::rendering;
+using namespace cbk::scene;
+using namespace cbk::scene::arch;
 
 #ifdef CBK_RENDERER_METAL
 
@@ -70,24 +69,19 @@ class ExampleLayer : public Layer {
 		Entity camera = m_Registry->createEntity();
 		m_Registry->addComponent(camera, CCamera{ .Camera = m_CameraController.getCamera() });
 
-		Entity gun = m_Registry->createEntity();
-		auto pbrMaterial = cbk::createRef<cbk::rendering::PBRMaterial>();
-		Transform gunTransform{ Vector3{2.f, -2.f, 2.f}, Vector3{-90.f, 0.f, 0.f}, Vector3{0.1f} };
-		m_Registry->addComponent(gun, CTransform(gunTransform));
-		m_Registry->addComponent(gun,
-		                         CPBRModel{ .Model = createRef<Model<PBRMaterial>>("assets/models/gun/Cerberus_LP.cbkm", pbrMaterial) });
+		PBRModelArch gun{};
+		gun.transform().Transform.Position = {2.f, -2.f, 2.f};
+		gun.transform().Transform.Rotation = {-90.f, 0.f, 0.f};
+		gun.transform().Transform.Scale = Vector3(0.1f);
+		gun.model().Model = createRef<Model<PBRMaterial>>("assets/models/gun/Cerberus_LP.cbkm", cbk::createRef<cbk::rendering::PBRMaterial>());
 
-		Entity backpack = m_Registry->createEntity();
-		auto phongMaterial = cbk::createRef<cbk::rendering::PhongMaterial>();
-		m_Registry->addComponent(backpack, CTransform());
-		m_Registry->addComponent(
-		    backpack, CPhongModel{ .Model = createRef<Model<PhongMaterial>>("assets/models/backpack/backpack.cbkm", phongMaterial) });
+		PhongModelArch backpack{};
+		backpack.model().Model = createRef<Model<PhongMaterial>>("assets/models/backpack/backpack.cbkm", cbk::createRef<cbk::rendering::PhongMaterial>());
 
-		Entity text = m_Registry->createEntity();
-		Transform textTransform;
-		textTransform.Position = {5.f, 0.f, 0.f};
-		m_Registry->addComponent(text, CTransform{.Transform = textTransform});
-		m_Registry->addComponent(text, CText{.Text = "PUTO EL QUE LEE <3"});
+		TextArch text{};
+		text.transform().Transform.Position = {5.f, 0.f, 0.f};
+		text.text().Text = "ALLA LA ESTAN RENDERIZANDO";
+		text.text().Color = {1.f, 1.f, 1.0f, 1.f};
 
 		LightEnvironment env;
 		env.DirLight.direction = { 0.0f, -1.0f, 0.0f };
