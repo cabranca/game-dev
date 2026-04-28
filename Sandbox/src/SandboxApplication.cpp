@@ -73,10 +73,10 @@ class ExampleLayer : public Layer {
 		gun.transform().Transform.Position = {2.f, -2.f, 2.f};
 		gun.transform().Transform.Rotation = {-90.f, 0.f, 0.f};
 		gun.transform().Transform.Scale = Vector3(0.1f);
-		gun.model().Model = createRef<Model<PBRMaterial>>("assets/models/gun/Cerberus_LP.cbkm", cbk::createRef<cbk::rendering::PBRMaterial>());
+		gun.model().Model = Model<PBRMaterial>::create("assets/models/gun/Cerberus_LP.cbkm");
 
 		PhongModelArch backpack{};
-		backpack.model().Model = createRef<Model<PhongMaterial>>("assets/models/backpack/backpack.cbkm", cbk::createRef<cbk::rendering::PhongMaterial>());
+		backpack.model().Model = Model<PhongMaterial>::create("assets/models/backpack/backpack.cbkm");
 
 		TextArch text{};
 		text.transform().Transform.Position = {5.f, 0.f, 0.f};
