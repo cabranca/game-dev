@@ -41,3 +41,6 @@
 #include <Cabrankengine/Scene/CameraController.h>
 #include <Cabrankengine/Scene/DefaultLibrary.h>
 #include <Cabrankengine/Scene/Model.h>
+
+// --- Scene Archetypes ---
+#include <Cabrankengine/Scene/Archetypes/Archetypes.h>

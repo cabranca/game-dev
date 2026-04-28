@@ -40,6 +40,9 @@ namespace cbk {
 
 			// Returns a reference to the Window
 			Window& getWindow() { return *m_Window; }
+
+			// Returns a Ref to the ECS Registry
+			Ref<ecs::Registry> getRegistry() { return m_Registry; }
 	
 			// Returns a reference to the app (Singleton-ish pattern)
 			static Application& get() { return *s_Instance; }
