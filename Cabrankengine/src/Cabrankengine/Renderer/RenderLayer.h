@@ -13,6 +13,7 @@ namespace cbk::rendering {
 
 		void onAttach() override;
 		void onUpdate(Timestep dt) override;
+		void onEvent(Event& event) override;
 
 		static void setRegistry(const Ref<ecs::Registry>& reg);
 		static void setLightEnvironment(const LightEnvironment& light);
@@ -20,6 +21,7 @@ namespace cbk::rendering {
 	  private:
 		Ref<ecs::Registry> m_Registry = nullptr;
 		Ref<ecs::CameraSystem> m_CameraSystem = nullptr;
+		Ref<ecs::CameraControllerSystem> m_CameraControllerSystem = nullptr;
 		Ref<ecs::SpriteRenderSystem> m_SpriteRenderSystem = nullptr;
 		Ref<ecs::PhongRenderSystem> m_PhongRenderSystem = nullptr;
 		Ref<ecs::PBRRenderSystem> m_PBRRenderSystem = nullptr;
@@ -29,5 +31,6 @@ namespace cbk::rendering {
 		inline static RenderLayer* s_Instance = nullptr;
 
 		void loadRegistry();
+		bool onWindowResize(WindowResizeEvent& event);
 	};
 } // namespace cbk::rendering

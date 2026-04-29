@@ -26,21 +26,26 @@ namespace cbk::rendering {
 		RenderCommand::setClearColor({ .2f, .2f, .2f, 1.f });
 		RenderCommand::clear();
 
+		m_CameraControllerSystem->update(*m_Registry, dt);
 		m_CameraSystem->update(*m_Registry, dt);
-		auto camera = m_CameraSystem->getActiveCamera();
 
-		Renderer2D::beginScene(camera->getViewProjectionMatrix());
+		Renderer2D::beginScene(m_CameraSystem->getViewProjectionMatrix());
 		m_SpriteRenderSystem->update(*m_Registry, dt);
 		Renderer2D::endScene();
 
-		Renderer::beginScene(*camera, m_Lights);
+		Renderer::beginScene(m_CameraSystem->getViewProjectionMatrix(), m_CameraSystem->getCameraWorldPosition(), m_Lights);
 		m_PhongRenderSystem->update(*m_Registry, dt);
 		m_PBRRenderSystem->update(*m_Registry, dt);
 		Renderer::endScene();
 
-		TextRenderer::beginScene(camera->getViewProjectionMatrix());
+		TextRenderer::beginScene(m_CameraSystem->getViewProjectionMatrix());
 		m_TextRenderSystem->update(*m_Registry, dt);
 		TextRenderer::endScene();
+	}
+
+	void RenderLayer::onEvent(Event& event) {
+		EventDispatcher dispatcher(event);
+		dispatcher.dispatch<WindowResizeEvent>(BIND_EVENT_FN(&RenderLayer::onWindowResize, this));
 	}
 
 	void RenderLayer::setRegistry(const Ref<Registry>& reg) {
@@ -54,20 +59,28 @@ namespace cbk::rendering {
 	void RenderLayer::loadRegistry() {
 		m_Registry->registerComponent<CTransform>();
 		m_Registry->registerComponent<CCamera>();
+		m_Registry->registerComponent<CCameraController>();
 		m_Registry->registerComponent<CSprite>();
 		m_Registry->registerComponent<CPhongModel>();
 		m_Registry->registerComponent<CPBRModel>();
 		m_Registry->registerComponent<CText>();
 
 		m_CameraSystem = m_Registry->registerSystem<CameraSystem>();
+		m_CameraControllerSystem = m_Registry->registerSystem<CameraControllerSystem>();
 		m_SpriteRenderSystem = m_Registry->registerSystem<SpriteRenderSystem>();
 		m_PhongRenderSystem = m_Registry->registerSystem<PhongRenderSystem>();
 		m_PBRRenderSystem = m_Registry->registerSystem<PBRRenderSystem>();
 		m_TextRenderSystem = m_Registry->registerSystem<TextRenderSystem>();
 
 		Signature sig;
+		sig.set(m_Registry->getComponentType<CTransform>());
 		sig.set(m_Registry->getComponentType<CCamera>());
 		m_Registry->setSystemSignature<CameraSystem>(sig);
+
+		sig.reset();
+		sig.set(m_Registry->getComponentType<CTransform>());
+		sig.set(m_Registry->getComponentType<CCameraController>());
+		m_Registry->setSystemSignature<CameraControllerSystem>(sig);
 
 		sig.reset();
 		sig.set(m_Registry->getComponentType<CTransform>());
@@ -88,5 +101,9 @@ namespace cbk::rendering {
 		sig.set(m_Registry->getComponentType<CTransform>());
 		sig.set(m_Registry->getComponentType<CText>());
 		m_Registry->setSystemSignature<TextRenderSystem>(sig);
+	}
+
+	bool RenderLayer::onWindowResize(WindowResizeEvent& event) {
+		return m_CameraSystem->onWindowResize(event);
 	}
 } // namespace cbk::rendering
