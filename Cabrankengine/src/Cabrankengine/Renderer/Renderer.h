@@ -5,10 +5,6 @@
 #include "Lights.h"
 #include "RendererAPI.h"
 
-namespace cbk::scene {
-	class Camera;
-}
-
 namespace cbk::rendering {
 
 	// Forward declarations
@@ -26,10 +22,11 @@ namespace cbk::rendering {
 			// Shuts down the renderer, releasing all resources and cleaning up state.
 			static void shutdown();
 
-			// Sets the necessary general data to render a scene, such as the camera, the lighting, etc.
-			static void beginScene(const cbk::scene::Camera& camera, const LightEnvironment& environment);
+		    // Sets the necessary general data to render a scene, such as the camera, the lighting, etc.
+		    static void beginScene(const math::Mat4& viewProjectionMatrix, const math::Vector3& cameraWorldPosition,
+		                           const LightEnvironment& environment);
 
-			// Ends the current scene, finalizing rendering operations.
+		    // Ends the current scene, finalizing rendering operations.
 			static void endScene();
 
 			// Submits a draw call to render a shader with a vertex array and an optional transformation matrix.

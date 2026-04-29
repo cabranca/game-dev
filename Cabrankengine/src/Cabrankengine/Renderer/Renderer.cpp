@@ -67,12 +67,14 @@ namespace cbk::rendering {
 		Renderer2D::shutdown();
 	}
 
-	void Renderer::beginScene(const cbk::scene::Camera& camera, const LightEnvironment& environment) {
-		s_AltSceneData.ViewProjectionMatrix = camera.getViewProjectionMatrix();
+	void Renderer::beginScene(const math::Mat4& viewProjectionMatrix, const math::Vector3& cameraWorldPosition,
+	                          const LightEnvironment& environment) {
+		s_AltSceneData.ViewProjectionMatrix = viewProjectionMatrix;
 		s_AltSceneData.DirLight.direction = environment.DirLight.direction;
 		s_AltSceneData.DirLight.radiance = environment.DirLight.radiance;
-		s_AltSceneData.CameraPosition = camera.getWorldPosition();
-		s_SceneUBO->setData(&s_AltSceneData, sizeof(AltSceneData)); // TODO: if this is the same size as in the initialization, why pass it again?
+		s_AltSceneData.CameraPosition = cameraWorldPosition;
+		s_SceneUBO->setData(&s_AltSceneData,
+		                    sizeof(AltSceneData)); // TODO: if this is the same size as in the initialization, why pass it again?
 		s_SceneData->lightEnvironment = environment;
 
 		uploadLightEnvironment();
