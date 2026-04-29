@@ -14,7 +14,5 @@ class Sandbox2D : public cbk::Layer {
 		virtual void onEvent(cbk::Event& e) override;
 
 	private:
-		cbk::scene::OrthographicCamera m_Camera;
-		cbk::Ref<cbk::rendering::Texture2D> m_ConvertedTexture;
 		cbk::Ref<cbk::ecs::Registry> m_Registry;
 };

@@ -62,12 +62,11 @@ class ExampleLayer : public Layer {
 #ifdef CBK_RENDERER_OPENGL
 class ExampleLayer : public Layer {
   public:
-	ExampleLayer(const Ref<Registry>& reg) : Layer("Example"), m_CameraController(PerspectiveCamera(PI / 4.f, 16.f / 9.f, 0.1f, 100.f)) {
-		m_CameraController.getCamera()->setWorldPosition(Vector3(0.f, 0.f, 10.f));
-		m_Registry = reg;
-
+	ExampleLayer(const Ref<Registry>& reg) : Layer("Example"), m_Registry(reg) {
 		Entity camera = m_Registry->createEntity();
-		m_Registry->addComponent(camera, CCamera{ .Camera = m_CameraController.getCamera() });
+		m_Registry->addComponent(camera, CTransform());
+		m_Registry->addComponent(camera, CCamera{ .Type = ProjectionType::Perspective });
+		m_Registry->addComponent(camera, CCameraController{ .TranslationSpeed = 10.f, .MouseSensitivity = 0.1f });
 
 		PBRModelArch gun{};
 		gun.transform().Transform.Position = {2.f, -2.f, 2.f};
@@ -100,30 +99,14 @@ class ExampleLayer : public Layer {
 	}
 
 	void onUpdate(Timestep delta) override {
-		m_CameraController.onUpdate(delta);
+		CBK_PROFILE_FUNCTION();
 	}
 
 	void onImGuiRender() override {
 		CBK_PROFILE_FUNCTION();
-		// ImGui::Begin("Settings");
-
-		// auto albedo = m_PBRMaterial->getAlbedoColor();
-		// auto metalness = m_PBRMaterial->getMetalness();
-		// auto roughness = m_PBRMaterial->getRoughness();
-
-		// ImGui::ColorEdit3("Albedo", &albedo.x);
-		// ImGui::InputFloat("Metalness", &metalness);
-		// ImGui::InputFloat("Roughness", &roughness);
-
-		// m_PBRMaterial->setAlbedoColor(albedo);
-		// m_PBRMaterial->setMetalness(metalness);
-		// m_PBRMaterial->setRoughness(roughness);
-
-		// ImGui::End();
 	}
 
   private:
-	CameraController m_CameraController;
 	Ref<Registry> m_Registry;
 };
 #endif
