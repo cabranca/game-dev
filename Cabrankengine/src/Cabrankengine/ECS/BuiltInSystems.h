@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Cabrankengine/Events/ApplicationEvent.h>
 #include <Cabrankengine/Scene/Camera.h>
 
 #include "Registry.hpp"
@@ -11,10 +12,21 @@ namespace cbk::ecs {
 	  public:
 		void update(Registry& registry, float dt) override;
 
-		const Ref<scene::Camera>& getActiveCamera() const;
+		const math::Mat4& getViewProjectionMatrix() const;
+		const math::Vector3& getCameraWorldPosition() const;
+
+		bool onWindowResize(WindowResizeEvent& e);
 
 	  private:
-		Ref<scene::Camera> m_ActiveCamera;
+		math::Mat4 m_ViewProjectionMatrix;
+		math::Vector3 m_CameraPos;
+		bool m_WindowResized = false;
+		float m_AspectRatio = 0.f;
+	};
+
+	class CameraControllerSystem : public ISystem {
+	  public:
+		void update(Registry& reg, float dt) override;
 	};
 
 	class SpriteRenderSystem : public ISystem {
