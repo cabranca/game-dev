@@ -1,12 +1,11 @@
 #pragma once
 
-#include <Cabrankengine/Math/Transform.h>
-#include <Cabrankengine/Renderer/Materials/PBRMaterial.h>
-#include <Cabrankengine/Renderer/Materials/PhongMaterial.h>
 #include <cstdint>
 
-#include <Cabrankengine/Math/Vector3.h>
+#include <Cabrankengine/Math/Transform.h>
 #include <Cabrankengine/Math/VecTraits.h>
+#include <Cabrankengine/Renderer/Materials/PBRMaterial.h>
+#include <Cabrankengine/Renderer/Materials/PhongMaterial.h>
 #include <Cabrankengine/Renderer/Texture.h>
 #include <Cabrankengine/Scene/Camera.h>
 #include <Cabrankengine/Scene/Model.h>
@@ -17,9 +16,29 @@ namespace cbk::ecs {
 		math::Transform Transform;
 	};
 
+	enum class ProjectionType { Perspective, Orthographic };
+
+	// Can this be done with two components? Variants?
 	struct CCamera {
-		Ref<scene::Camera> Camera;
+		ProjectionType Type = ProjectionType::Perspective;
 		bool IsActive = true;
+
+		float FovY = cbk::math::PI / 4.f;
+		float AspectRatio = 16.f / 9.f;
+		float Near = 0.1f;
+		float Far = 100.f;
+
+		float OrthoSize = 450.f;
+	};
+
+	struct CCameraController {
+		float TranslationSpeed = 10.f;
+		float MouseSensitivity = 10.f;
+		float Yaw = 0.f;
+		float Pitch = 0.f;
+		float LastMouseX = 0.f;
+		float LastMouseY = 0.f;
+		bool MouseCaptured = false;
 	};
 
 	struct CSprite {
