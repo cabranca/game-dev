@@ -14,7 +14,7 @@ namespace cbk::ecs {
 	struct CTransform {
 		math::Vector3 Position;
 		math::Vector3 Rotation;
-		math::Vector3 Scale;
+		math::Vector3 Scale{ 1.f };
 	};
 
 	enum class ProjectionType { Perspective, Orthographic };
