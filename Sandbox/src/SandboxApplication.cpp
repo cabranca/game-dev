@@ -79,20 +79,12 @@ class ExampleLayer : public Layer {
 		text.text().Text = "ALLA LA ESTAN RENDERIZANDO";
 		text.text().Color = {1.f, 1.f, 1.0f, 1.f};
 
-		LightEnvironment env;
-		env.DirLight.direction = { 0.0f, -1.0f, 0.0f };
-		env.DirLight.radiance = { 0.5f, 0.5f, 0.5f };
+		DirectionalLightArch dirLight{};
+		dirLight.light().Direction = { 0.0f, -1.0f, 0.0f };
+		dirLight.light().Radiance = { 0.5f, 0.5f, 0.5f };
 
-		cbk::rendering::PointLight lamp{
-			.position = { 0.0f, 0.0f, 8.0f },
-			.radiance = Vector3(1.f),
-			.constant = 1.0f,
-			.linear = 0.09f,
-			.quadratic = 0.032f,
-		};
-
-		env.PointLights.push_back(lamp);
-		RenderLayer::setLightEnvironment(env);
+		PointLightArch lamp{};
+		lamp.transform().Position = { 0.0f, 0.0f, 8.0f };
 	}
 
 	void onUpdate(Timestep delta) override {
