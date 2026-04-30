@@ -21,7 +21,7 @@ void Sandbox2D::onAttach() {
 
 	SpriteArch box{};
 	box.sprite().Texture = Texture2D::create("assets/textures/container2.cbkt");
-	box.transform().Transform.Scale = Vector3(500.f, 500.f, 0.f);
+	box.transform().Scale = Vector3(500.f, 500.f, 0.f);
 }
 
 void Sandbox2D::onDetach() {

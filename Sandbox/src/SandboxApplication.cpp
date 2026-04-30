@@ -66,16 +66,16 @@ class ExampleLayer : public Layer {
 		CameraControllerArch cameraController(ProjectionType::Perspective);
 
 		PBRModelArch gun{};
-		gun.transform().Transform.Position = {2.f, -2.f, 2.f};
-		gun.transform().Transform.Rotation = {-90.f, 0.f, 0.f};
-		gun.transform().Transform.Scale = Vector3(0.1f);
+		gun.transform().Position = {2.f, -2.f, 2.f};
+		gun.transform().Rotation = {-90.f, 0.f, 0.f};
+		gun.transform().Scale = Vector3(0.1f);
 		gun.model().Model = Model<PBRMaterial>::create("assets/models/gun/Cerberus_LP.cbkm");
 
 		PhongModelArch backpack{};
 		backpack.model().Model = Model<PhongMaterial>::create("assets/models/backpack/backpack.cbkm");
 
 		TextArch text{};
-		text.transform().Transform.Position = {5.f, 0.f, 0.f};
+		text.transform().Position = {5.f, 0.f, 0.f};
 		text.text().Text = "ALLA LA ESTAN RENDERIZANDO";
 		text.text().Color = {1.f, 1.f, 1.0f, 1.f};
 
