@@ -1,0 +1,33 @@
+#include <pch.h>
+#include "CameraControllerArch.h"
+
+#include <Cabrankengine/Core/Application.h>
+#include <Cabrankengine/ECS/Registry.hpp>
+
+namespace cbk::scene::arch {
+
+	using namespace ecs;
+
+	CameraControllerArch::CameraControllerArch(ProjectionType type) {
+		auto reg = Application::get().getRegistry();
+		m_Entity = reg->createEntity();
+		reg->addComponent(m_Entity, CTransform());
+		reg->addComponent(m_Entity, CCamera{ .Type = type });
+        reg->addComponent(m_Entity, CCameraController());
+	}
+
+	CTransform& CameraControllerArch::transform() {
+		auto reg = Application::get().getRegistry();
+		return *reg->getComponent<CTransform>(m_Entity).value();
+	}
+
+	CCamera& CameraControllerArch::camera() {
+		auto reg = Application::get().getRegistry();
+		return *reg->getComponent<CCamera>(m_Entity).value();
+	}
+
+    CCameraController& CameraControllerArch::controller() {
+		auto reg = Application::get().getRegistry();
+		return *reg->getComponent<CCameraController>(m_Entity).value();
+	}
+} // namespace cbk::scene::arch

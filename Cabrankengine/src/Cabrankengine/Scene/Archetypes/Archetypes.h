@@ -1,5 +1,5 @@
 #include "CameraArch.h"
-#include "CameraController.h"
+#include "CameraControllerArch.h"
 #include "PBRModelArch.h"
 #include "PhongModelArch.h"
 #include "SpriteArch.h"
