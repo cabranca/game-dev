@@ -12,7 +12,7 @@ AllowShortFunctionsOnASingleLine: Empty
 AlwaysBreakTemplateDeclarations: true
 SpaceBeforeRangeBasedForLoopColon: false
 NamespaceIndentation: All
-IndentCaseLabels: false
+IndentCaseLabels: true
 ReflowComments: true
 SortIncludes: false
 FixNamespaceComments: true
