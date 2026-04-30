@@ -61,6 +61,19 @@ namespace cbk::ecs {
 		math::Vector4 Color{ 1.f };
 	};
 
+	struct CDirectionalLight {
+		math::Vector3 Direction{ 0.f, -1.f, 0.f };
+		math::Vector3 Radiance{ 1.f };
+	};
+
+	struct CPointLight {
+		math::Vector3 Radiance{ 1.f };
+
+		float Constant{ 1.f };
+		float Linear{ 0.09f };
+		float Quadratic{ 0.032f };
+	};
+
 	// Bitmask-based collision filter: category says what I am, mask says what I collide with
 	struct CCollisionFilter {
 		uint32_t CategoryBits = 0x0001;

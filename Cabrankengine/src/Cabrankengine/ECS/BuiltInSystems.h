@@ -29,6 +29,16 @@ namespace cbk::ecs {
 		void update(Registry& reg, float dt) override;
 	};
 
+	class DirectionalLightSystem : public ISystem {
+	  public:
+		void update(Registry& reg, float dt) override {}
+	};
+
+	class PointLightSystem : public ISystem {
+	  public:
+		void update(Registry& reg, float dt) override {}
+	};
+
 	class SpriteRenderSystem : public ISystem {
 	  public:
 		void update(Registry& reg, float dt) override;

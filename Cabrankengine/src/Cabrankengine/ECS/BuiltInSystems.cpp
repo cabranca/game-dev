@@ -1,11 +1,10 @@
 #include <pch.h>
 #include "BuiltInSystems.h"
 
+#include "Components.h"
 #include <Cabrankengine/Core/Input.h>
 #include <Cabrankengine/Renderer/Renderer2D.h>
 #include <Cabrankengine/Renderer/TextRenderer.h>
-
-#include "Components.h"
 
 namespace cbk::ecs {
 
@@ -37,6 +36,7 @@ namespace cbk::ecs {
 				auto viewMatrix = inverseAffine(fromTransform(transform->Position, transform->Rotation, transform->Scale));
 				m_ViewProjectionMatrix = viewMatrix * projectionMatrix;
 				m_CameraPos = transform->Position;
+				break;
 			}
 		}
 	}
