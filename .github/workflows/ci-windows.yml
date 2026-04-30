@@ -65,7 +65,15 @@ jobs:
 
       - uses: microsoft/setup-msbuild@v2
 
+      - name: Cache premake5
+        id: premake-cache
+        uses: actions/cache@v4
+        with:
+          key: premake5-5.0.0-beta7-windows
+          path: ./premake5.exe
+
       - name: Download premake5
+        if: steps.premake-cache.outputs.cache-hit != 'true'
         shell: pwsh
         run: |
           Invoke-WebRequest -Uri "https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-windows.zip" -OutFile premake5.zip
@@ -90,7 +98,7 @@ jobs:
         if: steps.vendor-cache.outputs.cache-hit != 'true'
         run: |
           ./premake5 vs2022
-          msbuild Cabrankengine.sln /t:GLFW;glad;ImGui;FreeType /p:Configuration=Release /p:Platform=x64 /m
+          msbuild Cabrankengine.sln "/t:GLFW;glad;ImGui;FreeType" /p:Configuration=Release /p:Platform=x64 /verbosity:minimal /m
 
   # -----------------------------------------------------------------------
   # Assimp — keyed on its own source, independent of CBKAssetConverter
@@ -105,7 +113,15 @@ jobs:
 
       - uses: microsoft/setup-msbuild@v2
 
+      - name: Cache premake5
+        id: premake-cache
+        uses: actions/cache@v4
+        with:
+          key: premake5-5.0.0-beta7-windows
+          path: ./premake5.exe
+
       - name: Download premake5
+        if: steps.premake-cache.outputs.cache-hit != 'true'
         shell: pwsh
         run: |
           Invoke-WebRequest -Uri "https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-windows.zip" -OutFile premake5.zip
@@ -124,7 +140,7 @@ jobs:
         if: steps.assimp-cache.outputs.cache-hit != 'true'
         run: |
           ./premake5 vs2022
-          msbuild Cabrankengine.sln /t:Assimp /p:Configuration=Release /p:Platform=x64 /m
+          msbuild Cabrankengine.sln /t:Assimp /p:Configuration=Release /p:Platform=x64 /verbosity:minimal /m
 
   # -----------------------------------------------------------------------
   # Cabrankengine
@@ -141,7 +157,15 @@ jobs:
 
       - uses: microsoft/setup-msbuild@v2
 
+      - name: Cache premake5
+        id: premake-cache
+        uses: actions/cache@v4
+        with:
+          key: premake5-5.0.0-beta7-windows
+          path: ./premake5.exe
+
       - name: Download premake5
+        if: steps.premake-cache.outputs.cache-hit != 'true'
         shell: pwsh
         run: |
           Invoke-WebRequest -Uri "https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-windows.zip" -OutFile premake5.zip
@@ -181,7 +205,7 @@ jobs:
         if: steps.engine-cache.outputs.cache-hit != 'true'
         run: |
           ./premake5 vs2022
-          msbuild Cabrankengine.sln /t:Cabrankengine /p:Configuration=Release /p:Platform=x64 /m
+          msbuild Cabrankengine.sln /t:Cabrankengine /p:Configuration=Release /p:Platform=x64 /verbosity:minimal /m
 
   # -----------------------------------------------------------------------
   # Sandbox — waits for engine and vendors; skipped engine is treated as success
@@ -200,7 +224,15 @@ jobs:
 
       - uses: microsoft/setup-msbuild@v2
 
+      - name: Cache premake5
+        id: premake-cache
+        uses: actions/cache@v4
+        with:
+          key: premake5-5.0.0-beta7-windows
+          path: ./premake5.exe
+
       - name: Download premake5
+        if: steps.premake-cache.outputs.cache-hit != 'true'
         shell: pwsh
         run: |
           Invoke-WebRequest -Uri "https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-windows.zip" -OutFile premake5.zip
@@ -237,7 +269,7 @@ jobs:
       - name: Build
         run: |
           ./premake5 vs2022
-          msbuild Cabrankengine.sln /t:Sandbox /p:Configuration=Release /p:Platform=x64 /m
+          msbuild Cabrankengine.sln /t:Sandbox /p:Configuration=Release /p:Platform=x64 /verbosity:minimal /m
 
   # -----------------------------------------------------------------------
   # CBKAssetConverter — depends on Assimp cache
@@ -254,7 +286,15 @@ jobs:
 
       - uses: microsoft/setup-msbuild@v2
 
+      - name: Cache premake5
+        id: premake-cache
+        uses: actions/cache@v4
+        with:
+          key: premake5-5.0.0-beta7-windows
+          path: ./premake5.exe
+
       - name: Download premake5
+        if: steps.premake-cache.outputs.cache-hit != 'true'
         shell: pwsh
         run: |
           Invoke-WebRequest -Uri "https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-windows.zip" -OutFile premake5.zip
@@ -275,7 +315,7 @@ jobs:
       - name: Build
         run: |
           ./premake5 vs2022
-          msbuild Cabrankengine.sln /t:CBKAssetConverter /p:Configuration=Release /p:Platform=x64 /m
+          msbuild Cabrankengine.sln /t:CBKAssetConverter /p:Configuration=Release /p:Platform=x64 /verbosity:minimal /m
 
   # -----------------------------------------------------------------------
   # UnitTests — waits for engine and vendors; skipped engine is treated as success
@@ -294,7 +334,15 @@ jobs:
 
       - uses: microsoft/setup-msbuild@v2
 
+      - name: Cache premake5
+        id: premake-cache
+        uses: actions/cache@v4
+        with:
+          key: premake5-5.0.0-beta7-windows
+          path: ./premake5.exe
+
       - name: Download premake5
+        if: steps.premake-cache.outputs.cache-hit != 'true'
         shell: pwsh
         run: |
           Invoke-WebRequest -Uri "https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-windows.zip" -OutFile premake5.zip
@@ -331,7 +379,7 @@ jobs:
       - name: Build
         run: |
           ./premake5 vs2022
-          msbuild Cabrankengine.sln /t:UnitTests /p:Configuration=Release /p:Platform=x64 /m
+          msbuild Cabrankengine.sln /t:UnitTests /p:Configuration=Release /p:Platform=x64 /verbosity:minimal /m
 
       - name: Copy irrKlang DLL
         shell: pwsh
