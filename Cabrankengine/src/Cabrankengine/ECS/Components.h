@@ -28,12 +28,12 @@ namespace cbk::ecs {
 		float Near = 0.1f;
 		float Far = 100.f;
 
-		float OrthoSize = 450.f;
+		float OrthoSize = 900.f;
 	};
 
 	struct CCameraController {
 		float TranslationSpeed = 10.f;
-		float MouseSensitivity = 10.f;
+		float MouseSensitivity = 0.1f;
 		float Yaw = 0.f;
 		float Pitch = 0.f;
 		float LastMouseX = 0.f;

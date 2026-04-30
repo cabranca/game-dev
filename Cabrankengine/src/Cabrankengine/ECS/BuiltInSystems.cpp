@@ -26,6 +26,8 @@ namespace cbk::ecs {
 				float halfHeight = 0.f, halfWidth = 0.f;
 				switch (camera->Type) {
 				case ProjectionType::Orthographic:
+					halfHeight = camera->OrthoSize / 2.f;
+					halfWidth = halfHeight * camera->AspectRatio;
 					projectionMatrix = math::ortho(-halfWidth, halfWidth, -halfHeight, halfHeight, camera->Near, camera->Far);
 					break;
 				case ProjectionType::Perspective:
