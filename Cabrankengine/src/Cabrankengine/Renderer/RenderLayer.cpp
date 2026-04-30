@@ -33,7 +33,19 @@ namespace cbk::rendering {
 		m_SpriteRenderSystem->update(*m_Registry, dt);
 		Renderer2D::endScene();
 
-		Renderer::beginScene(m_CameraSystem->getViewProjectionMatrix(), m_CameraSystem->getCameraWorldPosition(), m_Lights);
+		LightEnvironment lights;
+		for (auto e : m_DirLightSystem->getEntities()) {
+			auto dl = m_Registry->getComponent<ecs::CDirectionalLight>(e).value();
+			lights.DirLight = { dl->Direction, dl->Radiance };
+			break;
+		}
+		for (auto e : m_PointLightSystem->getEntities()) {
+			auto transform = m_Registry->getComponent<ecs::CTransform>(e).value();
+			auto pl = m_Registry->getComponent<ecs::CPointLight>(e).value();
+			lights.PointLights.push_back({ transform->Position, pl->Radiance, pl->Constant, pl->Linear, pl->Quadratic });
+		}
+
+		Renderer::beginScene(m_CameraSystem->getViewProjectionMatrix(), m_CameraSystem->getCameraWorldPosition(), lights);
 		m_PhongRenderSystem->update(*m_Registry, dt);
 		m_PBRRenderSystem->update(*m_Registry, dt);
 		Renderer::endScene();
@@ -52,14 +64,12 @@ namespace cbk::rendering {
 		s_Instance->m_Registry = reg;
 	}
 
-	void RenderLayer::setLightEnvironment(const LightEnvironment& lights) {
-		s_Instance->m_Lights = lights;
-	}
-
 	void RenderLayer::loadRegistry() {
 		m_Registry->registerComponent<CTransform>();
 		m_Registry->registerComponent<CCamera>();
 		m_Registry->registerComponent<CCameraController>();
+		m_Registry->registerComponent<CDirectionalLight>();
+		m_Registry->registerComponent<CPointLight>();
 		m_Registry->registerComponent<CSprite>();
 		m_Registry->registerComponent<CPhongModel>();
 		m_Registry->registerComponent<CPBRModel>();
@@ -67,6 +77,8 @@ namespace cbk::rendering {
 
 		m_CameraSystem = m_Registry->registerSystem<CameraSystem>();
 		m_CameraControllerSystem = m_Registry->registerSystem<CameraControllerSystem>();
+		m_DirLightSystem = m_Registry->registerSystem<DirectionalLightSystem>();
+		m_PointLightSystem = m_Registry->registerSystem<PointLightSystem>();
 		m_SpriteRenderSystem = m_Registry->registerSystem<SpriteRenderSystem>();
 		m_PhongRenderSystem = m_Registry->registerSystem<PhongRenderSystem>();
 		m_PBRRenderSystem = m_Registry->registerSystem<PBRRenderSystem>();
@@ -81,6 +93,15 @@ namespace cbk::rendering {
 		sig.set(m_Registry->getComponentType<CTransform>());
 		sig.set(m_Registry->getComponentType<CCameraController>());
 		m_Registry->setSystemSignature<CameraControllerSystem>(sig);
+
+		sig.reset();
+		sig.set(m_Registry->getComponentType<CDirectionalLight>());
+		m_Registry->setSystemSignature<DirectionalLightSystem>(sig);
+
+		sig.reset();
+		sig.set(m_Registry->getComponentType<CTransform>());
+		sig.set(m_Registry->getComponentType<CPointLight>());
+		m_Registry->setSystemSignature<PointLightSystem>(sig);
 
 		sig.reset();
 		sig.set(m_Registry->getComponentType<CTransform>());
