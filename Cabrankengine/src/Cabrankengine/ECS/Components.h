@@ -2,7 +2,6 @@
 
 #include <cstdint>
 
-#include <Cabrankengine/Math/Transform.h>
 #include <Cabrankengine/Math/VecTraits.h>
 #include <Cabrankengine/Renderer/Materials/PBRMaterial.h>
 #include <Cabrankengine/Renderer/Materials/PhongMaterial.h>
@@ -13,7 +12,9 @@
 namespace cbk::ecs {
 
 	struct CTransform {
-		math::Transform Transform;
+		math::Vector3 Position;
+		math::Vector3 Rotation;
+		math::Vector3 Scale;
 	};
 
 	enum class ProjectionType { Perspective, Orthographic };

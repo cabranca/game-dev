@@ -15,6 +15,7 @@ namespace cbk::math {
 	Mat4 rotateXYZ(const Vector3& euler) noexcept;
 	Mat4 ortho(float left, float right, float bottom, float top, float nearZ, float farZ) noexcept;
 	Mat4 inverseAffine(const Mat4& mat) noexcept;
+	Mat4 fromTransform(const Vector3& pos, const Vector3& rot, const Vector3& scale) noexcept;
 
 	inline constexpr Mat4 zeroMat() noexcept {
 		return {};
@@ -133,5 +134,9 @@ namespace cbk::math {
 		inv.elements[3].w = 1;
 
 		return inv;
+	}
+
+	inline Mat4 fromTransform(const Vector3& pos, const Vector3& rot, const Vector3& scale) noexcept {
+		return scaleXYZ(scale) * rotateXYZ(rot) * translation(pos);
 	}
 } // namespace cbk::math

@@ -34,9 +34,9 @@ namespace cbk::ecs {
 					projectionMatrix = math::perspective(camera->FovY, camera->AspectRatio, camera->Near, camera->Far);
 					break;
 				}
-				auto viewMatrix = inverseAffine(transform->Transform.toMat4());
+				auto viewMatrix = inverseAffine(fromTransform(transform->Position, transform->Rotation, transform->Scale));
 				m_ViewProjectionMatrix = viewMatrix * projectionMatrix;
-				m_CameraPos = transform->Transform.Position;
+				m_CameraPos = transform->Position;
 			}
 		}
 	}
@@ -116,38 +116,37 @@ namespace cbk::ecs {
 
 			if (movement.lengthSquared() > 0.f) {
 				movement.normalized();
-				transform->Transform.Position += movement * controller->TranslationSpeed * dt;
+				transform->Position += movement * controller->TranslationSpeed * dt;
 			}
 
-			transform->Transform.Rotation = { controller->Pitch, controller->Yaw, 0.f };
+			transform->Rotation = { controller->Pitch, controller->Yaw, 0.f };
 		}
 	}
 
 	void SpriteRenderSystem::update(Registry& reg, float dt) {
 		for (auto& e: m_Entities) {
-			auto transform = reg.getComponent<CTransform>(e);
-			auto sprite = reg.getComponent<CSprite>(e);
-			auto pos = transform.value()->Transform.Position;
-			math::Vector3 size{ transform.value()->Transform.Scale };
-			math::Vector3 rot{ transform.value()->Transform.Rotation };
-			rendering::Renderer2D::drawRotatedQuad(pos, { size.x, size.y }, rot.z, sprite.value()->Texture, sprite.value()->TilingFactor,
-			                                       sprite.value()->Tint);
+			auto transform = reg.getComponent<CTransform>(e).value();
+			auto sprite = reg.getComponent<CSprite>(e).value();
+			auto pos = transform->Position;
+			math::Vector3 size{ transform->Scale };
+			math::Vector3 rot{ transform->Rotation };
+			rendering::Renderer2D::drawRotatedQuad(pos, { size.x, size.y }, rot.z, sprite->Texture, sprite->TilingFactor, sprite->Tint);
 		}
 	}
 
 	void PhongRenderSystem::update(Registry& reg, float dt) {
 		for (auto& e: m_Entities) {
-			auto transform = reg.getComponent<CTransform>(e);
-			auto model = reg.getComponent<CPhongModel>(e);
-			model.value()->Model->draw(transform.value()->Transform.toMat4());
+			auto transform = reg.getComponent<CTransform>(e).value();
+			auto model = reg.getComponent<CPhongModel>(e).value();
+			model->Model->draw(fromTransform(transform->Position, transform->Rotation, transform->Scale));
 		}
 	}
 
 	void PBRRenderSystem::update(Registry& reg, float dt) {
 		for (auto& e: m_Entities) {
-			auto transform = reg.getComponent<CTransform>(e);
-			auto model = reg.getComponent<CPBRModel>(e);
-			model.value()->Model->draw(transform.value()->Transform.toMat4());
+			auto transform = reg.getComponent<CTransform>(e).value();
+			auto model = reg.getComponent<CPBRModel>(e).value();
+			model->Model->draw(fromTransform(transform->Position, transform->Rotation, transform->Scale));
 		}
 	}
 
@@ -155,10 +154,10 @@ namespace cbk::ecs {
 		for (auto& e: m_Entities) {
 			auto transform = reg.getComponent<CTransform>(e).value();
 			auto text = reg.getComponent<CText>(e).value();
-			auto pos = transform->Transform.Position;
-			math::Vector3 size{ transform->Transform.Scale };
-			math::Vector3 rot{ transform->Transform.Rotation };
-			TextRenderer::drawText(text->Text, transform->Transform.Position, text->FontScale, text->Color);
+			auto pos = transform->Position;
+			math::Vector3 size{ transform->Scale };
+			math::Vector3 rot{ transform->Rotation };
+			TextRenderer::drawText(text->Text, transform->Position, text->FontScale, text->Color);
 		}
 	}
 } // namespace cbk::ecs
