@@ -52,11 +52,88 @@ jobs:
               - '.github/workflows/ci-linux.yml'
 
   # -----------------------------------------------------------------------
+  # Engine vendor libraries (GLFW, glad, ImGui, FreeType)
+  # Keyed on vendor source only — a src-only engine change never triggers a rebuild
+  # -----------------------------------------------------------------------
+  build-engine-vendors:
+    name: Build engine vendor libs (Linux)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y \
+            libx11-dev libxrandr-dev libxi-dev libxxf86vm-dev \
+            libxcursor-dev libxinerama-dev libgl1-mesa-dev
+
+      - name: Download premake5
+        run: |
+          curl -sSL https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-linux.tar.gz | tar -xz -C .
+          chmod +x ./premake5
+
+      - name: Cache engine vendor libs
+        id: vendor-cache
+        uses: actions/cache@v4
+        with:
+          key: engine-vendors-release-linux-${{ hashFiles('Cabrankengine/vendor/GLFW/**', 'Cabrankengine/vendor/glad/**', 'Cabrankengine/vendor/imgui/**', 'Cabrankengine/vendor/freetype/**') }}
+          path: |
+            bin/Release-linux-x86_64/GLFW
+            bin/Release-linux-x86_64/glad
+            bin/Release-linux-x86_64/ImGui
+            bin/Release-linux-x86_64/FreeType
+            bin-int/Release-linux-x86_64/GLFW
+            bin-int/Release-linux-x86_64/glad
+            bin-int/Release-linux-x86_64/ImGui
+            bin-int/Release-linux-x86_64/FreeType
+
+      - name: Build vendor libs
+        if: steps.vendor-cache.outputs.cache-hit != 'true'
+        run: ./premake5 gmake && make GLFW glad ImGui FreeType config=release -j$(nproc)
+
+  # -----------------------------------------------------------------------
+  # Assimp — keyed on its own source, independent of CBKAssetConverter
+  # -----------------------------------------------------------------------
+  build-assimp:
+    name: Build Assimp (Linux)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y zlib1g-dev
+
+      - name: Download premake5
+        run: |
+          curl -sSL https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-linux.tar.gz | tar -xz -C .
+          chmod +x ./premake5
+
+      - name: Cache Assimp
+        id: assimp-cache
+        uses: actions/cache@v4
+        with:
+          key: assimp-release-linux-${{ hashFiles('CBKAssetConverter/vendor/assimp/**') }}
+          path: |
+            bin/Release-linux-x86_64/Assimp
+            bin-int/Release-linux-x86_64/Assimp
+
+      - name: Build Assimp
+        if: steps.assimp-cache.outputs.cache-hit != 'true'
+        run: ./premake5 gmake && make Assimp config=release -j$(nproc)
+
+  # -----------------------------------------------------------------------
   # Cabrankengine
   # -----------------------------------------------------------------------
   build-cabrankengine:
     name: Build Cabrankengine (Release)
-    needs: changes
+    needs: [changes, build-engine-vendors]
     if: needs.changes.outputs.engine == 'true'
     runs-on: ubuntu-latest
     steps:
@@ -76,35 +153,44 @@ jobs:
           curl -sSL https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-linux.tar.gz | tar -xz -C .
           chmod +x ./premake5
 
-      - name: Cache engine build outputs
-        id: engine-cache
-        uses: actions/cache@v4
+      - name: Restore engine vendor libs
+        uses: actions/cache/restore@v4
         with:
-          key: engine-release-linux-${{ hashFiles('Cabrankengine/**', 'Common/**') }}
+          key: engine-vendors-release-linux-${{ hashFiles('Cabrankengine/vendor/GLFW/**', 'Cabrankengine/vendor/glad/**', 'Cabrankengine/vendor/imgui/**', 'Cabrankengine/vendor/freetype/**') }}
           path: |
-            bin/Release-linux-x86_64/Cabrankengine
-            bin/Release-linux-x86_64/Common
             bin/Release-linux-x86_64/GLFW
             bin/Release-linux-x86_64/glad
             bin/Release-linux-x86_64/ImGui
             bin/Release-linux-x86_64/FreeType
-            bin-int/Release-linux-x86_64/Cabrankengine
-            bin-int/Release-linux-x86_64/Common
             bin-int/Release-linux-x86_64/GLFW
             bin-int/Release-linux-x86_64/glad
             bin-int/Release-linux-x86_64/ImGui
             bin-int/Release-linux-x86_64/FreeType
+
+      - name: Cache engine build outputs
+        id: engine-cache
+        uses: actions/cache@v4
+        with:
+          key: engine-release-linux-${{ hashFiles('Cabrankengine/src/**', 'Common/**') }}
+          path: |
+            bin/Release-linux-x86_64/Cabrankengine
+            bin/Release-linux-x86_64/Common
+            bin-int/Release-linux-x86_64/Cabrankengine
+            bin-int/Release-linux-x86_64/Common
+
+      - name: Mark artifacts as up-to-date
+        run: find bin/ bin-int/ -type f 2>/dev/null | xargs -r touch
 
       - name: Build
         if: steps.engine-cache.outputs.cache-hit != 'true'
         run: ./premake5 gmake && make Cabrankengine config=release -j$(nproc)
 
   # -----------------------------------------------------------------------
-  # Sandbox — waits for engine; skipped engine is treated as success
+  # Sandbox — waits for engine and vendors; skipped engine is treated as success
   # -----------------------------------------------------------------------
   build-sandbox:
     name: Build Sandbox (Release)
-    needs: [changes, build-cabrankengine]
+    needs: [changes, build-cabrankengine, build-engine-vendors]
     if: |
       needs.changes.outputs.sandbox == 'true' &&
       (needs.build-cabrankengine.result == 'success' || needs.build-cabrankengine.result == 'skipped')
@@ -126,38 +212,42 @@ jobs:
           curl -sSL https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-linux.tar.gz | tar -xz -C .
           chmod +x ./premake5
 
-      - name: Restore engine build outputs
-        id: engine-cache
+      - name: Restore engine vendor libs
         uses: actions/cache/restore@v4
         with:
-          key: engine-release-linux-${{ hashFiles('Cabrankengine/**', 'Common/**') }}
+          key: engine-vendors-release-linux-${{ hashFiles('Cabrankengine/vendor/GLFW/**', 'Cabrankengine/vendor/glad/**', 'Cabrankengine/vendor/imgui/**', 'Cabrankengine/vendor/freetype/**') }}
           path: |
-            bin/Release-linux-x86_64/Cabrankengine
-            bin/Release-linux-x86_64/Common
             bin/Release-linux-x86_64/GLFW
             bin/Release-linux-x86_64/glad
             bin/Release-linux-x86_64/ImGui
             bin/Release-linux-x86_64/FreeType
-            bin-int/Release-linux-x86_64/Cabrankengine
-            bin-int/Release-linux-x86_64/Common
             bin-int/Release-linux-x86_64/GLFW
             bin-int/Release-linux-x86_64/glad
             bin-int/Release-linux-x86_64/ImGui
             bin-int/Release-linux-x86_64/FreeType
 
-      - name: Mark engine artifacts as up-to-date
-        if: steps.engine-cache.outputs.cache-hit == 'true'
-        run: find bin/ bin-int/ -type f | xargs touch
+      - name: Restore engine build outputs
+        uses: actions/cache/restore@v4
+        with:
+          key: engine-release-linux-${{ hashFiles('Cabrankengine/src/**', 'Common/**') }}
+          path: |
+            bin/Release-linux-x86_64/Cabrankengine
+            bin/Release-linux-x86_64/Common
+            bin-int/Release-linux-x86_64/Cabrankengine
+            bin-int/Release-linux-x86_64/Common
+
+      - name: Mark artifacts as up-to-date
+        run: find bin/ bin-int/ -type f 2>/dev/null | xargs -r touch
 
       - name: Build
         run: ./premake5 gmake && make Sandbox config=release -j$(nproc)
 
   # -----------------------------------------------------------------------
-  # CBKAssetConverter — independent, no engine dependency
+  # CBKAssetConverter — depends on Assimp cache
   # -----------------------------------------------------------------------
   build-asset-converter:
     name: Build CBKAssetConverter (Release)
-    needs: changes
+    needs: [changes, build-assimp]
     if: needs.changes.outputs.converter == 'true'
     runs-on: ubuntu-latest
     steps:
@@ -175,15 +265,26 @@ jobs:
           curl -sSL https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-linux.tar.gz | tar -xz -C .
           chmod +x ./premake5
 
+      - name: Restore Assimp
+        uses: actions/cache/restore@v4
+        with:
+          key: assimp-release-linux-${{ hashFiles('CBKAssetConverter/vendor/assimp/**') }}
+          path: |
+            bin/Release-linux-x86_64/Assimp
+            bin-int/Release-linux-x86_64/Assimp
+
+      - name: Mark artifacts as up-to-date
+        run: find bin/ bin-int/ -type f 2>/dev/null | xargs -r touch
+
       - name: Build
         run: ./premake5 gmake && make CBKAssetConverter config=release -j$(nproc)
 
   # -----------------------------------------------------------------------
-  # UnitTests — waits for engine; skipped engine is treated as success
+  # UnitTests — waits for engine and vendors; skipped engine is treated as success
   # -----------------------------------------------------------------------
   build-and-test:
     name: Build & Run UnitTests (Release)
-    needs: [changes, build-cabrankengine]
+    needs: [changes, build-cabrankengine, build-engine-vendors]
     if: |
       needs.changes.outputs.tests == 'true' &&
       (needs.build-cabrankengine.result == 'success' || needs.build-cabrankengine.result == 'skipped')
@@ -205,28 +306,32 @@ jobs:
           curl -sSL https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-linux.tar.gz | tar -xz -C .
           chmod +x ./premake5
 
-      - name: Restore engine build outputs
-        id: engine-cache
+      - name: Restore engine vendor libs
         uses: actions/cache/restore@v4
         with:
-          key: engine-release-linux-${{ hashFiles('Cabrankengine/**', 'Common/**') }}
+          key: engine-vendors-release-linux-${{ hashFiles('Cabrankengine/vendor/GLFW/**', 'Cabrankengine/vendor/glad/**', 'Cabrankengine/vendor/imgui/**', 'Cabrankengine/vendor/freetype/**') }}
           path: |
-            bin/Release-linux-x86_64/Cabrankengine
-            bin/Release-linux-x86_64/Common
             bin/Release-linux-x86_64/GLFW
             bin/Release-linux-x86_64/glad
             bin/Release-linux-x86_64/ImGui
             bin/Release-linux-x86_64/FreeType
-            bin-int/Release-linux-x86_64/Cabrankengine
-            bin-int/Release-linux-x86_64/Common
             bin-int/Release-linux-x86_64/GLFW
             bin-int/Release-linux-x86_64/glad
             bin-int/Release-linux-x86_64/ImGui
             bin-int/Release-linux-x86_64/FreeType
 
-      - name: Mark engine artifacts as up-to-date
-        if: steps.engine-cache.outputs.cache-hit == 'true'
-        run: find bin/ bin-int/ -type f | xargs touch
+      - name: Restore engine build outputs
+        uses: actions/cache/restore@v4
+        with:
+          key: engine-release-linux-${{ hashFiles('Cabrankengine/src/**', 'Common/**') }}
+          path: |
+            bin/Release-linux-x86_64/Cabrankengine
+            bin/Release-linux-x86_64/Common
+            bin-int/Release-linux-x86_64/Cabrankengine
+            bin-int/Release-linux-x86_64/Common
+
+      - name: Mark artifacts as up-to-date
+        run: find bin/ bin-int/ -type f 2>/dev/null | xargs -r touch
 
       - name: Build
         run: ./premake5 gmake && make UnitTests config=release -j$(nproc)
