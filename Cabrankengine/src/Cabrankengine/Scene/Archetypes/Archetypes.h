@@ -1,6 +1,8 @@
 #include "CameraArch.h"
 #include "CameraControllerArch.h"
+#include "DirectionalLightArch.h"
 #include "PBRModelArch.h"
 #include "PhongModelArch.h"
+#include "PointLightArch.h"
 #include "SpriteArch.h"
 #include "TextArch.h"
