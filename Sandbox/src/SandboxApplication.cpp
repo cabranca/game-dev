@@ -63,10 +63,7 @@ class ExampleLayer : public Layer {
 class ExampleLayer : public Layer {
   public:
 	ExampleLayer(const Ref<Registry>& reg) : Layer("Example"), m_Registry(reg) {
-		Entity camera = m_Registry->createEntity();
-		m_Registry->addComponent(camera, CTransform());
-		m_Registry->addComponent(camera, CCamera{ .Type = ProjectionType::Perspective });
-		m_Registry->addComponent(camera, CCameraController{ .TranslationSpeed = 10.f, .MouseSensitivity = 0.1f });
+		CameraControllerArch cameraController(ProjectionType::Perspective);
 
 		PBRModelArch gun{};
 		gun.transform().Transform.Position = {2.f, -2.f, 2.f};

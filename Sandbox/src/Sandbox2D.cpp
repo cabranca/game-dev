@@ -1,5 +1,6 @@
 #include "Sandbox2D.h"
 
+#include <Cabrankengine/ECS/Components.h>
 #include <imgui.h>
 
 using namespace cbk;
@@ -14,9 +15,9 @@ Sandbox2D::Sandbox2D(const Ref<Registry>& reg) : Layer("Sandbox2D"), m_Registry(
 void Sandbox2D::onAttach() {
 	CBK_PROFILE_FUNCTION();
 
-	Entity camera = m_Registry->createEntity();
-	m_Registry->addComponent(camera, CTransform());
-	m_Registry->addComponent(camera, CCamera{ .Type = ProjectionType::Orthographic });
+	CameraArch camera(ProjectionType::Orthographic);
+	camera.camera().Far = 1.f;
+	camera.camera().Near = -1.f;
 
 	SpriteArch box{};
 	box.sprite().Texture = Texture2D::create("assets/textures/container2.cbkt");
